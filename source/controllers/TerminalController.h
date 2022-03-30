@@ -30,8 +30,11 @@ class TerminalController : public Controller {
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
-  /** The list of players participating in the voting. */
+  /** The list of players in the game. */
   std::vector<std::shared_ptr<Player>> _players;
+
+  /** A reference to my player */
+  std::shared_ptr<Player> _my_player;
 
   /** The number of players required for this terminal. */
   int _num_players_req;
@@ -100,13 +103,16 @@ class TerminalController : public Controller {
 
   /**
    * Add this player to the terminal voting scene. Will only add if the player
-   * is not currently in the scene and the terminal is waiting for players.
+   * is not currently in the controller.
    * @param player The player to add.
    */
-  void addPlayer(std::shared_ptr<Player> player) {
-    if (_stage != Stage::WAIT_FOR_PLAYERS) return;
+  void addPlayer(const std::shared_ptr<Player>& player) {
+    auto player_exists = [=](const std::shared_ptr<Player>& p) {
+      return p->getPlayerId() == player->getPlayerId();
+    };
 
-    if (std::find(_players.begin(), _players.end(), player) == _players.end()) {
+    if (std::find_if(_players.begin(), _players.end(), player_exists) ==
+        _players.end()) {
       _players.push_back(player);
     }
   }
@@ -135,6 +141,17 @@ class TerminalController : public Controller {
    */
   std::unordered_map<int, std::shared_ptr<VotingInfo>> getVotingInfo() {
     return _voting_info;
+  }
+
+  /**
+   * Set my player for voting reference.
+   *
+   * @param my_player My player.
+   */
+  void setMyPlayer(const std::shared_ptr<Player>& my_player) {
+    if (!_active) return;
+    _my_player = my_player;
+    _vote_for_leader_scene->setMyPlayer(my_player);
   }
 
  private:

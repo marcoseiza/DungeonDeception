@@ -183,7 +183,10 @@ void GameScene::populate(cugl::Size dim) {
   _my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
   _my_player->setBetrayer(_is_betrayer);
   _players.push_back(_my_player);
+
   _level_controller->getLevelModel()->setPlayer(_my_player);
+  _terminal_controller->setMyPlayer(_my_player);
+  _terminal_controller->addPlayer(_my_player);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
   _my_player->setPlayerNode(player_node);
@@ -871,6 +874,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float 
       Player::alloc(dim + cugl::Vec2(20, 20), "Johnathan");
   new_player->setPlayerId(player_id);
   _players.push_back(new_player);
+  _terminal_controller->addPlayer(new_player);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
   new_player->setPlayerNode(player_node);

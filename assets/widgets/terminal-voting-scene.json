@@ -110,7 +110,7 @@
                 "layout": {
                   "x_anchor": "center",
                   "y_anchor": "top",
-                  "y_offset": -0.3
+                  "y_offset": -0.19
                 }
               },
               "title-2": {
@@ -126,7 +126,208 @@
                 "layout": {
                   "x_anchor": "center",
                   "y_anchor": "top",
-                  "y_offset": -0.4
+                  "y_offset": -0.22
+                }
+              },
+              "buttons": {
+                "type": "Node",
+                "format": {
+                  "type": "Grid",
+                  "width": 2,
+                  "height": 4
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [650, 500]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle"
+                },
+                "children": {
+                  "button-wrapper-0": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 0,
+                      "y_index": 3,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-0": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-0",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-1": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 1,
+                      "y_index": 3,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-1": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-1",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-2": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 0,
+                      "y_index": 2,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-2": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-2",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-3": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 1,
+                      "y_index": 2,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-3": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-3",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-4": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 0,
+                      "y_index": 1,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-4": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-4",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-5": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 1,
+                      "y_index": 1,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-5": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-5",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "button-wrapper-6": {
+                    "type": "Node",
+                    "data": {
+                      "anchor": [0, 0],
+                      "size": [300, 100]
+                    },
+                    "layout": {
+                      "x_index": 0,
+                      "y_index": 0,
+                      "x_anchor": "center",
+                      "y_anchor": "center"
+                    },
+                    "children": {
+                      "button-6": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "terminal-voting-button",
+                          "variables": {
+                            "size": [300, 100],
+                            "text": "button-6",
+                            "anchor": [0, 0]
+                          }
+                        }
+                      }
+                    }
+                  }
+
                 }
               }
             }

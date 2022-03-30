@@ -38,6 +38,8 @@ void TerminalController::update(float timestep) {
         _vote_for_leader_scene->start(_voting_info[_terminal_room_id]);
       }
 
+      _vote_for_leader_scene->update();
+
       if (_vote_for_leader_scene->isDone()) {
         _vote_for_leader_scene->dispose();
         _stage = Stage::VOTE_TEAM;

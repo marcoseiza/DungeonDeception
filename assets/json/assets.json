@@ -233,8 +233,7 @@
     }
   },
     "jsons": {
-        "server": "json/server.json",
-        "terminal-voting-button-use": "widgets/terminal-voting-button-use.json"
+        "server": "json/server.json"
     },
     "widgets": {
         "background": "widgets/background.json",

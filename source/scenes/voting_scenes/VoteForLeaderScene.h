@@ -25,6 +25,9 @@ class VoteForLeaderScene {
   /** A reference to the node for this scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
 
+  /** A reference to my player */
+  std::shared_ptr<Player> _my_player;
+
  public:
   VoteForLeaderScene() : _active(false), _done(false), _initialized(false) {}
   ~VoteForLeaderScene() { dispose(); }
@@ -72,6 +75,15 @@ class VoteForLeaderScene {
 
   /** If the scene is done. */
   bool isDone() { return _done; }
+
+  /** Button listener.  */
+  void buttonListener(const std::string& name, bool down);
+
+  void setMyPlayer(const std::shared_ptr<Player>& my_player) {
+    if (!_initialized) return;
+    _my_player = my_player;
+    _vote_for_leader_scene->setMyPlayer(my_player);
+  }
 };
 
 #endif  // SCENES_VOTING_SCENES_VOTE_FOR_LEADER_SCENE_H_
