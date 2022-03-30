@@ -82,7 +82,6 @@ class VoteForLeaderScene {
   void setMyPlayer(const std::shared_ptr<Player>& my_player) {
     if (!_initialized) return;
     _my_player = my_player;
-    _vote_for_leader_scene->setMyPlayer(my_player);
   }
 };
 

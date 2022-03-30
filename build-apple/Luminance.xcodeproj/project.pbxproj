@@ -922,7 +922,6 @@
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				CA9B3EB227DE9A6900755902 /* HostGameScene.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
-
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5B8BE6727F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
 				57D18F9227E14F100085A52E /* ShotgunnerController.cpp in Sources */,

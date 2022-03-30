@@ -1,14 +1,13 @@
 #include "VoteForLeaderScene.h"
 
-bool VoteForLeaderScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
-                              int my_player_id) {
+bool VoteForLeaderScene::init(
+    const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
 
   _node = _assets->get<cugl::scene2::SceneNode>(
       "terminal-voting-scene_voting-background_vote-for-leader");
   // _node->setVisible(false);
 
-  _my_player_id = my_player_id;
   _initialized = true;
   return true;
 }
@@ -45,7 +44,7 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info) {
 
     button->addListener([=](const std::string& name, bool down) {
       this->buttonListener(name, down);
-    })
+    });
   }
 
   _node->setVisible(true);
@@ -56,5 +55,5 @@ void VoteForLeaderScene::update() {}
 
 void VoteForLeaderScene::buttonListener(const std::string& name, bool down) {
   int voted_for = std::stoi(name);
-  _voting_info->votes[]
+  // _voting_info->votes[]
 }
