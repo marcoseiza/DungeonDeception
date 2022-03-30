@@ -233,12 +233,14 @@
     }
   },
     "jsons": {
-        "server": "json/server.json"
+        "server": "json/server.json",
+        "terminal-voting-button-use": "widgets/terminal-voting-button-use.json"
     },
     "widgets": {
         "background": "widgets/background.json",
         "ui-scene": "widgets/ui-scene.json",
         "terminal-voting-scene": "widgets/terminal-voting-scene.json",
+        "terminal-voting-button": "widgets/terminal-voting-button.json",
         "win-scene": "widgets/win-scene.json",
         "world-scene": "widgets/world-scene.json",
         "wall-top": "widgets/wall-top.json",
@@ -842,6 +844,10 @@
         }
     },
     "fonts": {
+        "pixelmix_medium": {
+            "file": "fonts/pixelmix.ttf",
+            "size": 20
+        },
         "pixelmix": {
             "file": "fonts/pixelmix.ttf",
             "size": 24

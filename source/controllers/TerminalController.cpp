@@ -10,6 +10,7 @@ bool TerminalController::init(
   _stage = WAIT_FOR_PLAYERS;
 
   _wait_for_players_scene = WaitForPlayersScene::alloc(_assets);
+  _vote_for_leader_scene = VoteForLeaderScene::alloc(_assets);
 
   return true;
 }
@@ -25,7 +26,7 @@ void TerminalController::update(float timestep) {
 
       _wait_for_players_scene->update();
       _wait_for_players_scene->setCurrentNumPlayers(
-          _voting_info[_terminal_room_id].players.size());
+          _voting_info[_terminal_room_id]->players.size());
 
       if (_wait_for_players_scene->isDone()) {
         _wait_for_players_scene->dispose();
@@ -33,7 +34,14 @@ void TerminalController::update(float timestep) {
       }
       break;
     case Stage::VOTE_LEADER:
-      done();
+      if (!_vote_for_leader_scene->isActive()) {
+        _vote_for_leader_scene->start(_voting_info[_terminal_room_id]);
+      }
+
+      if (_vote_for_leader_scene->isDone()) {
+        _vote_for_leader_scene->dispose();
+        _stage = Stage::VOTE_TEAM;
+      }
       break;
     case Stage::VOTE_TEAM:
       break;
@@ -56,17 +64,17 @@ void TerminalController::processNetworkData(
       int player_id = info->getInt("player_id");
 
       if (_voting_info.find(terminal_room_id) == _voting_info.end()) {
-        VotingInfo new_voting_info;
-        new_voting_info.terminal_room_id = terminal_room_id;
+        auto new_voting_info = std::make_shared<VotingInfo>();
+        new_voting_info->terminal_room_id = terminal_room_id;
         _voting_info[terminal_room_id] = new_voting_info;
       }
 
       auto result =
-          std::find(_voting_info[terminal_room_id].players.begin(),
-                    _voting_info[terminal_room_id].players.end(), player_id);
+          std::find(_voting_info[terminal_room_id]->players.begin(),
+                    _voting_info[terminal_room_id]->players.end(), player_id);
 
-      if (result == _voting_info[terminal_room_id].players.end()) {
-        _voting_info[terminal_room_id].players.push_back(player_id);
+      if (result == _voting_info[terminal_room_id]->players.end()) {
+        _voting_info[terminal_room_id]->players.push_back(player_id);
       }
     } break;
     case 8:  // Receive voting info from host.
@@ -78,11 +86,11 @@ void TerminalController::processNetworkData(
       std::vector<int> players = info->get("players")->asIntArray();
 
       if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
-        _voting_info[terminal_room_id].players = players;
+        _voting_info[terminal_room_id]->players = players;
       } else {
-        VotingInfo new_voting_info;
-        new_voting_info.terminal_room_id = terminal_room_id;
-        new_voting_info.players = players;
+        auto new_voting_info = std::make_shared<VotingInfo>();
+        new_voting_info->terminal_room_id = terminal_room_id;
+        new_voting_info->players = players;
         _voting_info[terminal_room_id] = new_voting_info;
       }
     } break;

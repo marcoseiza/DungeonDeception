@@ -4,30 +4,28 @@
 #include <cugl/cugl.h>
 
 #include "../models/Player.h"
+#include "../scenes/voting_scenes/VoteForLeaderScene.h"
 #include "../scenes/voting_scenes/WaitForPlayersScene.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "LevelController.h"
+#include "VotingInfo.h"
 
 class TerminalController : public Controller {
- public:
-  struct VotingInfo {
-    int terminal_room_id;
-    std::vector<int> players;
-  };
-
- private:
   /** If a terminal is currently being voted on. */
   bool _active;
 
   /** A map between the terminal room id and the voting info. */
-  std::unordered_map<int, VotingInfo> _voting_info;
+  std::unordered_map<int, std::shared_ptr<VotingInfo>> _voting_info;
 
   /** A reference to the terminal voting scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _scene;
 
   /** A reference to the waiting for players scene. */
   std::shared_ptr<WaitForPlayersScene> _wait_for_players_scene;
+
+  /** A reference to the vote for leader scene. */
+  std::shared_ptr<VoteForLeaderScene> _vote_for_leader_scene;
 
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
@@ -135,7 +133,9 @@ class TerminalController : public Controller {
    * @return An unordered map with the key being the terminal room id and the
    * value being the voting info.
    */
-  std::unordered_map<int, VotingInfo> getVotingInfo() { return _voting_info; }
+  std::unordered_map<int, std::shared_ptr<VotingInfo>> getVotingInfo() {
+    return _voting_info;
+  }
 
  private:
   /** Called when the terminal voting is done. */

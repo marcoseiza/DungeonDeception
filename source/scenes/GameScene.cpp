@@ -5,6 +5,7 @@
 #include <box2d/b2_contact.h>
 #include <cugl/cugl.h>
 
+#include "../controllers/VotingInfo.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -531,19 +532,19 @@ void GameScene::sendNetworkInfo() {
 
     // ======= SEND TERMINAL VOTING INFO ==========
     {
-      std::unordered_map<int, TerminalController::VotingInfo> voting_info =
+      std::unordered_map<int, std::shared_ptr<VotingInfo>> voting_info =
           _terminal_controller->getVotingInfo();
 
       for (auto it = voting_info.begin(); it != voting_info.end(); ++it) {
         auto info = cugl::JsonValue::allocObject();
 
         auto terminal_room_id_info = cugl::JsonValue::alloc(
-            static_cast<long>((it->second).terminal_room_id));
+            static_cast<long>((it->second)->terminal_room_id));
         info->appendChild(terminal_room_id_info);
         terminal_room_id_info->setKey("terminal_room_id");
 
         auto players_ids_info = cugl::JsonValue::allocArray();
-        for (int player_id : (it->second).players) {
+        for (int player_id : (it->second)->players) {
           auto player_id_info =
               cugl::JsonValue::alloc(static_cast<long>(player_id));
           players_ids_info->appendChild(player_id_info);

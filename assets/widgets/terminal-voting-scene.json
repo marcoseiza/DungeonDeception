@@ -83,6 +83,60 @@
                 }
               }
             }
+          },
+          "vote-for-leader": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "anchor": [0.5, 0.5]
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            },
+            "children": {
+              "title-1": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix",
+                  "text": "PICK A",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.3
+                }
+              },
+              "title-2": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix_title",
+                  "text": "TEAM LEADER",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.4
+                }
+              },
+              "buttons": {
+                "type": "Node",
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": []
+                }
+              }
+            }
           }
         }
       }

@@ -1,0 +1,11 @@
+{
+  "type": "Widget",
+  "data": {
+    "key": "terminal-voting-button",
+    "variables": {
+      "size": [175, 55],
+      "text": "HOST",
+      "color": "#efebe3"
+    }
+  }
+}
