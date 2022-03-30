@@ -24,6 +24,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The player's current state. */
   State _current_state;
 
+  /** The player's role, true if betrayer, false otherwise */
+  bool _is_betrayer;
+
   /** The player's unique id. */
   int _id;
 
@@ -99,9 +102,23 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Sets the current state of the player and changes textures accordingly.
    *
-   * @param state current state.
+   * @param set current state.
    */
   void setState(State state) { _current_state = state; }
+
+  /**
+   * Returns if the player is a betrayer.
+   *
+   * @return true if player is betrayer, false otherwise.
+   */
+  bool isBetrayer() const { return _is_betrayer; }
+
+  /**
+   * Sets the role of the player as betrayer or not.
+   *
+   * @param set current role to betrayer if true, cooperator if false.
+   */
+  void setBetrayer(bool b) { _is_betrayer = b; }
 
   /**
    * Returns the current health of the player.
@@ -220,7 +237,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Updates the player.
    */
-  void step(float timestep, cugl::Vec2 forward, bool didAttack,
+  void step(float timestep, cugl::Vec2 forward, bool didDash, bool didAttack,
             std::shared_ptr<Sword> sword);
 
   /**

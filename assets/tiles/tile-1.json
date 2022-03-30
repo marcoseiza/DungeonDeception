@@ -1,0 +1,17 @@
+{
+  "variables": {
+    "priority": ["data", "priority"]
+  },
+  "contents": {
+    "type": "BasicTile",
+    "data": {
+      "texture": "tile-set_1",
+      "anchor": [0, 0],
+      "priority": -1
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    }
+  }
+}

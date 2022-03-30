@@ -35,6 +35,20 @@
             "wrapS": "clamp",
             "wrapT": "clamp"
         },
+        "map": {
+            "file": "textures/map.png",
+            "minfilter": "nearest",
+            "magfilter": "nearest",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "dash": {
+            "file": "textures/dash.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
         "player": {
             "file": "textures/player.png",
             "minfilter": "nearest",
@@ -86,104 +100,6 @@
         },
         "projectile-orange-large": {
             "file": "textures/projectile-orange-large.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-0": {
-            "file": "textures/floor-tile-0.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-1": {
-            "file": "textures/floor-tile-1.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-2": {
-            "file": "textures/floor-tile-2.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-3": {
-            "file": "textures/floor-tile-3.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-4": {
-            "file": "textures/floor-tile-4.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-5": {
-            "file": "textures/floor-tile-5.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-6": {
-            "file": "textures/floor-tile-6.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-7": {
-            "file": "textures/floor-tile-7.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-8": {
-            "file": "textures/floor-tile-8.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-9": {
-            "file": "textures/floor-tile-9.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-10": {
-            "file": "textures/floor-tile-10.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-11": {
-            "file": "textures/floor-tile-11.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-12": {
-            "file": "textures/floor-tile-12.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "floor-tile-13": {
-            "file": "textures/floor-tile-13.png",
             "minfilter": "nearest",
             "magfilter": "nearest",
             "wrapS": "clamp",
@@ -243,7 +159,10 @@
         "wall-side": "widgets/wall-side.json",
         "textbutton": "widgets/textbutton.json",
         "textfield": "widgets/textfield.json",
-        "labelbox": "widgets/labelbox.json"
+        "labelbox": "widgets/labelbox.json",
+        "menu": "widgets/menu.json",
+        "client": "widgets/client.json",
+        "host": "widgets/host.json"
     },
     "scene2s": {
         "wall-side": {

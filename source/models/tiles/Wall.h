@@ -12,7 +12,10 @@
 class Wall : public BasicTile {
  protected:
   /** A reference to the physics object of the tile. */
-  std::shared_ptr<cugl::physics2::BoxObstacle> _obstacle;
+  std::shared_ptr<cugl::physics2::PolygonObstacle> _obstacle;
+
+  /** The shape of the obstacle as defined in scene2 json. */
+  cugl::Poly2 _obstacle_shape;
 
  public:
   /**
@@ -100,15 +103,14 @@ class Wall : public BasicTile {
    *
    * @return The obstacle it created for easy chaining.
    */
-  virtual std::shared_ptr<cugl::physics2::BoxObstacle> initBox2d();
+  virtual std::shared_ptr<cugl::physics2::PolygonObstacle> initBox2d();
 
   /**
    * @return Returns the physics object for the tile.
    */
-  std::shared_ptr<cugl::physics2::BoxObstacle> getObstacle() {
+  std::shared_ptr<cugl::physics2::PolygonObstacle> getObstacle() {
     return _obstacle;
   }
-
 };
 
 #endif  // MODELS_TILES_WALL_H_

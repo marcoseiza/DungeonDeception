@@ -1,112 +1,202 @@
 {
-  "variables": {},
-  "contents": {
-    "comments": "This is the root node for the ui scene",
-    "type": "Node",
-    "format": {
-      "type": "Anchored"
-    },
-    "children": {
-      "joystick-base": {
-        "type": "Image",
+    "variables": {},
+    "contents": {
+        "comments": "This is the root node for the ui scene",
+        "type": "Node",
         "format": {
-          "type": "Anchored"
-        },
-        "data": {
-          "texture": "joystick-base",
-          "anchor": [0.5, 0.5],
-          "scale": 0.5
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
-        }
-      },
-      "joystick": {
-        "type": "Image",
-        "data": {
-          "texture": "joystick",
-          "anchor": [0.5, 0.5],
-          "scale": 0.7
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
-        }
-      },
-      "attack-base": {
-        "type": "Image",
-        "format": {
-          "type": "Anchored"
-        },
-        "data": {
-          "texture": "joystick-base",
-          "anchor": [0.5, 0.5],
-          "scale": 0.60
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
-        }
-      },
-      "attack": {
-        "type": "Button",
-        "data": {
-          "upnode": "up",
-          "anchor": [0.5, 0.5],
-          "scale": 0.6
-        },
-        "layout": {
-          "x_anchor": "right",
-          "y_anchor": "bottom",
-          "x_offset": -0.12,
-          "y_offset": 0.21
+            "type": "Anchored"
         },
         "children": {
-          "up": {
-            "type": "Image",
-            "data": {
-              "texture": "attack"
+            "joystick-base": {
+                "type": "Image",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "texture": "joystick-base",
+                    "anchor": [0.5, 0.5],
+                    "scale": 0.5
+                },
+                "layout": {
+                    "x_anchor": "left",
+                    "y_anchor": "bottom"
+                }
+            },
+            "joystick": {
+                "type": "Image",
+                "data": {
+                    "texture": "joystick",
+                    "anchor": [0.5, 0.5],
+                    "scale": 0.7
+                },
+                "layout": {
+                    "x_anchor": "left",
+                    "y_anchor": "bottom"
+                }
+            },
+            "attack-base": {
+                "type": "Image",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "texture": "joystick-base",
+                    "anchor": [0.5, 0.5],
+                    "scale": 0.60
+                },
+                "layout": {
+                    "x_anchor": "left",
+                    "y_anchor": "bottom"
+                }
+            },
+            "attack": {
+                "type": "Button",
+                "data": {
+                    "upnode": "up",
+                    "anchor": [0.5, 0.5],
+                    "scale": 0.6
+                },
+                "layout": {
+                    "x_anchor": "right",
+                    "y_anchor": "bottom",
+                    "x_offset": -0.12,
+                    "y_offset": 0.21
+                },
+                "children": {
+                    "up": {
+                        "type": "Image",
+                        "data": {
+                            "texture": "attack"
+                        }
+                    }
+                }
+            },
+            "role": {
+                "type": "Label",
+                "data": {
+                    "anchor": [0, 0],
+                    "font": "pixel32",
+                    "text": "Role: Cooperator",
+                    "padding": [20, 20, 20, 20],
+                    "halign": "left",
+                    "valign": "top"
+                },
+                "layout": {
+                    "priority": 1,
+                    "x_anchor": "left",
+                    "y_anchor": "top",
+                    "x_offset": 0.05,
+                    "y_offset": -0.2
+                }
+            },
+            "health": {
+                "type": "Label",
+                "data": {
+                    "anchor": [0, 0],
+                    "font": "pixel32",
+                    "text": "Health: 100",
+                    "padding": [20, 20, 20, 20],
+                    "halign": "left",
+                    "valign": "top"
+                },
+                "layout": {
+                    "priority": 1,
+                    "x_anchor": "left",
+                    "y_anchor": "top",
+                    "x_offset": 0.05,
+                    "y_offset": -0.15
+                }
+            },
+            "terminal": {
+                "type": "Label",
+                "data": {
+                    "anchor": [-0.5, 0],
+                    "font": "pixel32",
+                    "text": "Terminals Activated: 0",
+                    "padding": [20, 20, 20, 20],
+                    "halign": "left",
+                    "valign": "top"
+                },
+                "layout": {
+                    "priority": 1,
+                    "x_anchor": "left",
+                    "y_anchor": "top",
+                    "x_offset": 0.05,
+                    "y_offset": -0.15
+                }
+            },
+            "timer": {
+                "type": "Label",
+                "data": {
+                    "anchor": [-0.5, 0],
+                    "font": "pixel32",
+                    "text": "15:00",
+                    "padding": [20, 20, 20, 20],
+                    "halign": "left",
+                    "valign": "top"
+                },
+                "layout": {
+                    "priority": 1,
+                    "x_anchor": "left",
+                    "y_anchor": "top",
+                    "x_offset": 0.75,
+                    "y_offset": -0.15
+                }
+            },
+            "map": {
+                "type": "Button",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "upnode": "up",
+                    "anchor": [0.5, 0.5],
+                    "scale": 1
+                },
+                "layout": {
+                    "x_anchor": "right",
+                    "y_anchor": "top",
+                    "x_offset": -0.12,
+                    "y_offset": -0.23
+                },
+                "children": {
+                    "up": {
+                        "type": "Image",
+                        "data": {
+                            "texture": "map",
+                            "anchor": [0.5, 0.5],
+                            "scale": 1
+                        }
+                    }
+                }
+            },
+            "dash": {
+                "type": "Button",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "upnode": "up",
+                    "anchor": [0.5, 0.5],
+                    "scale": 1
+                },
+                "layout": {
+                    "x_anchor": "right",
+                    "y_anchor": "bottom",
+                    "x_offset": -0.24,
+                    "y_offset": 0.15
+                },
+                "children": {
+                    "up": {
+                        "type": "Image",
+                        "data": {
+                            "texture": "dash",
+                            "anchor": [0.5, 0.5],
+                            "scale": 1
+                        }
+                    }
+                }
             }
-          }
         }
-      },
-      "health": {
-        "type": "Label",
-        "data": {
-          "anchor": [0, 0],
-          "font": "pixel32",
-          "text": "Health: 100",
-          "padding": [20, 20, 20, 20],
-          "halign": "left",
-          "valign": "top"
-        },
-        "layout": {
-          "priority": 1,
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.05,
-          "y_offset": -0.15
-        }
-      },
-      "terminal": {
-        "type": "Label",
-        "data": {
-          "anchor": [-0.5, 0],
-          "font": "pixel32",
-          "text": "Terminals Activated: 0",
-          "padding": [20, 20, 20, 20],
-          "halign": "left",
-          "valign": "top"
-        },
-        "layout": {
-          "priority": 1,
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.05,
-          "y_offset": -0.15
-        }
-      }
     }
-  }
 }

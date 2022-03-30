@@ -1,0 +1,127 @@
+{
+  "variables": {
+    "top-pillar-priority": ["children", "top-pillar-wrapper", "children", "top-pillar", "data", "variables", "priority"],
+    "top-pillar-off-priority": ["children", "top-pillar-wrapper", "children", "top-pillar-off", "data", "variables", "priority"],
+    "bottom-pillar-priority": ["children", "bottom-pillar-wrapper", "children", "bottom-pillar", "data", "variables", "priority"],
+    "bottom-pillar-off-priority": ["children", "bottom-pillar-wrapper", "children", "bottom-pillar-off", "data", "variables", "priority"]
+  },
+  "contents": {
+    "type": "Door",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "anchor": [0, 0],
+      "size": [48, 48],
+      "delegates": [
+
+        {
+          "on-state": ["top-pillar-wrapper", "top-pillar"],
+          "off-state": ["top-pillar-wrapper", "top-pillar-off"],
+          "unused": ["top-pillar-wrapper", "unused"]
+        },
+        {
+          "on-state": ["bottom-pillar-wrapper", "bottom-pillar"],
+          "off-state": ["bottom-pillar-wrapper", "bottom-pillar-off"],
+          "unused": ["bottom-pillar-wrapper", "unused"]
+        }
+
+      ]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "top-pillar-wrapper": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "anchor": [0, 0],
+          "size": [48, 48]
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top"
+        },
+        "children": {
+          "top-pillar": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-64",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "top-pillar-off": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-63",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "unused": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          }
+        }
+      },
+      "floor": {
+        "type": "Widget",
+        "data": {
+          "key": "tile-1",
+          "variables": {}
+        }
+      },
+      "bottom-pillar-wrapper": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "anchor": [0, 1],
+          "size": [48, 96]
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top"
+        },
+        "children": {
+          "bottom-pillar": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-65",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "bottom-pillar-off": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-63",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "unused": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -37,6 +37,9 @@
 		57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
 		57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
 		57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
+		CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
+		CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
+		CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
@@ -49,6 +52,9 @@
 		CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAF4CEC27DCA79600024986 /* HostMenuScene.cpp */; };
 		CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAF4CEC27DCA79600024986 /* HostMenuScene.cpp */; };
 		CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAAF4CEC27DCA79600024986 /* HostMenuScene.cpp */; };
+		CAB1A84C27F23CD3000B9F20 /* Dash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAB1A84B27F23CD3000B9F20 /* Dash.cpp */; };
+		CAB1A84D27F23CD3000B9F20 /* Dash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAB1A84B27F23CD3000B9F20 /* Dash.cpp */; };
+		CAB1A84E27F23CD3000B9F20 /* Dash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAB1A84B27F23CD3000B9F20 /* Dash.cpp */; };
 		D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
@@ -106,6 +112,9 @@
 		D598E69B27C57E3C0039326B /* LevelGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D598E69927C57E3C0039326B /* LevelGenerator.cpp */; };
 		D598E69C27C57E3C0039326B /* LevelGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D598E69927C57E3C0039326B /* LevelGenerator.cpp */; };
 		D598E69D27C57E3C0039326B /* LevelGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D598E69927C57E3C0039326B /* LevelGenerator.cpp */; };
+		D5A1467927E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
+		D5A1467A27E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
+		D5A1467B27E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -227,6 +236,8 @@
 		57D18F9327E184760085A52E /* EnemyModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyModel.cpp; sourceTree = "<group>"; };
 		57D18F9727E184900085A52E /* EnemyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyModel.h; sourceTree = "<group>"; };
 		57FEE39E27F145D600D7EF23 /* RayCastController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCastController.h; sourceTree = "<group>"; };
+		CA53F11727ED96E800F2699C /* OpenMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenMap.cpp; sourceTree = "<group>"; };
+		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		CA5F188A27DBC1B70077AEBB /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		CA9B3EAB27DE9A6900755902 /* HostGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostGameScene.h; sourceTree = "<group>"; };
@@ -236,6 +247,8 @@
 		CAAF4CED27DCA79600024986 /* HostMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostMenuScene.h; sourceTree = "<group>"; };
 		CAAF4CEE27DCA79600024986 /* ClientMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientMenuScene.h; sourceTree = "<group>"; };
 		CAAF4CEF27DCA79600024986 /* PeerScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerScene.h; sourceTree = "<group>"; };
+		CAB1A84A27F23CCD000B9F20 /* Dash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dash.h; sourceTree = "<group>"; };
+		CAB1A84B27F23CD3000B9F20 /* Dash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dash.cpp; sourceTree = "<group>"; };
 		D5073C8627CFEF2C0000426E /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		D5073C8727CFEF2C0000426E /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
 		D521FB0E27C43BA500D14172 /* widgets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = widgets; sourceTree = "<group>"; };
@@ -274,6 +287,7 @@
 		D58B972827DD31DE0071D1FC /* Door.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Door.h; sourceTree = "<group>"; };
 		D598E69927C57E3C0039326B /* LevelGenerator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LevelGenerator.cpp; sourceTree = "<group>"; };
 		D598E69A27C57E3C0039326B /* LevelGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelGenerator.h; sourceTree = "<group>"; };
+		D5A1467827E38A57002B3FFD /* tiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tiles; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
@@ -494,11 +508,15 @@
 		D52E672F27BF305900F8E2B8 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				D52E673227BF305900F8E2B8 /* Action.h */,
 				D52E674827BF354400F8E2B8 /* Attack.h */,
 				D52E673127BF305900F8E2B8 /* Attack.cpp */,
-				D52E673227BF305900F8E2B8 /* Action.h */,
-				D5EB744C27C335C7007D157D /* Movement.cpp */,
 				D5EB744D27C335C7007D157D /* Movement.h */,
+				D5EB744C27C335C7007D157D /* Movement.cpp */,
+				CA53F11B27ED970B00F2699C /* OpenMap.h */,
+				CA53F11727ED96E800F2699C /* OpenMap.cpp */,
+				CAB1A84A27F23CCD000B9F20 /* Dash.h */,
+				CAB1A84B27F23CD3000B9F20 /* Dash.cpp */,
 			);
 			path = actions;
 			sourceTree = "<group>";
@@ -556,6 +574,7 @@
 		EB2BE9B71D749870002FE78B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D5A1467827E38A57002B3FFD /* tiles */,
 				D58B972027DC7EBD0071D1FC /* rooms */,
 				572894E827D189E200F9BBA5 /* fonts */,
 				D521FB0E27C43BA500D14172 /* widgets */,
@@ -741,7 +760,7 @@
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 3CZ5TUZ2PQ;
+						DevelopmentTeam = 37AKFHT6H5;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -804,6 +823,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5A1467B27E38A58002B3FFD /* tiles in Resources */,
 				D58B972627DC7EBD0071D1FC /* rooms in Resources */,
 				EB22BF9B25D0EA5C002ACE41 /* DeviceMargins.plist in Resources */,
 				EB22BF9625D0EA50002ACE41 /* json in Resources */,
@@ -820,6 +840,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5A1467A27E38A58002B3FFD /* tiles in Resources */,
 				D58B972527DC7EBD0071D1FC /* rooms in Resources */,
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
@@ -839,6 +860,7 @@
 				EBFE7C091E19B4AC001007C2 /* json in Resources */,
 				572894E927D189E200F9BBA5 /* fonts in Resources */,
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
+				D5A1467927E38A58002B3FFD /* tiles in Resources */,
 				D58B972427DC7EBD0071D1FC /* rooms in Resources */,
 				D521FB0F27C43BA500D14172 /* widgets in Resources */,
 				EBBF189B1D74904A008E2001 /* Mac.xcassets in Resources */,
@@ -876,6 +898,7 @@
 				EB9CDA3925D0EAB100EE1A09 /* main.cpp in Sources */,
 				D56B743D27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */,
+				CAB1A84E27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF227DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6E027DEFA350071DD06 /* RoomModel.cpp in Sources */,
 				D579718927CFF851008FCC5E /* BasicTile.cpp in Sources */,
@@ -886,6 +909,7 @@
 				D58B972B27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22B27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
 				D52E673627BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
+				CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -917,6 +941,7 @@
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
 				D56B743C27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */,
+				CAB1A84D27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF127DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6DF27DEFA350071DD06 /* RoomModel.cpp in Sources */,
 				D579718827CFF851008FCC5E /* BasicTile.cpp in Sources */,
@@ -927,6 +952,7 @@
 				D58B972A27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22A27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
 				D52E673527BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
+				CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -958,6 +984,7 @@
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				D56B743B27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */,
+				CAB1A84C27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF027DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6B527DD6E3B0071DD06 /* RoomModel.cpp in Sources */,
 				D579718727CFF851008FCC5E /* BasicTile.cpp in Sources */,
@@ -968,6 +995,7 @@
 				D58B972927DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22927DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
 				D52E673427BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
+				CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1034,13 +1062,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.Luminance-Marcos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1056,13 +1084,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.Luminance-Marcos";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

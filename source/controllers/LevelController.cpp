@@ -9,8 +9,8 @@
 #include "../models/tiles/Wall.h"
 #include "Controller.h"
 
-#define TILE_SCALE cugl::Vec2(0.6, 0.6)
-#define TILE_SIZE cugl::Vec2(64, 64)
+#define TILE_SCALE cugl::Vec2(1, 1)
+#define TILE_SIZE cugl::Vec2(48, 48)
 
 bool LevelController::init(
     const std::shared_ptr<cugl::AssetManager> &assets,
@@ -62,6 +62,23 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
   if (destination_room_id == -1) return;
 
   cugl::Vec2 door_pos = current->getPosOfDestinationDoor(door_sensor_name);
+  
+  // Update the map SceneNodes.
+  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
+    if (room->_key == current->getKey()) {
+      room->_node->setColor(room->getRoomNodeColor());
+    }
+    if (room->_key == destination_room_id) {
+      room->_node->setColor(cugl::Color4(255, 0, 0, 127));
+      room->_node->setVisible(true);
+      
+      for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
+        if (edge->_source->_node->isVisible() && edge->_neighbor->_node->isVisible())
+        edge->_node->setVisible(true);
+      }
+    }
+    
+  }
 
   for (std::shared_ptr<EnemyModel> enemy : current->getEnemies())
     enemy->promiseToChangePhysics(false);
@@ -147,7 +164,7 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
     const std::shared_ptr<RoomModel> &room_model) {
   std::vector<cugl::Vec2> unused_doors = room->_doors;
 
-  // Initialize doors.
+  // Initialize box2d in only the used doors.
   for (auto &it : room->_edge_to_door) {
     std::shared_ptr<level_gen::Edge> edge = it.first;
     cugl::Vec2 door = it.second;
@@ -155,28 +172,30 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
         std::remove(unused_doors.begin(), unused_doors.end(), door),
         unused_doors.end());
 
-    int y = room_model->getGridSize().height - static_cast<int>(door.y) - 1;
+    int y = static_cast<int>(door.y);
     int x = static_cast<int>(door.x);
     std::stringstream ss;
-    ss << room->_scene2_key << "_tiles_tile-(" << y << "-" << x << ")_tile";
+    ss << room->_scene2_key << "_tiles_tile-(" << x << "-" << y << ")_tile";
     std::string door_name = ss.str();
 
     auto door_room_node = std::dynamic_pointer_cast<Door>(
         _assets->get<cugl::scene2::SceneNode>(door_name));
 
     if (door_room_node) {
+      door_room_node->initDelegates();
+
       std::string door_sensor_name = door_name + "-door";
       _world->addObstacle(door_room_node->initBox2d(door_sensor_name));
 
       std::shared_ptr<level_gen::Room> other_room = edge->getOther(room);
       cugl::Vec2 destination = other_room->_edge_to_door[edge];
 
-      if (destination.x == 0) destination.x += 1;
-      if (destination.y == 0) destination.y += 3;
+      if (destination.x == 0) destination.x += 2;
+      if (destination.y == 0) destination.y += 2;
       if (destination.x == room_model->getGridSize().width - 1)
-        destination.x -= 1;
+        destination.x -= 2;
       if (destination.y == room_model->getGridSize().height - 1)
-        destination.y -= 1;
+        destination.y -= 2;
 
       if (other_room->_key != -1) {
         room_model->addConnection(door_sensor_name, other_room->_key,
@@ -192,39 +211,19 @@ void LevelController::coverUnusedDoors(
     const std::shared_ptr<level_gen::Room> &room,
     const std::shared_ptr<RoomModel> &room_model,
     std::vector<cugl::Vec2> &unused_doors) {
-  auto wall_top = _assets->get<cugl::scene2::SceneNode>("wall-top");
-  auto wall_side = _assets->get<cugl::scene2::SceneNode>("wall-side");
   for (cugl::Vec2 door : unused_doors) {
-    int y = room_model->getGridSize().height - static_cast<int>(door.y) - 1;
+    int y = static_cast<int>(door.y);
     int x = static_cast<int>(door.x);
     std::stringstream ss;
-    ss << room->_scene2_key << "_tiles_tile-(" << y << "-" << x << ")";
+    ss << room->_scene2_key << "_tiles_tile-(" << x << "-" << y << ")_tile";
     std::string door_name = ss.str();
 
-    auto door_tile_copy = cugl::scene2::SceneNode::alloc();
-    auto door_tile = _assets->get<cugl::scene2::SceneNode>(door_name);
-    if (door_tile) {
-      door_tile->copy(door_tile_copy);
-      door_tile_copy->setName(door_name + "-floor");
+    auto door_room_node = std::dynamic_pointer_cast<Door>(
+        _assets->get<cugl::scene2::SceneNode>(door_name));
 
-      auto wall_top_copy = std::dynamic_pointer_cast<Wall>(Wall::alloc());
-      auto wall_side_copy = std::dynamic_pointer_cast<Wall>(Wall::alloc());
-      wall_top->copy(wall_top_copy);
-      wall_side->copy(wall_side_copy);
-      // TODO: change depending on wall
-      wall_top_copy->setPosition(0.0f, 27.599999999999998f);
-
-      wall_top_copy->setPriority(y);
-      wall_side_copy->setPriority(y);
-
-      door_tile->removeAllChildren();
-      door_tile->addChild(wall_side_copy);
-
-      door_tile_copy->addChild(wall_top_copy);
-      room_model->getNode()->addChild(door_tile_copy);
-
-      _world->addObstacle(wall_top_copy->initBox2d());
-      _world->addObstacle(wall_side_copy->initBox2d());
+    if (door_room_node) {
+      door_room_node->initDelegates();
+      door_room_node->setState(Door::State::UNUSED);
     }
   }
 }

@@ -1,38 +1,102 @@
 #include "Door.h"
 
+#include "Wall.h"
+
+#define TILE_WIDTH 48
+
 bool Door::initWithData(const cugl::Scene2Loader* loader,
                         const std::shared_ptr<cugl::JsonValue>& data) {
   if (_texture != nullptr) {
     CUAssertLog(false, "%s is already initialized", _classname.c_str());
     return false;
+  } else if (!data) {
+    return SceneNode::init();
+  } else if (!SceneNode::initWithData(loader, data)) {
+    return false;
   }
 
-  if (!data) return BasicTile::init();
+  if (data->has("obstacle")) {
+    _obstacle_shape.set(data->get("obstacle"));
+  } else {
+    cugl::Rect bounds = cugl::Rect::ZERO;
+    if (_texture != nullptr) {
+      bounds.size = _texture->getSize();
+    } else {
+      bounds.size = getContentSize();
+    }
+    _obstacle_shape.set(bounds);
+  }
 
-  _horizontal = data->getBool("horizontal", true);
+  if (data->has("offset-priority")) {
+    _priority = _priority - data->getFloat("offset-priority") / TILE_WIDTH;
+  } else {
+    _priority = _priority - _obstacle_shape.getBounds().origin.y / TILE_WIDTH;
+  }
 
-  return BasicTile::initWithData(loader, data);
+  std::shared_ptr<cugl::JsonValue> delegates = data->get("delegates");
+  if (delegates != nullptr && delegates->isArray()) {
+    for (int i = 0; i < delegates->size(); i++) {
+      std::shared_ptr<cugl::JsonValue> del_data = delegates->get(i);
+      Delegate del;
+
+      if (del_data->has("on-state")) {
+        del.on_node_key = del_data->get("on-state")->asStringArray();
+      }
+      if (del_data->has("off-state")) {
+        del.off_node_key = del_data->get("off-state")->asStringArray();
+      }
+      if (del_data->has("unused")) {
+        del.unused_node_key = del_data->get("unused")->asStringArray();
+      }
+
+      _delegates.push_back(del);
+    }
+  }
+
+  return true;
 }
 
-std::shared_ptr<cugl::physics2::BoxObstacle> Door::initBox2d(
-    std::string& sensor_name) {
-  cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
+void Door::initDelegates() {
+  for (Delegate& del : _delegates) {
+    for (int i = 0; i < del.on_node_key.size(); i++) {
+      if (i == 0) {
+        del.on_node = getChildByName(del.on_node_key[i]);
+      } else {
+        del.on_node = del.on_node->getChildByName(del.on_node_key[i]);
+      }
+    }
 
-  cugl::Size size = BasicTile::getSize();
+    for (int i = 0; i < del.off_node_key.size(); i++) {
+      if (i == 0) {
+        del.off_node = getChildByName(del.off_node_key[i]);
+      } else {
+        del.off_node = del.off_node->getChildByName(del.off_node_key[i]);
+      }
+    }
+    del.off_node->setVisible(false);
 
-  if (_horizontal) {
-    size.height *= 0.2f;
-    pos.x += BasicTile::getSize().width / 2;
-    pos.y += BasicTile::getSize().height / 4;
-  } else {
-    size.width *= 0.2f;
-    pos += BasicTile::getSize() / 2;
+    for (int i = 0; i < del.unused_node_key.size(); i++) {
+      if (i == 0) {
+        del.unused_node = getChildByName(del.unused_node_key[i]);
+      } else {
+        del.unused_node =
+            del.unused_node->getChildByName(del.unused_node_key[i]);
+      }
+    }
+    del.unused_node->setVisible(false);
   }
-  _obstacle = cugl::physics2::BoxObstacle::alloc(pos, size);
+}
+
+std::shared_ptr<cugl::physics2::PolygonObstacle> Door::initBox2d(
+    std::string& sensor_name) {
+  _obstacle = cugl::physics2::PolygonObstacle::alloc(_obstacle_shape);
+
+  cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
 
   if (_obstacle != nullptr) {
     _obstacle->setPosition(pos);
     _obstacle->setName(_classname.c_str());
+    _obstacle->setSensor(true);
 
     _obstacle->setBodyType(b2BodyType::b2_staticBody);
 
@@ -43,9 +107,13 @@ std::shared_ptr<cugl::physics2::BoxObstacle> Door::initBox2d(
     sensor->userData.pointer =
         reinterpret_cast<uintptr_t>(_door_sensor_name.get());
 
+    b2Vec2 sensor_pos(_obstacle_shape.getBounds().size.width / 2,
+                      _obstacle_shape.getBounds().size.height / 2);
     // Sensor dimensions
-    _sensor_shape.SetAsBox(BasicTile::getSize().width / 2,
-                           BasicTile::getSize().height / 2);
+    _sensor_shape.SetAsBox(_obstacle_shape.getBounds().size.width / 2,
+                           _obstacle_shape.getBounds().size.height / 2,
+                           sensor_pos, 0);
+
     sensor->shape = &_sensor_shape;
 
     std::vector<std::shared_ptr<b2FixtureDef>> sensors{sensor};
@@ -53,4 +121,30 @@ std::shared_ptr<cugl::physics2::BoxObstacle> Door::initBox2d(
   }
 
   return _obstacle;
+}
+
+void Door::setState(State state) {
+  _state = state;
+
+  for (Delegate& del : _delegates) {
+    if (del.on_node && del.off_node && del.unused_node) {
+      switch (_state) {
+        case ON:
+          del.on_node->setVisible(true);
+          del.off_node->setVisible(false);
+          del.unused_node->setVisible(false);
+          break;
+        case OFF:
+          del.on_node->setVisible(false);
+          del.off_node->setVisible(true);
+          del.unused_node->setVisible(false);
+          break;
+        case UNUSED:
+          del.on_node->setVisible(false);
+          del.off_node->setVisible(false);
+          del.unused_node->setVisible(true);
+          break;
+      }
+    }
+  }
 }

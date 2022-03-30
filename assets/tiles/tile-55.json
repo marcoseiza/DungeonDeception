@@ -1,0 +1,19 @@
+{
+  "variables": {
+    "priority": ["data", "priority"]
+  },
+  "contents": {
+    "type": "Wall",
+    "data": {
+      "texture": "tile-set_55",
+      "anchor": [0, 0],
+      "priority": 0,
+      "obstacle": [0, 0, 48, 0, 48, 48, 0, 48]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom",
+      "absolute": true
+    }
+  }
+}

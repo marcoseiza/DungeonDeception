@@ -76,6 +76,22 @@ class Room {
    * @param edge The edge to be added.
    */
   void addEdge(const std::shared_ptr<Edge> &edge);
+  
+  /**
+   * Returns the SceneNode color for the room type.
+   *
+   * @return the color corresponding to the room type.
+   */
+  cugl::Color4 getRoomNodeColor() {
+    switch (_type) {
+      case level_gen::Room::TERMINAL:
+        return cugl::Color4(52, 205, 14, 127);
+      case level_gen::Room::SPAWN:
+        return cugl::Color4(14, 14, 205, 127);
+      case level_gen::Room::STANDARD:
+        return cugl::Color4(125, 94, 52, 127);
+    }
+  }
 
   /**
    * An edge comparator used to sort edges first by side index they hit and then

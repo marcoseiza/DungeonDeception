@@ -1,0 +1,37 @@
+{
+  "variables": {},
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "anchor": [0, 0]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "shadow": {
+        "type": "Image",
+        "data": {
+          "texture": "tile-set-shadows_69",
+          "anchor": [0, 0],
+          "priority": -0.9
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "bottom"
+        }
+      },
+      "floor": {
+        "type": "Widget",
+        "data": {
+          "key": "tile-1",
+          "variables": {}
+        }
+      }
+    }
+  }
+}

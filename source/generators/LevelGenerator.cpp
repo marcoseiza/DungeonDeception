@@ -65,7 +65,7 @@ void LevelGenerator::generateRooms() {
   _spawn_room->_fixed = true;
   _spawn_room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
   _spawn_room->_node->setPosition(_spawn_room->_node->getContentSize() / -2.0f);
-  _spawn_room->_node->setColor(cugl::Color4(14, 14, 205, 127));
+  _spawn_room->_node->setColor(_spawn_room->getRoomNodeColor());
   _rooms.push_back(_spawn_room);
   _inside_rooms.push_back(_spawn_room);
   _map->addChild(_spawn_room->_node);
@@ -106,7 +106,7 @@ void LevelGenerator::placeRegularRooms(int num_rooms, float min_radius,
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(cugl::Color4(125, 94, 52, 127));
+    room->_node->setColor(room->getRoomNodeColor());
 
     _rooms.push_back(room);
     _map->addChild(room->_node);
@@ -227,7 +227,7 @@ std::vector<std::shared_ptr<Room>> LevelGenerator::placeTerminalRooms(
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(cugl::Color4(52, 205, 14, 127));
+    room->_node->setColor(room->getRoomNodeColor());
 
     min_angle += 2 * M_PI / num_rooms;
     max_angle += 2 * M_PI / num_rooms;
@@ -552,7 +552,7 @@ void LevelGenerator::fillHallways() {
         bounds->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
         bounds->setPosition(start_pos);
 
-        _map->addChild(bounds);
+//        _map->addChild(bounds);
       }
     }
   }

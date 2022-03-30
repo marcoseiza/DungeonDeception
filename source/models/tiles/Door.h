@@ -10,18 +10,60 @@
  * player can collide with.
  */
 class Door : public BasicTile {
+ public:
+  /** The state of the door, used for drawing and physics. Unused, on or off. */
+  enum State {
+    /** The door is unused, so it should hide. */
+    UNUSED,
+    /** The door is on, so a laser should appear. */
+    ON,
+    /** The door is off, so a laser should dissapear. */
+    OFF
+  };
+
  protected:
+  /** The current enumerated state of the Door. */
+  State _state;
+
+  /**
+   * Handles the delegate nodes to the door. Allows for multitile structures.
+   */
+  struct Delegate {
+    /** A list of strings that represent the path of children to the off node of
+     * a delegate. The off node will be active when the Door state is OFF. */
+    std::vector<std::string> off_node_key;
+    /** The node that is used for the OFF state. */
+    std::shared_ptr<cugl::scene2::SceneNode> off_node;
+
+    /** A list of strings that represent the path of children to the on node of
+     * a delegate. The off node will be active when the Door state is ON. */
+    std::vector<std::string> on_node_key;
+    /** The node that is used for the ON state. */
+    std::shared_ptr<cugl::scene2::SceneNode> on_node;
+
+    /**
+     * A list of strings that represent the path of children to the unused node
+     * of a delegate. The off node will be active when the Door state is UNUSED.
+     */
+    std::vector<std::string> unused_node_key;
+    /** The node that is used for the UNUSED state. */
+    std::shared_ptr<cugl::scene2::SceneNode> unused_node;
+  };
+
+  /** A list of all the delegate nodes to this door. */
+  std::vector<Delegate> _delegates;
+
   /** A reference to the physics object of the tile. */
-  std::shared_ptr<cugl::physics2::BoxObstacle> _obstacle;
+  std::shared_ptr<cugl::physics2::PolygonObstacle> _obstacle;
+
+  /** The shape of the obstacle as defined in scene2 json. */
+  cugl::Poly2 _obstacle_shape;
 
   /** A reference to the sensor name to keep it alive for collisions. */
   std::shared_ptr<std::string> _door_sensor_name;
 
   /** A reference to the sensor shape to keep it alive for instantiation. */
   b2PolygonShape _sensor_shape;
-
-  /** If the door is horizontal or vertical. */
-  bool _horizontal;
 
  public:
   /**
@@ -31,9 +73,9 @@ class Door : public BasicTile {
    * class.
    */
   Door()
-      : _horizontal(true),
-        _door_sensor_name(nullptr),
+      : _door_sensor_name(nullptr),
         _obstacle(nullptr),
+        _state(State::ON),
         BasicTile() {
     _classname = "Door";
   }
@@ -102,6 +144,11 @@ class Door : public BasicTile {
   }
 
   /**
+   * Initialize the delegates for multi-tile structure doors.
+   */
+  void initDelegates();
+
+  /**
    * Initializes the box 2d object for the tile including setting the position
    * and size.
    *
@@ -109,15 +156,20 @@ class Door : public BasicTile {
    *
    * @return The obstacle it created for easy chaining.
    */
-  virtual std::shared_ptr<cugl::physics2::BoxObstacle> initBox2d(
+  virtual std::shared_ptr<cugl::physics2::PolygonObstacle> initBox2d(
       std::string& sensor_name);
 
   /**
    * @return Returns the physics object for the tile.
    */
-  std::shared_ptr<cugl::physics2::BoxObstacle> getObstacle() {
+  std::shared_ptr<cugl::physics2::PolygonObstacle> getObstacle() {
     return _obstacle;
   }
+
+  /**
+   * Set the door state and change the drawing and physics attributes.
+   */
+  void setState(State state);
 };
 
 #endif  // MODELS_TILES_DOOR_H_

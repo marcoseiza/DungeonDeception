@@ -1,0 +1,21 @@
+{
+  "variables": {
+    "priority": ["data", "priority"],
+    "x_offset_frac": ["layout", "x_offset"],
+    "y_offset_frac": ["layout", "y_offset"]
+  },
+  "contents": {
+    "type": "BasicTile",
+    "data": {
+      "texture": "tile-set_14",
+      "anchor": [0, 0],
+      "priority": 0
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom",
+      "x_offset": 0,
+      "y_offset": 0
+    }
+  }
+}

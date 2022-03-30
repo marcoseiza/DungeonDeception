@@ -6,42 +6,17 @@ if (args.length < 2) {
     process.exit(1)
 }
 
-const floorTileId = 0;
-const wallTileId = 1;
-const enemyTileId = 7;
-const halfWallTileId = 10;
-const wallFaceTileId = 11;
+const pixelWidth = 48, pixelHeight = 48;
 
-const tileIdsThatShowFloor = [2, 3, 4, 7, 8, 9, 12, 13];
-
-const tileIdToType = {
-    "0": "BasicTile",
-    "1": "BasicTile",
-    "2": "Wall",
-    "3": "Wall",
-    "4": "Wall",
-    "5": "BasicTile",
-    "6": "BasicTile",
-    "7": "BasicTile",
-    "8": "Terminal",
-    "9": "BasicTile",
-    "10": "BasicTile",
-    "11": "Wall",
-    "12": "Door",
-    "13": "Door",
-}
-
-const pixelWidth = 64, pixelHeight = 64;
-const tileScale = 0.6;
+const grassTextures = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
 const levelToScene2 = (fileName) => {
     let jsonData = fs.readFileSync(fileName, 'utf-8');
     let data = JSON.parse(jsonData);
-    const { level, width, height, layout } = data;
-    const layoutWithSpecialWallTiles = convertWallTiles(layout, width, height);
-    
+    const { room, width, height, layout, decorations, enemies } = data;
+
     return {
-        "comments": `This is the root node for the world scene for level ${level}.`,
+        "comments": `This is the root node for the world scene for room ${room}.`,
         "type": "Node",
         "format": {
             "type": "Anchored"
@@ -60,52 +35,59 @@ const levelToScene2 = (fileName) => {
                 },
                 "data": {
                     "anchor": [0, 0],
-                    "size": [pixelWidth * width * tileScale, pixelHeight * height * tileScale],
+                    "size": [pixelWidth * width, pixelHeight * height],
                 },
                 "layout" : {
                     "x_anchor" : "bottom",
                     "y_anchor" : "left"
                 },
-                "children": Object.assign({}, ...layoutWithSpecialWallTiles.reduce((acc, tileTypeId, index) => {
+                "children": Object.assign({}, ...layout.reduce((tile, type, index) => {
+                    if (type == 0) return tile;
                     let row = Math.floor(index / width);
                     let col = index % width;
-
-                    if (tileIdsThatShowFloor.includes(tileTypeId)) {
-                        let obj = {};
-                        let floorAnchorNode = getTileNode(col, row, width, height, floorTileId, 0);
-                        obj[`tile-(${row}-${col})-floor`] = floorAnchorNode;
-                        acc.push(obj);
-
-                        // Enemies are added to the "enemies" node, just need to add floor
-                        if (tileTypeId === enemyTileId || tileTypeId === floorTileId) {
-                            return acc;
+                    let obj = {};
+                    obj[`tile-(${col}-${height - row - 1})`] = {
+                        "type": "Node",
+                        "format": {
+                            "type": "Anchored"
+                        },
+                        "layout": {
+                            "x_index": col,
+                            "y_index": height - row - 1,
+                            "x_anchor": "left",
+                            "y_anchor": "bottom",
+                        },
+                        "children": {
+                            "tile": {
+                                "type": "Widget",
+                                "data": {
+                                    "key": `tile-${type}`,
+                                    "variables": getVariables(type, row)
+                                }
+                            }
                         }
                     }
 
-                    let anchorNode = getTileNode(col, row, width, height, tileTypeId, row);
-                    if (tileTypeId === wallTileId) {
-                        anchorNode["children"]["tile"]["layout"]["y_offset"] = 46 * tileScale;
-                    }
-                    if (tileTypeId === halfWallTileId) {
-                        anchorNode["children"]["tile"]["layout"]["y_offset"] = 46 * tileScale;
-                    }
-                    if (tileIdToType[tileTypeId] == "Door") {
-                        if (tileTypeId == 12) anchorNode["children"]["tile"]["data"]["horizontal"] = true;
-                        if (tileTypeId == 13) anchorNode["children"]["tile"]["data"]["horizontal"] = false;
-                    }
-                    if (tileTypeId === wallFaceTileId) {
-                        let obj = {};
-                        const wallAnchorNode = getTileNode(col, row, width, height, wallTileId, row);
-                        wallAnchorNode["children"]["tile"]["layout"]["y_offset"] = 46 * tileScale;
-                        obj[`tile-(${row}-${col})-floor`] = wallAnchorNode;
-                        acc.push(obj);
-                    }
-
-                    let obj = {};
-                    obj[`tile-(${row}-${col})`] = anchorNode;
-                    acc.push(obj);
-                    return acc;
+                    tile.push(obj);
+                    return tile;
                 }, []))
+            },
+            "decorations": {
+                "type": "Node",
+                "format": {
+                    "type": "Grid",
+                    "width": width,
+                    "height": height
+                },
+                "data": {
+                    "anchor": [0, 0],
+                    "size": [pixelWidth * width, pixelHeight * height],
+                },
+                "layout" : {
+                    "x_anchor" : "bottom",
+                    "y_anchor" : "left"
+                },
+                "children": getDecorations(width, height, decorations, layout)
             },
             "enemies": {
                 "type": "Node",
@@ -116,26 +98,25 @@ const levelToScene2 = (fileName) => {
                 },
                 "data": {
                     "anchor": [0, 0],
-                    "size": [pixelWidth * width * tileScale, pixelHeight * height * tileScale],
+                    "size": [pixelWidth * width, pixelHeight * height],
                 },
                 "layout" : {
                     "x_anchor" : "bottom",
                     "y_anchor" : "left"
                 },
-                "children": Object.assign({}, ...layoutWithSpecialWallTiles.reduce((acc, tileTypeId, index) => {
-                    let row = Math.floor(index / width);
-                    let col = index % width;
-
-                    if (tileTypeId !== enemyTileId) {
-                        return acc;
-                    }
-
-                    // TODO: Make it so this doesn't render
-                    let anchorNode = getTileNode(col, row, width, height, floorTileId, 0);
+                "children": Object.assign({}, ...enemies.reduce((enemy, info, index) => {
                     let obj = {};
-                    obj[`enemy-(${row}-${col})`] = anchorNode;
-                    acc.push(obj);
-                    return acc;
+                    obj[`enemy-(${info["position"][0]}-${info["position"][1]})-${index}`] = {
+                        "type": info["type"],
+                        "layout": {
+                            "x_index": info["position"][0],
+                            "y_index": info["position"][1],
+                            "x_anchor": "left",
+                            "y_anchor": "bottom",
+                        }
+                    }
+                    enemy.push(obj);
+                    return enemy;
                 }, []))
             }
         }
@@ -143,63 +124,123 @@ const levelToScene2 = (fileName) => {
     }
 }
 
-const getTileNode = (col, row, width, height, tileTypeId, priority) => {
-    if (tileTypeId === floorTileId) {
-        priority = 0;
-    }
-    let anchorNode = {
-        "type": "Node",
-        "format": {
-            "type": "Anchored"
-        },
-        "layout": {
-            "x_index": col,
-            "y_index": height - row,
-            "x_anchor": "left",
-            "y_anchor": "bottom",
-        },
-        "children": {}
-    }
+const getDecorations = (width, height, decorations, layout) => {
+    if (decorations.length > 0) {
+        return Object.assign({}, ...decorations.reduce((decoration, info, index) => {
+            let obj = {};
 
-    let tileObj = {
-        "type": tileIdToType[tileTypeId],
-        "format": {
-            "type": "Anchored"
-        },
-        "data": {
-            "texture": `floor-tile-${tileTypeId}`,
-            "anchor": [0, 0],
-            "scale": tileScale,
-            "priority": priority,
-        },
-        "layout": {
-            "x_anchor": "left",
-            "y_anchor": "bottom",
-            "absolute": true
-        }
-    }
+            let col = Math.floor(info["position"][0]);
+            let row = Math.floor(info["position"][1]);
+            
+            let xOffset = info["position"][0] - col;
+            let yOffset = info["position"][1] - row;
 
-    anchorNode["children"]["tile"] = tileObj;
-    return anchorNode;
-}
-
-const convertWallTiles = (arr, width, height) => {
-    const finalArr = [...arr];
-    for (let i = 0; i < height; i++) {   // Rows
-        for (let j = 0; j < width; j++) {   // Columns
-            if (arr[i * width + j] === wallTileId) {
-                // Wall tiles with non-wall below them become wall-faces (facing down)
-                if (i < height - 1 && arr[(i + 1) * width + j] !== wallTileId) {
-                    finalArr[i * width + j] = wallFaceTileId;
-                }
-                // Wall tiles with non-wall above them become half-walls
-                else if (i > 0 && arr[(i - 1) * width + j] !== wallTileId) {
-                    finalArr[i * width + j] = halfWallTileId;
+            obj[`decoration-(${info["position"][0]}-${info["position"][1]})-${index}`] = {
+                "type": "Node",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "size": [pixelWidth, pixelHeight]
+                },
+                "layout": {
+                    "x_index": col,
+                    "y_index": row,
+                    "x_anchor": "left",
+                    "y_anchor": "bottom",
+                },
+                "children": {
+                    "decoration": {
+                        "type": "Widget",
+                        "data": {
+                            "key": `tile-${info["type"]}`,
+                            "variables": {
+                                "priority": -0.95, // above the floor but below the shadows
+                                "x_offset_frac": xOffset,
+                                "y_offset_frac": yOffset
+                            }
+                        }
+                    }
                 }
             }
-        }
+            decoration.push(obj);
+            return decoration;
+        }, []))
+
+    } else { // RANDOMLY GENERATE GRASS
+        return Object.assign({}, ...layout.reduce((decoration, type, index) => {
+            if (type != 1) return decoration; // Only on grass tiles.
+            if (Math.random() > 0.3) return decoration; // Only sometimes.
+
+            let obj = {};
+            let row = Math.floor(index / width);
+            let col = index % width;
+
+            let xOffset = Math.random() * 0.5;
+            let yOffset = Math.random() * 0.5;
+
+            obj[`decoration-(${col}-${height - row - 1})-${index}`] = {
+                "type": "Node",
+                "format": {
+                    "type": "Anchored"
+                },
+                "data": {
+                    "size": [pixelWidth, pixelHeight]
+                },
+                "layout": {
+                    "x_index": col,
+                    "y_index": row,
+                    "x_anchor": "left",
+                    "y_anchor": "bottom",
+                },
+                "children": {
+                    "decoration": {
+                        "type": "Widget",
+                        "data": {
+                            "key": `tile-${grassTextures[Math.floor(Math.random() * grassTextures.length)]}`,
+                            "variables": {
+                                "priority": -0.95, // above the floor but below the shadows
+                                "x_offset_frac": xOffset,
+                                "y_offset_frac": yOffset
+                            }
+                        }
+                    }
+                }
+            }
+            decoration.push(obj);
+            return decoration;
+        }, []))
     }
-    return finalArr;
+
+}
+
+const getVariables = (type, row) => {
+    // Will be able to enumerate all the specific variables for each tile type.
+    // This includes putting decorations on tiles, or setting the floor type
+    // for other tiles.
+    switch (type) {
+        case 1: // Floor
+            return { };
+        case 200: // Door horizontal
+            return {
+                "left-pillar-priority": row,
+                "left-pillar-off-priority": row,
+                "laser-priority": row,
+                "right-pillar-priority": row,
+                "right-pillar-off-priority": row,
+            };
+        case 201: // Door Vertical
+            return {
+                "top-pillar-priority": row - 1,
+                "top-pillar-off-priority": row - 1,
+                "bottom-pillar-priority": row + 1,
+                "bottom-pillar-off-priority": row + 1,
+            };
+        default:
+            return ({
+                "priority": row
+            });
+    }
 }
 
 const saveToFile = (fileName, scene2Obj) => {

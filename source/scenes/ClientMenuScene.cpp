@@ -138,6 +138,24 @@ void ClientMenuScene::processData(const std::vector<uint8_t>& data) {
   _deserializer.receive(data);
   Sint32 code = std::get<Sint32>(_deserializer.read());
 
+  if (code == 254) {
+    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    std::shared_ptr<cugl::JsonValue> betrayer_info =
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+    int num_betrayers = betrayer_info->getInt("num_betrayers");
+
+    _is_betrayer = false;
+    std::shared_ptr<cugl::JsonValue> betrayer_ids =
+        betrayer_info->get("betrayer_ids");
+
+    for (int i = 0; i < num_betrayers; i++) {
+      if (_network->getPlayerID() == betrayer_ids->get(i)->asInt()) {
+        _is_betrayer = true;
+        break;
+      }
+    }
+  }
+
   if (code == 255) {
     _seed = std::get<Uint64>(_deserializer.read());
     _status = Status::START;

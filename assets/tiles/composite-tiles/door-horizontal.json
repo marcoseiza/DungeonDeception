@@ -1,0 +1,165 @@
+{
+  "variables": {
+    "left-pillar-priority": ["children", "left-pillar-wrapper", "children", "left-pillar", "data", "variables", "priority"],
+    "left-pillar-off-priority": ["children", "left-pillar-wrapper", "children", "left-pillar-off", "data", "variables", "priority"],
+    "laser-priority": ["children", "laser-wrapper", "children", "laser", "data", "variables", "priority"],
+    "right-pillar-priority": ["children", "right-pillar-wrapper", "children", "right-pillar", "data", "variables", "priority"],
+    "right-pillar-off-priority": ["children", "right-pillar-wrapper", "children", "right-pillar-off", "data", "variables", "priority"]
+  },
+  "contents": {
+    "type": "Door",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "anchor": [0, 0],
+      "size": [48, 48],
+      "delegates": [
+
+        {
+          "on-state": ["left-pillar-wrapper", "left-pillar"],
+          "off-state": ["left-pillar-wrapper", "left-pillar-off"],
+          "unused": ["left-pillar-wrapper", "unused"]
+        },
+        {
+          "on-state": ["right-pillar-wrapper", "right-pillar"],
+          "off-state": ["right-pillar-wrapper", "right-pillar-off"],
+          "unused": ["right-pillar-wrapper", "unused"]
+        },
+        {
+          "on-state": ["laser-wrapper", "laser"],
+          "off-state": ["laser-wrapper", "laser-off"],
+          "unused": ["laser-wrapper", "unused"]
+        }
+
+      ]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "left-pillar-wrapper": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "anchor": [1, 0],
+          "size": [48, 48]
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "bottom"
+        },
+        "children": {
+          "left-pillar": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-67",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "left-pillar-off": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-63",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "unused": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          }
+        }
+      },
+      "laser-wrapper": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "anchor": [0, 0],
+          "size": [48, 48]
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "bottom"
+        },
+        "children": {
+          "laser": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-73",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "laser-off": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          },
+          "unused": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          }
+        }
+      },
+      "right-pillar-wrapper": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "anchor": [0, 0],
+          "size": [48, 48]
+        },
+        "layout": {
+          "x_anchor": "right",
+          "y_anchor": "bottom"
+        },
+        "children": {
+          "right-pillar": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-66",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "right-pillar-off": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-63",
+              "variables": {
+                "priority": 0
+              }
+            }
+          },
+          "unused": {
+            "type": "Widget",
+            "data": {
+              "key": "tile-1",
+              "variables": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

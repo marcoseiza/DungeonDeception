@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "priority": ["children", "tile", "data", "priority"]
+  },
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "anchor": [0, 0]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "tile": {
+        "type": "Wall",
+        "data": {
+          "texture": "tile-set_33",
+          "anchor": [0, 0],
+          "priority": 0,
+          "obstacle": [0, 0, 10, 0, 10, 48, 0, 48]
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "bottom"
+        }
+      },
+      "floor": {
+        "type": "Widget",
+        "data": {
+          "key": "tile-1",
+          "variables": {}
+        }
+      }
+    }
+  }
+}
