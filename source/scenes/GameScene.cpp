@@ -1,5 +1,6 @@
 #include "GameScene.h"
 
+#include <box2d/b2_world.h>
 #include <box2d/b2_collision.h>
 #include <box2d/b2_contact.h>
 #include <cugl/cugl.h>
@@ -88,7 +89,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
-  _debug_node->setVisible(false);
+  _debug_node->setVisible(true);
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
 
@@ -195,26 +196,8 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   int room_id = current_room->getKey();
   _my_player->setRoomId(current_room->getKey());
-  for (std::shared_ptr<EnemyModel>& enemy : current_room->getEnemies()) {
-    switch (enemy->getType()) {
-      case EnemyModel::GRUNT: {
-        _grunt_controller->update(timestep, enemy, _players, room_id);
-        break;
-      }
-      case EnemyModel::SHOTGUNNER: {
-        _shotgunner_controller->update(timestep, enemy, _players, room_id);
-        break;
-      }
-      case EnemyModel::TANK: {
-        _tank_controller->update(timestep, enemy, _players, room_id);
-        break;
-      }
-      case EnemyModel::TURTLE: {
-        _turtle_controller->update(timestep, enemy, _players, room_id);
-        break;
-      }
-    }
-  }
+  
+  updateEnemies(timestep, current_room, room_id);
 
   updateCamera(timestep);
   _world->update(timestep);
@@ -252,6 +235,30 @@ void GameScene::update(float timestep) {
       if (enemy->getPromiseToChangePhysics())
         enemy->setEnabled(enemy->getPromiseToEnable());
       ++it;
+    }
+  }
+}
+
+void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id) {
+  // Update the enemy controllers
+  for (std::shared_ptr<EnemyModel>& enemy : current_room->getEnemies()) {
+    switch (enemy->getType()) {
+      case EnemyModel::GRUNT: {
+        _grunt_controller->update(timestep, enemy, _players, room_id);
+        break;
+      }
+      case EnemyModel::SHOTGUNNER: {
+        _shotgunner_controller->update(timestep, enemy, _players, room_id);
+        break;
+      }
+      case EnemyModel::TANK: {
+        _tank_controller->update(timestep, enemy, _players, room_id);
+        break;
+      }
+      case EnemyModel::TURTLE: {
+        _turtle_controller->update(timestep, enemy, _players, room_id);
+        break;
+      }
     }
   }
 }

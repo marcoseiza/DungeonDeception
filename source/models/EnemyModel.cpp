@@ -34,6 +34,12 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
   }
+  
+  // Initialize the polygon nodes
+  for (int i = 0; i < 16; i++) {
+    auto p = cugl::scene2::PolygonNode::alloc();
+    _polys.emplace_back(p);
+  }
 
   return true;
 }
@@ -99,8 +105,13 @@ void EnemyModel::setType(std::string type) {
 #pragma mark Animation & Drawing
 
 void EnemyModel::setNode(
-    const std::shared_ptr<cugl::scene2::SpriteNode>& node) {
+    const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
   _enemy_node = node;
+  
+  // Add the ray cast weights to the debug node.
+  for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
+    debug_node->addChild(poly);
+  }
 }
 
 std::shared_ptr<cugl::scene2::SpriteNode>& EnemyModel::getNode() {

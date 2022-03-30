@@ -2,6 +2,7 @@
 #define CONTROLLERS_ENEMY_CONTROLLER_H_
 #include <cugl/cugl.h>
 
+#include "RayCastController.h"
 #include "../models/EnemyModel.h"
 #include "../models/Player.h"
 
@@ -18,6 +19,15 @@ class EnemyController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+  /** The ray cast controller for the game, serves for callbacks. */
+  std::shared_ptr<RayCastController> _raycast_controller;
+  
+  /** Cache set for vertices to update the polys. */
+  std::vector<cugl::Vec2> _vertices_cache;
+  /** Cache array for weights. */
+  std::array<float, 12> _weights;
+  /** Cache vector for objects hit by ray cast. */
+  std::unordered_set<cugl::physics2::Obstacle*> _objects;
 
  public:
 #pragma mark Constructors
@@ -87,6 +97,9 @@ class EnemyController {
 
   /** Update the projectiles. */
   void updateProjectiles(float timestep, std::shared_ptr<EnemyModel> enemy);
+  
+  /** Figure out the weights for the enemy. */
+  void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
 
 #pragma mark Movement
  protected:
