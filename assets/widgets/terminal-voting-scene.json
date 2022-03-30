@@ -128,13 +128,6 @@
                   "y_anchor": "top",
                   "y_offset": -0.4
                 }
-              },
-              "buttons": {
-                "type": "Node",
-                "data": {
-                  "anchor": [0.5, 0.5],
-                  "size": []
-                }
               }
             }
           }

@@ -23,7 +23,8 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info) {
   int num_players = _voting_info->players.size();
   buttons_layout->setGridSize(cugl::Size(2, (int)(num_players - 1 / 2) + 1));
   auto buttons = cugl::scene2::SceneNode::alloc();
-  buttons->setContentSize(cugl::Size()) buttons->setLayout(buttons_layout);
+  buttons->setContentSize(cugl::Size(600, 75 * (int)(num_players - 1 / 2) + 1));
+  buttons->setLayout(buttons_layout);
 
   for (int i = 0; i < _voting_info->players.size(); i++) {
     int player_id = _voting_info->players[i];
@@ -33,7 +34,8 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info) {
     butt_info->setKey(NODE_NAME + name);
     auto vars = butt_info->get("data")->get("variables");
     vars->get("text")->set(name);
-    _assets->access<cugl::scene2::SceneNode>()->read(butt_info, nullptr, false);
+    _assets->load<cugl::scene2::SceneNode>(
+        NODE_NAME + name, "widgets/terminal-voting-button-use.json");
     auto button = _assets->get<cugl::scene2::SceneNode>(NODE_NAME + name);
     button->setName(name);
     buttons_layout->addPosition(name, i % 2, (int)(i / 2),
