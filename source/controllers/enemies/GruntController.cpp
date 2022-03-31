@@ -20,20 +20,12 @@ bool GruntController::init(
 void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
                                               float distance) {
   // Change state if applicable
-  int health = enemy->getHealth();
-  if (health <= HEALTH_LIM) {
-    enemy->setCurrentState(EnemyModel::State::AVOIDING);
-    if (distance > MIN_DISTANCE) {
-      enemy->setCurrentState(EnemyModel::State::IDLE);
-    }
+  if (distance <= ATTACK_RANGE) {
+    enemy->setCurrentState(EnemyModel::State::ATTACKING);
+  } else if (distance <= MIN_DISTANCE) {
+    enemy->setCurrentState(EnemyModel::State::CHASING);
   } else {
-    if (distance <= ATTACK_RANGE) {
-      enemy->setCurrentState(EnemyModel::State::ATTACKING);
-    } else if (distance <= MIN_DISTANCE) {
-      enemy->setCurrentState(EnemyModel::State::CHASING);
-    } else {
-      enemy->setCurrentState(EnemyModel::State::IDLE);
-    }
+    enemy->setCurrentState(EnemyModel::State::IDLE);
   }
 }
 

@@ -30,12 +30,14 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   if (enemy->getAttackCooldown() <= 0) {
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
+    enemy->move(0, 0);
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    diff.add(_direction);
+    diff.scale(enemy->getSpeed()*0.75);
+    enemy->move(diff.x, diff.y);
   }
-  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
-  diff.normalize();
-  diff.add(_direction);
-  diff.scale(enemy->getSpeed());
-  enemy->move(diff.x, diff.y);
 //  enemy->move(0, 0);
 }
 
@@ -111,7 +113,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   b2Vec2 p1 = b2Vec2(enemy->getPosition().x, enemy->getPosition().y);
   b2Vec2 p2;
   for (int i = 0; i < 16; i++) {
-    p2 = b2Vec2(p1.x + 25*cos(theta), p1.y + 25*sin(theta)); // The ray cast end point.
+    p2 = b2Vec2(p1.x + 20*cos(theta), p1.y + 20*sin(theta)); // The ray cast end point.
     RayCastController raycast;
     _world->getWorld()->RayCast(&raycast, p1, p2); // Perform ray cast.
     // Get fixture and body names for checking ray cast hits.
@@ -148,7 +150,9 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
         _weights[i] -= dot;
       } else {
         // Move away from the other enemies at an angle.
-        _weights[i] -= dot/2 + 0.65;
+        cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + M_PI/4), sin(theta + M_PI/4));
+        float dot = cugl::Vec2::dot(ob_vec, weight_vec);
+        _weights[i] -= dot;
       }
       theta += M_PI/6;
     }
@@ -159,17 +163,33 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   p.normalize();
   theta = 0;
   for (int i = 0; i < 12; i++) {
-    // If attacking, move at a normal instead of directly at the player
+    // If attacking, move at a normal instead of directly at the player.
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
+      // Determine the angle in which the enemy wants to move, to figure out if it should move in CW or CCW.
+      cugl::Vec2 plus = p + cugl::Vec2(cos(i * M_PI/6)*_weights[i], sin(i * M_PI/6)*_weights[i]);
+      plus.normalize();
+      float angle = cugl::Vec2::angle(p, plus);
+      if (angle != 0) {
+        enemy->_move_CW = angle > 0;
+      }
       int CW = (enemy->_move_CW) ? -1 : 1;
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot/4;
+      _weights[i] += dot;
     } else {
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot/4;
+      _weights[i] += dot;
     }
+    theta += M_PI/6;
+  }
+  
+  // Adjust weights to slightly prefer current direction.
+  theta = 0;
+  for (int i = 0; i < 12; i++) {
+    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
+    float dot = cugl::Vec2::dot(direc, _direction);
+    _weights[i] += dot/5;
     theta += M_PI/6;
   }
   
