@@ -17,18 +17,11 @@ void EnemyController::idling(std::shared_ptr<EnemyModel> enemy) {
 
 void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
-//  cugl::Vec2 diff = p - enemy->getPosition();
-//  diff.subtract(enemy->getVX(), enemy->getVY());
-//  diff.add(enemy->getVX(), enemy->getVY());
-//  diff.scale(enemy->getSpeed());
-  
-  cugl::Vec2 diff = cugl::Vec2(_direction);
-  diff.add(enemy->getVX(), enemy->getVY());
+  // Using steering behavior for smooth movement.
+  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+  diff.normalize();
+  diff.add(_direction);
   diff.scale(enemy->getSpeed());
-  if (diff.length() > MAX_SPEED) {
-    diff.normalize();
-    diff.scale(enemy->getSpeed());
-  }
   enemy->move(diff.x, diff.y);
 }
 
@@ -38,7 +31,12 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
   }
-  enemy->move(0, 0);
+  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+  diff.normalize();
+  diff.add(_direction);
+  diff.scale(enemy->getSpeed());
+  enemy->move(diff.x, diff.y);
+//  enemy->move(0, 0);
 }
 
 void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
@@ -147,8 +145,11 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
     for (int i = 0; i < 12; i++) {
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
       float dot = cugl::Vec2::dot(ob_vec, weight_vec);
-      if (dot > 0) {
+      if (ob->getName() == "Wall") {
         _weights[i] -= dot;
+      } else {
+        // Move away from the other enemies at an angle.
+        _weights[i] -= dot/2 + 0.65;
       }
       theta += M_PI/6;
     }
@@ -159,16 +160,21 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   p.normalize();
   theta = 0;
   for (int i = 0; i < 12; i++) {
-    cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
-    float dot = cugl::Vec2::dot(p, weight_vec);
-    if (dot > 0) {
-      _weights[i] += dot;
+    // If attacking, move at a normal instead of directly at the player
+    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
+      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + M_PI/2), sin(theta + M_PI/2));
+      float dot = cugl::Vec2::dot(p, weight_vec);
+      _weights[i] += dot/4;
+    } else {
+      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
+      float dot = cugl::Vec2::dot(p, weight_vec);
+      _weights[i] += dot/4;
     }
     theta += M_PI/6;
   }
   
   // Find the weight with the highest value, move in that direction.
-  // In case of tie, will take the weight in a CCW direction from theta = 0.
+  // In case of tie, will take the weight in the most CCW direction from theta = 0.
   float highest = _weights[0];
   int highest_ind = 0;
   for (int i = 1; i < 12; i++) {
@@ -177,7 +183,6 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       highest_ind = i;
     }
   }
-  
   _direction = cugl::Vec2(cos(highest_ind * M_PI/6), sin(highest_ind * M_PI/6));
   
   // Visualize the weights, if debug mode is on.
