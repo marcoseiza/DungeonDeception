@@ -83,7 +83,6 @@ void EnemyController::update(float timestep, std::shared_ptr<EnemyModel> enemy,
     return;
   }
   
-
   // Change state if applicable
   float distance =
       (enemy->getPosition()).subtract(min_player->getPosition()).length();
@@ -162,7 +161,8 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   for (int i = 0; i < 12; i++) {
     // If attacking, move at a normal instead of directly at the player
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
-      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + M_PI/2), sin(theta + M_PI/2));
+      int CW = (enemy->_move_CW) ? -1 : 1;
+      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
       float dot = cugl::Vec2::dot(p, weight_vec);
       _weights[i] += dot/4;
     } else {

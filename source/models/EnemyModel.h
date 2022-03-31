@@ -104,6 +104,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The set of polygon nodes corresponding to the weights for the direction of the enemy. */
   std::vector<std::shared_ptr<cugl::scene2::PolygonNode>> _polys;
   
+  /** Whether the enemy is moving in a CW motion (when attacking). */
+  bool _move_CW;
+  
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.
