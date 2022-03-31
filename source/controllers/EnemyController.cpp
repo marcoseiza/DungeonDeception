@@ -5,6 +5,8 @@
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 100
 
+#define MAX_SPEED 0.1f
+
 #pragma mark EnemyController
 
 EnemyController::EnemyController(){};
@@ -15,10 +17,18 @@ void EnemyController::idling(std::shared_ptr<EnemyModel> enemy) {
 
 void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
-  cugl::Vec2 diff = p - enemy->getPosition();
-  diff.subtract(enemy->getVX(), enemy->getVY());
+//  cugl::Vec2 diff = p - enemy->getPosition();
+//  diff.subtract(enemy->getVX(), enemy->getVY());
+//  diff.add(enemy->getVX(), enemy->getVY());
+//  diff.scale(enemy->getSpeed());
+  
+  cugl::Vec2 diff = cugl::Vec2(_direction);
   diff.add(enemy->getVX(), enemy->getVY());
   diff.scale(enemy->getSpeed());
+  if (diff.length() > MAX_SPEED) {
+    diff.normalize();
+    diff.scale(enemy->getSpeed());
+  }
   enemy->move(diff.x, diff.y);
 }
 
@@ -99,17 +109,15 @@ void EnemyController::update(float timestep, std::shared_ptr<EnemyModel> enemy,
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player) {
-  // Perform ray casts, get preliminary set of weights (where to avoid)
-  float theta = 0; // Increase by pi/8 for each new ray cast
+  // Perform 16 ray casts. For each ray cast, if hit a fixture, adjust the 12 weights.
+  float theta = 0;
   b2Vec2 p1 = b2Vec2(enemy->getPosition().x, enemy->getPosition().y);
   b2Vec2 p2;
-  
-  // Perform 16 ray casts. For each ray cast, if hit a fixture, adjust the 12 weights.
-  for (int i = 0; i < 8; i++) {
-    p2 = b2Vec2(p1.x + 100*cos(theta), p1.y + 100*sin(theta)); // The ray cast end point
+  for (int i = 0; i < 16; i++) {
+    p2 = b2Vec2(p1.x + 25*cos(theta), p1.y + 25*sin(theta)); // The ray cast end point.
     RayCastController raycast;
-    _world->getWorld()->RayCast(&raycast, p1, p2); // Perform ray cast
-    // Get fixture and body names for checking ray cast hits
+    _world->getWorld()->RayCast(&raycast, p1, p2); // Perform ray cast.
+    // Get fixture and body names for checking ray cast hits.
     auto fx = raycast.m_fixture;
     
     // If ray cast hit a fixture, adjust weights accordingly.
@@ -122,60 +130,82 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       cugl::physics2::Obstacle* ob = static_cast<cugl::physics2::Obstacle*>(
           (void*)bd->GetUserData().pointer);
       
-      // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn'tdo calculations multiple times
+      // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn't do  calculations for the same object multiple times.
       if (ob->getName() == "Wall" || fx_name == "enemy_hitbox") {
         _objects.emplace(ob);
       }
-      cugl::Path2 x = cugl::Path2();
-      x.push(enemy->getPosition());
-      x.push(cugl::Vec2(raycast.m_point.x, raycast.m_point.y));
-      cugl::SimpleExtruder ex = cugl::SimpleExtruder();
-      ex.set(x);
-      ex.calculate(1);
-      cugl::Poly2 p = ex.getPolygon();
-      enemy->_polys.at(i)->setPolygon(p);
-      enemy->_polys.at(i)->setPosition(enemy->getPosition());
-    } else {
-      cugl::Path2 x = cugl::Path2();
-      x.push(enemy->getPosition());
-      x.push(cugl::Vec2(p2.x, p2.y));
-      cugl::SimpleExtruder ex = cugl::SimpleExtruder();
-      ex.set(x);
-      ex.calculate(1);
-      cugl::Poly2 p = ex.getPolygon();
-      enemy->_polys.at(i)->setPolygon(p);
-      enemy->_polys.at(i)->setPosition(enemy->getPosition());
     }
     
-    theta += M_PI/4;
+    theta += M_PI/8;
   }
   
-  // Adjust the weights according to the objects that were hit.
-//  for (auto ob : _objects) {
-//    if (ob->getName() == "player") {
-//
-//    } else {
-//      // weights stuff
-//    }
-//  }
+  // Adjust the weights (lower them) according to walls and other enemies that were raycasted against.
+  for (auto ob : _objects) {
+    cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
+    ob_vec.normalize();
+    theta = 0;
+    for (int i = 0; i < 12; i++) {
+      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
+      float dot = cugl::Vec2::dot(ob_vec, weight_vec);
+      if (dot > 0) {
+        _weights[i] -= dot;
+      }
+      theta += M_PI/6;
+    }
+  }
   
-  // Visualize the weights, if debug mode is on
-//  if (_debug_node->isVisible()) {
-//    theta = 0;
-//    for (int i = 0; i < 12; i++) {
-//      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + 100*cos(theta), enemy->getPosition().y + 100*sin(theta)); // The ray cast end point
-//      cugl::Path2 x = cugl::Path2();
-//      x.push(enemy->getPosition());
-//      x.push(p4);
-//      cugl::SimpleExtruder ex = cugl::SimpleExtruder();
-//      ex.set(x);
-//      ex.calculate(1);
-//      cugl::Poly2 p = ex.getPolygon();
-//      enemy->_polys.at(i)->setPolygon(p);
-//      enemy->_polys.at(i)->setPosition(enemy->getPosition());
-//      theta += M_PI/6;
-//    }
-//  }
+  // Adjust the weights (raise them) according to the player position.
+  cugl::Vec2 p = player->getPosition() - enemy->getPosition();
+  p.normalize();
+  theta = 0;
+  for (int i = 0; i < 12; i++) {
+    cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
+    float dot = cugl::Vec2::dot(p, weight_vec);
+    if (dot > 0) {
+      _weights[i] += dot;
+    }
+    theta += M_PI/6;
+  }
+  
+  // Find the weight with the highest value, move in that direction.
+  // In case of tie, will take the weight in a CCW direction from theta = 0.
+  float highest = _weights[0];
+  int highest_ind = 0;
+  for (int i = 1; i < 12; i++) {
+    if (_weights[i] > _weights[highest_ind]) {
+      highest = _weights[i];
+      highest_ind = i;
+    }
+  }
+  
+  _direction = cugl::Vec2(cos(highest_ind * M_PI/6), sin(highest_ind * M_PI/6));
+  
+  // Visualize the weights, if debug mode is on.
+  if (_debug_node->isVisible()) {
+    theta = 0;
+    for (int i = 0; i < 12; i++) {
+      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + 25*cos(theta), enemy->getPosition().y + 25*sin(theta));
+      cugl::Path2 x = cugl::Path2();
+      x.push(enemy->getPosition());
+      x.push(p4);
+      cugl::SimpleExtruder ex = cugl::SimpleExtruder();
+      ex.set(x);
+      ex.calculate(1);
+      cugl::Poly2 p = ex.getPolygon();
+      enemy->_polys.at(i)->setVisible(true);
+      enemy->_polys.at(i)->setPolygon(p);
+      enemy->_polys.at(i)->setPosition(cugl::Vec2(enemy->getPosition().x + 12.5*cos(theta), enemy->getPosition().y + 12.5*sin(theta)));
+      if (_weights[i] < 0) {
+        enemy->_polys.at(i)->setColor(cugl::Color4::RED);
+      } else {
+        enemy->_polys.at(i)->setColor(cugl::Color4::WHITE);
+      }
+      if (i == highest_ind) {
+        enemy->_polys.at(i)->setColor(cugl::Color4::BLUE);
+      }
+      theta += M_PI/6;
+    }
+  }
   
   _objects.clear();
   _weights.fill(0);
