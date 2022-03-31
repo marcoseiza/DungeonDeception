@@ -50,6 +50,22 @@
               "x_anchor": "fill",
               "y_anchor": "fill"
             }
+          },
+          "num-votes": {
+            "type": "Label",
+            "data": {
+              "font": "pixelmix",
+              "text": "0",
+              "foreground": [0, 0, 0, 255],
+              "anchor": [1.0, 0.5],
+              "halign": "right",
+              "valign": "middle"
+            },
+            "layout": {
+              "x_anchor": "right",
+              "y_anchor": "center",
+              "x_offset": -0.05
+            }
           }
         },
         "layout": {

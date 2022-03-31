@@ -329,6 +329,33 @@
                   }
 
                 }
+              },
+              "done-button-wrapper": {
+                "type": "Node",
+                "data": {
+                  "size": [300, 100],
+                  "anchor": [1.0, 0.0]
+                },
+                "layout": {
+                  "x_anchor": "right",
+                  "y_anchor": "middle",
+                  "x_offset": -0.08
+                },
+                "children": {
+                  "done-button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "READY",
+                        "font": "pixelmix",
+                        "color": "#4C7953",
+                        "texture": "button_white"
+
+                      }
+                    }
+                  }
+                }
               }
             }
           }

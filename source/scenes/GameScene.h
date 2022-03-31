@@ -6,6 +6,7 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
+#include "../controllers/NetworkController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
@@ -245,6 +246,11 @@ class GameScene : public cugl::Scene2 {
    */
   void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
     _network = network;
+    NetworkController::get()->init(_network);
+    NetworkController::get()->addListener(
+        [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+          processData(code, msg);
+        });
   }
 
   /**
@@ -261,7 +267,10 @@ class GameScene : public cugl::Scene2 {
    *
    * @param host  Whether the player is host.
    */
-  void setHost(bool host) { _ishost = host; }
+  void setHost(bool host) {
+    _ishost = host;
+    NetworkController::get()->setIsHost(host);
+  }
 
   /**
    * Sets whether the player is a betrayer or cooperator.
@@ -289,9 +298,11 @@ class GameScene : public cugl::Scene2 {
    * Note that this function may be called *multiple times* per animation frame,
    * as the messages can come from several sources.
    *
-   * @param data  The data received
+   * @param code The message code
+   * @param msg The deserialized message
    */
-  void processData(const std::vector<uint8_t>& data);
+  void processData(const Sint32& code,
+                   const cugl::NetworkDeserializer::Message& msg);
 
   /**
    * Broadcasts the relevant network information to all clients and/or the host.

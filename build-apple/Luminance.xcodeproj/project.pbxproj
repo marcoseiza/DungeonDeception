@@ -130,6 +130,9 @@
 		D5B8BE6527F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
 		D5B8BE6627F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
 		D5B8BE6727F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
+		D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
+		D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
+		D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -314,6 +317,9 @@
 		D5B8BE5327F421F500A4A836 /* RoomTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTypes.h; sourceTree = "<group>"; };
 		D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoteForLeaderScene.cpp; sourceTree = "<group>"; };
 		D5B8BE6427F4239400A4A836 /* VoteForLeaderScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteForLeaderScene.h; sourceTree = "<group>"; };
+		D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
+		D5B8BE7B27F50ED300A4A836 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
+		D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingInfo.h; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
@@ -519,6 +525,9 @@
 			isa = PBXGroup;
 			children = (
 				57FEE3E427F69C7800D7EF23 /* enemies */,
+				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
+				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
+				D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */,
 				D578BFBF27F0A32600C7B05F /* TerminalController.cpp */,
 				D578BFC327F0A32600C7B05F /* TerminalController.h */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
@@ -930,6 +939,7 @@
 				57FEE3F527F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673F27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -980,6 +990,7 @@
 				57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -1031,6 +1042,7 @@
 				57FEE3F327F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,

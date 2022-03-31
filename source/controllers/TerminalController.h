@@ -9,6 +9,7 @@
 #include "Controller.h"
 #include "InputController.h"
 #include "LevelController.h"
+#include "PlayerController.h"
 #include "VotingInfo.h"
 
 class TerminalController : public Controller {
@@ -30,11 +31,8 @@ class TerminalController : public Controller {
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
-  /** The list of players in the game. */
-  std::vector<std::shared_ptr<Player>> _players;
-
-  /** A reference to my player */
-  std::shared_ptr<Player> _my_player;
+  /** Player Controller */
+  std::shared_ptr<PlayerController> _player_controller;
 
   /** The number of players required for this terminal. */
   int _num_players_req;
@@ -86,6 +84,8 @@ class TerminalController : public Controller {
     _active = false;
   }
 
+  void sendNetworkData();
+
   /**
    * Set the terminal controller as active due to a terminal being hit.
    *
@@ -102,22 +102,6 @@ class TerminalController : public Controller {
   }
 
   /**
-   * Add this player to the terminal voting scene. Will only add if the player
-   * is not currently in the controller.
-   * @param player The player to add.
-   */
-  void addPlayer(const std::shared_ptr<Player>& player) {
-    auto player_exists = [=](const std::shared_ptr<Player>& p) {
-      return p->getPlayerId() == player->getPlayerId();
-    };
-
-    if (std::find_if(_players.begin(), _players.end(), player_exists) ==
-        _players.end()) {
-      _players.push_back(player);
-    }
-  }
-
-  /**
    * Get the terminal room id this terminal controller is currently handleing.
    * @return The terminal room id this terminal controller is currently
    * handleing.
@@ -130,7 +114,8 @@ class TerminalController : public Controller {
    * @param code The message code
    * @param msg The deserialized message
    */
-  void processNetworkData(Sint32 code, cugl::NetworkDeserializer::Message msg);
+  void processNetworkData(const Sint32& code,
+                          const cugl::NetworkDeserializer::Message& msg);
 
   /**
    * Get the state of all the voting info. Returns an unordered map with the
@@ -143,15 +128,10 @@ class TerminalController : public Controller {
     return _voting_info;
   }
 
-  /**
-   * Set my player for voting reference.
-   *
-   * @param my_player My player.
-   */
-  void setMyPlayer(const std::shared_ptr<Player>& my_player) {
-    if (!_active) return;
-    _my_player = my_player;
-    _vote_for_leader_scene->setMyPlayer(my_player);
+  void setPlayerController(
+      const std::shared_ptr<PlayerController>& player_controller) {
+    _player_controller = player_controller;
+    _vote_for_leader_scene->setPlayerController(_player_controller);
   }
 
  private:

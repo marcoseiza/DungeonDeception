@@ -14,6 +14,8 @@ class PlayerController {
  protected:
   /** Reference to the player this controls. */
   std::shared_ptr<Player> _player;
+  /** A list of all the players in the game. */
+  std::unordered_map<int, std::shared_ptr<Player>> _players;
   /** The slash texture. */
   std::shared_ptr<cugl::Texture> _slash_texture;
   /** A reference to the world node. */
@@ -95,6 +97,25 @@ class PlayerController {
   void move(float timestep, bool didDash, cugl::Vec2 forward);
 
   void attack(bool didAttack, bool holdAttack, std::shared_ptr<Sword> sword);
+
+  void addPlayer(const std::shared_ptr<Player>& player) {
+    if (_players.find(player->getPlayerId()) != _players.end()) {
+      _players[player->getPlayerId()] = player;
+    }
+  }
+
+  std::shared_ptr<Player> getMyPlayer() { return _player; }
+
+  std::shared_ptr<Player> getPlayer(int id) {
+    if (_players.find(id) != _players.end()) {
+      return _players[id];
+    }
+    return nullptr;
+  }
+
+  std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {
+    return _players;
+  }
 };
 
 #endif /* CONTROLLERS_PLAYER_CONTROLLER_H_ */

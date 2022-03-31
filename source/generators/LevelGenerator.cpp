@@ -187,7 +187,7 @@ void LevelGenerator::placeTerminals() {
       _config.getMapRadius());
 
   // Assign number of players required for activation.
-  std::uniform_int_distribution<int> inner_terminals_required_players(2, 3);
+  std::uniform_int_distribution<int> inner_terminals_required_players(2, 2);
   for (std::shared_ptr<Room> room : inner_terminals) {
     room->_num_players_for_terminal =
         inner_terminals_required_players(_generator);

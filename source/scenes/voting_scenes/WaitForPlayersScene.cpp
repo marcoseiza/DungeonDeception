@@ -1,6 +1,6 @@
 #include "WaitForPlayersScene.h"
 
-#define WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED 600
+#define WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED 300
 
 bool WaitForPlayersScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {

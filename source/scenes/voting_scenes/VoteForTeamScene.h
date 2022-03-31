@@ -11,9 +11,6 @@ class VoteForLeaderScene {
   // The voting info for this terminal.
   std::shared_ptr<VotingInfo> _voting_info;
 
-  /** The room id for this terminal. */
-  int _terminal_room_id;
-
   /** If the scene has been initialized */
   bool _initialized;
 
@@ -28,12 +25,6 @@ class VoteForLeaderScene {
 
   /** A reference to the node for this scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
-
-  /** A map from the player id to the button it corresponds to. */
-  std::unordered_map<int, std::shared_ptr<cugl::scene2::Button>> _buttons;
-
-  /** A reference to the done button used when finished voting. */
-  std::shared_ptr<cugl::scene2::Button> _done_button;
 
   /** A reference to the player controller. */
   std::shared_ptr<PlayerController> _player_controller;
@@ -72,7 +63,7 @@ class VoteForLeaderScene {
   /**
    * Start this VoteForLeaderScene
    */
-  void start(std::shared_ptr<VotingInfo> voting_info, int terminal_room_id);
+  void start(std::shared_ptr<VotingInfo> voting_info);
 
   /** Update the wait for players scene. */
   void update();
@@ -86,11 +77,9 @@ class VoteForLeaderScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
-  /** Voting Button listener.  */
-  void voteButtonListener(const std::string& name, bool down);
-
-  /** Done Button listener.  */
-  void doneButtonListener(const std::string& name, bool down);
+  /** Button listener.  */
+  void buttonListener(const std::shared_ptr<cugl::scene2::Button>& butt,
+                      const std::string& name, bool down);
 
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
