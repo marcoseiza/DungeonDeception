@@ -64,6 +64,9 @@
 		D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
+		D51861EB27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
+		D51861EC27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
+		D51861ED27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
 		D51D196827F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
 		D51D196927F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
 		D51D196A27F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
@@ -276,6 +279,8 @@
 		CAB1A84B27F23CD3000B9F20 /* Dash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dash.cpp; sourceTree = "<group>"; };
 		D5073C8627CFEF2C0000426E /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		D5073C8727CFEF2C0000426E /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
+		D51861E627F6BE8500B63D6F /* ActivateTerminalScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivateTerminalScene.h; sourceTree = "<group>"; };
+		D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActivateTerminalScene.cpp; sourceTree = "<group>"; };
 		D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoteForTeamScene.cpp; sourceTree = "<group>"; };
 		D51D196727F65C7900FD9E1F /* VoteForTeamScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteForTeamScene.h; sourceTree = "<group>"; };
 		D521FB0E27C43BA500D14172 /* widgets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = widgets; sourceTree = "<group>"; };
@@ -571,6 +576,8 @@
 		D578BFC727F0A33400C7B05F /* voting_scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */,
+				D51861E627F6BE8500B63D6F /* ActivateTerminalScene.h */,
 				D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */,
 				D51D196727F65C7900FD9E1F /* VoteForTeamScene.h */,
 				D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */,
@@ -947,6 +954,7 @@
 				D52E673F27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861ED27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -999,6 +1007,7 @@
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861EC27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -1052,6 +1061,7 @@
 				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861EB27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,

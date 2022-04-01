@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 
 #include "../models/Player.h"
+#include "../scenes/voting_scenes/ActivateTerminalScene.h"
 #include "../scenes/voting_scenes/VoteForLeaderScene.h"
 #include "../scenes/voting_scenes/VoteForTeamScene.h"
 #include "../scenes/voting_scenes/WaitForPlayersScene.h"
@@ -17,6 +18,9 @@ class TerminalController : public Controller {
   /** If a terminal is currently being voted on. */
   bool _active;
 
+  /** The terminal controller just finished all the voting. */
+  bool _just_finished;
+
   /** A map between the terminal room id and the voting info. */
   std::unordered_map<int, std::shared_ptr<VotingInfo>> _voting_info;
 
@@ -29,8 +33,11 @@ class TerminalController : public Controller {
   /** A reference to the vote for leader scene. */
   std::shared_ptr<VoteForLeaderScene> _vote_for_leader_scene;
 
-  /** A reference to the vote for leader scene. */
+  /** A reference to the vote for team scene. */
   std::shared_ptr<VoteForTeamScene> _vote_for_team_scene;
+
+  /** A reference to the activate terminal scene. */
+  std::shared_ptr<ActivateTerminalScene> _activate_terminal_scene;
 
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
@@ -44,7 +51,13 @@ class TerminalController : public Controller {
   /** The terminal room this controller is handleing. */
   int _terminal_room_id;
 
+  /** The chosen team leader player id. */
   int _leader_id;
+
+  /**
+   * True if the terminal was activated, false if the terminal was corrupted.
+   */
+  bool _terminal_was_activated;
 
   /** The terminal voting stage. */
   enum Stage {
@@ -56,7 +69,8 @@ class TerminalController : public Controller {
   } _stage;
 
  public:
-  TerminalController() : _stage(Stage::NONE), _active(false) {}
+  TerminalController()
+      : _stage(Stage::NONE), _active(false), _just_finished(false) {}
   ~TerminalController() { dispose(); }
 
   /**
@@ -139,13 +153,30 @@ class TerminalController : public Controller {
     _player_controller = player_controller;
     _vote_for_leader_scene->setPlayerController(_player_controller);
     _vote_for_team_scene->setPlayerController(_player_controller);
+    _activate_terminal_scene->setPlayerController(_player_controller);
+  }
+
+  /**
+   * @return True if the terminal was activated, false if it was corrupted.
+   */
+  bool getTerminalWasActivated() { return _terminal_was_activated; }
+
+  /**
+   * @return If the terminal has just finished voting.
+   */
+  bool hasJustFinished() {
+    bool tmp = _just_finished;
+    _just_finished = false;
+    return tmp;
   }
 
  private:
   /** Called when the terminal voting is done. */
   void done() {
     _active = false;
+    _just_finished = true;
     _scene->setVisible(false);
+    _stage = Stage::WAIT_FOR_PLAYERS;
     InputController::get()->resume();
   }
 };

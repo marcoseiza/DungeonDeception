@@ -14,15 +14,14 @@ bool VoteForTeamScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 }
 
 void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
-                             int terminal_room_id, int team_leader_id) {
+                             int terminal_room_id, int team_leader_id,
+                             int num_players_req) {
   if (!_initialized || _active) return;
   _active = true;
   _voting_info = voting_info;
   _terminal_room_id = terminal_room_id;
   _team_leader_id = team_leader_id;
-
-  int num_players = _voting_info->players.size();
-  int i = 0;
+  _num_players_req = num_players_req;
 
   std::string leader_button_key =
       "terminal-voting-scene_voting-background_vote-for-team_leader-button-"
@@ -30,12 +29,12 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
 
   auto leader_button = _assets->get<cugl::scene2::SceneNode>(leader_button_key);
 
+  auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
+      _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
+
+  label->setText("player " + std::to_string(_team_leader_id));
+
   if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
-    auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-        _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
-
-    label->setText("player " + std::to_string(_team_leader_id));
-
     _assets
         ->get<cugl::scene2::SceneNode>(
             "terminal-voting-scene_voting-background_vote-for-team_title-1-not-"
@@ -46,6 +45,11 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
             "terminal-voting-scene_voting-background_vote-for-team_title-2-not-"
             "leader")
         ->setVisible(false);
+
+    std::dynamic_pointer_cast<cugl::scene2::Label>(
+        _assets->get<cugl::scene2::SceneNode>(
+            "terminal-voting-scene_voting-background_vote-for-team_title-2"))
+        ->setText("TEAM OF " + std::to_string(_num_players_req - 1), true);
   } else {
     _assets
         ->get<cugl::scene2::SceneNode>(
@@ -61,49 +65,46 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
       "terminal-voting-scene_voting-background_vote-for-team_buttons");
 
   for (auto button : buttons->getChildren()) {
-    std::string button_key = cugl::strtool::format(
-        "terminal-voting-scene_voting-background_vote-for-team_buttons_"
-        "button-wrapper-%d_button-%d",
-        i, i);
     auto butt = std::dynamic_pointer_cast<cugl::scene2::Button>(
-        _assets->get<cugl::scene2::SceneNode>(button_key));
+        button->getChildByName("button"));
 
-    if (i < num_players) {
-      int player_id = _voting_info->players[i];
+    butt->setVisible(false);
+    butt->deactivate();
+  }
 
-      if (player_id != _team_leader_id) {
-        _buttons[player_id] = butt;
+  int num_players = _voting_info->players.size();
+  int i = 0;
 
-        auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-            _assets->get<cugl::scene2::SceneNode>(button_key + "_up_label"));
-        std::string name = "player " + std::to_string(player_id);
-        label->setText(name, true);
+  for (int player_id : _voting_info->players) {
+    if (player_id != _team_leader_id) {
+      auto butt = std::dynamic_pointer_cast<cugl::scene2::Button>(
+          buttons->getChild(i)->getChildByName("button"));
 
-        butt->setName(std::to_string(player_id));
+      _buttons[player_id] = butt;
 
-        if (_player_controller->getMyPlayer()->getPlayerId() ==
-            _team_leader_id) {
-          butt->addListener([=](const std::string& name, bool down) {
-            this->voteButtonListener(name, down);
-          });
+      auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
+          butt->getChildByName("up")->getChildByName("label"));
+      std::string name = "player " + std::to_string(player_id);
+      label->setText(name, true);
 
-          butt->activate();
-        } else {
-          butt->deactivate();
-        }
+      butt->getChildByName("up")
+          ->getChildByName("num-votes")
+          ->setVisible(false);
 
-        butt->setVisible(true);
+      if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+        butt->addListener([=](const std::string& name, bool down) {
+          this->voteButtonListener(std::to_string(player_id), down);
+        });
 
+        butt->activate();
       } else {
-        butt->setVisible(false);
         butt->deactivate();
       }
 
-    } else {
-      butt->setVisible(false);
-      butt->deactivate();
+      butt->setVisible(true);
+
+      i++;
     }
-    i++;
   }
 
   _ready_button = std::dynamic_pointer_cast<cugl::scene2::Button>(
@@ -115,10 +116,10 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
     _ready_button->addListener([=](const std::string& name, bool down) {
       this->readyButtonListener(name, down);
     });
-    _ready_button->activate();
-  } else {
-    _ready_button->setVisible(false);
   }
+
+  _ready_button->setVisible(false);
+  _ready_button->activate();
 
   _node->setVisible(true);
   _node->doLayout();
@@ -126,15 +127,29 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
 
 void VoteForTeamScene::update() {
   for (auto it : _buttons) {
-    auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-        (it.second)->getChildByName("up")->getChildByName("num-votes"));
-    label->setText("0");
+    it.second->getChildByName("up")->getChildByName("patch")->setColor(
+        cugl::Color4::WHITE);
   }
 
   for (int voted : _voting_info->votes[_team_leader_id]) {
-    auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-        _buttons[voted]->getChildByName("up")->getChildByName("num-votes"));
-    label->setText("1");
+    _buttons[voted]->getChildByName("up")->getChildByName("patch")->setColor(
+        cugl::Color4("#4C7953"));
+  }
+
+  _done = (_voting_info->done.size() == 1);
+
+  if (_voting_info->votes[_team_leader_id].size() == _num_players_req - 1) {
+    _can_finish = true;
+
+    if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+      _ready_button->setVisible(true);
+    }
+  } else {
+    _can_finish = false;
+
+    if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+      _ready_button->setVisible(false);
+    }
   }
 }
 
@@ -145,7 +160,16 @@ void VoteForTeamScene::voteButtonListener(const std::string& name, bool down) {
     int voted_for = std::stoi(name);
     int player_id = _player_controller->getMyPlayer()->getPlayerId();
 
-    _voting_info->votes[player_id].push_back(voted_for);
+    for (int vote : _voting_info->votes[player_id]) {
+      CULog("%d", vote);
+    }
+    std::remove(_voting_info->votes[player_id].begin(),
+                _voting_info->votes[player_id].end(), voted_for);
+    auto found = std::find(_voting_info->votes[player_id].begin(),
+                           _voting_info->votes[player_id].end(), voted_for);
+    if (found == _voting_info->votes[player_id].end()) {
+      _voting_info->votes[player_id].push_back(voted_for);
+    }
   }
 
   auto info = cugl::JsonValue::allocObject();

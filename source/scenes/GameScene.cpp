@@ -278,6 +278,15 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
+  if (_terminal_controller->hasJustFinished()) {
+    bool was_activated = _terminal_controller->getTerminalWasActivated();
+    if (was_activated) {
+      _num_terminals_activated++;
+    } else {
+      _num_terminals_corrupted++;
+    }
+  }
+
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
   }
@@ -970,11 +979,6 @@ void GameScene::beginContact(b2Contact* contact) {
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
 
       dynamic_cast<TerminalSensor*>(ob1)->activate();
-      if (!_is_betrayer) {
-        _num_terminals_activated += 1;
-      } else {
-        _num_terminals_corrupted += 1;
-      }
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
@@ -986,11 +990,6 @@ void GameScene::beginContact(b2Contact* contact) {
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
 
       dynamic_cast<TerminalSensor*>(ob2)->activate();
-      if (!_is_betrayer) {
-        _num_terminals_activated += 1;
-      } else {
-        _num_terminals_corrupted += 1;
-      }
     }
   }
 }

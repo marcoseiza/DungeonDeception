@@ -1,5 +1,5 @@
-#ifndef SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_
-#define SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_
+#ifndef SCENES_VOTING_SCENES_ACTIVATE_TERMINAL_SCENE_H_
+#define SCENES_VOTING_SCENES_ACTIVATE_TERMINAL_SCENE_H_
 
 #include <cugl/cugl.h>
 
@@ -7,15 +7,12 @@
 #include "../../controllers/VotingInfo.h"
 #include "../../models/Player.h"
 
-class VoteForTeamScene {
+class ActivateTerminalScene {
   // The voting info for this terminal.
   std::shared_ptr<VotingInfo> _voting_info;
 
   /** The room id for this terminal. */
   int _terminal_room_id;
-
-  /** The player id for the team leader. */
-  int _team_leader_id;
 
   /** The number of players required for this terminal. */
   int _num_players_req;
@@ -26,11 +23,14 @@ class VoteForTeamScene {
   /** If the scene is currently active. */
   bool _active;
 
-  /** If the players can press the ready button. */
-  bool _can_finish;
-
   /** If the scene is done. */
   bool _done;
+
+  /** If this person is a betrayer. */
+  bool _is_betrayer;
+
+  /** If the player activated the terminal, will be false if corrupted. */
+  bool _did_activate;
 
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
@@ -38,19 +38,22 @@ class VoteForTeamScene {
   /** A reference to the node for this scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
 
-  /** A map from the player id to the button it corresponds to. */
-  std::unordered_map<int, std::shared_ptr<cugl::scene2::Button>> _buttons;
-
-  /** A reference to the done button used when finished voting. */
-  std::shared_ptr<cugl::scene2::Button> _ready_button;
+  /** The activate button */
+  std::shared_ptr<cugl::scene2::Button> _activate_butt;
+  /** The corrupt button */
+  std::shared_ptr<cugl::scene2::Button> _corrupt_butt;
 
   /** A reference to the player controller. */
   std::shared_ptr<PlayerController> _player_controller;
 
  public:
-  VoteForTeamScene()
-      : _active(false), _done(false), _can_finish(false), _initialized(false) {}
-  ~VoteForTeamScene() { dispose(); }
+  ActivateTerminalScene()
+      : _active(false),
+        _done(false),
+        _initialized(false),
+        _is_betrayer(false),
+        _did_activate(false) {}
+  ~ActivateTerminalScene() { dispose(); }
 
   /**
    * Initialize a wait for player scene.
@@ -65,14 +68,14 @@ class VoteForTeamScene {
    * @param assets The assets for the game.
    * @return A shared pointer of the initialized wait for players scene.
    */
-  static std::shared_ptr<VoteForTeamScene> alloc(
+  static std::shared_ptr<ActivateTerminalScene> alloc(
       const std::shared_ptr<cugl::AssetManager>& assets) {
-    auto result = std::make_shared<VoteForTeamScene>();
+    auto result = std::make_shared<ActivateTerminalScene>();
     if (result->init(assets)) return result;
     return nullptr;
   }
 
-  /** Dispose of this VoteForTeamScene. */
+  /** Dispose of this ActivateTerminalScene. */
   void dispose() {
     _active = false;
     _done = false;
@@ -80,10 +83,10 @@ class VoteForTeamScene {
   }
 
   /**
-   * Start this VoteForTeamScene
+   * Start this ActivateTerminalScene
    */
   void start(std::shared_ptr<VotingInfo> voting_info, int terminal_room_id,
-             int team_leader_id, int num_players_req);
+             int num_players_req);
 
   /** Update the wait for players scene. */
   void update();
@@ -97,16 +100,15 @@ class VoteForTeamScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
-  /** Voting Button listener.  */
-  void voteButtonListener(const std::string& name, bool down);
-
-  /** Done Button listener.  */
-  void readyButtonListener(const std::string& name, bool down);
-
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
   }
+
+  /** True if the player activated the terminal, false if they corrupted it. */
+  bool didActivate() { return _did_activate; }
+
+  void buttonListener(const std::string& name, bool down);
 };
 
-#endif  // SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_
+#endif  // SCENES_VOTING_SCENES_ACTIVATE_TERMINAL_SCENE_H_

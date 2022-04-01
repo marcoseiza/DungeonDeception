@@ -91,6 +91,8 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals activated in the world. */
   int _num_terminals_activated;
+  /** The number of terminals corrupted in the world. */
+  int _num_terminals_corrupted;
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;

@@ -14,6 +14,7 @@ bool TerminalController::init(
   _wait_for_players_scene = WaitForPlayersScene::alloc(_assets);
   _vote_for_leader_scene = VoteForLeaderScene::alloc(_assets);
   _vote_for_team_scene = VoteForTeamScene::alloc(_assets);
+  _activate_terminal_scene = ActivateTerminalScene::alloc(_assets);
 
   NetworkController::get()->addListener(
       [=](const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
@@ -32,11 +33,11 @@ void TerminalController::update(float timestep) {
     case Stage::WAIT_FOR_PLAYERS:
       if (!_wait_for_players_scene->isActive()) {
         _wait_for_players_scene->start(_num_players_req);
+      } else {
+        _wait_for_players_scene->update();
+        _wait_for_players_scene->setCurrentNumPlayers(
+            _voting_info[_terminal_room_id]->players.size());
       }
-
-      _wait_for_players_scene->update();
-      _wait_for_players_scene->setCurrentNumPlayers(
-          _voting_info[_terminal_room_id]->players.size());
 
       if (_wait_for_players_scene->isDone()) {
         _wait_for_players_scene->dispose();
@@ -59,18 +60,46 @@ void TerminalController::update(float timestep) {
       break;
     case Stage::VOTE_TEAM:
       if (!_vote_for_team_scene->isActive()) {
+        _voting_info[_terminal_room_id]->votes.clear();
+        _voting_info[_terminal_room_id]->done.clear();
+
         _vote_for_team_scene->start(_voting_info[_terminal_room_id],
-                                    _terminal_room_id, _leader_id);
+                                    _terminal_room_id, _leader_id,
+                                    _num_players_req);
       }
 
       _vote_for_team_scene->update();
 
       if (_vote_for_team_scene->isDone()) {
         _vote_for_team_scene->dispose();
-        _stage = Stage::ACTIVATE_TERMINAL;
+
+        std::vector<int> &votes =
+            _voting_info[_terminal_room_id]->votes[_leader_id];
+        votes.push_back(_leader_id);
+        auto found =
+            std::find(votes.begin(), votes.end(),
+                      _player_controller->getMyPlayer()->getPlayerId());
+
+        if (found == votes.end()) {
+          done();
+        } else {
+          _stage = Stage::ACTIVATE_TERMINAL;
+        }
       }
       break;
     case Stage::ACTIVATE_TERMINAL:
+      if (!_activate_terminal_scene->isActive()) {
+        _voting_info[_terminal_room_id]->done.clear();
+        _activate_terminal_scene->start(_voting_info[_terminal_room_id],
+                                        _terminal_room_id, _num_players_req);
+      }
+
+      _activate_terminal_scene->update();
+
+      if (_activate_terminal_scene->isDone()) {
+        _activate_terminal_scene->dispose();
+        done();
+      }
       break;
     default:
       break;
@@ -81,6 +110,13 @@ void TerminalController::sendNetworkData() {
   if (NetworkController::get()->isHost()) {
     for (auto it = _voting_info.begin(); it != _voting_info.end(); ++it) {
       auto info = cugl::JsonValue::allocObject();
+
+      {
+        auto was_activate_info =
+            cugl::JsonValue::alloc(_terminal_was_activated);
+        info->appendChild(was_activate_info);
+        was_activate_info->setKey("was_activated");
+      }
 
       {
         auto terminal_room_id_info = cugl::JsonValue::alloc(
@@ -187,6 +223,7 @@ void TerminalController::processNetworkData(
     {
       std::shared_ptr<cugl::JsonValue> info =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+      _terminal_was_activated &= info->getBool("was_activated");
 
       int terminal_room_id = info->getInt("terminal_room_id");
       std::vector<int> players = info->get("players")->asIntArray();
@@ -241,6 +278,22 @@ void TerminalController::processNetworkData(
           } else {
             v->done.erase(found);
           }
+        }
+      }
+    } break;
+    case 11: {  // Receieve done with activating terminal vote.
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+      int player_id = info->getInt("player_id");
+      _terminal_was_activated &= info->getBool("did_activate");
+
+      if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+        std::shared_ptr<VotingInfo> v = _voting_info[terminal_room_id];
+        auto found = std::find(v->done.begin(), v->done.end(), player_id);
+        if (found == v->done.end()) {
+          v->done.push_back(player_id);
         }
       }
     } break;

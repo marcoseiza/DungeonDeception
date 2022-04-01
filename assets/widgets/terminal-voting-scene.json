@@ -158,7 +158,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-0": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -184,7 +184,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-1": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -210,7 +210,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-2": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -236,7 +236,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-3": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -262,7 +262,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-4": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -288,7 +288,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-5": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -314,7 +314,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-6": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -340,7 +340,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-7": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -484,7 +484,8 @@
                       "variables": {
                         "size": [300, 100],
                         "text": "you",
-                        "anchor": [0.5, 0.5]
+                        "anchor": [0.5, 0.5],
+                        "num-votes-default-text": ""
                       }
                     }
                   },
@@ -535,7 +536,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-0": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -561,7 +562,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-1": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -587,7 +588,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-2": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -613,7 +614,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-3": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -639,7 +640,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-4": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -665,7 +666,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-5": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -691,7 +692,7 @@
                       "y_anchor": "center"
                     },
                     "children": {
-                      "button-6": {
+                      "button": {
                         "type": "Widget",
                         "data": {
                           "key": "terminal-voting-button",
@@ -729,6 +730,97 @@
                         "color": "#4C7953",
                         "texture": "button_white"
 
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "activate-terminal": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "anchor": [0.5, 0.5]
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            },
+            "children": {
+              "title": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix_title",
+                  "text": "ACTIVATE TERMINAL?",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.22
+                }
+              },
+              "activate-button-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [300, 100]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": -0.2
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "ACTIVATE",
+                        "size": [300, 100],
+                        "color": "#4C7953",
+                        "font": "pixelmix",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              },
+              "corrupt-button-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [300, 100]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": 0.2
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "CORRUPT",
+                        "size": [300, 100],
+                        "color": "#A65454",
+                        "font": "pixelmix",
+                        "texture": "button_white"
                       }
                     }
                   }

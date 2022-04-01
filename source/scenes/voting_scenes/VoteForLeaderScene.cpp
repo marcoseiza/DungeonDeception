@@ -28,26 +28,20 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
       "terminal-voting-scene_voting-background_vote-for-leader_buttons");
 
   for (auto button : buttons->getChildren()) {
-    std::string button_key = cugl::strtool::format(
-        "terminal-voting-scene_voting-background_vote-for-leader_buttons_"
-        "button-wrapper-%d_button-%d",
-        i, i);
     auto butt = std::dynamic_pointer_cast<cugl::scene2::Button>(
-        _assets->get<cugl::scene2::SceneNode>(button_key));
+        button->getChildByName("button"));
 
     if (i < num_players) {
       int player_id = _voting_info->players[i];
       _buttons[player_id] = butt;
 
       auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-          _assets->get<cugl::scene2::SceneNode>(button_key + "_up_label"));
+          butt->getChildByName("up")->getChildByName("label"));
       std::string name = "player " + std::to_string(player_id);
       label->setText(name, true);
 
-      butt->setName(std::to_string(player_id));
-
       butt->addListener([=](const std::string& name, bool down) {
-        this->voteButtonListener(name, down);
+        this->voteButtonListener(std::to_string(player_id), down);
       });
 
       butt->activate();
@@ -70,6 +64,7 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
     this->readyButtonListener(name, down);
   });
   _ready_button->activate();
+  _ready_button->setVisible(false);
 
   _node->setVisible(true);
   _node->doLayout();
@@ -122,9 +117,11 @@ void VoteForLeaderScene::update() {
       }
       if (number_of_max == 1) {
         _can_finish = true;
+        _ready_button->setVisible(true);
         _winner = winner;
       } else {
         _can_finish = false;
+        _ready_button->setVisible(false);
         _voting_info->done.clear();
         removeAllPlayersFromDoneList();
       }
@@ -133,6 +130,14 @@ void VoteForLeaderScene::update() {
 
   // If everyone has pressed ready and there's a clear winner.
   _done = (_voting_info->done.size() == _voting_info->players.size());
+
+  {
+    auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),
+                           _player_controller->getMyPlayer()->getPlayerId());
+    if (found != _voting_info->done.end()) {
+      _ready_button->setVisible(false);
+    }
+  }
 
   {
     auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),

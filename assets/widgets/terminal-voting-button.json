@@ -4,7 +4,8 @@
     "anchor": ["data", "anchor"],
     "text": ["children", "up", "children", "label", "data", "text"],
     "font": ["children", "up", "children", "label", "data", "font"],
-    "color": ["children", "up", "children", "patch", "data", "color"]
+    "color": ["children", "up", "children", "patch", "data", "color"],
+    "num-votes-default-text": ["children", "up", "children", "num-votes", "data", "text"]
   },
   "contents": {
     "type": "Button",
