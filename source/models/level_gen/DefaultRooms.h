@@ -50,9 +50,9 @@ const RoomConfig kStandard2 = {
 
 /** RRepresents a standard rooms. */
 const RoomConfig kStandard3 = {
-    cugl::Size(21.0f, 21.0f),
-    std::vector<cugl::Vec2>{cugl::Vec2(20.0f, 10.0f), cugl::Vec2(10.0f, 20.0f),
-                            cugl::Vec2(0.0f, 10.0f), cugl::Vec2(10.0f, 0.0f)},
+    cugl::Size(15.0f, 15.0f),
+    std::vector<cugl::Vec2>{cugl::Vec2(14.0f, 4.0f), cugl::Vec2(4.0f, 14.0f),
+                            cugl::Vec2(0.0f, 10.0f), cugl::Vec2(11.0f, 0.0f)},
     "rooms/room-3-scene.json"};
 
 /** Represents a standard room. */
