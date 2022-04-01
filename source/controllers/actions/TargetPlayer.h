@@ -34,6 +34,9 @@ class TargetPlayer : public Action {
   /* The player being targeted. -1 if no target. */
   int _target_player_id;
   
+  /* Whether the betrayer action is being activated */
+  bool _is_activating_action;
+  
   /* Players that have already been targeted */
   std::unordered_set<int> _dirty_players;
 
@@ -102,9 +105,14 @@ class TargetPlayer : public Action {
   bool hasSeenPlayerId(int player_id) { return _dirty_players.find(player_id) != _dirty_players.end(); }
   
   /**
-   * Clears all the dirty players so they can be iterated through again
+   * Clears all the dirty players so they can be iterated through again.
    */
   void clearDirtyPlayers() { _dirty_players.clear(); }
+  
+  /**
+   * @return Whether the betrayer action is being activated (lasts 1 tick).
+   */
+  bool isActivatingTargetAction() { return _is_activating_action; }
   
   /**
    * Sets the target of the betrayer action to a specific player.

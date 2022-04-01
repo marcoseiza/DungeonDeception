@@ -38,6 +38,12 @@ bool TargetPlayer::update() {
   _curr_down = _butt_down;
   // Increment counter if target player button was just released or target player frames
   // are still occuring
+  if (isActivatingTargetAction()) {
+    _is_activating_action = false;
+    _target_player_counter = 0;
+    _target_player_id = -1;
+
+  }
   if (didChangeTarget()) {
     _target_player_counter = 1;
   }
@@ -45,10 +51,11 @@ bool TargetPlayer::update() {
     _target_player_counter++;
     if (_target_player_counter > _target_player_hang_frames) {
       if (_target_player_id != -1) {
-        CULog("YOOO IM RELEASING A SPECIAL GRIEF ON %i", _target_player_id);
+        _is_activating_action = true;
+      } else {
+        _target_player_counter = 0;
+        _target_player_id = -1;
       }
-      _target_player_counter = 0;
-      _target_player_id = -1;
     }
   }
   return true;

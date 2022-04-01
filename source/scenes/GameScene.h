@@ -289,7 +289,21 @@ class GameScene : public cugl::Scene2 {
    * @param player_id
    */
   void sendTerminalAddPlayerInfo(int room_id, int player_id);
-
+  
+  /**
+   * Broadcast a player being targeted by the betrayer target player ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendBetrayalTargetInfo(int target_player_id);
+  
+  /**
+   * Broadcast a player being disabled by a betrayer ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendDisablePlayerInfo(int target_player_id);
+  
   /**
    * Updates the position of the player with the corresponding player_id in
    * the _players list.

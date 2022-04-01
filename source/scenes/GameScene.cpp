@@ -293,6 +293,10 @@ void GameScene::update(float timestep) {
   } else {
     target_icon_node->setVisible(false);
   }
+  
+  if (target_player->isActivatingTargetAction()) {
+    sendBetrayalTargetInfo(target_player->getTarget());
+  }
 
   // Movement
   _player_controller->update(
@@ -615,6 +619,57 @@ void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id) {
   if (_ishost) processData(msg);
 }
 
+void GameScene::sendBetrayalTargetInfo(int target_player_id) {
+  std::shared_ptr<cugl::JsonValue> betrayal_info =
+      cugl::JsonValue::allocObject();
+
+  std::shared_ptr<cugl::JsonValue> betraying_player_info =
+      cugl::JsonValue::alloc((static_cast<long>(_my_player->getPlayerId())));
+  betrayal_info->appendChild(betraying_player_info);
+  betraying_player_info->setKey("betraying_player_id");
+
+  std::shared_ptr<cugl::JsonValue> target_player_info =
+      cugl::JsonValue::alloc(static_cast<long>(target_player_id));
+  betrayal_info->appendChild(target_player_info);
+  target_player_info->setKey("target_player_id");
+
+  _serializer.writeSint32(12);
+  _serializer.writeJson(betrayal_info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
+  // Send this to host, as sendOnlyToHost doesn't send to host if it was called
+  // by the host.
+  if (_ishost) processData(msg);
+}
+
+/*
+ * This simply passes on the disable message on from the host to clients for now.
+ * In the future the host can do server-side logic
+ */
+void GameScene::sendDisablePlayerInfo(int target_player_id) {
+  std::shared_ptr<cugl::JsonValue> betrayal_info =
+      cugl::JsonValue::allocObject();
+  
+  std::shared_ptr<cugl::JsonValue> target_player_info =
+      cugl::JsonValue::alloc(static_cast<long>(target_player_id));
+  betrayal_info->appendChild(target_player_info);
+  target_player_info->setKey("target_player_id");
+
+  _serializer.writeSint32(13);
+  _serializer.writeJson(betrayal_info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->send(msg);
+  // Send this to host, as sendOnlyToHost doesn't send to host if it was called
+  // by the host.
+  if (_ishost) processData(msg);
+}
+
 /**
  * Processes data sent over the network.
  *
@@ -700,6 +755,31 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
   } else if (code == 8 && !_ishost) {  // Receive voting info from host.
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     _terminal_controller->processNetworkData(code, msg);
+  }
+  
+  
+  
+  
+  
+  else if (code == 12 && _ishost) {
+    cugl::NetworkDeserializer::Message betrayal_target_msg = _deserializer.read();
+
+    std::shared_ptr<cugl::JsonValue> target_data =
+        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+
+    int player_id = target_data->getInt("target_player_id");
+    sendDisablePlayerInfo(player_id);
+  } else if (code == 13) {
+    cugl::NetworkDeserializer::Message betrayal_target_msg = _deserializer.read();
+
+    std::shared_ptr<cugl::JsonValue> target_data =
+        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+
+    int player_id = target_data->getInt("target_player_id");
+    
+    if (player_id == _my_player->getPlayerId()) {
+      _my_player->reduceHealth(40);
+    }
   }
 
   _deserializer.reset();
