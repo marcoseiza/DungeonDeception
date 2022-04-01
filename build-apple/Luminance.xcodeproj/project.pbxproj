@@ -16,18 +16,6 @@
 		5737DA7927C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
 		5737DA7A27C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
 		5737DA7B27C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
-		57A1E56E27E6A6A1009EF19A /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56427E6A6A1009EF19A /* TurtleController.cpp */; };
-		57A1E56F27E6A6A1009EF19A /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56427E6A6A1009EF19A /* TurtleController.cpp */; };
-		57A1E57027E6A6A1009EF19A /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56427E6A6A1009EF19A /* TurtleController.cpp */; };
-		57A1E57127E6A6A1009EF19A /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56527E6A6A1009EF19A /* TankController.cpp */; };
-		57A1E57227E6A6A1009EF19A /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56527E6A6A1009EF19A /* TankController.cpp */; };
-		57A1E57327E6A6A1009EF19A /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56527E6A6A1009EF19A /* TankController.cpp */; };
-		57A1E57427E6A6A1009EF19A /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56627E6A6A1009EF19A /* GruntController.cpp */; };
-		57A1E57527E6A6A1009EF19A /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56627E6A6A1009EF19A /* GruntController.cpp */; };
-		57A1E57627E6A6A1009EF19A /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56627E6A6A1009EF19A /* GruntController.cpp */; };
-		57A1E57727E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
-		57A1E57827E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
-		57A1E57927E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
 		57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
 		57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
 		57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
@@ -40,6 +28,18 @@
 		57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
 		57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
 		57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D18F9327E184760085A52E /* EnemyModel.cpp */; };
+		57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E627F69C7800D7EF23 /* TurtleController.cpp */; };
+		57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E627F69C7800D7EF23 /* TurtleController.cpp */; };
+		57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E627F69C7800D7EF23 /* TurtleController.cpp */; };
+		57FEE3F027F69C7800D7EF23 /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E727F69C7800D7EF23 /* TankController.cpp */; };
+		57FEE3F127F69C7800D7EF23 /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E727F69C7800D7EF23 /* TankController.cpp */; };
+		57FEE3F227F69C7800D7EF23 /* TankController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E727F69C7800D7EF23 /* TankController.cpp */; };
+		57FEE3F327F69C7800D7EF23 /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E827F69C7800D7EF23 /* GruntController.cpp */; };
+		57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E827F69C7800D7EF23 /* GruntController.cpp */; };
+		57FEE3F527F69C7800D7EF23 /* GruntController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E827F69C7800D7EF23 /* GruntController.cpp */; };
+		57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
+		57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
+		57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
 		CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
@@ -230,14 +230,6 @@
 		572894D227D1684500F9BBA5 /* Sword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sword.h; sourceTree = "<group>"; };
 		572894E827D189E200F9BBA5 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		5737DA7727C5E62E00D1692A /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		57A1E56327E6A6A1009EF19A /* TankController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TankController.h; sourceTree = "<group>"; };
-		57A1E56427E6A6A1009EF19A /* TurtleController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TurtleController.cpp; sourceTree = "<group>"; };
-		57A1E56527E6A6A1009EF19A /* TankController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TankController.cpp; sourceTree = "<group>"; };
-		57A1E56627E6A6A1009EF19A /* GruntController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GruntController.cpp; sourceTree = "<group>"; };
-		57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShotgunnerController.cpp; sourceTree = "<group>"; };
-		57A1E56827E6A6A1009EF19A /* ShotgunnerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotgunnerController.h; sourceTree = "<group>"; };
-		57A1E56927E6A6A1009EF19A /* GruntController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GruntController.h; sourceTree = "<group>"; };
-		57A1E56A27E6A6A1009EF19A /* TurtleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleController.h; sourceTree = "<group>"; };
 		57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
 		57A1E55527E3BF2C009EF19A /* PlayerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
@@ -247,6 +239,14 @@
 		57D18F9327E184760085A52E /* EnemyModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyModel.cpp; sourceTree = "<group>"; };
 		57D18F9727E184900085A52E /* EnemyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyModel.h; sourceTree = "<group>"; };
 		57FEE39E27F145D600D7EF23 /* RayCastController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RayCastController.h; sourceTree = "<group>"; };
+		57FEE3E527F69C7800D7EF23 /* TankController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TankController.h; sourceTree = "<group>"; };
+		57FEE3E627F69C7800D7EF23 /* TurtleController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TurtleController.cpp; sourceTree = "<group>"; };
+		57FEE3E727F69C7800D7EF23 /* TankController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TankController.cpp; sourceTree = "<group>"; };
+		57FEE3E827F69C7800D7EF23 /* GruntController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GruntController.cpp; sourceTree = "<group>"; };
+		57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShotgunnerController.cpp; sourceTree = "<group>"; };
+		57FEE3EA27F69C7800D7EF23 /* ShotgunnerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotgunnerController.h; sourceTree = "<group>"; };
+		57FEE3EB27F69C7800D7EF23 /* GruntController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GruntController.h; sourceTree = "<group>"; };
+		57FEE3EC27F69C7800D7EF23 /* TurtleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleController.h; sourceTree = "<group>"; };
 		CA53F11727ED96E800F2699C /* OpenMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenMap.cpp; sourceTree = "<group>"; };
 		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
@@ -450,17 +450,17 @@
 			path = models;
 			sourceTree = "<group>";
 		};
-		57A1E56227E6A6A1009EF19A /* enemies */ = {
+		57FEE3E427F69C7800D7EF23 /* enemies */ = {
 			isa = PBXGroup;
 			children = (
-				57A1E56327E6A6A1009EF19A /* TankController.h */,
-				57A1E56427E6A6A1009EF19A /* TurtleController.cpp */,
-				57A1E56527E6A6A1009EF19A /* TankController.cpp */,
-				57A1E56627E6A6A1009EF19A /* GruntController.cpp */,
-				57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */,
-				57A1E56827E6A6A1009EF19A /* ShotgunnerController.h */,
-				57A1E56927E6A6A1009EF19A /* GruntController.h */,
-				57A1E56A27E6A6A1009EF19A /* TurtleController.h */,
+				57FEE3E527F69C7800D7EF23 /* TankController.h */,
+				57FEE3E627F69C7800D7EF23 /* TurtleController.cpp */,
+				57FEE3E727F69C7800D7EF23 /* TankController.cpp */,
+				57FEE3E827F69C7800D7EF23 /* GruntController.cpp */,
+				57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */,
+				57FEE3EA27F69C7800D7EF23 /* ShotgunnerController.h */,
+				57FEE3EB27F69C7800D7EF23 /* GruntController.h */,
+				57FEE3EC27F69C7800D7EF23 /* TurtleController.h */,
 			);
 			path = enemies;
 			sourceTree = "<group>";
@@ -508,9 +508,9 @@
 		D52E672C27BF305900F8E2B8 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				57FEE3E427F69C7800D7EF23 /* enemies */,
 				D578BFBF27F0A32600C7B05F /* TerminalController.cpp */,
 				D578BFC327F0A32600C7B05F /* TerminalController.h */,
-				57D18F7E27E14F100085A52E /* enemies */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
 				57CEFE4227DE5E6100EF2B90 /* EnemyController.h */,
 				D58B0FC827DC1BC500E65692 /* Controller.h */,
@@ -540,13 +540,6 @@
 				CAB1A84B27F23CD3000B9F20 /* Dash.cpp */,
 			);
 			path = actions;
-			sourceTree = "<group>";
-		};
-		D537397F27DF086C00997ED1 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D578BFC727F0A33400C7B05F /* voting_scenes */ = {
@@ -677,7 +670,6 @@
 				EB4880FC1D74AAB600EFC946 /* Frameworks */,
 				EBBF18921D74904A008E2001 /* Products */,
 				EBB3D284201444B300E6A7CD /* CUGL.xcodeproj */,
-				D537397F27DF086C00997ED1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -910,24 +902,24 @@
 				D57971F427D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */,
 				5737DA7B27C5E62E00D1692A /* Player.cpp in Sources */,
+				57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
-				57A1E57327E6A6A1009EF19A /* TankController.cpp in Sources */,
 				CA9B3EB227DE9A6900755902 /* HostGameScene.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
-				57A1E57027E6A6A1009EF19A /* TurtleController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D578BFC627F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
+				57FEE3F527F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673F27BF305A00F8E2B8 /* Attack.cpp in Sources */,
+				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
 				CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
+				57FEE3F227F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FD027DC1BC500E65692 /* LevelController.cpp in Sources */,
-				57A1E57927E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */,
-				57A1E57627E6A6A1009EF19A /* GruntController.cpp in Sources */,
 				EB9CDA3925D0EAB100EE1A09 /* main.cpp in Sources */,
 				D56B743D27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */,
@@ -956,24 +948,24 @@
 				D57971F327D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */,
 				5737DA7A27C5E62E00D1692A /* Player.cpp in Sources */,
+				57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
-				57A1E57227E6A6A1009EF19A /* TankController.cpp in Sources */,
 				CA9B3EB127DE9A6900755902 /* HostGameScene.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
-				57A1E56F27E6A6A1009EF19A /* TurtleController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
-        57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
-        D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
+				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
+				57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
+				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
 				CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
+				57FEE3F127F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCF27DC1BC500E65692 /* LevelController.cpp in Sources */,
-				57A1E57827E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */,
-				57A1E57527E6A6A1009EF19A /* GruntController.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
 				D56B743C27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */,
@@ -1002,25 +994,24 @@
 				D57971F227D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */,
 				5737DA7927C5E62E00D1692A /* Player.cpp in Sources */,
+				57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
-				57A1E57127E6A6A1009EF19A /* TankController.cpp in Sources */,
 				CA9B3EB027DE9A6900755902 /* HostGameScene.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
-				57A1E56E27E6A6A1009EF19A /* TurtleController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
 				D52E673D27BF305A00F8E2B8 /* Attack.cpp in Sources */,
-        57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
-        57D18F9027E14F100085A52E /* ShotgunnerController.cpp in Sources */,
-        D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
+				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				57FEE3F327F69C7800D7EF23 /* GruntController.cpp in Sources */,
+				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
+				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,
 				CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
+				57FEE3F027F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCE27DC1BC500E65692 /* LevelController.cpp in Sources */,
-				57A1E57727E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */,
-				57A1E57427E6A6A1009EF19A /* GruntController.cpp in Sources */,
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				D56B743B27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */,

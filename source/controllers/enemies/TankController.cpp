@@ -1,7 +1,7 @@
 #include "TankController.h"
 
 #define MIN_DISTANCE 300
-#define ATTACK_RANGE 30
+#define ATTACK_RANGE 50
 
 #pragma mark Tank Controller
 

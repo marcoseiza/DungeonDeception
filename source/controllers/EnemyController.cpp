@@ -5,6 +5,10 @@
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 100
 
+#define NUM_RAYCASTS 16
+#define RAYCAST_LENGTH 20
+#define NUM_WEIGHTS 12
+
 #define MAX_SPEED 0.1f
 
 #pragma mark EnemyController
@@ -35,7 +39,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
-  diff.scale(enemy->getSpeed()*0.75);
+  diff.scale(enemy->getSpeed()*0.75); // Make speed slower when strafing
   enemy->move(diff.x, diff.y);
 }
 
@@ -110,8 +114,8 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   float theta = 0;
   b2Vec2 p1 = b2Vec2(enemy->getPosition().x, enemy->getPosition().y);
   b2Vec2 p2;
-  for (int i = 0; i < 16; i++) {
-    p2 = b2Vec2(p1.x + 20*cos(theta), p1.y + 20*sin(theta)); // The ray cast end point.
+  for (int i = 0; i < NUM_RAYCASTS; i++) {
+    p2 = b2Vec2(p1.x + RAYCAST_LENGTH*cos(theta), p1.y + RAYCAST_LENGTH*sin(theta)); // The ray cast end point.
     RayCastController raycast;
     _world->getWorld()->RayCast(&raycast, p1, p2); // Perform ray cast.
     // Get fixture and body names for checking ray cast hits.
@@ -152,7 +156,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
         float dot = cugl::Vec2::dot(ob_vec, weight_vec);
         _weights[i] -= dot;
       }
-      theta += M_PI/6;
+      theta += M_PI/(NUM_RAYCASTS/2);
     }
   }
   
@@ -160,11 +164,11 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   cugl::Vec2 p = player->getPosition() - enemy->getPosition();
   p.normalize();
   theta = 0;
-  for (int i = 0; i < 12; i++) {
+  for (int i = 0; i < NUM_WEIGHTS; i++) {
     // If attacking, move at a normal instead of directly at the player.
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
       // Determine the angle in which the enemy wants to move, to figure out if it should move in CW or CCW.
-      cugl::Vec2 plus = p + cugl::Vec2(cos(i * M_PI/6)*_weights[i], sin(i * M_PI/6)*_weights[i]);
+      cugl::Vec2 plus = p + cugl::Vec2(cos(i * M_PI/(NUM_WEIGHTS/2))*_weights[i], sin(i * M_PI/(NUM_WEIGHTS/2))*_weights[i]);
       plus.normalize();
       float angle = cugl::Vec2::angle(p, plus);
       if (angle != 0) {
@@ -179,7 +183,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       float dot = cugl::Vec2::dot(p, weight_vec);
       _weights[i] += dot;
     }
-    theta += M_PI/6;
+    theta += M_PI/(NUM_WEIGHTS/2);
   }
   
   // Adjust weights to slightly prefer current direction.
@@ -188,26 +192,26 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
     cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
     float dot = cugl::Vec2::dot(direc, _direction);
     _weights[i] += dot/5;
-    theta += M_PI/6;
+    theta += M_PI/(NUM_WEIGHTS/2);
   }
   
   // Find the weight with the highest value, move in that direction.
   // In case of tie, will take the weight in the most CCW direction from theta = 0.
   float highest = _weights[0];
   int highest_ind = 0;
-  for (int i = 1; i < 12; i++) {
+  for (int i = 1; i < NUM_WEIGHTS; i++) {
     if (_weights[i] > _weights[highest_ind]) {
       highest = _weights[i];
       highest_ind = i;
     }
   }
-  _direction = cugl::Vec2(cos(highest_ind * M_PI/6), sin(highest_ind * M_PI/6));
+  _direction = cugl::Vec2(cos(highest_ind * M_PI/(NUM_WEIGHTS/2)), sin(highest_ind * M_PI/(NUM_WEIGHTS/2)));
   
   // Visualize the weights, if debug mode is on.
   if (_debug_node->isVisible()) {
     theta = 0;
-    for (int i = 0; i < 12; i++) {
-      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + 25*cos(theta), enemy->getPosition().y + 25*sin(theta));
+    for (int i = 0; i < NUM_WEIGHTS; i++) {
+      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + RAYCAST_LENGTH*cos(theta), enemy->getPosition().y + RAYCAST_LENGTH*sin(theta));
       cugl::Path2 x = cugl::Path2();
       x.push(enemy->getPosition());
       x.push(p4);
@@ -217,7 +221,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       cugl::Poly2 p = ex.getPolygon();
       enemy->_polys.at(i)->setVisible(true);
       enemy->_polys.at(i)->setPolygon(p);
-      enemy->_polys.at(i)->setPosition(cugl::Vec2(enemy->getPosition().x + 12.5*cos(theta), enemy->getPosition().y + 12.5*sin(theta)));
+      enemy->_polys.at(i)->setPosition(cugl::Vec2(enemy->getPosition().x + (RAYCAST_LENGTH/2)*cos(theta), enemy->getPosition().y + (RAYCAST_LENGTH/2)*sin(theta)));
       if (_weights[i] < 0) {
         enemy->_polys.at(i)->setColor(cugl::Color4::RED);
       } else {
@@ -226,7 +230,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       if (i == highest_ind) {
         enemy->_polys.at(i)->setColor(cugl::Color4::BLUE);
       }
-      theta += M_PI/6;
+      theta += M_PI/(NUM_WEIGHTS/2);
     }
   }
   

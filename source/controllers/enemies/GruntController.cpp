@@ -8,16 +8,16 @@
 
 void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= 0) {
-    // Instead of making a bullet, make the grunt dash!
-    
+    // TODO: Make the grunt dash towards the player instead of firing a bullet.
+    enemy->addBullet(p);
     enemy->setAttackCooldown(120);
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    diff.add(_direction);
+    diff.scale(enemy->getSpeed()*0.75);
+    enemy->move(diff.x, diff.y);
   }
-  
-  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
-  diff.normalize();
-  diff.add(_direction);
-  diff.scale(enemy->getSpeed()*0.75);
-  enemy->move(diff.x, diff.y);
 }
 
 bool GruntController::init(
