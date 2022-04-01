@@ -39,13 +39,8 @@ void ShotgunnerController::skirtPlayer(std::shared_ptr<EnemyModel> enemy,
 void ShotgunnerController::changeStateIfApplicable(
     std::shared_ptr<EnemyModel> enemy, float distance) {
   // Change state if applicable
-  int health = enemy->getHealth();
   if (distance <= ATTACK_RANGE) {
-    if (health <= HEALTH_LIM) {
-      enemy->setCurrentState(EnemyModel::State::SKIRTING);
-    } else {
-      enemy->setCurrentState(EnemyModel::State::ATTACKING);
-    }
+    enemy->setCurrentState(EnemyModel::State::ATTACKING);
   } else if (distance <= MIN_DISTANCE) {
     enemy->setCurrentState(EnemyModel::State::CHASING);
   } else {

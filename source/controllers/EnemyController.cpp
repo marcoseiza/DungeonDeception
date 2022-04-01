@@ -30,15 +30,13 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   if (enemy->getAttackCooldown() <= 0) {
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
-    enemy->move(0, 0);
-  } else {
-    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
-    diff.normalize();
-    diff.add(_direction);
-    diff.scale(enemy->getSpeed()*0.75);
-    enemy->move(diff.x, diff.y);
   }
-//  enemy->move(0, 0);
+  
+  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+  diff.normalize();
+  diff.add(_direction);
+  diff.scale(enemy->getSpeed()*0.75);
+  enemy->move(diff.x, diff.y);
 }
 
 void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,

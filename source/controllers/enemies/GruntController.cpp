@@ -6,6 +6,20 @@
 
 #pragma mark GruntController
 
+void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+  if (enemy->getAttackCooldown() <= 0) {
+    // Instead of making a bullet, make the grunt dash!
+    
+    enemy->setAttackCooldown(120);
+  }
+  
+  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+  diff.normalize();
+  diff.add(_direction);
+  diff.scale(enemy->getSpeed()*0.75);
+  enemy->move(diff.x, diff.y);
+}
+
 bool GruntController::init(
     std::shared_ptr<cugl::AssetManager> assets,
     std::shared_ptr<cugl::physics2::ObstacleWorld> world,
