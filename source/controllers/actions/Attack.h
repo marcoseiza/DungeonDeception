@@ -76,6 +76,19 @@ class Attack : public Action {
    */
   virtual bool dispose() override;
 
+  /** Reset all the internal input values. */
+  void reset() override {
+    _show_joystick_base = false;
+    _joystick_anchor.set(cugl::Vec2::ZERO);
+    _joystick_diff.set(cugl::Vec2::ZERO);
+  }
+
+  /** Pause all input. */
+  virtual void pause() override { _button->deactivate(); }
+
+  /** Resume all input. */
+  virtual void resume() override { _button->activate(); }
+
   /**
    * This method allocates Attack and initializes it.
    *
@@ -93,6 +106,11 @@ class Attack : public Action {
    * @return If player is currently attacking.
    */
   bool isAttacking() const { return _prev_down && !_curr_down; }
+  
+  /**
+   * @return If player is holding attack button.
+   */
+  bool holdAttack() const { return _prev_down && _curr_down; }
 
   /**
    * Toggels activation on attack button. When deactivated, the button cannot

@@ -75,6 +75,22 @@ class Movement : public Action {
    */
   virtual bool dispose() override;
 
+  /** Reset all the internal input values. */
+  void reset() override {
+    _show_joystick = false;
+#ifdef CU_TOUCH_SCREEN
+    _touch_ids.clear();
+#endif
+    _joystick_anchor.set(cugl::Vec2::ZERO);
+    _joystick_diff.set(cugl::Vec2::ZERO);
+  }
+
+  /** Pause all input. */
+  virtual void pause() override {}
+
+  /** Resume all input. */
+  virtual void resume() override {}
+
   /**
    * This method allocates Movement and initializes it.
    *

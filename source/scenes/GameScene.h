@@ -7,6 +7,8 @@
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
 #include "../controllers/RayCastController.h"
+#include "../controllers/PlayerController.h"
+#include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
 #include "../controllers/enemies/ShotgunnerController.h"
 #include "../controllers/enemies/TankController.h"
@@ -39,6 +41,9 @@ class GameScene : public cugl::Scene2 {
   /** The Box2d world */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
 
+  /** The player controller for the game*/
+  std::shared_ptr<PlayerController> _player_controller;
+
   /** The grunt controller for the game. */
   std::shared_ptr<GruntController> _grunt_controller;
   /** The shotgunner controller for the game. */
@@ -51,12 +56,15 @@ class GameScene : public cugl::Scene2 {
   /** The level controller for the game*/
   std::shared_ptr<LevelController> _level_controller;
 
+  /** The terminal controller for voting in the game. */
+  std::shared_ptr<TerminalController> _terminal_controller;
+  
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
-  
+
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
-  
+
   /** The serializer used to serialize complex data to send through the network.
    */
   cugl::NetworkSerializer _serializer;
@@ -225,7 +233,7 @@ class GameScene : public cugl::Scene2 {
   void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
     _network = network;
   }
-  
+
   /**
    * Sets the map SceneNode.
    */
@@ -284,6 +292,14 @@ class GameScene : public cugl::Scene2 {
    * @param room_id the room the enemy is in
    */
   void sendEnemyHitNetworkInfo(int id, int room_id);
+
+  /**
+   * Broadcast a player being added to a terminal to the host.
+   *
+   * @param room_id
+   * @param player_id
+   */
+  void sendTerminalAddPlayerInfo(int room_id, int player_id);
 
   /**
    * Updates the position of the player with the corresponding player_id in

@@ -50,6 +50,19 @@ class OpenMap : public Action {
    */
   virtual bool dispose() override;
 
+  /** Reset all the internal input values. */
+  virtual void reset() override {
+    _prev_down = false;
+    _curr_down = false;
+    _butt_down = false;
+  }
+
+  /** Pause all input. */
+  virtual void pause() override { _button->deactivate(); }
+
+  /** Resume all input. */
+  virtual void resume() override { _button->activate(); }
+
   /**
    * This method allocates OpenMap and initializes it.
    *
@@ -69,18 +82,11 @@ class OpenMap : public Action {
   bool didOpenMap() const { return _prev_down && !_curr_down; }
 
   /**
-   * Toggles the activation of the map button. When deactivated, the button cannot be pressed.
+   * Toggles the activation of the map button. When deactivated, the button
+   * cannot be pressed.
    * @param value The activation state.
    */
   void setActive(bool value);
-
-#ifdef CU_TOUCH_SCREEN
-
-  /** Touch listener for when the player moves their finger. */
-  void touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
-                  bool focus);
-
-#endif  // CU_TOUCH_SCREEN
 
   OpenMap();
   ~OpenMap() {}

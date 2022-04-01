@@ -25,7 +25,7 @@ bool LevelController::init(
   return true;
 }
 
-void LevelController::update() {
+void LevelController::update(float timestep) {
   std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
   std::shared_ptr<Player> player = _level_model->getPlayer();
   float rel_player_y =
@@ -117,10 +117,14 @@ void LevelController::populate() {
     room_node->setVisible(false);
 
     auto room_model = RoomModel::alloc(room_node, room->_key);
+    room_model->setType(room->_type);
+    if (room->_type == RoomType::TERMINAL) {
+      room_model->setNumPlayersRequired(room->_num_players_for_terminal);
+    }
     _level_model->addRoom(room->_key, room_model);
 
     // Make spawn the starting point.
-    if (room->_type == level_gen::Room::RoomType::SPAWN) {
+    if (room->_type == RoomType::SPAWN) {
       _level_model->setCurrentRoom(room->_key);
       room_node->setVisible(true);
     }
@@ -249,8 +253,7 @@ void LevelController::instantiateEnemies(
     enemy->setRoomPos(room_model->getNode()->getPosition());
     room_model->getNode()->addChild(enemy->getNode());
     _world->addObstacle(enemy);
-    if (room->_type != level_gen::Room::RoomType::SPAWN)
-      enemy->setEnabled(false);
+    if (room->_type != RoomType::SPAWN) enemy->setEnabled(false);
 
     enemy->setDebugScene(_debug_node);
     enemy->setDebugColor(cugl::Color4(cugl::Color4::BLACK));

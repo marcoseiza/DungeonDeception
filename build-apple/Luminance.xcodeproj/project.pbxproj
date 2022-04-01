@@ -28,6 +28,9 @@
 		57A1E57727E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
 		57A1E57827E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
 		57A1E57927E6A6A1009EF19A /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E56727E6A6A1009EF19A /* ShotgunnerController.cpp */; };
+		57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
+		57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
+		57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
 		57CEFE3B27DDA80900EF2B90 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */; };
 		57CEFE3C27DDA80900EF2B90 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */; };
 		57CEFE3D27DDA80900EF2B90 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */; };
@@ -91,6 +94,12 @@
 		D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
 		D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
 		D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
+		D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFBF27F0A32600C7B05F /* TerminalController.cpp */; };
+		D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFBF27F0A32600C7B05F /* TerminalController.cpp */; };
+		D578BFC627F0A32600C7B05F /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFBF27F0A32600C7B05F /* TerminalController.cpp */; };
+		D578BFCA27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */; };
+		D578BFCB27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */; };
+		D578BFCC27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */; };
 		D579718727CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
 		D579718827CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
 		D579718927CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
@@ -229,6 +238,8 @@
 		57A1E56827E6A6A1009EF19A /* ShotgunnerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotgunnerController.h; sourceTree = "<group>"; };
 		57A1E56927E6A6A1009EF19A /* GruntController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GruntController.h; sourceTree = "<group>"; };
 		57A1E56A27E6A6A1009EF19A /* TurtleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleController.h; sourceTree = "<group>"; };
+		57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
+		57A1E55527E3BF2C009EF19A /* PlayerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
 		57CEFE3E27DDA84A00EF2B90 /* Projectile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Projectile.h; sourceTree = "<group>"; };
 		57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyController.cpp; sourceTree = "<group>"; };
@@ -273,6 +284,10 @@
 		D56B743A27CA9DCE00710CC6 /* LevelGeneratorConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelGeneratorConfig.h; sourceTree = "<group>"; };
 		D56DCD2927CDAD7A002E8363 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		D56DCD2A27CDAD7A002E8363 /* Room.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Room.cpp; sourceTree = "<group>"; };
+		D578BFBF27F0A32600C7B05F /* TerminalController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerminalController.cpp; sourceTree = "<group>"; };
+		D578BFC327F0A32600C7B05F /* TerminalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalController.h; sourceTree = "<group>"; };
+		D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitForPlayersScene.cpp; sourceTree = "<group>"; };
+		D578BFC927F0A33400C7B05F /* WaitForPlayersScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitForPlayersScene.h; sourceTree = "<group>"; };
 		D579718227CFF851008FCC5E /* BasicTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicTile.cpp; sourceTree = "<group>"; };
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
@@ -288,6 +303,7 @@
 		D598E69927C57E3C0039326B /* LevelGenerator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LevelGenerator.cpp; sourceTree = "<group>"; };
 		D598E69A27C57E3C0039326B /* LevelGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelGenerator.h; sourceTree = "<group>"; };
 		D5A1467827E38A57002B3FFD /* tiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tiles; sourceTree = "<group>"; };
+		D5B8BE5327F421F500A4A836 /* RoomTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTypes.h; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
@@ -469,6 +485,7 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D578BFC727F0A33400C7B05F /* voting_scenes */,
 				D52E672827BF305900F8E2B8 /* GameScene.h */,
 				D52E672B27BF305900F8E2B8 /* GameScene.cpp */,
 				CA9B3EAB27DE9A6900755902 /* HostGameScene.h */,
@@ -491,7 +508,9 @@
 		D52E672C27BF305900F8E2B8 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				57A1E56227E6A6A1009EF19A /* enemies */,
+				D578BFBF27F0A32600C7B05F /* TerminalController.cpp */,
+				D578BFC327F0A32600C7B05F /* TerminalController.h */,
+				57D18F7E27E14F100085A52E /* enemies */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
 				57CEFE4227DE5E6100EF2B90 /* EnemyController.h */,
 				D58B0FC827DC1BC500E65692 /* Controller.h */,
@@ -501,6 +520,8 @@
 				D52E672E27BF305900F8E2B8 /* InputController.h */,
 				D52E672F27BF305900F8E2B8 /* actions */,
 				57FEE39E27F145D600D7EF23 /* RayCastController.h */,
+				57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */,
+				57A1E55527E3BF2C009EF19A /* PlayerController.h */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -528,6 +549,15 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		D578BFC727F0A33400C7B05F /* voting_scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */,
+				D578BFC927F0A33400C7B05F /* WaitForPlayersScene.h */,
+			);
+			path = voting_scenes;
+			sourceTree = "<group>";
+		};
 		D57971ED27D026E4008FCC5E /* loaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,6 +570,7 @@
 		D579722427D14F01008FCC5E /* level_gen */ = {
 			isa = PBXGroup;
 			children = (
+				D5B8BE5327F421F500A4A836 /* RoomTypes.h */,
 				D5CF094D27D6C94D00880F15 /* DefaultRooms.h */,
 				D56DCD2927CDAD7A002E8363 /* Room.h */,
 				D56DCD2A27CDAD7A002E8363 /* Room.cpp */,
@@ -760,7 +791,7 @@
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 37AKFHT6H5;
+						DevelopmentTeam = 3CZ5TUZ2PQ;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -885,6 +916,8 @@
 				CA9B3EB227DE9A6900755902 /* HostGameScene.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E57027E6A6A1009EF19A /* TurtleController.cpp in Sources */,
+				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				D578BFC627F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
 				D52E673F27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
@@ -908,6 +941,7 @@
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D58B972B27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22B27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
+				D578BFCC27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */,
 				D52E673627BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
 				CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
@@ -929,6 +963,8 @@
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E56F27E6A6A1009EF19A /* TurtleController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
+        57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+        D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
@@ -951,6 +987,7 @@
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D58B972A27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22A27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
+				D578BFCB27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */,
 				D52E673527BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
 				CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
@@ -973,6 +1010,9 @@
 				57A1E56E27E6A6A1009EF19A /* TurtleController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
 				D52E673D27BF305A00F8E2B8 /* Attack.cpp in Sources */,
+        57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+        57D18F9027E14F100085A52E /* ShotgunnerController.cpp in Sources */,
+        D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -994,6 +1034,7 @@
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D58B972927DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22927DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
+				D578BFCA27F0A33400C7B05F /* WaitForPlayersScene.cpp in Sources */,
 				D52E673427BF305A00F8E2B8 /* LoadingScene.cpp in Sources */,
 				CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */,
 			);
@@ -1062,13 +1103,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.Luminance-Marcos";
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1084,13 +1125,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.Luminance-Marcos";
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

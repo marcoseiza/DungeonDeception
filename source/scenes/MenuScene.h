@@ -64,8 +64,7 @@ class MenuScene : public cugl::Scene2 {
    * @return the user's menu choice.
    */
   Choice getChoice() const { return _choice; }
-  
-  
+
   /**
    * Sets whether the scene is currently active
    *
@@ -76,7 +75,6 @@ class MenuScene : public cugl::Scene2 {
    * @param value whether the scene is currently active
    */
   virtual void setActive(bool value) override;
-  
 };
 
 #endif /* SCENES_MENU_SCENE_H_ */

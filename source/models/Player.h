@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 #include <stdio.h>
 
+#include "Projectile.h"
 #include "Sword.h"
 
 class Player : public cugl::physics2::CapsuleObstacle {
@@ -38,21 +39,29 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
+
+  /** Is this player dead? */
+  bool _isDead;
+
+  /** Represents the offset between the center of the player and the center of
+   * the capsule obstacle. */
+  cugl::Vec2 _offset_from_center;
+
+  /** The list of slashes that have been released from the sword. */
+  std::unordered_set<std::shared_ptr<Projectile>> _slashes;
+
+ public:
   /** Countdown to change animation frame. */
   int _frame_count;
   /** Countdown for attacking frames. */
   int _attack_frame_count;
   /** Countdown for hurting frames. */
   int _hurt_frames;
-
-  /** Is this player dead? */
-  bool isDead;
-
-  /** Represents the offset between the center of the player and the center of
-   * the capsule obstacle. */
-  cugl::Vec2 _offset_from_center;
-
- public:
+  /** Countdown for holding attack button. */
+  int _hold_attack;
+  /** Whether the player can make a sword slash. */
+  bool _can_make_slash;
+  
 #pragma mark Constructors
   /**
    * Creates a player with the given position and data.
@@ -152,6 +161,36 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void dies();
 
   /**
+   * Returns if the player is dead;
+   *
+   * @return if player is dead.
+   */
+  bool getDead() const { return _isDead; }
+
+  /**
+   * Sets if the player is dead
+   *
+   * @param dead if player is dead.
+   */
+  void setDead(bool dead) { _isDead = dead; }
+
+  /**
+   * Returns the player's offset from the center.
+   *
+   * @return the offset from center.
+   */
+  cugl::Vec2 getOffset() const { return _offset_from_center; }
+
+  /**
+   * Returns the player's slashes made.
+   *
+   * @return the slashes.
+   */
+  std::unordered_set<std::shared_ptr<Projectile>> getSlashes() {
+    return _slashes;
+  }
+
+  /**
    * Update the scene graph.
    *
    * @param delta the timing value.
@@ -230,15 +269,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param forwardX Amount to move in the x direction
    * @param forwardY Amount to move in the y direction
+   * @param attackDir Direction of attack.
    */
   void animate(float forwardX, float forwardY);
 
 #pragma mark Movement
-  /**
-   * Updates the player.
-   */
-  void step(float timestep, cugl::Vec2 forward, bool didDash, bool didAttack,
-            std::shared_ptr<Sword> sword);
 
   /**
    * Moves the player by the specified amount.
@@ -256,10 +291,20 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void move(float forwardX, float forwardY);
 
   /**
-   * Attacks if the player hit the attack button.
+   * Make a sword slash projectile.
    *
-   * @param didAttack If the player attacked.
+   * @param attackDir the direction to make the sword slash towards.
+   * @param swordPos the position of the sword to make the slash originate.
    */
-  void attack(bool didAttack, std::shared_ptr<Sword> sword);
+  void makeSlash(cugl::Vec2 attackDir, cugl::Vec2 swordPos);
+
+  /**
+   * Delete the sword slash.
+   *
+   * @param world  the world to delete the sword slash from.
+   * @param world_node the world_node to delete the sword slash from.
+   */
+  void checkDeleteSlashes(std::shared_ptr<cugl::physics2::ObstacleWorld> world,
+                          std::shared_ptr<cugl::scene2::SceneNode> world_node);
 };
 #endif /* PLAYER_H */

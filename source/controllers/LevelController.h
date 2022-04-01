@@ -70,7 +70,7 @@ class LevelController : public Controller {
   }
 
   /** Update the Level Controller. */
-  void update() override;
+  void update(float timestep) override;
 
   /** Dispose of the level controller and all it's values. */
   void dispose() override;

@@ -1,9 +1,13 @@
 #ifndef MODELS_ROOM_MODEL_H_
 #define MODELS_ROOM_MODEL_H_
 
+#include "./level_gen/RoomTypes.h"
 #include "EnemyModel.h"
 
 class RoomModel {
+  /** This is the room type of the room. */
+  RoomType _type;
+
   /** A reference to the scene2 node for the room. Has all the tiles and enemies
    * for the room. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
@@ -25,11 +29,15 @@ class RoomModel {
   /** The grid layout size for this room (i.e. the width and height of tiles) */
   cugl::Size _grid_size;
 
+  /** The number of players required for activation. */
+  int _num_players_required;
+
  public:
   /**
    * Construct an empty RoomModel, please never use this. Instead use alloc().
    */
-  RoomModel() {}
+  RoomModel()
+      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD) {}
   /** Destroy this RoomModel and all it's internal data. */
   ~RoomModel() { dispose(); }
 
@@ -153,6 +161,30 @@ class RoomModel {
    * @return The enemies.
    */
   std::vector<std::shared_ptr<EnemyModel>>& getEnemies() { return _enemies; }
+
+  /**
+   * Set the room type.
+   * @param type The room type.
+   */
+  void setType(RoomType type) { _type = type; }
+
+  /**
+   * Get the room type.
+   * @return The room type.
+   */
+  int getType() { return _type; }
+
+  /**
+   * Set the number of players required for terminal activation.
+   * @param num The number of players required.
+   */
+  void setNumPlayersRequired(int num) { _num_players_required = num; }
+
+  /**
+   * Get the number of players required for terminal activation.
+   * @return The number of players required.
+   */
+  int getNumPlayersRequired() { return _num_players_required; }
 };
 
 #endif  // MODELS_ROOM_MODEL_H_

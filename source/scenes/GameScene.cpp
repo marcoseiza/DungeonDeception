@@ -10,6 +10,7 @@
 #include "../controllers/actions/Movement.h"
 #include "../controllers/actions/OpenMap.h"
 #include "../loaders/CustomScene2Loader.h"
+#include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
 
 #define SCENE_HEIGHT 720
@@ -82,6 +83,14 @@ bool GameScene::init(
 
   _world_node->doLayout();
 
+  auto terminal_voting_layer =
+      assets->get<cugl::scene2::SceneNode>("terminal-voting-scene");
+  terminal_voting_layer->setContentSize(dim);
+  terminal_voting_layer->doLayout();
+
+  _terminal_controller = TerminalController::alloc(_assets);
+  _controllers.push_back(_terminal_controller);
+
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
@@ -124,6 +133,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(ui_layer);
+  cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
@@ -154,6 +164,9 @@ void GameScene::populate(cugl::Size dim) {
   _my_player->setPlayerNode(player_node);
   _world_node->addChild(player_node);
   _world->addObstacle(_my_player);
+
+  _player_controller = PlayerController::alloc(_my_player, _assets, _world,
+                                               _world_node, _debug_node);
 
   _sword = Sword::alloc(dim / 2.0f);
   _world->addObstacle(_sword);
@@ -223,7 +236,7 @@ void GameScene::update(float timestep) {
   InputController::get()->update();
 
   for (std::shared_ptr<Controller> controller : _controllers) {
-    controller->update();
+    controller->update(timestep);
   }
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
@@ -231,12 +244,9 @@ void GameScene::update(float timestep) {
   }
 
   // Movement
-
-  _my_player->step(timestep, InputController::get<Movement>()->getMovement(),
-                   InputController::get<Dash>()->isDashing(),
-                   InputController::get<Attack>()->isAttacking(), _sword);
-  // Animation
-  _my_player->animate(InputController::get<Movement>()->getMovement());
+  _player_controller->update(
+      timestep, InputController::get<Movement>()->getMovement(),
+      InputController::get<Attack>()->isAttacking(), InputController::get<Dash>()->isDashing(), InputController::get<Attack>()->holdAttack(), _sword);
 
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
@@ -306,6 +316,7 @@ void GameScene::update(float timestep) {
       ++it;
     }
   }
+  _my_player->checkDeleteSlashes(_world, _world_node);
 }
 
 void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id) {
@@ -337,117 +348,147 @@ void GameScene::sendNetworkInfo() {
     _my_player->setPlayerId(*player_id);
   }
   if (_ishost) {
-    std::vector<std::shared_ptr<cugl::JsonValue>> player_positions;
-    std::set<int> rooms_checked_for_enemies;
+    {
+      std::vector<std::shared_ptr<cugl::JsonValue>> player_positions;
+      std::set<int> rooms_checked_for_enemies;
 
-    for (std::shared_ptr<Player> player : _players) {
-      // get player info
+      for (std::shared_ptr<Player> player : _players) {
+        // get player info
 
-      std::shared_ptr<cugl::JsonValue> player_info =
-          cugl::JsonValue::allocObject();
-
-      std::shared_ptr<cugl::JsonValue> player_id =
-          cugl::JsonValue::alloc(static_cast<long>(player->getPlayerId()));
-      player_info->appendChild(player_id);
-      player_id->setKey("player_id");
-
-      std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
-      std::shared_ptr<cugl::JsonValue> pos_x =
-          cugl::JsonValue::alloc(player->getPosition().x);
-      std::shared_ptr<cugl::JsonValue> pos_y =
-          cugl::JsonValue::alloc(player->getPosition().y);
-      pos->appendChild(pos_x);
-      pos->appendChild(pos_y);
-      player_info->appendChild(pos);
-      pos->setKey("position");
-
-      player_positions.push_back(player_info);
-
-      int room_id = player->getRoomId();
-      std::shared_ptr<RoomModel> player_room =
-          _level_controller->getLevelModel()->getRoom(room_id);
-
-      // continue loop when player_room not valid at the beginning
-      if (player_room == nullptr) {
-        continue;
-      }
-
-      // if room has already been checked, continue without adding enemies
-      if (rooms_checked_for_enemies.count(room_id) > 0) {
-        continue;
-      }
-      rooms_checked_for_enemies.insert(room_id);
-
-      // get enemy info only for the rooms that players are in
-      for (std::shared_ptr<EnemyModel> enemy : player_room->getEnemies()) {
-        std::shared_ptr<cugl::JsonValue> enemy_info =
+        std::shared_ptr<cugl::JsonValue> player_info =
             cugl::JsonValue::allocObject();
 
-        std::shared_ptr<cugl::JsonValue> enemy_id =
-            cugl::JsonValue::alloc(static_cast<long>(enemy->getEnemyId()));
-        enemy_info->appendChild(enemy_id);
-        enemy_id->setKey("enemy_id");
+        std::shared_ptr<cugl::JsonValue> player_id =
+            cugl::JsonValue::alloc(static_cast<long>(player->getPlayerId()));
+        player_info->appendChild(player_id);
+        player_id->setKey("player_id");
 
         std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
         std::shared_ptr<cugl::JsonValue> pos_x =
-            cugl::JsonValue::alloc(enemy->getPosition().x);
+            cugl::JsonValue::alloc(player->getPosition().x);
         std::shared_ptr<cugl::JsonValue> pos_y =
-            cugl::JsonValue::alloc(enemy->getPosition().y);
+            cugl::JsonValue::alloc(player->getPosition().y);
         pos->appendChild(pos_x);
         pos->appendChild(pos_y);
-        enemy_info->appendChild(pos);
+        player_info->appendChild(pos);
         pos->setKey("position");
 
-        std::shared_ptr<cugl::JsonValue> enemy_health =
-            cugl::JsonValue::alloc(static_cast<long>(enemy->getHealth()));
-        enemy_info->appendChild(enemy_health);
-        enemy_health->setKey("enemy_health");
+        player_positions.push_back(player_info);
 
-        std::shared_ptr<cugl::JsonValue> enemy_room =
-            cugl::JsonValue::alloc(static_cast<long>(room_id));
-        enemy_info->appendChild(enemy_room);
-        enemy_room->setKey("enemy_room");
+        int room_id = player->getRoomId();
+        std::shared_ptr<RoomModel> player_room =
+            _level_controller->getLevelModel()->getRoom(room_id);
 
-        // TODO network enemy projectiles
+        // continue loop when player_room not valid at the beginning
+        if (player_room == nullptr) {
+          continue;
+        }
 
-        // Serialize one enemy at a time to avoid reaching packet limit
-        _serializer.writeSint32(5);
-        _serializer.writeJson(enemy_info);
+        // if room has already been checked, continue without adding enemies
+        if (rooms_checked_for_enemies.count(room_id) > 0) {
+          continue;
+        }
+        rooms_checked_for_enemies.insert(room_id);
 
-        std::vector<uint8_t> msg2 = _serializer.serialize();
+        // get enemy info only for the rooms that players are in
+        for (std::shared_ptr<EnemyModel> enemy : player_room->getEnemies()) {
+          std::shared_ptr<cugl::JsonValue> enemy_info =
+              cugl::JsonValue::allocObject();
 
-        auto msg2_size = sizeof(sizeof(uint8_t) * msg2.size());
+          std::shared_ptr<cugl::JsonValue> enemy_id =
+              cugl::JsonValue::alloc(static_cast<long>(enemy->getEnemyId()));
+          enemy_info->appendChild(enemy_id);
+          enemy_id->setKey("enemy_id");
 
+          std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
+          std::shared_ptr<cugl::JsonValue> pos_x =
+              cugl::JsonValue::alloc(enemy->getPosition().x);
+          std::shared_ptr<cugl::JsonValue> pos_y =
+              cugl::JsonValue::alloc(enemy->getPosition().y);
+          pos->appendChild(pos_x);
+          pos->appendChild(pos_y);
+          enemy_info->appendChild(pos);
+          pos->setKey("position");
+
+          std::shared_ptr<cugl::JsonValue> enemy_health =
+              cugl::JsonValue::alloc(static_cast<long>(enemy->getHealth()));
+          enemy_info->appendChild(enemy_health);
+          enemy_health->setKey("enemy_health");
+
+          std::shared_ptr<cugl::JsonValue> enemy_room =
+              cugl::JsonValue::alloc(static_cast<long>(room_id));
+          enemy_info->appendChild(enemy_room);
+          enemy_room->setKey("enemy_room");
+
+          // TODO network enemy projectiles
+
+          // Serialize one enemy at a time to avoid reaching packet limit
+          _serializer.writeSint32(5);
+          _serializer.writeJson(enemy_info);
+
+          std::vector<uint8_t> msg2 = _serializer.serialize();
+
+          _serializer.reset();
+          _network->send(msg2);
+        }
+      }
+
+      // Send all player info
+      _serializer.writeSint32(2);
+      _serializer.writeJsonVector(player_positions);
+
+      std::vector<uint8_t> msg = _serializer.serialize();
+
+      _serializer.reset();
+      _network->send(msg);
+    }
+
+    // ======= SEND TERMINAL VOTING INFO ==========
+    {
+      std::unordered_map<int, TerminalController::VotingInfo> voting_info =
+          _terminal_controller->getVotingInfo();
+
+      for (auto it = voting_info.begin(); it != voting_info.end(); ++it) {
+        auto info = cugl::JsonValue::allocObject();
+
+        auto terminal_room_id_info = cugl::JsonValue::alloc(
+            static_cast<long>((it->second).terminal_room_id));
+        info->appendChild(terminal_room_id_info);
+        terminal_room_id_info->setKey("terminal_room_id");
+
+        auto players_ids_info = cugl::JsonValue::allocArray();
+        for (int player_id : (it->second).players) {
+          auto player_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(player_id));
+          players_ids_info->appendChild(player_id_info);
+        }
+        info->appendChild(players_ids_info);
+        players_ids_info->setKey("players");
+
+        _serializer.writeSint32(8);
+        _serializer.writeJson(info);
+
+        std::vector<uint8_t> msg = _serializer.serialize();
         _serializer.reset();
-        _network->send(msg2);
+        _network->send(msg);
       }
     }
 
-    // Send all player info.
-    _serializer.writeSint32(2);
-    _serializer.writeJsonVector(player_positions);
+    {
+      // Send all timer info.
+      std::shared_ptr<cugl::JsonValue> timer_info =
+          cugl::JsonValue::allocObject();
+      std::shared_ptr<cugl::JsonValue> millis_remaining =
+          cugl::JsonValue::alloc(static_cast<long>(getMillisRemaining()));
+      timer_info->appendChild(millis_remaining);
+      millis_remaining->setKey("millis_remaining");
 
-    std::vector<uint8_t> msg = _serializer.serialize();
-
-    auto msg_size =
-        sizeof(std::vector<uint8_t>) + (sizeof(uint8_t) * msg.size());
-
-    _serializer.reset();
-    _network->send(msg);
-
-    // Send all timer info.
-    std::shared_ptr<cugl::JsonValue> timer_info =
-        cugl::JsonValue::allocObject();
-    std::shared_ptr<cugl::JsonValue> millis_remaining =
-        cugl::JsonValue::alloc(static_cast<long>(getMillisRemaining()));
-    timer_info->appendChild(millis_remaining);
-    millis_remaining->setKey("millis_remaining");
-
-    _serializer.writeSint32(3);
-    _serializer.writeJson(timer_info);
-    std::vector<uint8_t> timer_msg = _serializer.serialize();
-    _serializer.reset();
-    _network->send(timer_msg);
+      _serializer.writeSint32(3);
+      _serializer.writeJson(timer_info);
+      std::vector<uint8_t> timer_msg = _serializer.serialize();
+      _serializer.reset();
+      _network->send(timer_msg);
+    }
 
   } else {
     // Send just the current player information.
@@ -502,10 +543,34 @@ void GameScene::sendEnemyHitNetworkInfo(int id, int room_id) {
 
   std::vector<uint8_t> msg = _serializer.serialize();
 
-  auto msg_size = sizeof(sizeof(uint8_t) * msg.size());
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
+}
+
+void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id) {
+  std::shared_ptr<cugl::JsonValue> terminal_info =
+      cugl::JsonValue::allocObject();
+
+  std::shared_ptr<cugl::JsonValue> room_info =
+      cugl::JsonValue::alloc(static_cast<long>(room_id));
+  terminal_info->appendChild(room_info);
+  room_info->setKey("terminal_room_id");
+
+  std::shared_ptr<cugl::JsonValue> player_info =
+      cugl::JsonValue::alloc(static_cast<long>(player_id));
+  terminal_info->appendChild(player_info);
+  player_info->setKey("player_id");
+
+  _serializer.writeSint32(7);
+  _serializer.writeJson(terminal_info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
 
   _serializer.reset();
   _network->sendOnlyToHost(msg);
+  // Send this to host, as sendOnlyToHost doesn't send to host if it was called
+  // by the host.
+  if (_ishost) processData(msg);
 }
 
 /**
@@ -587,7 +652,14 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
         return;
       }
     }
+  } else if (code == 7) {  // Receive one player added to terminal from client.
+    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    _terminal_controller->processNetworkData(code, msg);
+  } else if (code == 8 && !_ishost) {  // Receive voting info from host.
+    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    _terminal_controller->processNetworkData(code, msg);
   }
+
   _deserializer.reset();
 }
 
@@ -696,7 +768,7 @@ void GameScene::beginContact(b2Contact* contact) {
                             _my_player->getRoomId());
   } else if (fx2_name == "enemy_hitbox" && ob1 == _sword.get()) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
-    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
+    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _my_player->getRoomId());
   }
 
@@ -714,9 +786,29 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
   }
 
-  if (ob1->getName() == "projectile" && ob2->getName() == "Wall") {
+  if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
+    dynamic_cast<EnemyModel*>(ob1)->takeDamage();
+    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
+    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
+                            _my_player->getRoomId());
+  } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
+    dynamic_cast<EnemyModel*>(ob2)->takeDamage();
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-  } else if (ob2->getName() == "projectile" && ob1->getName() == "Wall") {
+    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
+                            _my_player->getRoomId());
+  }
+
+  if (ob1->getName() == "projectile" && ob2 == _sword.get()) {
+    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
+  } else if (ob2->getName() == "projectile" && ob1 == _sword.get()) {
+    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
+  }
+
+  if ((ob1->getName() == "projectile" || ob1->getName() == "slash") &&
+      ob2->getName() == "Wall") {
+    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
+  } else if ((ob2->getName() == "projectile" || ob1->getName() == "slash") &&
+             ob1->getName() == "Wall") {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
   }
 
@@ -729,11 +821,25 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "terminal_range" && ob2 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
+      std::shared_ptr<RoomModel> room =
+          _level_controller->getLevelModel()->getCurrentRoom();
+      _terminal_controller->setActive(room->getKey(),
+                                      room->getNumPlayersRequired());
+
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
+
       dynamic_cast<TerminalSensor*>(ob1)->activate();
       _num_terminals_activated += 1;
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
+      std::shared_ptr<RoomModel> room =
+          _level_controller->getLevelModel()->getCurrentRoom();
+      _terminal_controller->setActive(room->getKey(),
+                                      room->getNumPlayersRequired());
+
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
+
       dynamic_cast<TerminalSensor*>(ob2)->activate();
       _num_terminals_activated += 1;
     }

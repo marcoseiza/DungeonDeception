@@ -37,7 +37,7 @@ class Projectile : public cugl::physics2::CapsuleObstacle {
    *
    * @return  true if the obstacle is initialized properly, false otherwise.
    */
-  virtual bool init(const cugl::Vec2 pos, const cugl::Vec2 v);
+  bool init(const cugl::Vec2 pos, const cugl::Vec2 v);
 
   /**
    * Disposes the projectile.

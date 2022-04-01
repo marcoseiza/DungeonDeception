@@ -9,7 +9,7 @@ bool TerminalSensor::init(const cugl::Vec2 pos, string name) {
   cugl::Vec2 pos_ = pos;
   cugl::Size size_ = cugl::Size(WIDTH, HEIGHT);
 
-  //size_.height *= HEIGHT_SHRINK;
+  // size_.height *= HEIGHT_SHRINK;
   pos_.y -= HEIGHT / 2.0f - size_.height / 2.0f;
 
   BoxObstacle::init(pos_, size_);

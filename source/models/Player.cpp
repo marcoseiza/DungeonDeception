@@ -39,7 +39,7 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
-  isDead = false;
+  _isDead = false;
 
   setDensity(0.01f);
   setFriction(0.0f);
@@ -50,7 +50,7 @@ bool Player::init(const cugl::Vec2 pos, string name) {
 }
 
 void Player::takeDamage() {
-  if (_hurt_frames == 0) {
+  if (_hurt_frames <= 0) {
     reduceHealth(5);
     _player_node->setColor(cugl::Color4::RED);
     _hurt_frames = HURT_FRAMES;
@@ -58,36 +58,9 @@ void Player::takeDamage() {
 }
 
 void Player::dies() {
-  isDead = true;
+  _isDead = true;
   _player_node->setColor(cugl::Color4::RED);
   _hurt_frames = DEAD_FRAMES;
-}
-
-void Player::step(float timestep, cugl::Vec2 forward, bool didDash,
-                  bool didAttack, std::shared_ptr<Sword> sword) {
-  if (didDash) {
-    forward.scale(10);
-  }
-  move(forward);
-  attack(didAttack, sword);
-
-  if (_hurt_frames <= 0) {
-    _player_node->setColor(cugl::Color4::WHITE);
-    _hurt_frames = 0;
-  } else {
-    _hurt_frames--;
-  }
-
-  // CHECK IF RAN OUT OF HEALTH
-  if (_health <= 0 && !isDead) {
-    dies();
-  }
-
-  // CHECK IF HAS BEEN DEAD FOR LONG ENOUGH TO REVIVE
-  if (isDead && _hurt_frames == 0) {
-    setHealth(HEALTH);
-    isDead = false;
-  }
 }
 
 #pragma mark Animation & Drawing
@@ -180,49 +153,34 @@ void Player::animate(float forwardX, float forwardY) {
   }
 }
 
-#pragma mark Movement
-
 void Player::move(float forwardX, float forwardY) {
-  if (!isDead) {
-    setVX(200 * forwardX);
-    setVY(200 * forwardY);
-    if (forwardX == 0) setVX(0);
-    if (forwardY == 0) setVY(0);
-
-    // Switch states.
-    if (forwardX != 0 || forwardY != 0) {
-      setState(MOVING);
-    } else {
-      setState(IDLE);
-    }
-  } else {
-    setVX(0);
-    setVY(0);
-    setState(IDLE);
-  }
+  setVX(200 * forwardX);
+  setVY(200 * forwardY);
+  if (forwardX == 0) setVX(0);
+  if (forwardY == 0) setVY(0);
 }
 
-void Player::attack(bool didAttack, std::shared_ptr<Sword> sword) {
-  if (!isDead) {
-    // Set the sword adjacent to the player
-    sword->moveSword(getPosition() + _offset_from_center,
-                     cugl::Vec2(getVX(), getVY()),
-                     _player_node->isFlipHorizontal());
+void Player::makeSlash(cugl::Vec2 attackDir, cugl::Vec2 swordPos) {
+  // Make the sword slash projectile
+  auto slash = Projectile::alloc(swordPos, attackDir);
+  _slashes.emplace(slash);
+  slash->setPosition(swordPos);
 
-    if (didAttack || _attack_frame_count < ATTACK_FRAMES) {
-      if (_attack_frame_count == ATTACK_FRAMES) {
-        _frame_count = 0;
-      }
-      setState(ATTACKING);
-      sword->setEnabled(true);
-      _attack_frame_count--;
-    }
+  slash->setName("slash");
+}
 
-    if (_attack_frame_count <= 0) {
-      setState(IDLE);
-      _frame_count = 0;
-      sword->setEnabled(false);
-      _attack_frame_count = ATTACK_FRAMES;
+void Player::checkDeleteSlashes(
+    std::shared_ptr<cugl::physics2::ObstacleWorld> world,
+    std::shared_ptr<cugl::scene2::SceneNode> world_node) {
+  auto itt = _slashes.begin();
+  while (itt != _slashes.end()) {
+    if ((*itt)->getFrames() <= 0) {
+      (*itt)->deactivatePhysics(*world->getWorld());
+      world_node->removeChild((*itt)->getNode());
+      world->removeObstacle((*itt).get());
+      itt = _slashes.erase(itt);
+    } else {
+      ++itt;
     }
   }
 }

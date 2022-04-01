@@ -224,6 +224,8 @@
     <ClInclude Include="..\..\source\controllers\actions\Action.h" />
     <ClInclude Include="..\..\source\controllers\actions\Attack.h" />
     <ClInclude Include="..\..\source\controllers\actions\Movement.h" />
+    <ClInclude Include="..\..\source\controllers\actions\Dash.h" />
+    <ClInclude Include="..\..\source\controllers\actions\OpenMap.h" />
     <ClInclude Include="..\..\source\models\Player.h" />
     <ClInclude Include="..\..\source\models\Sword.h" />
     <ClInclude Include="..\..\source\models\tiles\BasicTile.h" />
@@ -263,6 +265,8 @@
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Movement.cpp" />
+    <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />
+    <ClCompile Include="..\..\source\controllers\actions\OpenMap.cpp" />
     <ClCompile Include="..\..\source\models\Player.cpp" />
     <ClCompile Include="..\..\source\models\Sword.cpp" />
     <ClCompile Include="..\..\source\models\tiles\BasicTile.cpp" />

@@ -16,6 +16,9 @@ class InputController {
   /* Has been initialized correctly. */
   bool _active;
 
+  /** If the input controller should be paused. */
+  bool _pause;
+
   /* A list of all input actions in the game. */
   std::unordered_map<std::type_index, std::shared_ptr<Action>> _actions;
 
@@ -85,6 +88,12 @@ class InputController {
    * @return If all actions update correctly.
    */
   bool update();
+
+  /** Pause the Input Controller. */
+  void pause();
+
+  /** Resume the Input Controller. */
+  void resume();
 
   /**
    * @return If InputController has been activated by calling init()

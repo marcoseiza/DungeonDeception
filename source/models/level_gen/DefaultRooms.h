@@ -37,8 +37,8 @@ const RoomConfig kSpawn = {
 /** Represents a standard room. */
 const RoomConfig kStandard1 = {
     cugl::Size(21.0f, 21.0f),
-    std::vector<cugl::Vec2>{cugl::Vec2(20.0f, 10.0f), cugl::Vec2(10.0f, 20.0f),
-                            cugl::Vec2(0.0f, 10.0f), cugl::Vec2(10.0f, 0.0f)},
+    std::vector<cugl::Vec2>{cugl::Vec2(20.0f, 16.0f), cugl::Vec2(16.0f, 0.0f),
+                            cugl::Vec2(0.0f, 4.0f), cugl::Vec2(4.0f, 20.0f)},
     "rooms/room-1-scene.json"};
 
 /** Represents a standard room. */

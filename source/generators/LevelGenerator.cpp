@@ -8,6 +8,7 @@
 #include <cugl/cugl.h>
 
 #include "../models/level_gen/DefaultRooms.h"
+#include "../models/level_gen/RoomTypes.h"
 
 namespace level_gen {
 
@@ -61,7 +62,7 @@ bool LevelGenerator::update() {
 
 void LevelGenerator::generateRooms() {
   _spawn_room = std::make_shared<Room>(default_rooms::kSpawn);
-  _spawn_room->_type = Room::RoomType::SPAWN;
+  _spawn_room->_type = RoomType::SPAWN;
   _spawn_room->_fixed = true;
   _spawn_room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
   _spawn_room->_node->setPosition(_spawn_room->_node->getContentSize() / -2.0f);
@@ -185,6 +186,23 @@ void LevelGenerator::placeTerminals() {
       _config.getNumTerminalRoomsOuter(), _config.getMiddleCircleRadius(),
       _config.getMapRadius());
 
+  // Assign number of players required for activation.
+  std::uniform_int_distribution<int> inner_terminals_required_players(2, 3);
+  for (std::shared_ptr<Room> room : inner_terminals) {
+    room->_num_players_for_terminal =
+        inner_terminals_required_players(_generator);
+  }
+  std::uniform_int_distribution<int> middle_terminals_required_players(2, 4);
+  for (std::shared_ptr<Room> room : middle_terminals) {
+    room->_num_players_for_terminal =
+        middle_terminals_required_players(_generator);
+  }
+  std::uniform_int_distribution<int> outer_terminals_required_players(3, 4);
+  for (std::shared_ptr<Room> room : outer_terminals) {
+    room->_num_players_for_terminal =
+        outer_terminals_required_players(_generator);
+  }
+
   _inside_rooms.insert(_inside_rooms.end(), inner_terminals.begin(),
                        inner_terminals.end());
   _middle_rooms.insert(_middle_rooms.end(), middle_terminals.begin(),
@@ -217,7 +235,7 @@ std::vector<std::shared_ptr<Room>> LevelGenerator::placeTerminalRooms(
     std::shared_ptr<Room> room =
         std::make_shared<Room>(default_rooms::kTerminal);
 
-    room->_type = Room::RoomType::TERMINAL;
+    room->_type = RoomType::TERMINAL;
 
     float angle = dis(_generator) * (max_angle - min_angle) + min_angle;
     cugl::Vec2 pos(r * cosf(angle), r * sinf(angle));
@@ -254,7 +272,7 @@ void LevelGenerator::segregateLayers() {
   std::vector<std::shared_ptr<Room>> inside_rooms;
   std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(inside_rooms),
                [this](const std::shared_ptr<Room> &room) {
-                 return room->_type == Room::RoomType::STANDARD &&
+                 return room->_type == RoomType::STANDARD &&
                         room->getMid().length() <=
                             this->_config.getInnerCircleRadius();
                });
@@ -263,7 +281,7 @@ void LevelGenerator::segregateLayers() {
   std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(middle_rooms),
                [this](const std::shared_ptr<Room> &room) {
                  float r = room->getMid().length();
-                 return room->_type == Room::RoomType::STANDARD &&
+                 return room->_type == RoomType::STANDARD &&
                         r > this->_config.getInnerCircleRadius() &&
                         r <= this->_config.getMiddleCircleRadius();
                });
@@ -271,7 +289,7 @@ void LevelGenerator::segregateLayers() {
   std::vector<std::shared_ptr<Room>> outside_rooms;
   std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(outside_rooms),
                [this](const std::shared_ptr<Room> &room) {
-                 return room->_type == Room::RoomType::STANDARD &&
+                 return room->_type == RoomType::STANDARD &&
                         room->getMid().length() >
                             this->_config.getMiddleCircleRadius();
                });
@@ -466,9 +484,9 @@ void LevelGenerator::connectLayers(std::vector<std::shared_ptr<Room>> &layer_a,
                                 ? (angle >= min_angle && angle <= max_angle)
                                 : (angle >= min_angle || angle <= max_angle);
 
-      if (between_angles && a_room->_type == Room::RoomType::STANDARD) {
+      if (between_angles && a_room->_type == RoomType::STANDARD) {
         for (std::shared_ptr<Room> &b_room : layer_b) {
-          if (b_room->_type == Room::RoomType::STANDARD) {
+          if (b_room->_type == RoomType::STANDARD) {
             // Find if this edge already been chosen.
             auto curr = std::make_shared<Edge>(a_room, b_room);
             auto res =

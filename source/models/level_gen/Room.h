@@ -3,6 +3,7 @@
 #include <cugl/cugl.h>
 
 #include "DefaultRooms.h"
+#include "RoomTypes.h"
 
 namespace level_gen {
 
@@ -11,21 +12,12 @@ class Edge;
 
 class Room {
  public:
-  /** RoomType is used by the level generator to define when the room should be
-   * spawned  */
-  enum RoomType {
-    /** Represents a terminal room, that is spawned in the second separation
-       phase of room spawning. */
-    TERMINAL,
-    /** Represents a spawn room that is spawned in the center of the dungeon.
-       Should be used only once. */
-    SPAWN,
-    /** Represents any standard type of room. */
-    STANDARD
-  };
-
   /** This is the room type of the room. */
   RoomType _type;
+
+  /** If the room is a terminal, it should know how many players are required
+   * for the activation. */
+  int _num_players_for_terminal;
 
   /** A reference to the scene2 node for the room. */
   std::shared_ptr<cugl::scene2::PolygonNode> _node;
@@ -76,7 +68,7 @@ class Room {
    * @param edge The edge to be added.
    */
   void addEdge(const std::shared_ptr<Edge> &edge);
-  
+
   /**
    * Returns the SceneNode color for the room type.
    *
@@ -84,11 +76,11 @@ class Room {
    */
   cugl::Color4 getRoomNodeColor() {
     switch (_type) {
-      case level_gen::Room::TERMINAL:
+      case RoomType::TERMINAL:
         return cugl::Color4(52, 205, 14, 127);
-      case level_gen::Room::SPAWN:
+      case RoomType::SPAWN:
         return cugl::Color4(14, 14, 205, 127);
-      case level_gen::Room::STANDARD:
+      case RoomType::STANDARD:
         return cugl::Color4(125, 94, 52, 127);
     }
   }

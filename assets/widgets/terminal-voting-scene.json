@@ -1,0 +1,91 @@
+{
+  "variables": {},
+  "contents": {
+    "comments": "This is the root node for the terminal voting scene",
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "voting-background": {
+        "type": "Image",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "texture": "terminal-voting-background",
+          "anchor": [0.5, 0.5],
+          "scale": 0.3
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "wait-for-player": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "anchor": [0.5, 0.5]
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            },
+            "children": {
+              "num-required": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix",
+                  "text": "Number Of Players Required: ",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.3
+                }
+              },
+              "waiting": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "font": "pixelmix",
+                  "text": "Waiting For Players...",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle"
+                }
+              },
+              "current-num": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "font": "pixelmix",
+                  "text": "Current Number Of Players: ",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "bottom",
+                  "y_offset": 0.3
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ class Controller : public std::enable_shared_from_this<Controller> {
   ~Controller() { dispose(); }
 
   /** Update the controller state. */
-  virtual void update() {}
+  virtual void update(float timestep) {}
 
   /** Dispose the controller and all its values. */
   virtual void dispose() {}

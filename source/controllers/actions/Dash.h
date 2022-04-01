@@ -24,13 +24,12 @@ class Dash : public Action {
   bool _curr_down;
   /* Scene2 button is pressed. */
   bool _butt_down;
-  
+
   /* The duration of the dash */
   int _dash_frames;
-  
+
   /* The counter for the dash duration*/
   int _dash_frame_counter;
-  
 
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
@@ -57,6 +56,20 @@ class Dash : public Action {
    */
   virtual bool dispose() override;
 
+  /** Reset all the internal input values. */
+  virtual void reset() override {
+    _prev_down = false;
+    _curr_down = false;
+    _butt_down = false;
+    _dash_frame_counter = 0;
+  }
+
+  /** Pause all input. */
+  virtual void pause() override { _button->deactivate(); }
+
+  /** Resume all input. */
+  virtual void resume() override { _button->activate(); }
+
   /**
    * This method allocates Dash and initializes it.
    *
@@ -76,18 +89,11 @@ class Dash : public Action {
   bool isDashing() const { return _dash_frame_counter > 0; }
 
   /**
-   * Toggles the activation of the map button. When deactivated, the button cannot be pressed.
+   * Toggles the activation of the map button. When deactivated, the button
+   * cannot be pressed.
    * @param value The activation state.
    */
   void setActive(bool value);
-
-#ifdef CU_TOUCH_SCREEN
-
-  /** Touch listener for when the player moves their finger. */
-  void touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
-                  bool focus);
-
-#endif  // CU_TOUCH_SCREEN
 
   Dash();
   ~Dash() {}
