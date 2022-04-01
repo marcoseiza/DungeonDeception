@@ -36,7 +36,7 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
         OpenMap::alloc(assets, bounds)->getHook());
 
     _active = InputController::attachAction<TargetPlayer>(
-        OpenMap::alloc(assets, bounds)->getHook());
+        TargetPlayer::alloc(assets, bounds)->getHook());
     
     _active = InputController::attachAction<Dash>(
         Dash::alloc(assets, bounds)->getHook());

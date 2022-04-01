@@ -86,7 +86,7 @@ class TargetPlayer : public Action {
   /**
    * @return If the player pressed the dash button.
    */
-  bool isShowingTarget() const { return true; } // _target_player_counter > 0; }
+  bool isShowingTarget() const { return _target_player_counter > 0; }
 
   /**
    * Toggles the activation of the map button. When deactivated, the button
