@@ -64,6 +64,7 @@ class GameScene : public cugl::Scene2 {
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
 
+
   /** The serializer used to serialize complex data to send through the network.
    */
   cugl::NetworkSerializer _serializer;

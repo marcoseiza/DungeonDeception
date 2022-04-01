@@ -34,6 +34,12 @@ bool GameScene::init(
 
   _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
   _world_node->setContentSize(dim);
+  
+  std::shared_ptr<cugl::Texture> target_texture = _assets->get<cugl::Texture>("target-player");
+  auto target_icon_node = cugl::scene2::SpriteNode::alloc(target_texture, 1, 1);
+  target_icon_node->setName("target-icon");
+  target_icon_node->setVisible(false);
+  _world_node->addChild(target_icon_node);
 
   _debug_node = cugl::scene2::SceneNode::alloc();
   _debug_node->setContentSize(dim);
@@ -248,7 +254,6 @@ void GameScene::update(float timestep) {
   
   auto target_player = InputController::get<TargetPlayer>();
   if (target_player->didChangeTarget()) {
-    CULog("Targeting player");
     int current_room_id = _my_player->getRoomId();
     bool found_player = false;
     bool others_in_room = false;
@@ -262,7 +267,9 @@ void GameScene::update(float timestep) {
         if (target_player->getTarget() == -1 || !target_player->hasSeenPlayerId(player->getPlayerId())) {
           // Sets the target to a fresh player
           target_player->setTarget(player->getPlayerId());
-          CULog("Target: %i", player->getPlayerId());
+          auto target_icon_node = _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
+          target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+          target_icon_node->setVisible(true);
           found_player = true;
           break;
         }
@@ -270,8 +277,21 @@ void GameScene::update(float timestep) {
     }
     // Cycled through all players and they have all already been visited, go back to the first
     if (!found_player && others_in_room && first_found_player != -1) {
+      target_player->clearDirtyPlayers();
       target_player->setTarget(first_found_player);
     }
+  }
+  
+  auto target_icon_node = _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
+  if (target_player->getTarget() != -1) {
+    for (std::shared_ptr<Player> player : _players) {
+      if (player->getRoomId() == _my_player->getRoomId() && player->getPlayerId() == target_player->getTarget()) {
+        target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+        target_icon_node->setVisible(true);
+      }
+    }
+  } else {
+    target_icon_node->setVisible(false);
   }
 
   // Movement
@@ -319,16 +339,11 @@ void GameScene::update(float timestep) {
   timer_text->setForeground(cugl::Color4::WHITE);
 
   auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
-  //
-  //  auto minimap =
-  //  ui_layer->getChildByName<cugl::scene2::SceneNode>("minimap");
-  //  std::unordered_map<int, std::shared_ptr<RoomModel>> rooms =
-  //    _level_controller->getLevelModel()->getRooms();
 
   std::string msg =
       cugl::strtool::format("Health: %d", _my_player->getHealth());
   text->setText(msg);
-
+  
   auto terminal_text =
       ui_layer->getChildByName<cugl::scene2::Label>("terminal");
   std::string terminal_msg = cugl::strtool::format("Terminals Activated: %d",
