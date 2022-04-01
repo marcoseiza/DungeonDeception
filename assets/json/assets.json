@@ -45,7 +45,14 @@
         "dash": {
             "file": "textures/dash.png",
             "minfilter": "nearest",
-            "magfilter": "linear",
+            "magfilter": "nearest",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "target-player": {
+            "file": "textures/target-player.png",
+            "minfilter": "nearest",
+            "magfilter": "nearest",
             "wrapS": "clamp",
             "wrapT": "clamp"
         },

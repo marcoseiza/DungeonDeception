@@ -8,6 +8,7 @@
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
 #include "../controllers/actions/OpenMap.h"
+#include "../controllers/actions/TargetPlayer.h"
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
@@ -240,6 +241,10 @@ void GameScene::update(float timestep) {
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
+  }
+  
+  if (InputController::get<TargetPlayer>()->isShowingTarget()) {
+    // TODO: Do stuff here
   }
 
   // Movement
