@@ -19,8 +19,6 @@ class EnemyController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
-  /** The ray cast controller for the game, serves for callbacks. */
-  std::shared_ptr<RayCastController> _raycast_controller;
   
   /** Cache set for vertices to update the polys. */
   std::vector<cugl::Vec2> _vertices_cache;

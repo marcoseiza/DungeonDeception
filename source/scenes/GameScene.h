@@ -6,7 +6,6 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
-#include "../controllers/RayCastController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"

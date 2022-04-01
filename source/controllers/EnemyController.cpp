@@ -60,7 +60,6 @@ bool EnemyController::init(
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
-  _raycast_controller = RayCastController::alloc();
 
   return true;
 }
