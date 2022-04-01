@@ -4,8 +4,9 @@ TargetPlayer::TargetPlayer()
     : _curr_down(false),
       _prev_down(false),
       _button(nullptr),
-      _target_player_hang_frames(50),
-      _target_player_counter(0) {}
+      _target_player_hang_frames(150),
+      _target_player_counter(0),
+      _target_player_id(-1) {}
 
 bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
                 cugl::Rect bounds) {
@@ -37,10 +38,17 @@ bool TargetPlayer::update() {
   _curr_down = _butt_down;
   // Increment counter if target player button was just released or target player frames
   // are still occuring
-  if ((_prev_down && !_curr_down) || _target_player_counter > 0) {
+  if (didChangeTarget()) {
+    _target_player_counter = 1;
+  }
+  if (_target_player_counter > 0) {
     _target_player_counter++;
     if (_target_player_counter > _target_player_hang_frames) {
+      if (_target_player_id != -1) {
+        CULog("YOOO IM RELEASING A SPECIAL GRIEF ON %i", _target_player_id);
+      }
       _target_player_counter = 0;
+      _target_player_id = -1;
     }
   }
   return true;

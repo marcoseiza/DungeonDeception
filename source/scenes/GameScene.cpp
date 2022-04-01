@@ -99,6 +99,9 @@ bool GameScene::init(
   win_layer->setContentSize(dim);
   win_layer->doLayout();
   win_layer->setVisible(false);
+  
+  auto target_player_button = ui_layer->getChildByName<cugl::scene2::SceneNode>("target-player");
+  target_player_button->setVisible(is_betrayer);
 
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
@@ -243,8 +246,32 @@ void GameScene::update(float timestep) {
     _map->setVisible(!_map->isVisible());
   }
   
-  if (InputController::get<TargetPlayer>()->isShowingTarget()) {
-    // TODO: Do stuff here
+  auto target_player = InputController::get<TargetPlayer>();
+  if (target_player->didChangeTarget()) {
+    CULog("Targeting player");
+    int current_room_id = _my_player->getRoomId();
+    bool found_player = false;
+    bool others_in_room = false;
+    int first_found_player = -1;
+    for (std::shared_ptr<Player> player : _players) {
+      if (player->getRoomId() == current_room_id && player->getPlayerId() != _my_player->getPlayerId()) {
+        others_in_room = true;
+        if (first_found_player == -1) {
+          first_found_player = player->getPlayerId();
+        }
+        if (target_player->getTarget() == -1 || !target_player->hasSeenPlayerId(player->getPlayerId())) {
+          // Sets the target to a fresh player
+          target_player->setTarget(player->getPlayerId());
+          CULog("Target: %i", player->getPlayerId());
+          found_player = true;
+          break;
+        }
+      }
+    }
+    // Cycled through all players and they have all already been visited, go back to the first
+    if (!found_player && others_in_room && first_found_player != -1) {
+      target_player->setTarget(first_found_player);
+    }
   }
 
   // Movement
