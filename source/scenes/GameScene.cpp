@@ -778,7 +778,9 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     int player_id = target_data->getInt("target_player_id");
     
     if (player_id == _my_player->getPlayerId()) {
-      _my_player->reduceHealth(40);
+      // Does 40 damage (in total).
+      _my_player->reduceHealth(35);
+      _my_player->takeDamage();
     }
   }
 
