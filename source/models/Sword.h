@@ -48,9 +48,9 @@ class Sword : public cugl::physics2::CapsuleObstacle {
    *
    * @param pos the position to move the sword to.
    * @param vel the velocity to move the sword by.
-   * @param isFacingLeft if sword should be on left or right.
+   * @param moveDir if sword should be on left or right or up or down.
    */
-  void moveSword(cugl::Vec2 pos, cugl::Vec2 vel, bool isFacingLeft);
+  void moveSword(cugl::Vec2 pos, cugl::Vec2 vel, int moveDir);
 };
 
 #endif /* Sword_h */

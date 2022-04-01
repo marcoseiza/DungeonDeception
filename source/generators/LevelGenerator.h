@@ -76,16 +76,14 @@ class LevelGenerator {
    */
   void init(LevelGeneratorConfig &config,
             const std::shared_ptr<cugl::scene2::SceneNode> &map, Uint64 seed);
-  
+
   /**
    * Returns the pointer to the map SceneNode.
    *
    * @return The map SceneNode
    */
-  std::shared_ptr<cugl::scene2::SceneNode> getMap() {
-    return _map;
-  }
-  
+  std::shared_ptr<cugl::scene2::SceneNode> getMap() { return _map; }
+
   /**
    * Update the level generator. Calls the next generator step function.
    * Separates the generation steps to be able to draw the generation.
@@ -103,7 +101,7 @@ class LevelGenerator {
 #pragma mark Attributes
   /** Get all Rooms in the level generator. */
   std::vector<std::shared_ptr<Room>> getRooms() const { return _rooms; }
-  
+
   /** Get the spawn room in the level generator. */
   std::shared_ptr<Room> getSpawnRoom() const { return _spawn_room; }
 

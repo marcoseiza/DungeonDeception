@@ -5,19 +5,17 @@ Dash::Dash()
       _prev_down(false),
       _button(nullptr),
       _dash_frames(12),
-      _dash_frame_counter(0)
-    {}
+      _dash_frame_counter(0) {}
 
 bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
-                  cugl::Rect bounds) {
+                cugl::Rect bounds) {
   Action::init(assets, bounds);
-  
+
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
       assets->get<cugl::scene2::SceneNode>("ui-scene_dash"));
 
-  _button->addListener([=](const std::string &name, bool down) {
-    _butt_down = down;
-  });
+  _button->addListener(
+      [=](const std::string &name, bool down) { _butt_down = down; });
 
   _button->activate();
 
@@ -37,7 +35,8 @@ bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
 bool Dash::update() {
   _prev_down = _curr_down;
   _curr_down = _butt_down;
-  // Increment counter if dash button was just released or dash frames are still occuring
+  // Increment counter if dash button was just released or dash frames are still
+  // occuring
   if ((_prev_down && !_curr_down) || _dash_frame_counter > 0) {
     _dash_frame_counter++;
     if (_dash_frame_counter > _dash_frames) {
@@ -64,8 +63,8 @@ void Dash::setActive(bool value) {
 
 #ifdef CU_TOUCH_SCREEN
 
-void Dash::touchMoved(const cugl::TouchEvent &event,
-                        const cugl::Vec2 &previous, bool focus) {
+void Dash::touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
+                      bool focus) {
   if (_button->getTouchIds().find(event.touch) !=
       _button->getTouchIds().end()) {
   }

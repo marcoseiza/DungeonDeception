@@ -238,7 +238,8 @@ void GameApp::updateLevelLoadingScene(float timestep) {
     return;
   }
 
-  _level_loading.cugl::Scene2::removeChild(_level_loading.getLevelGenerator()->getMap());
+  _level_loading.cugl::Scene2::removeChild(
+      _level_loading.getLevelGenerator()->getMap());
   if (_level_loading.getIsHost()) {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
                    _hostgame.isBetrayer());

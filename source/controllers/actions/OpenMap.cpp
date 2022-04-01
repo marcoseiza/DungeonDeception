@@ -1,20 +1,16 @@
 #include "OpenMap.h"
 
-OpenMap::OpenMap()
-    : _curr_down(false),
-      _prev_down(false),
-      _button(nullptr) {}
+OpenMap::OpenMap() : _curr_down(false), _prev_down(false), _button(nullptr) {}
 
 bool OpenMap::init(const std::shared_ptr<cugl::AssetManager> &assets,
-                  cugl::Rect bounds) {
+                   cugl::Rect bounds) {
   Action::init(assets, bounds);
-  
+
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
       assets->get<cugl::scene2::SceneNode>("ui-scene_map"));
 
-  _button->addListener([=](const std::string &name, bool down) {
-    _butt_down = down;
-  });
+  _button->addListener(
+      [=](const std::string &name, bool down) { _butt_down = down; });
 
   _button->activate();
 
@@ -55,7 +51,7 @@ void OpenMap::setActive(bool value) {
 #ifdef CU_TOUCH_SCREEN
 
 void OpenMap::touchMoved(const cugl::TouchEvent &event,
-                        const cugl::Vec2 &previous, bool focus) {
+                         const cugl::Vec2 &previous, bool focus) {
   if (_button->getTouchIds().find(event.touch) !=
       _button->getTouchIds().end()) {
   }

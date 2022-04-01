@@ -46,7 +46,6 @@ void Room::addEdge(const std::shared_ptr<Edge> &edge) {
       });
   _edges.insert(it, edge);
 }
-  
 
 bool Room::edgeComparator(const std::shared_ptr<Edge> &l,
                           const std::shared_ptr<Edge> &r) const {

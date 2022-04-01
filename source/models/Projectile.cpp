@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-#define MAX_LIVE_FRAMES 42 // Must match player slash animation frames
+#define MAX_LIVE_FRAMES 42  // Must match player slash animation frames
 
 #pragma mark Init
 bool Projectile::init(const cugl::Vec2 pos, const cugl::Vec2 v) {

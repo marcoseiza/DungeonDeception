@@ -570,7 +570,7 @@ void LevelGenerator::fillHallways() {
         bounds->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
         bounds->setPosition(start_pos);
 
-//        _map->addChild(bounds);
+        //        _map->addChild(bounds);
       }
     }
   }

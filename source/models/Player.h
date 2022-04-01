@@ -50,6 +50,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The list of slashes that have been released from the sword. */
   std::unordered_set<std::shared_ptr<Projectile>> _slashes;
 
+  /** If the player is moving left (80), down (81), right (82), or up (83). */
+  int _mv_direc;
+
  public:
   /** Countdown to change animation frame. */
   int _frame_count;
@@ -61,7 +64,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
-  
+  /** Whether the player held attack last frame. */
+  bool _last_held_attack;
+
 #pragma mark Constructors
   /**
    * Creates a player with the given position and data.
@@ -175,6 +180,13 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void setDead(bool dead) { _isDead = dead; }
 
   /**
+   * Gets the player's movement direction.
+   *
+   * @return the movement direction
+   */
+  int getMoveDir() { return _mv_direc - 80; }
+
+  /**
    * Returns the player's offset from the center.
    *
    * @return the offset from center.
@@ -189,6 +201,20 @@ class Player : public cugl::physics2::CapsuleObstacle {
   std::unordered_set<std::shared_ptr<Projectile>> getSlashes() {
     return _slashes;
   }
+
+  /**
+   * Internal method for getting the correct run high limit.
+   *
+   * @return the run high limit
+   */
+  int getRunHighLim();
+
+  /**
+   * Internal method for getting the correct attack high limit.
+   *
+   * @return the attack high limit
+   */
+  int getAttackHighLim();
 
   /**
    * Update the scene graph.

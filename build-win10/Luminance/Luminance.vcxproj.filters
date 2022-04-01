@@ -39,6 +39,9 @@
     <ClInclude Include="..\..\source\scenes\HostGameScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\scenes\voting_scenes\WaitForPlayersScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\source\controllers\InputController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -100,6 +103,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\LevelController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\controllers\PlayerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\controllers\TerminalController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h">
@@ -188,6 +197,9 @@
     <ClCompile Include="..\..\source\scenes\HostGameScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\scenes\voting_scenes\WaitForPlayersScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\controllers\InputController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -245,6 +257,18 @@
     <ClCompile Include="..\..\source\controllers\LevelController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\controllers\EnemyController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\controllers\LevelController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\controllers\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\controllers\TerminalController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\scenes\LoadingLevelScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -288,12 +312,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\generators\Hungarian.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\controllers\EnemyController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\controllers\LevelController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

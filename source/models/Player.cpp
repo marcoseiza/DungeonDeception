@@ -1,14 +1,12 @@
 #include "Player.h"
 
-#define IDLE_RIGHT 0
-#define IDLE_LEFT 1
-#define IDLE_DOWN 2
-#define IDLE_UP 3
-#define ATTACK_LOW_LIM 10
-#define ATTACK_HIGH_LIM 16
-#define RUN_LOW_LIM 20
-#define RUN_HIGH_LIM 29
-#define ATTACK_FRAMES 14
+#define IDLE_RIGHT 82
+#define IDLE_LEFT 80
+#define IDLE_DOWN 81
+#define IDLE_UP 83
+#define RUN_LIM_GAP 9
+#define ATTACK_LIM_GAP 8
+#define ATTACK_FRAMES 32
 #define HEALTH 100
 
 #define WIDTH 24.0f
@@ -40,6 +38,7 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
   _isDead = false;
+  _mv_direc = IDLE_LEFT;
 
   setDensity(0.01f);
   setFriction(0.0f);
@@ -79,72 +78,41 @@ void Player::update(float delta) {
 void Player::animate(float forwardX, float forwardY) {
   switch (_current_state) {
     case MOVING: {
-      // Reverse texture if moving opposite direction.
-      bool movingLeft = forwardX < 0;
-      if (_player_node->isFlipHorizontal() != movingLeft) {
-        _player_node->flipHorizontal(movingLeft);
-      }
+      int run_high_lim = getRunHighLim();
+      int run_low_lim = run_high_lim - RUN_LIM_GAP;
 
       if (_frame_count == 0) {
-        _player_node->setFrame(RUN_LOW_LIM);
+        _player_node->setFrame(run_low_lim);
       }
 
       // Play the next animation frame.
       if (_frame_count >= 5) {
         _frame_count = 0;
-
-        if (_player_node->isFlipHorizontal()) {
-          if (_player_node->getFrame() <= RUN_LOW_LIM) {
-            _player_node->setFrame(RUN_HIGH_LIM);
-          } else {
-            _player_node->setFrame(_player_node->getFrame() - 1);
-          }
+        if (_player_node->getFrame() >= run_high_lim) {
+          _player_node->setFrame(run_low_lim);
         } else {
-          if (_player_node->getFrame() >= RUN_HIGH_LIM) {
-            _player_node->setFrame(RUN_LOW_LIM);
-          } else {
-            _player_node->setFrame(_player_node->getFrame() + 1);
-          }
+          _player_node->setFrame(_player_node->getFrame() + 1);
         }
       }
       _frame_count++;
       break;
     }
     case IDLE: {
-      if (_player_node->isFlipHorizontal()) {
-        _player_node->setFrame(10 - IDLE_LEFT);
-      } else {
-        _player_node->setFrame(IDLE_RIGHT);
-      }
+      _player_node->setFrame(_mv_direc);
       _frame_count = 0;
       break;
     }
     case ATTACKING: {
-      if (_frame_count == 0) {
-        if (_player_node->isFlipHorizontal()) {
-          _player_node->setFrame(9 + ATTACK_LOW_LIM);
-        } else {
-          _player_node->setFrame(ATTACK_LOW_LIM);
-        }
-      }
+      int attack_high_lim = getAttackHighLim();
+      int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
 
       // Play the next animation frame.
-      if (_frame_count >= 2) {
+      if (_frame_count >= 3) {
         _frame_count = 0;
-
-        if (_player_node->isFlipHorizontal()) {
-          if (_player_node->getFrame() <=
-              19 - ATTACK_HIGH_LIM + ATTACK_LOW_LIM) {
-            _player_node->setFrame(9 + ATTACK_LOW_LIM);
-          } else {
-            _player_node->setFrame(_player_node->getFrame() - 1);
-          }
+        if (_player_node->getFrame() >= attack_high_lim) {
+          _player_node->setFrame(attack_low_lim);
         } else {
-          if (_player_node->getFrame() >= ATTACK_HIGH_LIM) {
-            _player_node->setFrame(ATTACK_LOW_LIM);
-          } else {
-            _player_node->setFrame(_player_node->getFrame() + 1);
-          }
+          _player_node->setFrame(_player_node->getFrame() + 1);
         }
       }
       _frame_count++;
@@ -158,6 +126,26 @@ void Player::move(float forwardX, float forwardY) {
   setVY(200 * forwardY);
   if (forwardX == 0) setVX(0);
   if (forwardY == 0) setVY(0);
+
+  // Set the correct frame for idle
+  int new_direc = _mv_direc;
+  if (std::abs(forwardX) >= std::abs(forwardY)) {
+    if (forwardX < 0) {
+      new_direc = IDLE_LEFT;
+    } else if (forwardX > 0) {
+      new_direc = IDLE_RIGHT;
+    }
+  } else if (std::abs(forwardX) < std::abs(forwardY)) {
+    if (forwardY < 0) {
+      new_direc = IDLE_DOWN;
+    } else if (forwardY > 0) {
+      new_direc = IDLE_UP;
+    }
+  }
+  if (new_direc != _mv_direc) {
+    _mv_direc = new_direc;
+    _frame_count = 0;
+  }
 }
 
 void Player::makeSlash(cugl::Vec2 attackDir, cugl::Vec2 swordPos) {
@@ -183,4 +171,26 @@ void Player::checkDeleteSlashes(
       ++itt;
     }
   }
+}
+
+int Player::getRunHighLim() {
+  if (_mv_direc == IDLE_RIGHT) {
+    return 59;  // Value for the right run high limit
+  } else if (_mv_direc == IDLE_LEFT) {
+    return 69;  // Value for the left run high limit
+  } else if (_mv_direc == IDLE_UP) {
+    return 79;  // Value for the up run high limit
+  }
+  return 49;  // Value for the down run high limit
+}
+
+int Player::getAttackHighLim() {
+  if (_mv_direc == IDLE_RIGHT) {
+    return 8;  // Value for the right attack high limit
+  } else if (_mv_direc == IDLE_LEFT) {
+    return 28;  // Value for the left attack high limit
+  } else if (_mv_direc == IDLE_UP) {
+    return 38;  // Value for the up attack high limit
+  }
+  return 18;  // Value for the down attack high limit
 }

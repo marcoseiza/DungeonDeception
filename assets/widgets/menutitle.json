@@ -1,0 +1,21 @@
+{
+    "variables": {
+        "text": [ "data", "text" ]
+    },
+    "contents": {
+        "type": "Label",
+        "data": {
+            "anchor": [ 0.5, 1.0 ],
+            "scale": 1.5,
+            "font": "pixelmix_title",
+            "text": "LIGHTRUNNERS",
+            "padding": [ 1000, 20, 1000, 20 ],
+            "background": "#efebe3"
+        },
+        "layout": {
+            "priority": 1,
+            "x_anchor": "center",
+            "y_anchor": "middle"
+        }
+    }
+}

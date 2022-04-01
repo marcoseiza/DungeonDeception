@@ -149,9 +149,9 @@ bool HostMenuScene::checkConnection() {
 void HostMenuScene::configureStartButton() {
   if (_status == Status::WAIT) {
     _startgame->deactivate();
-    updateText(_startgame, "Waiting");
+    updateText(_startgame, "WAITING");
   } else {
-    updateText(_startgame, "Start Game");
+    updateText(_startgame, "START GAME");
     _startgame->activate();
   }
 }

@@ -106,7 +106,7 @@ class Attack : public Action {
    * @return If player is currently attacking.
    */
   bool isAttacking() const { return _prev_down && !_curr_down; }
-  
+
   /**
    * @return If player is holding attack button.
    */
