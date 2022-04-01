@@ -64,6 +64,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
+  /** Whether the player held attack last frame. */
+  bool _last_held_attack;
 
 #pragma mark Constructors
   /**

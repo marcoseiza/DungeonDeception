@@ -1,13 +1,13 @@
 #include "Sword.h"
 
 // Offset from the player
-#define OFFSET_X_HOR 30
+#define OFFSET_X_HOR 20
 #define OFFSET_Y_HOR 5
 
 #define OFFSET_X_VERT 0
-#define OFFSET_Y_VERT 30
+#define OFFSET_Y_VERT 10
 
-#define SIZE 25
+#define SIZE 30
 
 bool Sword::init(const cugl::Vec2 pos) {
   CapsuleObstacle::init(cugl::Vec2(pos.x + OFFSET_X_HOR, pos.y + OFFSET_Y_HOR),

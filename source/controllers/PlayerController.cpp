@@ -6,7 +6,7 @@
 
 #define HOLD_ATTACK_COLOR_LIMIT 5
 #define HOLD_ATTACK_COUNT 60
-#define ATTACK_FRAMES 18
+#define ATTACK_FRAMES 32
 #define HURT_FRAMES 10
 #define DEAD_FRAMES 175
 #define SLASH_FRAMES 7  // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
@@ -80,7 +80,7 @@ void PlayerController::move(float timestep, bool didDash, cugl::Vec2 forward) {
 void PlayerController::attack(bool didAttack, bool holdAttack,
                               std::shared_ptr<Sword> sword) {
   if (!_player->getDead()) {
-    if (holdAttack) {
+    if (holdAttack && _player->_last_held_attack) {
       _player->_hold_attack++;
       if (_player->_hold_attack >= HOLD_ATTACK_COUNT) {
         _player->getPlayerNode()->setColor(cugl::Color4::BLUE);
@@ -91,7 +91,6 @@ void PlayerController::attack(bool didAttack, bool holdAttack,
         if (_player->_hurt_frames <= 0) {
           _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
         }
-        // There is not a slash direction.
         if (_player->_attack_frame_count == ATTACK_FRAMES) {
           _player->_frame_count = 0;
           cugl::Vec2 attackDir = cugl::Vec2(0, 1);
@@ -131,6 +130,8 @@ void PlayerController::attack(bool didAttack, bool holdAttack,
       _player->_hold_attack = 0;
     }
 
+    _player->_last_held_attack = holdAttack;
+    
     // Set the sword adjacent to the player
     sword->moveSword(_player->getPosition() + _player->getOffset(),
                      cugl::Vec2(_player->getVX(), _player->getVY()),

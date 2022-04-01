@@ -6,7 +6,7 @@
 #define IDLE_UP 83
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
-#define ATTACK_FRAMES 16
+#define ATTACK_FRAMES 32
 #define HEALTH 100
 
 #define WIDTH 24.0f
@@ -107,7 +107,7 @@ void Player::animate(float forwardX, float forwardY) {
       int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
 
       // Play the next animation frame.
-      if (_frame_count >= 2) {
+      if (_frame_count >= 3) {
         _frame_count = 0;
         if (_player_node->getFrame() >= attack_high_lim) {
           _player_node->setFrame(attack_low_lim);

@@ -13,10 +13,10 @@ const grassTextures = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const levelToScene2 = (fileName) => {
     let jsonData = fs.readFileSync(fileName, 'utf-8');
     let data = JSON.parse(jsonData);
-    const { room, width, height, layout, decorations, enemies } = data;
+    const { roomName, width, height, layout, decorations, enemies } = data;
 
     return {
-        "comments": `This is the root node for the world scene for room ${room}.`,
+        "comments": `This is the root node for the world scene for room ${roomName}.`,
         "type": "Node",
         "format": {
             "type": "Anchored"
