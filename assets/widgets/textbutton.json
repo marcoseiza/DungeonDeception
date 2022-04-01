@@ -4,7 +4,9 @@
         "anchor": [ "data", "anchor" ],
         "text": [ "children", "up", "children", "label", "data", "text" ],
         "font": [ "children", "up", "children", "label", "data", "font" ],
-        "color": [ "children", "up", "children", "patch", "data", "color" ]
+        "color": [ "children", "up", "children", "patch", "data", "color" ],
+        "texture": [ "children", "up", "children", "patch", "data", "texture" ],
+        "foreground": [ "children", "up", "children", "label", "data", "foreground" ]
     },
     "contents": {
         "type": "Button",

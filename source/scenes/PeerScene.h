@@ -38,6 +38,8 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _backout;
   /** The players label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _player;
+  /** The game id label (for updating) */
+  std::shared_ptr<cugl::scene2::Label> _gameid;
 
   /** The network configuration */
   cugl::NetworkConnection::ConnectionConfig _config;

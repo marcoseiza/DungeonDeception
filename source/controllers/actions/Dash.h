@@ -94,6 +94,14 @@ class Dash : public Action {
    * @param value The activation state.
    */
   void setActive(bool value);
+  
+#ifdef CU_TOUCH_SCREEN
+
+  /** Touch listener for when the player moves their finger. */
+  void touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
+                  bool focus);
+
+#endif  // CU_TOUCH_SCREEN
 
   Dash();
   ~Dash() {}
