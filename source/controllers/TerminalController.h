@@ -5,6 +5,7 @@
 
 #include "../models/Player.h"
 #include "../scenes/voting_scenes/VoteForLeaderScene.h"
+#include "../scenes/voting_scenes/VoteForTeamScene.h"
 #include "../scenes/voting_scenes/WaitForPlayersScene.h"
 #include "Controller.h"
 #include "InputController.h"
@@ -28,6 +29,9 @@ class TerminalController : public Controller {
   /** A reference to the vote for leader scene. */
   std::shared_ptr<VoteForLeaderScene> _vote_for_leader_scene;
 
+  /** A reference to the vote for leader scene. */
+  std::shared_ptr<VoteForTeamScene> _vote_for_team_scene;
+
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
@@ -39,6 +43,8 @@ class TerminalController : public Controller {
 
   /** The terminal room this controller is handleing. */
   int _terminal_room_id;
+
+  int _leader_id;
 
   /** The terminal voting stage. */
   enum Stage {
@@ -132,6 +138,7 @@ class TerminalController : public Controller {
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
     _vote_for_leader_scene->setPlayerController(_player_controller);
+    _vote_for_team_scene->setPlayerController(_player_controller);
   }
 
  private:

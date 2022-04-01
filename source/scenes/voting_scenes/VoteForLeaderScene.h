@@ -20,6 +20,9 @@ class VoteForLeaderScene {
   /** If the scene is currently active. */
   bool _active;
 
+  /** If the players can press the ready button. */
+  bool _can_finish;
+
   /** If the scene is done. */
   bool _done;
 
@@ -33,13 +36,21 @@ class VoteForLeaderScene {
   std::unordered_map<int, std::shared_ptr<cugl::scene2::Button>> _buttons;
 
   /** A reference to the done button used when finished voting. */
-  std::shared_ptr<cugl::scene2::Button> _done_button;
+  std::shared_ptr<cugl::scene2::Button> _ready_button;
 
   /** A reference to the player controller. */
   std::shared_ptr<PlayerController> _player_controller;
 
+  /** The leader. */
+  int _winner;
+
  public:
-  VoteForLeaderScene() : _active(false), _done(false), _initialized(false) {}
+  VoteForLeaderScene()
+      : _active(false),
+        _done(false),
+        _can_finish(false),
+        _initialized(false),
+        _winner(0) {}
   ~VoteForLeaderScene() { dispose(); }
 
   /**
@@ -90,12 +101,16 @@ class VoteForLeaderScene {
   void voteButtonListener(const std::string& name, bool down);
 
   /** Done Button listener.  */
-  void doneButtonListener(const std::string& name, bool down);
+  void readyButtonListener(const std::string& name, bool down);
+
+  void removeAllPlayersFromDoneList();
 
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
   }
+
+  int getLeader() { return (_done) ? _winner : -1; }
 };
 
 #endif  // SCENES_VOTING_SCENES_VOTE_FOR_LEADER_SCENE_H_

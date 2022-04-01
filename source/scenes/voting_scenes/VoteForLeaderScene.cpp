@@ -61,41 +61,26 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
     i++;
   }
 
-  _done_button = std::dynamic_pointer_cast<cugl::scene2::Button>(
+  _ready_button = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _assets->get<cugl::scene2::SceneNode>(
           "terminal-voting-scene_voting-background_vote-for-leader_done-button-"
           "wrapper_done-button"));
 
-  _done_button->addListener([=](const std::string& name, bool down) {
-    this->doneButtonListener(name, down);
+  _ready_button->addListener([=](const std::string& name, bool down) {
+    this->readyButtonListener(name, down);
   });
+  _ready_button->activate();
 
   _node->setVisible(true);
   _node->doLayout();
 }
 
 void VoteForLeaderScene::update() {
-  {  // Handle my player's input.
-    std::vector<int>& votes =
-        _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
+  if (_done) return;
 
-    if (votes.size() == 1) {
-      _done_button->activate();
-      int player_id = votes[0];
-
-      for (auto it : _buttons) {
-        if (it.first == player_id) {
-          it.second->deactivate();
-        } else {
-          it.second->activate();
-        }
-      }
-    }
-  }
+  std::unordered_map<int, int> num_votes_per_person;
 
   {  // Check the number of votes for all players.
-    std::unordered_map<int, int> num_votes_per_person;
-
     for (int player_id : _voting_info->players) {
       for (int vote_player_id : _voting_info->votes[player_id]) {
         num_votes_per_person[vote_player_id] = 0;
@@ -115,23 +100,108 @@ void VoteForLeaderScene::update() {
       label->setText(std::to_string(num_votes_per_person[it.first]));
     }
   }
+
+  {
+    bool all_votes_in = true;
+    for (int player_id : _voting_info->players) {
+      all_votes_in &= (_voting_info->votes[player_id].size() == 1);
+    }
+
+    if (all_votes_in) {
+      int winner = -1;
+      int max_votes = 0;
+      int number_of_max = 1;
+      for (auto it : num_votes_per_person) {
+        if (it.second > max_votes) {
+          max_votes = it.second;
+          winner = it.first;
+          number_of_max = 1;
+        } else if (it.second == max_votes) {
+          number_of_max++;
+        }
+      }
+      if (number_of_max == 1) {
+        _can_finish = true;
+        _winner = winner;
+      } else {
+        _can_finish = false;
+        _voting_info->done.clear();
+        removeAllPlayersFromDoneList();
+      }
+    }
+  }
+
+  // If everyone has pressed ready and there's a clear winner.
+  _done = (_voting_info->done.size() == _voting_info->players.size());
+
+  {
+    auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),
+                           _player_controller->getMyPlayer()->getPlayerId());
+
+    if (found == _voting_info->done.end()) {
+      // Handle my player's input.
+      std::vector<int>& votes =
+          _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
+
+      if (votes.size() == 1) {
+        int player_id = votes[0];
+
+        for (auto it : _buttons) {
+          if (it.first == player_id) {
+            it.second->getChildByName("up")->getChildByName("patch")->setColor(
+                cugl::Color4("#4C7953"));
+          } else {
+            it.second->getChildByName("up")->getChildByName("patch")->setColor(
+                cugl::Color4::WHITE);
+          }
+        }
+      }
+    }
+  }
+}
+
+void VoteForLeaderScene::removeAllPlayersFromDoneList() {
+  if (!NetworkController::get()->isHost()) return;
+
+  for (int player_id : _voting_info->players) {
+    auto info = cugl::JsonValue::allocObject();
+
+    {
+      auto terminal_room_id_info =
+          cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+      info->appendChild(terminal_room_id_info);
+      terminal_room_id_info->setKey("terminal_room_id");
+    }
+
+    {
+      auto player_id_info =
+          cugl::JsonValue::alloc(static_cast<long>(player_id));
+      info->appendChild(player_id_info);
+      player_id_info->setKey("player_id");
+    }
+
+    {
+      auto should_add_info = cugl::JsonValue::alloc(false);
+      info->appendChild(should_add_info);
+      should_add_info->setKey("add");
+    }
+
+    NetworkController::get()->sendOnlyToHost(10, info);
+  }
 }
 
 void VoteForLeaderScene::voteButtonListener(const std::string& name,
                                             bool down) {
   if (!down) return;
 
-  int voted_for = std::stoi(name);
+  {
+    int voted_for = std::stoi(name);
+    int player_id = _player_controller->getMyPlayer()->getPlayerId();
 
-  std::vector<int>& votes =
-      _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
+    _voting_info->votes[player_id].clear();
+    _voting_info->votes[player_id].push_back(voted_for);
+  }
 
-  votes.clear();
-  votes.push_back(voted_for);
-}
-
-void VoteForLeaderScene::doneButtonListener(const std::string& name,
-                                            bool down) {
   auto info = cugl::JsonValue::allocObject();
 
   {
@@ -162,5 +232,42 @@ void VoteForLeaderScene::doneButtonListener(const std::string& name,
     voted_for_info->setKey("voted_for");
   }
 
-  NetworkController::get()->send(8, info);
+  NetworkController::get()->sendOnlyToHost(8, info);
+}
+
+void VoteForLeaderScene::readyButtonListener(const std::string& name,
+                                             bool down) {
+  if (!down || !_can_finish) return;
+
+  auto info = cugl::JsonValue::allocObject();
+
+  {
+    auto terminal_room_id_info =
+        cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+    info->appendChild(terminal_room_id_info);
+    terminal_room_id_info->setKey("terminal_room_id");
+  }
+
+  {
+    int player_id = _player_controller->getMyPlayer()->getPlayerId();
+    auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
+    info->appendChild(player_id_info);
+    player_id_info->setKey("player_id");
+  }
+
+  {
+    auto should_add_info = cugl::JsonValue::alloc(true);
+    info->appendChild(should_add_info);
+    should_add_info->setKey("add");
+  }
+
+  NetworkController::get()->sendOnlyToHost(10, info);
+
+  if (NetworkController::get()->isHost()) {
+    int player_id = _player_controller->getMyPlayer()->getPlayerId();
+    if (std::find(_voting_info->done.begin(), _voting_info->done.end(),
+                  player_id) == _voting_info->done.end()) {
+      _voting_info->done.push_back(player_id);
+    }
+  }
 }

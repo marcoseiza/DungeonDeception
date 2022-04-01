@@ -1,5 +1,5 @@
-#ifndef SCENES_VOTING_SCENES_VOTE_FOR_LEADER_SCENE_H_
-#define SCENES_VOTING_SCENES_VOTE_FOR_LEADER_SCENE_H_
+#ifndef SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_
+#define SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_
 
 #include <cugl/cugl.h>
 
@@ -7,15 +7,24 @@
 #include "../../controllers/VotingInfo.h"
 #include "../../models/Player.h"
 
-class VoteForLeaderScene {
+class VoteForTeamScene {
   // The voting info for this terminal.
   std::shared_ptr<VotingInfo> _voting_info;
+
+  /** The room id for this terminal. */
+  int _terminal_room_id;
+
+  /** The player id for the team leader. */
+  int _team_leader_id;
 
   /** If the scene has been initialized */
   bool _initialized;
 
   /** If the scene is currently active. */
   bool _active;
+
+  /** If the players can press the ready button. */
+  bool _can_finish;
 
   /** If the scene is done. */
   bool _done;
@@ -26,12 +35,19 @@ class VoteForLeaderScene {
   /** A reference to the node for this scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
 
+  /** A map from the player id to the button it corresponds to. */
+  std::unordered_map<int, std::shared_ptr<cugl::scene2::Button>> _buttons;
+
+  /** A reference to the done button used when finished voting. */
+  std::shared_ptr<cugl::scene2::Button> _ready_button;
+
   /** A reference to the player controller. */
   std::shared_ptr<PlayerController> _player_controller;
 
  public:
-  VoteForLeaderScene() : _active(false), _done(false), _initialized(false) {}
-  ~VoteForLeaderScene() { dispose(); }
+  VoteForTeamScene()
+      : _active(false), _done(false), _can_finish(false), _initialized(false) {}
+  ~VoteForTeamScene() { dispose(); }
 
   /**
    * Initialize a wait for player scene.
@@ -46,14 +62,14 @@ class VoteForLeaderScene {
    * @param assets The assets for the game.
    * @return A shared pointer of the initialized wait for players scene.
    */
-  static std::shared_ptr<VoteForLeaderScene> alloc(
+  static std::shared_ptr<VoteForTeamScene> alloc(
       const std::shared_ptr<cugl::AssetManager>& assets) {
-    auto result = std::make_shared<VoteForLeaderScene>();
+    auto result = std::make_shared<VoteForTeamScene>();
     if (result->init(assets)) return result;
     return nullptr;
   }
 
-  /** Dispose of this VoteForLeaderScene. */
+  /** Dispose of this VoteForTeamScene. */
   void dispose() {
     _active = false;
     _done = false;
@@ -61,9 +77,10 @@ class VoteForLeaderScene {
   }
 
   /**
-   * Start this VoteForLeaderScene
+   * Start this VoteForTeamScene
    */
-  void start(std::shared_ptr<VotingInfo> voting_info);
+  void start(std::shared_ptr<VotingInfo> voting_info, int terminal_room_id,
+             int team_leader_id);
 
   /** Update the wait for players scene. */
   void update();
@@ -77,9 +94,11 @@ class VoteForLeaderScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
-  /** Button listener.  */
-  void buttonListener(const std::shared_ptr<cugl::scene2::Button>& butt,
-                      const std::string& name, bool down);
+  /** Voting Button listener.  */
+  void voteButtonListener(const std::string& name, bool down);
+
+  /** Done Button listener.  */
+  void readyButtonListener(const std::string& name, bool down);
 
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
@@ -87,4 +106,4 @@ class VoteForLeaderScene {
   }
 };
 
-#endif  // SCENES_VOTING_SCENES_VOTE_FOR_LEADER_SCENE_H_
+#endif  // SCENES_VOTING_SCENES_VOTE_FOR_TEAM_SCENE_H_

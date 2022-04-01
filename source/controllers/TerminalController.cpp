@@ -13,6 +13,7 @@ bool TerminalController::init(
 
   _wait_for_players_scene = WaitForPlayersScene::alloc(_assets);
   _vote_for_leader_scene = VoteForLeaderScene::alloc(_assets);
+  _vote_for_team_scene = VoteForTeamScene::alloc(_assets);
 
   NetworkController::get()->addListener(
       [=](const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
@@ -51,11 +52,23 @@ void TerminalController::update(float timestep) {
       _vote_for_leader_scene->update();
 
       if (_vote_for_leader_scene->isDone()) {
+        _leader_id = _vote_for_leader_scene->getLeader();
         _vote_for_leader_scene->dispose();
         _stage = Stage::VOTE_TEAM;
       }
       break;
     case Stage::VOTE_TEAM:
+      if (!_vote_for_team_scene->isActive()) {
+        _vote_for_team_scene->start(_voting_info[_terminal_room_id],
+                                    _terminal_room_id, _leader_id);
+      }
+
+      _vote_for_team_scene->update();
+
+      if (_vote_for_team_scene->isDone()) {
+        _vote_for_team_scene->dispose();
+        _stage = Stage::ACTIVATE_TERMINAL;
+      }
       break;
     case Stage::ACTIVATE_TERMINAL:
       break;
@@ -106,10 +119,22 @@ void TerminalController::sendNetworkData() {
           }
           vote_info->appendChild(voted_for_info);
           voted_for_info->setKey("voted_for");
+
+          votes_info->appendChild(vote_info);
         }
 
         info->appendChild(votes_info);
         votes_info->setKey("votes");
+      }
+
+      {
+        auto done_info = cugl::JsonValue::allocArray();
+        for (int player_id : (it->second)->done) {
+          done_info->appendChild(
+              cugl::JsonValue::alloc(static_cast<long>(player_id)));
+        }
+        info->appendChild(done_info);
+        done_info->setKey("done");
       }
 
       NetworkController::get()->send(9, info);
@@ -166,13 +191,16 @@ void TerminalController::processNetworkData(
       int terminal_room_id = info->getInt("terminal_room_id");
       std::vector<int> players = info->get("players")->asIntArray();
       auto votes = info->get("votes");
+      std::vector<int> done = info->get("done")->asIntArray();
 
       if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
         _voting_info[terminal_room_id]->players = players;
+        _voting_info[terminal_room_id]->done = done;
+
         if (votes->isArray()) {
           for (auto vote : votes->children()) {
             int player_id = vote->getInt("player_id");
-            std::vector<int> voted_for = info->get("voted_for")->asIntArray();
+            std::vector<int> voted_for = vote->get("voted_for")->asIntArray();
             _voting_info[terminal_room_id]->votes[player_id] = voted_for;
           }
         }
@@ -180,16 +208,40 @@ void TerminalController::processNetworkData(
         auto new_voting_info = std::make_shared<VotingInfo>();
         new_voting_info->terminal_room_id = terminal_room_id;
         new_voting_info->players = players;
+        new_voting_info->done = done;
 
         if (votes->isArray()) {
           for (auto vote : votes->children()) {
             int player_id = vote->getInt("player_id");
-            std::vector<int> voted_for = info->get("voted_for")->asIntArray();
+            std::vector<int> voted_for = vote->get("voted_for")->asIntArray();
             new_voting_info->votes[player_id] = voted_for;
           }
         }
 
         _voting_info[terminal_room_id] = new_voting_info;
+      }
+    } break;
+    case 10:  // Receive done with vote from client.
+    {
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+      int player_id = info->getInt("player_id");
+      bool add = info->getBool("add");
+
+      if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+        std::shared_ptr<VotingInfo> v = _voting_info[terminal_room_id];
+
+        auto found = std::find(v->done.begin(), v->done.end(), player_id);
+
+        if (found == v->done.end()) {
+          if (add) {
+            v->done.push_back(player_id);
+          } else {
+            v->done.erase(found);
+          }
+        }
       }
     } break;
   }
