@@ -70,6 +70,10 @@ class TerminalController : public Controller {
   static std::shared_ptr<TerminalController> alloc(
       const std::shared_ptr<cugl::AssetManager>& assets) {
     auto result = std::make_shared<TerminalController>();
+    result->_active = false;
+    result->init(assets);
+    InputController::get()->resume();
+
     if (result->init(assets)) return result;
     return nullptr;
   }
