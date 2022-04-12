@@ -79,6 +79,10 @@ class ActivateTerminalScene {
   void dispose() {
     _active = false;
     _done = false;
+    _is_betrayer = false;
+    _did_activate = false;
+    _activate_butt->setVisible(true);
+    _corrupt_butt->setVisible(true);
     _activate_butt->clearListeners();
     _corrupt_butt->clearListeners();
     _node->setVisible(false);

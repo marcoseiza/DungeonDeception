@@ -23,16 +23,19 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
   _team_leader_id = team_leader_id;
   _num_players_req = num_players_req;
 
-  std::string leader_button_key =
-      "terminal-voting-scene_voting-background_vote-for-team_leader-button-"
-      "wrapper_leader-button";
+  {
+    std::string leader_button_key =
+        "terminal-voting-scene_voting-background_vote-for-team_leader-button-"
+        "wrapper_leader-button";
 
-  auto leader_button = _assets->get<cugl::scene2::SceneNode>(leader_button_key);
+    auto leader_button =
+        _assets->get<cugl::scene2::SceneNode>(leader_button_key);
 
-  auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
-      _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
+    auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
+        _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
 
-  label->setText("player " + std::to_string(_team_leader_id));
+    label->setText("player " + std::to_string(_team_leader_id));
+  }
 
   if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
     _assets
@@ -45,6 +48,14 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
             "terminal-voting-scene_voting-background_vote-for-team_title-2-not-"
             "leader")
         ->setVisible(false);
+    _assets
+        ->get<cugl::scene2::SceneNode>(
+            "terminal-voting-scene_voting-background_vote-for-team_title-1")
+        ->setVisible(true);
+    _assets
+        ->get<cugl::scene2::SceneNode>(
+            "terminal-voting-scene_voting-background_vote-for-team_title-2")
+        ->setVisible(true);
 
     std::dynamic_pointer_cast<cugl::scene2::Label>(
         _assets->get<cugl::scene2::SceneNode>(
@@ -59,6 +70,17 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
         ->get<cugl::scene2::SceneNode>(
             "terminal-voting-scene_voting-background_vote-for-team_title-2")
         ->setVisible(false);
+
+    _assets
+        ->get<cugl::scene2::SceneNode>(
+            "terminal-voting-scene_voting-background_vote-for-team_title-1-not-"
+            "leader")
+        ->setVisible(true);
+    _assets
+        ->get<cugl::scene2::SceneNode>(
+            "terminal-voting-scene_voting-background_vote-for-team_title-2-not-"
+            "leader")
+        ->setVisible(true);
   }
 
   auto buttons = _assets->get<cugl::scene2::SceneNode>(
@@ -67,6 +89,9 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
   for (auto button : buttons->getChildren()) {
     auto butt = std::dynamic_pointer_cast<cugl::scene2::Button>(
         button->getChildByName("button"));
+
+    butt->getChildByName("up")->getChildByName("patch")->setColor(
+        cugl::Color4::WHITE);
 
     butt->setVisible(false);
     butt->deactivate();
@@ -119,7 +144,7 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
   }
 
   _ready_button->setVisible(false);
-  _ready_button->activate();
+  _ready_button->deactivate();
 
   _node->setVisible(true);
   _node->doLayout();
@@ -144,12 +169,14 @@ void VoteForTeamScene::update() {
     _can_finish = true;
 
     if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+      _ready_button->activate();
       _ready_button->setVisible(true);
     }
   } else {
     _can_finish = false;
 
     if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+      _ready_button->deactivate();
       _ready_button->setVisible(false);
     }
   }
@@ -198,7 +225,7 @@ void VoteForTeamScene::voteButtonListener(const std::string& name, bool down) {
     voted_for_info->setKey("voted_for");
   }
 
-  NetworkController::get()->sendOnlyToHost(8, info);
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_VOTING_INFO, info);
 }
 
 void VoteForTeamScene::readyButtonListener(const std::string& name, bool down) {
@@ -226,7 +253,7 @@ void VoteForTeamScene::readyButtonListener(const std::string& name, bool down) {
     should_add_info->setKey("add");
   }
 
-  NetworkController::get()->sendOnlyToHost(10, info);
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_DONE_WITH_VOTE, info);
 
   if (NetworkController::get()->isHost()) {
     int player_id = _player_controller->getMyPlayer()->getPlayerId();

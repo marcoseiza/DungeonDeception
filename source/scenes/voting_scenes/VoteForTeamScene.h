@@ -76,6 +76,8 @@ class VoteForTeamScene {
   void dispose() {
     _active = false;
     _done = false;
+    _can_finish = false;
+
     for (auto& it : _buttons) {
       it.second->clearListeners();
     }

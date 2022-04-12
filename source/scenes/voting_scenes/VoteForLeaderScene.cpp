@@ -48,6 +48,9 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
 
       butt->setVisible(true);
 
+      butt->getChildByName("up")->getChildByName("patch")->setColor(
+          cugl::Color4::WHITE);
+
     } else {
       butt->setVisible(false);
       butt->deactivate();
@@ -117,11 +120,15 @@ void VoteForLeaderScene::update() {
       }
       if (number_of_max == 1) {
         _can_finish = true;
+        _ready_button->activate();
         _ready_button->setVisible(true);
         _winner = winner;
       } else {
         _can_finish = false;
+        _has_clicked_ready = false;
+        _ready_button->deactivate();
         _ready_button->setVisible(false);
+        for (auto it : _buttons) it.second->activate();
         _voting_info->done.clear();
         removeAllPlayersFromDoneList();
       }
@@ -131,34 +138,24 @@ void VoteForLeaderScene::update() {
   // If everyone has pressed ready and there's a clear winner.
   _done = (_voting_info->done.size() == _voting_info->players.size());
 
-  {
-    auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),
-                           _player_controller->getMyPlayer()->getPlayerId());
-    if (found != _voting_info->done.end()) {
-      _ready_button->setVisible(false);
-    }
-  }
+  if (_has_clicked_ready) {
+    _ready_button->deactivate();
+    for (auto it : _buttons) it.second->deactivate();
+  } else {
+    // Process my player's input.
+    std::vector<int>& votes =
+        _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
 
-  {
-    auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),
-                           _player_controller->getMyPlayer()->getPlayerId());
+    if (votes.size() == 1) {
+      int player_id = votes[0];
 
-    if (found == _voting_info->done.end()) {
-      // Handle my player's input.
-      std::vector<int>& votes =
-          _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
-
-      if (votes.size() == 1) {
-        int player_id = votes[0];
-
-        for (auto it : _buttons) {
-          if (it.first == player_id) {
-            it.second->getChildByName("up")->getChildByName("patch")->setColor(
-                cugl::Color4("#4C7953"));
-          } else {
-            it.second->getChildByName("up")->getChildByName("patch")->setColor(
-                cugl::Color4::WHITE);
-          }
+      for (auto it : _buttons) {
+        if (it.first == player_id) {
+          it.second->getChildByName("up")->getChildByName("patch")->setColor(
+              cugl::Color4("#4C7953"));
+        } else {
+          it.second->getChildByName("up")->getChildByName("patch")->setColor(
+              cugl::Color4::WHITE);
         }
       }
     }
@@ -191,13 +188,13 @@ void VoteForLeaderScene::removeAllPlayersFromDoneList() {
       should_add_info->setKey("add");
     }
 
-    NetworkController::get()->sendOnlyToHost(10, info);
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_DONE_WITH_VOTE, info);
   }
 }
 
 void VoteForLeaderScene::voteButtonListener(const std::string& name,
                                             bool down) {
-  if (!down) return;
+  if (!down || _has_clicked_ready) return;
 
   {
     int voted_for = std::stoi(name);
@@ -237,12 +234,14 @@ void VoteForLeaderScene::voteButtonListener(const std::string& name,
     voted_for_info->setKey("voted_for");
   }
 
-  NetworkController::get()->sendOnlyToHost(8, info);
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_VOTING_INFO, info);
 }
 
 void VoteForLeaderScene::readyButtonListener(const std::string& name,
                                              bool down) {
   if (!down || !_can_finish) return;
+
+  _has_clicked_ready = true;
 
   auto info = cugl::JsonValue::allocObject();
 
@@ -266,7 +265,7 @@ void VoteForLeaderScene::readyButtonListener(const std::string& name,
     should_add_info->setKey("add");
   }
 
-  NetworkController::get()->sendOnlyToHost(10, info);
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_DONE_WITH_VOTE, info);
 
   if (NetworkController::get()->isHost()) {
     int player_id = _player_controller->getMyPlayer()->getPlayerId();

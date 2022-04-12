@@ -3,9 +3,13 @@
 
 #include <cugl/cugl.h>
 
+#include "../../controllers/VotingInfo.h"
 #include "../../models/Player.h"
 
 class WaitForPlayersScene {
+  // The voting info for this terminal.
+  std::shared_ptr<VotingInfo> _voting_info;
+
   /** If the scene has been initialized */
   bool _initialized;
 
@@ -27,15 +31,10 @@ class WaitForPlayersScene {
   /** The current number of players present. */
   int _curr_num_players;
 
-  /** A timer used to define how long to wait after the number of required
-   * people is accomplished. */
-  int _buffer_time_after_required;
-
  public:
   WaitForPlayersScene()
       : _num_players_req(-1),
         _curr_num_players(0),
-        _buffer_time_after_required(0),
         _active(false),
         _done(false),
         _initialized(false) {}
@@ -67,7 +66,6 @@ class WaitForPlayersScene {
     _done = false;
     _num_players_req = -1;
     _curr_num_players = 0;
-    _buffer_time_after_required = 0;
     _node->setVisible(false);
   }
 
@@ -75,7 +73,7 @@ class WaitForPlayersScene {
    * Start this WaitForPlayersScene
    * @param num_players_req The number of players required for this terminal.
    */
-  void start(int num_players_req);
+  void start(std::shared_ptr<VotingInfo> voting_info, int num_players_req);
 
   /** Update the wait for players scene. */
   void update();
@@ -88,12 +86,6 @@ class WaitForPlayersScene {
 
   /** If the scene is done. */
   bool isDone() { return _done; }
-
-  /**
-   * Set the current number of players on the terminal.
-   * @param num The current number of players on the terminal.
-   */
-  void setCurrentNumPlayers(int num) { _curr_num_players = num; }
 };
 
 #endif  // SCENES_VOTING_SCENES_WAIT_FOR_PLAYER_SCENE_H_

@@ -397,7 +397,6 @@ void GameScene::update(float timestep) {
     role_msg = "(C)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
-  role_text->setText(role_msg);
 
   // POST-UPDATE
   // Check for disposal
@@ -630,21 +629,30 @@ void GameScene::sendEnemyHitNetworkInfo(int id, int room_id) {
   NetworkController::get()->sendOnlyToHost(msg);
 }
 
-void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id) {
+void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id,
+                                          int num_players_req) {
   std::shared_ptr<cugl::JsonValue> terminal_info =
       cugl::JsonValue::allocObject();
+  {
+    std::shared_ptr<cugl::JsonValue> room_info =
+        cugl::JsonValue::alloc(static_cast<long>(room_id));
+    terminal_info->appendChild(room_info);
+    room_info->setKey("terminal_room_id");
+  }
+  {
+    std::shared_ptr<cugl::JsonValue> num_req_info =
+        cugl::JsonValue::alloc(static_cast<long>(num_players_req));
+    terminal_info->appendChild(num_req_info);
+    num_req_info->setKey("num_players_req");
+  }
+  {
+    std::shared_ptr<cugl::JsonValue> player_info =
+        cugl::JsonValue::alloc(static_cast<long>(player_id));
+    terminal_info->appendChild(player_info);
+    player_info->setKey("player_id");
+  }
 
-  std::shared_ptr<cugl::JsonValue> room_info =
-      cugl::JsonValue::alloc(static_cast<long>(room_id));
-  terminal_info->appendChild(room_info);
-  room_info->setKey("terminal_room_id");
-
-  std::shared_ptr<cugl::JsonValue> player_info =
-      cugl::JsonValue::alloc(static_cast<long>(player_id));
-  terminal_info->appendChild(player_info);
-  player_info->setKey("player_id");
-
-  _serializer.writeSint32(7);
+  _serializer.writeSint32(NC_CLIENT_PLAYER_ADDED);
   _serializer.writeJson(terminal_info);
 
   std::vector<uint8_t> msg = _serializer.serialize();
@@ -976,7 +984,8 @@ void GameScene::beginContact(b2Contact* contact) {
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired());
 
-      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
+                                room->getNumPlayersRequired());
 
       dynamic_cast<TerminalSensor*>(ob1)->activate();
     }
@@ -987,7 +996,8 @@ void GameScene::beginContact(b2Contact* contact) {
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired());
 
-      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
+                                room->getNumPlayersRequired());
 
       dynamic_cast<TerminalSensor*>(ob2)->activate();
     }

@@ -3,6 +3,8 @@
 
 #include <cugl/cugl.h>
 
+#include "NetworkCodes.h"
+
 class NetworkController {
  public:
   /**
@@ -149,6 +151,7 @@ class NetworkController {
     _serializer.writeJson(info);
 
     std::vector<uint8_t> msg = _serializer.serialize();
+
     _serializer.reset();
     _network->send(msg);
   }

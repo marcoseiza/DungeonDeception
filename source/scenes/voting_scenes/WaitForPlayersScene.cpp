@@ -1,7 +1,5 @@
 #include "WaitForPlayersScene.h"
 
-#define WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED 300
-
 bool WaitForPlayersScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
@@ -14,11 +12,13 @@ bool WaitForPlayersScene::init(
   return true;
 }
 
-void WaitForPlayersScene::start(int num_players_req) {
+void WaitForPlayersScene::start(std::shared_ptr<VotingInfo> voting_info,
+                                int num_players_req) {
   if (!_initialized || _active) return;
   _active = true;
   _node->setVisible(true);
 
+  _voting_info = voting_info;
   _num_players_req = num_players_req;
   auto num_required_label = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _node->getChildByName("num-required"));
@@ -29,8 +29,9 @@ void WaitForPlayersScene::start(int num_players_req) {
 }
 
 void WaitForPlayersScene::update() {
-  if (_curr_num_players >= _num_players_req) _buffer_time_after_required++;
-  if (_buffer_time_after_required > WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED) {
+  _curr_num_players = _voting_info->players.size();
+
+  if (_voting_info->buffer_timer > WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED) {
     _done = true;  // DONE!
     return;
   }

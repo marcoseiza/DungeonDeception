@@ -23,6 +23,9 @@ class VoteForLeaderScene {
   /** If the players can press the ready button. */
   bool _can_finish;
 
+  /** If the player has clicked ready. */
+  bool _has_clicked_ready;
+
   /** If the scene is done. */
   bool _done;
 
@@ -49,6 +52,7 @@ class VoteForLeaderScene {
       : _active(false),
         _done(false),
         _can_finish(false),
+        _has_clicked_ready(false),
         _initialized(false),
         _winner(0) {}
   ~VoteForLeaderScene() { dispose(); }
@@ -77,6 +81,9 @@ class VoteForLeaderScene {
   void dispose() {
     _active = false;
     _done = false;
+    _has_clicked_ready = false;
+    _can_finish = false;
+    _winner = 0;
     for (auto& it : _buttons) {
       it.second->clearListeners();
     }

@@ -93,7 +93,8 @@ void ActivateTerminalScene::buttonListener(const std::string& name, bool down) {
     did_activate_info->setKey("did_activate");
   }
 
-  NetworkController::get()->sendOnlyToHost(11, info);
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_DONE_ACTIVATE_TERMINAL,
+                                           info);
 
   if (NetworkController::get()->isHost()) {
     int player_id = _player_controller->getMyPlayer()->getPlayerId();
