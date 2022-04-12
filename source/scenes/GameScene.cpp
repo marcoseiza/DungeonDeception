@@ -278,12 +278,18 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  if (_terminal_controller->hasJustFinished()) {
-    bool was_activated = _terminal_controller->getTerminalWasActivated();
-    if (was_activated) {
-      _num_terminals_activated++;
-    } else {
-      _num_terminals_corrupted++;
+  {
+    _num_terminals_activated = 0;
+    _num_terminals_corrupted = 0;
+    for (auto it : _terminal_controller->getVotingInfo()) {
+      std::shared_ptr<VotingInfo>& info = it.second;
+      if (info->terminal_done) {
+        if (info->was_activated) {
+          _num_terminals_activated++;
+        } else {
+          _num_terminals_corrupted++;
+        }
+      }
     }
   }
 

@@ -90,8 +90,12 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals activated in the world. */
   int _num_terminals_activated;
+  /** The label that represents the number of terminals activated. */
+  std::shared_ptr<cugl::scene2::Label> _terminals_activated_label;
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
+  /** The label that represents the number of terminals corrupted. */
+  std::shared_ptr<cugl::scene2::Label> _terminals_corrupted_label;
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;

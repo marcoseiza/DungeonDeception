@@ -174,7 +174,6 @@ class TerminalController : public Controller {
   /** Called when the terminal voting is done. */
   void done() {
     _active = false;
-    _just_finished = true;
     _scene->setVisible(false);
     _stage = Stage::WAIT_FOR_PLAYERS;
     InputController::get()->resume();

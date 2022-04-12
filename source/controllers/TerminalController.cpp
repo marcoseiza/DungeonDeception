@@ -104,7 +104,8 @@ void TerminalController::update(float timestep) {
 
       _activate_terminal_scene->update();
 
-      if (_activate_terminal_scene->isDone()) {
+      if (_activate_terminal_scene->isDone() &&
+          _voting_info[_terminal_room_id]->terminal_done) {
         _activate_terminal_scene->dispose();
         done();
       }
@@ -120,8 +121,15 @@ void TerminalController::sendNetworkData() {
       auto info = cugl::JsonValue::allocObject();
 
       {
+        auto terminal_done_info =
+            cugl::JsonValue::alloc((it->second)->terminal_done);
+        info->appendChild(terminal_done_info);
+        terminal_done_info->setKey("terminal_done");
+      }
+
+      {
         auto was_activate_info =
-            cugl::JsonValue::alloc(_terminal_was_activated);
+            cugl::JsonValue::alloc((it->second)->was_activated);
         info->appendChild(was_activate_info);
         was_activate_info->setKey("was_activated");
       }
@@ -252,7 +260,6 @@ void TerminalController::processNetworkData(
     case NC_HOST_VOTING_INFO: {
       std::shared_ptr<cugl::JsonValue> info =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-      _terminal_was_activated &= info->getBool("was_activated");
 
       int terminal_room_id = info->getInt("terminal_room_id");
       int num_players_req = info->getInt("num_players_req");
@@ -265,6 +272,10 @@ void TerminalController::processNetworkData(
         _voting_info[terminal_room_id]->players = players;
         _voting_info[terminal_room_id]->done = done;
         _voting_info[terminal_room_id]->buffer_timer = buffer_timer;
+        _voting_info[terminal_room_id]->was_activated &=
+            info->getBool("was_activated");
+        _voting_info[terminal_room_id]->terminal_done =
+            info->getBool("terminal_done");
 
         if (votes->isArray()) {
           for (auto vote : votes->children()) {
@@ -319,14 +330,27 @@ void TerminalController::processNetworkData(
 
       int terminal_room_id = info->getInt("terminal_room_id");
       int player_id = info->getInt("player_id");
-      _terminal_was_activated &= info->getBool("did_activate");
 
       if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
         std::shared_ptr<VotingInfo> v = _voting_info[terminal_room_id];
+        v->was_activated &= info->getBool("did_activate");
+
         auto found = std::find(v->done.begin(), v->done.end(), player_id);
         if (found == v->done.end()) {
           v->done.push_back(player_id);
         }
+      }
+    } break;
+    case NC_CLIENT_TERMINAL_DONE: {
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+      bool terminal_done = info->getBool("terminal_done");
+
+      if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+        std::shared_ptr<VotingInfo> v = _voting_info[terminal_room_id];
+        v->terminal_done = terminal_done;
       }
     } break;
   }

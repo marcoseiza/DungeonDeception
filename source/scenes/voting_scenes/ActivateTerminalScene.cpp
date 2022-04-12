@@ -52,6 +52,28 @@ void ActivateTerminalScene::start(std::shared_ptr<VotingInfo> voting_info,
 }
 
 void ActivateTerminalScene::update() {
+  if (_done) {
+    auto info = cugl::JsonValue::allocObject();
+
+    {
+      auto terminal_room_id_info =
+          cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+      info->appendChild(terminal_room_id_info);
+      terminal_room_id_info->setKey("terminal_room_id");
+    }
+
+    {
+      auto terminal_done_info = cugl::JsonValue::alloc(true);
+      info->appendChild(terminal_done_info);
+      terminal_done_info->setKey("terminal_done");
+    }
+
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_TERMINAL_DONE, info);
+
+    if (NetworkController::get()->isHost()) _voting_info->terminal_done = true;
+    return;
+  }
+
   _done = (_voting_info->done.size() == _num_players_req);
 
   auto found = std::find(_voting_info->done.begin(), _voting_info->done.end(),
