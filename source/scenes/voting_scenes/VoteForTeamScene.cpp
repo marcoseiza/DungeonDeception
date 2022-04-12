@@ -132,8 +132,10 @@ void VoteForTeamScene::update() {
   }
 
   for (int voted : _voting_info->votes[_team_leader_id]) {
-    _buttons[voted]->getChildByName("up")->getChildByName("patch")->setColor(
-        cugl::Color4("#4C7953"));
+    if (_buttons.find(voted) != _buttons.end()) {
+      _buttons[voted]->getChildByName("up")->getChildByName("patch")->setColor(
+          cugl::Color4("#4C7953"));
+    }
   }
 
   _done = (_voting_info->done.size() == 1);
@@ -156,19 +158,15 @@ void VoteForTeamScene::update() {
 void VoteForTeamScene::voteButtonListener(const std::string& name, bool down) {
   if (!down) return;
 
-  {
-    int voted_for = std::stoi(name);
-    int player_id = _player_controller->getMyPlayer()->getPlayerId();
+  int voted_for = std::stoi(name);
+  std::vector<int>& votes = _voting_info->votes[_team_leader_id];
 
-    for (int vote : _voting_info->votes[player_id]) {
-      CULog("%d", vote);
-    }
-    std::remove(_voting_info->votes[player_id].begin(),
-                _voting_info->votes[player_id].end(), voted_for);
-    auto found = std::find(_voting_info->votes[player_id].begin(),
-                           _voting_info->votes[player_id].end(), voted_for);
-    if (found == _voting_info->votes[player_id].end()) {
-      _voting_info->votes[player_id].push_back(voted_for);
+  {
+    auto found = std::find(votes.begin(), votes.end(), voted_for);
+    if (found != votes.end()) {
+      votes.erase(found);
+    } else {
+      votes.push_back(voted_for);
     }
   }
 
@@ -182,18 +180,16 @@ void VoteForTeamScene::voteButtonListener(const std::string& name, bool down) {
   }
 
   {
-    int player_id = _player_controller->getMyPlayer()->getPlayerId();
-    auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
+    auto player_id_info =
+        cugl::JsonValue::alloc(static_cast<long>(_team_leader_id));
     info->appendChild(player_id_info);
     player_id_info->setKey("player_id");
   }
 
   {
     auto voted_for_info = cugl::JsonValue::allocArray();
-    std::vector<int>& voted_for =
-        _voting_info->votes[_player_controller->getMyPlayer()->getPlayerId()];
 
-    for (int player_voted_for_id : voted_for) {
+    for (int player_voted_for_id : votes) {
       voted_for_info->appendChild(
           cugl::JsonValue::alloc(static_cast<long>(player_voted_for_id)));
     }

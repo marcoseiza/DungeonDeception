@@ -34,9 +34,11 @@ void TerminalController::update(float timestep) {
       if (!_wait_for_players_scene->isActive()) {
         _wait_for_players_scene->start(_num_players_req);
       } else {
-        _wait_for_players_scene->update();
-        _wait_for_players_scene->setCurrentNumPlayers(
-            _voting_info[_terminal_room_id]->players.size());
+        if (_voting_info.find(_terminal_room_id) != _voting_info.end()) {
+          _wait_for_players_scene->update();
+          _wait_for_players_scene->setCurrentNumPlayers(
+              _voting_info[_terminal_room_id]->players.size());
+        }
       }
 
       if (_wait_for_players_scene->isDone()) {
