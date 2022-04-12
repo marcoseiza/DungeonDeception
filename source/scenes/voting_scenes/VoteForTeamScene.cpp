@@ -34,7 +34,12 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
     auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
         _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
 
-    label->setText("player " + std::to_string(_team_leader_id));
+    std::stringstream ss;
+    ss << "player " << _team_leader_id;
+    if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
+      ss << " (you)";
+    }
+    label->setText(ss.str().c_str(), true);
   }
 
   if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
@@ -109,8 +114,13 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
 
       auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
           butt->getChildByName("up")->getChildByName("label"));
-      std::string name = "player " + std::to_string(player_id);
-      label->setText(name, true);
+
+      std::stringstream ss;
+      ss << "player " << player_id;
+      if (_player_controller->getMyPlayer()->getPlayerId() == player_id) {
+        ss << " (you)";
+      }
+      label->setText(ss.str().c_str(), true);
 
       butt->getChildByName("up")
           ->getChildByName("num-votes")

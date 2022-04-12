@@ -37,8 +37,13 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
 
       auto label = std::dynamic_pointer_cast<cugl::scene2::Label>(
           butt->getChildByName("up")->getChildByName("label"));
-      std::string name = "player " + std::to_string(player_id);
-      label->setText(name, true);
+
+      std::stringstream ss;
+      ss << "player " << player_id;
+      if (_player_controller->getMyPlayer()->getPlayerId() == player_id) {
+        ss << " (you)";
+      }
+      label->setText(ss.str().c_str(), true);
 
       butt->addListener([=](const std::string& name, bool down) {
         this->voteButtonListener(std::to_string(player_id), down);
