@@ -128,17 +128,21 @@ void Player::move(float forwardX, float forwardY) {
   if (forwardY == 0) setVY(0);
 
   // Set the correct frame for idle
+  updateDirection(forwardX, forwardY);
+}
+
+void Player::updateDirection(float x_diff, float y_diff) {
   int new_direc = _mv_direc;
-  if (std::abs(forwardX) >= std::abs(forwardY)) {
-    if (forwardX < 0) {
+  if (std::abs(x_diff) >= std::abs(y_diff)) {
+    if (x_diff < 0) {
       new_direc = IDLE_LEFT;
-    } else if (forwardX > 0) {
+    } else if (x_diff > 0) {
       new_direc = IDLE_RIGHT;
     }
-  } else if (std::abs(forwardX) < std::abs(forwardY)) {
-    if (forwardY < 0) {
+  } else if (std::abs(x_diff) < std::abs(y_diff)) {
+    if (y_diff < 0) {
       new_direc = IDLE_DOWN;
-    } else if (forwardY > 0) {
+    } else if (y_diff > 0) {
       new_direc = IDLE_UP;
     }
   }

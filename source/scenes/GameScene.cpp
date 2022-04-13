@@ -849,6 +849,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float 
       if (abs(pos_x - old_position.x) > 0 ||
           abs(pos_y - old_position.y) > 0) {
         player->setState(Player::MOVING);
+        player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
       } else {
         player->setState(Player::IDLE);
       }
