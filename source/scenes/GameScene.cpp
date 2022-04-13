@@ -846,9 +846,8 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float 
       cugl::Vec2 old_position = player->getPosition();
       
       // Movement must exceed this value to be animated
-      const float MOVEMENT_THRESH = 1;
-      if (abs(pos_x - old_position.x) > MOVEMENT_THRESH ||
-          abs(pos_y - old_position.y) > MOVEMENT_THRESH) {
+      if (abs(pos_x - old_position.x) > 0 ||
+          abs(pos_y - old_position.y) > 0) {
         player->setState(Player::MOVING);
       } else {
         player->setState(Player::IDLE);
