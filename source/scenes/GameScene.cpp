@@ -66,6 +66,7 @@ bool GameScene::init(
 
   // Get the world from level controller and attach the listeners.
   _world = _level_controller->getWorld();
+  _world->setGravity(cugl::Vec2::ZERO);
   _world->activateCollisionCallbacks(true);
   _world->onBeginContact = [this](b2Contact* contact) {
     this->beginContact(contact);
@@ -843,7 +844,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float 
   for (std::shared_ptr<Player> player : _players) {
     if (player->getPlayerId() == player_id) {
       cugl::Vec2 old_position = player->getPosition();
-
+      
       // Movement must exceed this value to be animated
       const float MOVEMENT_THRESH = 1;
       if (abs(pos_x - old_position.x) > MOVEMENT_THRESH ||
