@@ -309,10 +309,11 @@ class GameScene : public cugl::Scene2 {
    * the _players list.
    *
    * @param player_id The player id
+   * @param room_id   The room id
    * @param pos_x The updated player x position
    * @param pos_y The updated player y position
    */
-  void updatePlayerInfo(int player_id, float pos_x, float pos_y);
+  void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
    * Updates the health and position of the enemy with the corresponding

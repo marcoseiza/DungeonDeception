@@ -418,6 +418,11 @@ void GameScene::sendNetworkInfo() {
         pos->appendChild(pos_y);
         player_info->appendChild(pos);
         pos->setKey("position");
+        
+        std::shared_ptr<cugl::JsonValue> room =
+            cugl::JsonValue::alloc(static_cast<long>(player->getRoomId()));
+        player_info->appendChild(room);
+        room->setKey("room");
 
         player_positions.push_back(player_info);
 
@@ -546,6 +551,11 @@ void GameScene::sendNetworkInfo() {
         cugl::JsonValue::alloc(static_cast<long>(_my_player->getPlayerId()));
     player_info->appendChild(player_id);
     player_id->setKey("player_id");
+    
+    std::shared_ptr<cugl::JsonValue> room =
+        cugl::JsonValue::alloc(static_cast<long>(_my_player->getRoomId()));
+    player_info->appendChild(room);
+    room->setKey("room");
 
     std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
     std::shared_ptr<cugl::JsonValue> pos_x =
@@ -695,12 +705,12 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
         std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(player_msg);
     for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
       int player_id = player->getInt("player_id");
-      //      bool facing_right = player->getBool("facing_right");
+      int room_id = player->getInt("room");
       std::shared_ptr<cugl::JsonValue> player_position =
           player->get("position");
       float pos_x = player_position->get(0)->asFloat();
       float pos_y = player_position->get(1)->asFloat();
-      updatePlayerInfo(player_id, pos_x, pos_y);
+      updatePlayerInfo(player_id, room_id, pos_x, pos_y);
     }
   } else if (code == 3) {  // Timer info update
     cugl::NetworkDeserializer::Message timer_msg = _deserializer.read();
@@ -713,11 +723,11 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     std::shared_ptr<cugl::JsonValue> player =
         std::get<std::shared_ptr<cugl::JsonValue>>(msg);
     int player_id = player->getInt("player_id");
-    //    bool facing_right = player->getBool("facing_right");
+    int room_id = player->getInt("room");
     std::shared_ptr<cugl::JsonValue> player_position = player->get("position");
     float pos_x = player_position->get(0)->asFloat();
     float pos_y = player_position->get(1)->asFloat();
-    updatePlayerInfo(player_id, pos_x, pos_y);
+    updatePlayerInfo(player_id, room_id, pos_x, pos_y);
   } else if (code == 5) {  // Singular enemy update from the host
     cugl::NetworkDeserializer::Message enemy_msg = _deserializer.read();
 
@@ -795,7 +805,7 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
  * @param pos_x The updated player x position
  * @param pos_y The updated player y position
  */
-void GameScene::updatePlayerInfo(int player_id, float pos_x, float pos_y) {
+void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y) {
   if (player_id == _my_player->getPlayerId()) {
     return;
   }
@@ -811,6 +821,7 @@ void GameScene::updatePlayerInfo(int player_id, float pos_x, float pos_y) {
       } else {
         player->setState(Player::IDLE);
       }
+      player->setRoomId(room_id);
       player->setPosition(pos_x, pos_y);
       player->animate(pos_x - old_position.x, pos_y - old_position.y);
       return;
