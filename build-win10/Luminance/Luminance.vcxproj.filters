@@ -81,6 +81,9 @@
     <ClInclude Include="..\..\source\models\level_gen\Room.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\models\level_gen\RoomTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\source\loaders\CustomScene2Loader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -145,7 +148,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\models\tiles\TerminalSensor.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\EnemyController.h">
       <Filter>Header Files</Filter>

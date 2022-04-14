@@ -235,6 +235,7 @@
     <ClInclude Include="..\..\source\models\tiles\Wall.h" />
     <ClInclude Include="..\..\source\models\level_gen\DefaultRooms.h" />
     <ClInclude Include="..\..\source\models\level_gen\Room.h" />
+    <ClInclude Include="..\..\source\models\level_gen\RoomTypes.h" />
     <ClInclude Include="..\..\source\loaders\CustomScene2Loader.h" />
     <ClInclude Include="..\..\source\generators\LevelGenerator.h" />
     <ClInclude Include="..\..\source\generators\LevelGeneratorConfig.h" />
