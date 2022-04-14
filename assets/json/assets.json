@@ -849,7 +849,7 @@
       },
       "pixelmix_extra_small": {
             "file": "fonts/pixelmix.ttf",
-            "size": 10
+            "size": 12
         },
         "pixelmix_bold": {
             "file": "fonts/pixelmix_bold.ttf",
