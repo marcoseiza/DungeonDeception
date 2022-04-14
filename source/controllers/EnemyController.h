@@ -28,6 +28,8 @@ class EnemyController {
   std::unordered_set<cugl::physics2::Obstacle*> _objects;
   /** Direction to move the enemy model according to the weights. */
   cugl::Vec2 _direction;
+  /** Timer for doing ray casting. */
+  int _timer;
 
  public:
 #pragma mark Constructors

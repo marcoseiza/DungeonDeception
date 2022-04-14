@@ -5,8 +5,8 @@
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 100
 
-#define NUM_RAYCASTS 16
-#define RAYCAST_LENGTH 20
+#define NUM_RAYCASTS 128
+#define RAYCAST_LENGTH 300
 #define NUM_WEIGHTS 12
 
 #define MAX_SPEED 0.1f
@@ -113,6 +113,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   float theta = 0;
   b2Vec2 p1 = b2Vec2(enemy->getPosition().x, enemy->getPosition().y);
   b2Vec2 p2;
+  bool found_player = false;
   for (int i = 0; i < NUM_RAYCASTS; i++) {
     p2 = b2Vec2(p1.x + RAYCAST_LENGTH*cos(theta), p1.y + RAYCAST_LENGTH*sin(theta)); // The ray cast end point.
     RayCastController raycast;
@@ -130,13 +131,20 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       cugl::physics2::Obstacle* ob = static_cast<cugl::physics2::Obstacle*>(
           (void*)bd->GetUserData().pointer);
       
-      // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn't do  calculations for the same object multiple times.
+      // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn't do  calculations for the same object multiple times).
       if (ob->getName() == "Wall" || fx_name == "enemy_hitbox") {
-        _objects.emplace(ob);
+        cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
+        if (ob_vec.length() <= 20) {
+          _objects.emplace(ob);
+        }
+      }
+      
+      // Check if the player is in the circle of vision.
+      if (ob == player.get()) {
+        found_player = true;
       }
     }
-    
-    theta += M_PI/8;
+    theta += M_PI/(NUM_RAYCASTS/2);
   }
   
   // Adjust the weights (lower them) according to walls and other enemies that were raycasted against.
@@ -144,29 +152,33 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
     cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
     ob_vec.normalize();
     theta = 0;
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < NUM_WEIGHTS; i++) {
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
-      float dot = cugl::Vec2::dot(ob_vec, weight_vec);
-      if (ob->getName() == "Wall") {
-        _weights[i] -= dot;
-      } else {
+      if (ob->getName() != "Wall") {
         // Move away from the other enemies at an angle.
         cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + M_PI/4), sin(theta + M_PI/4));
-        float dot = cugl::Vec2::dot(ob_vec, weight_vec);
-        _weights[i] -= dot;
       }
-      theta += M_PI/(NUM_RAYCASTS/2);
+      float dot = cugl::Vec2::dot(ob_vec, weight_vec);
+      _weights[i] -= dot;
+      theta += M_PI/(NUM_WEIGHTS/2);
     }
   }
   
   // Adjust the weights (raise them) according to the player position.
+//  if (found_player) {
   cugl::Vec2 p = player->getPosition() - enemy->getPosition();
   p.normalize();
   theta = 0;
   for (int i = 0; i < NUM_WEIGHTS; i++) {
     // If attacking, move at a normal instead of directly at the player.
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
-      // Determine the angle in which the enemy wants to move, to figure out if it should move in CW or CCW.
+      // Determine the angle in which the enemy wants to move, to figure out if it should move CW or CCW.
+//        int f = 0;
+//        if (_weights[i] < 0) {
+//          f = -1;
+//        } else if (_weights[i] > 0) {
+//          f = 1;
+//        }
       cugl::Vec2 plus = p + cugl::Vec2(cos(i * M_PI/(NUM_WEIGHTS/2))*_weights[i], sin(i * M_PI/(NUM_WEIGHTS/2))*_weights[i]);
       plus.normalize();
       float angle = cugl::Vec2::angle(p, plus);
@@ -176,23 +188,23 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       int CW = (enemy->_move_CW) ? -1 : 1;
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot;
+      _weights[i] += dot/2;
     } else {
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot;
+      _weights[i] += dot/2;
     }
     theta += M_PI/(NUM_WEIGHTS/2);
   }
   
   // Adjust weights to slightly prefer current direction.
-  theta = 0;
-  for (int i = 0; i < 12; i++) {
-    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
-    float dot = cugl::Vec2::dot(direc, _direction);
-    _weights[i] += dot/5;
-    theta += M_PI/(NUM_WEIGHTS/2);
-  }
+//  theta = 0;
+//  for (int i = 0; i < NUM_WEIGHTS; i++) {
+//    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
+//    float dot = cugl::Vec2::dot(direc, _direction);
+//    _weights[i] += dot/5;
+//    theta += M_PI/(NUM_WEIGHTS/2);
+//  }
   
   // Find the weight with the highest value, move in that direction.
   // In case of tie, will take the weight in the most CCW direction from theta = 0.
