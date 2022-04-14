@@ -1,0 +1,25 @@
+{
+  "variables": {},
+  "contents": {
+    "comments": "This is the root node for the background scene",
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "joystick-base": {
+        "type": "Image",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "center",
+          "scale": 0.5
+        },
+        "data": {
+          "texture": "background"
+        }
+      }
+    }
+  }
+}

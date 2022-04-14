@@ -28,6 +28,9 @@ class GameScene : public cugl::Scene2 {
   /** The list of all players. */
   std::vector<std::shared_ptr<Player>> _players;
 
+  /** The animated health bar */
+  std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
+
   /** The sword. */
   std::shared_ptr<Sword> _sword;
 
@@ -87,6 +90,9 @@ class GameScene : public cugl::Scene2 {
   /** The number of terminals activated in the world. */
   int _num_terminals_activated;
 
+  /** The number of terminals corrupted in the world. */
+  int _num_terminals_corrupted;
+
   /** The milliseconds remaining in the game before it ends. */
   int _millis_remaining;
 
@@ -141,6 +147,13 @@ class GameScene : public cugl::Scene2 {
    * @return true if at least half of the terminals have been activated.
    */
   bool checkCooperatorWin();
+
+  /**
+   * Check if the betrayers have won.
+   *
+   * @return true if at least half of the terminals have been activated.
+   */
+  bool checkBetrayerWin();
 
   /**
    * Checks how much time is remaining.
