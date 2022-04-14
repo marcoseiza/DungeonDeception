@@ -1,8 +1,8 @@
 #include "GameScene.h"
 
-#include <box2d/b2_world.h>
 #include <box2d/b2_collision.h>
 #include <box2d/b2_contact.h>
+#include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
 #include "../controllers/actions/Attack.h"
@@ -35,8 +35,9 @@ bool GameScene::init(
 
   _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
   _world_node->setContentSize(dim);
-  
-  std::shared_ptr<cugl::Texture> target_texture = _assets->get<cugl::Texture>("target-player");
+
+  std::shared_ptr<cugl::Texture> target_texture =
+      _assets->get<cugl::Texture>("target-player");
   auto target_icon_node = cugl::scene2::SpriteNode::alloc(target_texture, 1, 1);
   target_icon_node->setName("target-icon");
   target_icon_node->setVisible(false);
@@ -99,7 +100,6 @@ bool GameScene::init(
   _terminal_controller = TerminalController::alloc(_assets);
   _controllers.push_back(_terminal_controller);
 
-
   auto background_layer = assets->get<cugl::scene2::SceneNode>("background");
   background_layer->setContentSize(dim);
   background_layer->doLayout();
@@ -112,8 +112,9 @@ bool GameScene::init(
   win_layer->setContentSize(dim);
   win_layer->doLayout();
   win_layer->setVisible(false);
-  
-  auto target_player_button = ui_layer->getChildByName<cugl::scene2::Button>("target-player");
+
+  auto target_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(is_betrayer);
 
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
@@ -138,7 +139,8 @@ bool GameScene::init(
   corrupted_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
-  std::string name_msg =  cugl::strtool::format("player %d", _my_player->getPlayerId());
+  std::string name_msg =
+      cugl::strtool::format("player %d", _my_player->getPlayerId());
   name_text->setText(name_msg);
   name_text->setForeground(cugl::Color4::BLACK);
 
@@ -278,7 +280,7 @@ void GameScene::update(float timestep) {
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
   }
-  
+
   auto target_player = InputController::get<TargetPlayer>();
   if (target_player->didChangeTarget()) {
     int current_room_id = _my_player->getRoomId();
@@ -286,15 +288,19 @@ void GameScene::update(float timestep) {
     bool others_in_room = false;
     int first_found_player = -1;
     for (std::shared_ptr<Player> player : _players) {
-      if (player->getRoomId() == current_room_id && player->getPlayerId() != _my_player->getPlayerId()) {
+      if (player->getRoomId() == current_room_id &&
+          player->getPlayerId() != _my_player->getPlayerId()) {
         others_in_room = true;
         if (first_found_player == -1) {
           first_found_player = player->getPlayerId();
         }
-        if (target_player->getTarget() == -1 || !target_player->hasSeenPlayerId(player->getPlayerId())) {
+        if (target_player->getTarget() == -1 ||
+            !target_player->hasSeenPlayerId(player->getPlayerId())) {
           // Sets the target to a fresh player
           target_player->setTarget(player->getPlayerId());
-          auto target_icon_node = _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
+          auto target_icon_node =
+              _world_node->getChildByName<cugl::scene2::SceneNode>(
+                  "target-icon");
           target_icon_node->setPosition(player->getPlayerNode()->getPosition());
           target_icon_node->setVisible(true);
           found_player = true;
@@ -302,17 +308,20 @@ void GameScene::update(float timestep) {
         }
       }
     }
-    // Cycled through all players and they have all already been visited, go back to the first
+    // Cycled through all players and they have all already been visited, go
+    // back to the first
     if (!found_player && others_in_room && first_found_player != -1) {
       target_player->clearDirtyPlayers();
       target_player->setTarget(first_found_player);
     }
   }
-  
-  auto target_icon_node = _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
+
+  auto target_icon_node =
+      _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
   if (target_player->getTarget() != -1) {
     for (std::shared_ptr<Player> player : _players) {
-      if (player->getRoomId() == _my_player->getRoomId() && player->getPlayerId() == target_player->getTarget()) {
+      if (player->getRoomId() == _my_player->getRoomId() &&
+          player->getPlayerId() == target_player->getTarget()) {
         target_icon_node->setPosition(player->getPlayerNode()->getPosition());
         target_icon_node->setVisible(true);
       }
@@ -320,7 +329,7 @@ void GameScene::update(float timestep) {
   } else {
     target_icon_node->setVisible(false);
   }
-  
+
   if (target_player->isActivatingTargetAction()) {
     sendBetrayalTargetInfo(target_player->getTarget());
   }
@@ -336,7 +345,7 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   int room_id = current_room->getKey();
   _my_player->setRoomId(current_room->getKey());
-  
+
   updateEnemies(timestep, current_room, room_id);
 
   updateCamera(timestep);
@@ -357,14 +366,17 @@ void GameScene::update(float timestep) {
   name_text->setText(name_msg);
   name_text->setForeground(cugl::Color4::BLACK);
 
-  auto activated_text = ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
-  std::string activated_msg = cugl::strtool::format(std::to_string(_num_terminals_activated));
+  auto activated_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
+  std::string activated_msg =
+      cugl::strtool::format(std::to_string(_num_terminals_activated));
   activated_text->setText(activated_msg);
 
-  auto corrupted_text = ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
-  std::string corrupted_msg = cugl::strtool::format(std::to_string(_num_terminals_corrupted));
+  auto corrupted_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
+  std::string corrupted_msg =
+      cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
-
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
@@ -401,7 +413,9 @@ void GameScene::update(float timestep) {
   _my_player->checkDeleteSlashes(_world, _world_node);
 }
 
-void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id) {
+void GameScene::updateEnemies(float timestep,
+                              std::shared_ptr<RoomModel> current_room,
+                              int room_id) {
   // Update the enemy controllers
   for (std::shared_ptr<EnemyModel>& enemy : current_room->getEnemies()) {
     switch (enemy->getType()) {
@@ -454,7 +468,7 @@ void GameScene::sendNetworkInfo() {
         pos->appendChild(pos_y);
         player_info->appendChild(pos);
         pos->setKey("position");
-        
+
         std::shared_ptr<cugl::JsonValue> room =
             cugl::JsonValue::alloc(static_cast<long>(player->getRoomId()));
         player_info->appendChild(room);
@@ -587,7 +601,7 @@ void GameScene::sendNetworkInfo() {
         cugl::JsonValue::alloc(static_cast<long>(_my_player->getPlayerId()));
     player_info->appendChild(player_id);
     player_id->setKey("player_id");
-    
+
     std::shared_ptr<cugl::JsonValue> room =
         cugl::JsonValue::alloc(static_cast<long>(_my_player->getRoomId()));
     player_info->appendChild(room);
@@ -692,13 +706,13 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
 }
 
 /*
- * This simply passes on the disable message on from the host to clients for now.
- * In the future the host can do server-side logic
+ * This simply passes on the disable message on from the host to clients for
+ * now. In the future the host can do server-side logic
  */
 void GameScene::sendDisablePlayerInfo(int target_player_id) {
   std::shared_ptr<cugl::JsonValue> betrayal_info =
       cugl::JsonValue::allocObject();
-  
+
   std::shared_ptr<cugl::JsonValue> target_player_info =
       cugl::JsonValue::alloc(static_cast<long>(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -802,9 +816,10 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     _terminal_controller->processNetworkData(code, msg);
   }
-  
+
   else if (code == 12 && _ishost) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg = _deserializer.read();
+    cugl::NetworkDeserializer::Message betrayal_target_msg =
+        _deserializer.read();
 
     std::shared_ptr<cugl::JsonValue> target_data =
         std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
@@ -812,13 +827,14 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     int player_id = target_data->getInt("target_player_id");
     sendDisablePlayerInfo(player_id);
   } else if (code == 13) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg = _deserializer.read();
+    cugl::NetworkDeserializer::Message betrayal_target_msg =
+        _deserializer.read();
 
     std::shared_ptr<cugl::JsonValue> target_data =
         std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
 
     int player_id = target_data->getInt("target_player_id");
-    
+
     if (player_id == _my_player->getPlayerId()) {
       // Does 40 damage (in total).
       _my_player->reduceHealth(35);
@@ -837,25 +853,26 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
  * @param pos_x The updated player x position
  * @param pos_y The updated player y position
  */
-void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y) {
+void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x,
+                                 float pos_y) {
   if (player_id == _my_player->getPlayerId()) {
     return;
   }
   for (std::shared_ptr<Player> player : _players) {
     if (player->getPlayerId() == player_id) {
       cugl::Vec2 old_position = player->getPosition();
-      
+
       // Movement must exceed this value to be animated
-      if (abs(pos_x - old_position.x) > 0 ||
-          abs(pos_y - old_position.y) > 0) {
+      if (abs(pos_x - old_position.x) > 0 || abs(pos_y - old_position.y) > 0) {
         player->setState(Player::MOVING);
-        player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
       } else {
         player->setState(Player::IDLE);
       }
       player->setRoomId(room_id);
       player->setPosition(pos_x, pos_y);
-      player->animate(pos_x - old_position.x, pos_y - old_position.y);
+      player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
+      player->animate();
+
       return;
     }
   }
@@ -869,6 +886,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x, float 
 
   std::shared_ptr<Player> new_player =
       Player::alloc(dim + cugl::Vec2(20, 20), "Johnathan");
+  new_player->setDensity(0.0f);  // Makes it so we don't move other players
   new_player->setPlayerId(player_id);
   _players.push_back(new_player);
 

@@ -284,20 +284,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /**
    * Sets the frame of the animation.
-   *
-   * @param forwardX Amount to move in the x direction
-   * @param forwardY Amount to move in the y direction
    */
-  void animate(cugl::Vec2 forward) { animate(forward.x, forward.y); }
-
-  /**
-   * Sets the frame of the animation.
-   *
-   * @param forwardX Amount to move in the x direction
-   * @param forwardY Amount to move in the y direction
-   * @param attackDir Direction of attack.
-   */
-  void animate(float forwardX, float forwardY);
+  void animate();
 
 #pragma mark Movement
 

@@ -75,7 +75,7 @@ void Player::update(float delta) {
   }
 }
 
-void Player::animate(float forwardX, float forwardY) {
+void Player::animate() {
   switch (_current_state) {
     case MOVING: {
       int run_high_lim = getRunHighLim();
@@ -122,8 +122,8 @@ void Player::animate(float forwardX, float forwardY) {
 }
 
 void Player::move(float forwardX, float forwardY) {
-  setVX(200 * forwardX);
-  setVY(200 * forwardY);
+  setVX(175 * forwardX);
+  setVY(175 * forwardY);
   if (forwardX == 0) setVX(0);
   if (forwardY == 0) setVY(0);
 
