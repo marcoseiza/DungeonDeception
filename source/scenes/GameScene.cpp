@@ -106,7 +106,7 @@ bool GameScene::init(
   win_layer->doLayout();
   win_layer->setVisible(false);
   
-  auto target_player_button = ui_layer->getChildByName<cugl::scene2::SceneNode>("target-player");
+  auto target_player_button = ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(is_betrayer);
 
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
@@ -148,6 +148,7 @@ bool GameScene::init(
   _debug_node->setVisible(false);
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
+  InputController::get<TargetPlayer>()->setActive(is_betrayer);
 
   setMillisRemaining(900000);
 
@@ -766,10 +767,6 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     _terminal_controller->processNetworkData(code, msg);
   }
-  
-  
-  
-  
   
   else if (code == 12 && _ishost) {
     cugl::NetworkDeserializer::Message betrayal_target_msg = _deserializer.read();
