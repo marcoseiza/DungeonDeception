@@ -107,13 +107,7 @@ bool GameScene::init(
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::WHITE);
-
-  //auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
-  //std::string msg =
-  //    cugl::strtool::format("Health: %d", _my_player->getHealth());
-  //text->setText(msg);
-  //text->setForeground(cugl::Color4::WHITE);
+  timer_text->setForeground(cugl::Color4::BLACK);
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
@@ -314,7 +308,7 @@ void GameScene::update(float timestep) {
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::WHITE);
+  timer_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
   std::string name_msg =
@@ -328,10 +322,6 @@ void GameScene::update(float timestep) {
   //  ui_layer->getChildByName<cugl::scene2::SceneNode>("minimap");
   //  std::unordered_map<int, std::shared_ptr<RoomModel>> rooms =
   //    _level_controller->getLevelModel()->getRooms();
-
-  //std::string msg =
-  //    cugl::strtool::format("Health: %d", _my_player->getHealth());
-  //text->setText(msg);
 
   auto activated_text = ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
   std::string activated_msg = cugl::strtool::format(std::to_string(_num_terminals_activated));

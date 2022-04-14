@@ -183,21 +183,21 @@
       "wrapT": "clamp"
     },
     "health-bar": {
-      "file": "textures/health_bar.png",
+      "file": "textures/health-bar.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
     "health-fill": {
-      "file": "textures/health_fill.png",
+      "file": "textures/health-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
     "health-outline": {
-      "file": "textures/health_outline.png",
+      "file": "textures/health-outline.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -211,7 +211,7 @@
       "wrapT": "clamp"
     },
     "player-cropped": {
-      "file": "textures/player_cropped.png",
+      "file": "textures/player-cropped.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
