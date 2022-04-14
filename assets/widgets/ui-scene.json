@@ -294,7 +294,7 @@
             "x_anchor": "right",
             "y_anchor": "top",
             "x_offset": -0.07,
-            "y_offset": -0.23
+            "y_offset": -0.25
           },
           "children": {
             "up": {
@@ -347,7 +347,7 @@
           "layout": {
             "x_anchor": "right",
             "y_anchor": "bottom",
-            "x_offset": -0.22,
+            "x_offset": -0.20,
             "y_offset": 0.18
           },
           "children": {
