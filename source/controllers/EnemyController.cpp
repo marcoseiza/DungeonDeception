@@ -6,7 +6,7 @@
 #define ATTACK_RANGE 100
 
 #define NUM_RAYCASTS 128
-#define RAYCAST_LENGTH 300
+#define RAYCAST_LENGTH 15
 #define NUM_WEIGHTS 12
 
 #define MAX_SPEED 0.1f
@@ -133,10 +133,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       
       // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn't do  calculations for the same object multiple times).
       if (ob->getName() == "Wall" || fx_name == "enemy_hitbox") {
-        cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
-        if (ob_vec.length() <= 20) {
-          _objects.emplace(ob);
-        }
+        _objects.emplace(ob);
       }
       
       // Check if the player is in the circle of vision.
@@ -173,26 +170,27 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
     // If attacking, move at a normal instead of directly at the player.
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
       // Determine the angle in which the enemy wants to move, to figure out if it should move CW or CCW.
-//        int f = 0;
-//        if (_weights[i] < 0) {
-//          f = -1;
-//        } else if (_weights[i] > 0) {
-//          f = 1;
-//        }
-      cugl::Vec2 plus = p + cugl::Vec2(cos(i * M_PI/(NUM_WEIGHTS/2))*_weights[i], sin(i * M_PI/(NUM_WEIGHTS/2))*_weights[i]);
+      cugl::Vec2 plus = p + cugl::Vec2(cos(theta)*_weights[i], sin(theta)*_weights[i]);
+//      cugl::Vec2 plus = p + cugl::Vec2(cos(theta), sin(theta));
       plus.normalize();
       float angle = cugl::Vec2::angle(p, plus);
       if (angle != 0) {
-        enemy->_move_CW = angle > 0;
+        _cw_direcs[i] = angle > 0;
+      } else {
+        _cw_direcs[i] = enemy->_move_CW;
       }
-      int CW = (enemy->_move_CW) ? -1 : 1;
+      int CW = _cw_direcs[i] ? -1 : 1;
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot/2;
+      if (dot > 0) {
+        _weights[i] += dot/2;
+      }
     } else {
       cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
       float dot = cugl::Vec2::dot(p, weight_vec);
-      _weights[i] += dot/2;
+      if (dot > 0) {
+        _weights[i] += dot/2;
+      }
     }
     theta += M_PI/(NUM_WEIGHTS/2);
   }
@@ -202,7 +200,9 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
 //  for (int i = 0; i < NUM_WEIGHTS; i++) {
 //    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
 //    float dot = cugl::Vec2::dot(direc, _direction);
-//    _weights[i] += dot/5;
+//    if (dot > 0) {
+//      _weights[i] += dot/5;
+//    }
 //    theta += M_PI/(NUM_WEIGHTS/2);
 //  }
   
@@ -217,6 +217,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
     }
   }
   _direction = cugl::Vec2(cos(highest_ind * M_PI/(NUM_WEIGHTS/2)), sin(highest_ind * M_PI/(NUM_WEIGHTS/2)));
+  enemy->_move_CW = _cw_direcs[highest_ind];
   
   // Visualize the weights, if debug mode is on.
   if (_debug_node->isVisible()) {
@@ -247,6 +248,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   
   _objects.clear();
   _weights.fill(0);
+  _cw_direcs.fill(false);
 }
 
 void EnemyController::updateProjectiles(float timestep,

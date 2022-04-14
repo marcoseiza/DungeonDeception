@@ -107,6 +107,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** Whether the enemy is moving in a CW motion (when attacking). */
   bool _move_CW;
   
+  /** Timer for switching from attack to chase. */
+  int _atc_timer;
+  
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.

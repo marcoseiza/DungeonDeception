@@ -33,7 +33,13 @@ void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
   if (distance <= ATTACK_RANGE) {
     enemy->setCurrentState(EnemyModel::State::ATTACKING);
   } else if (distance <= MIN_DISTANCE) {
-    enemy->setCurrentState(EnemyModel::State::CHASING);
+    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
+      enemy->_atc_timer++;
+    }
+    if (enemy->_atc_timer == 0 || enemy->_atc_timer == 10) {
+      enemy->setCurrentState(EnemyModel::State::CHASING);
+      enemy->_atc_timer = 0;
+    }
   } else {
     enemy->setCurrentState(EnemyModel::State::IDLE);
   }

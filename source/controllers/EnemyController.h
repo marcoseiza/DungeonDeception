@@ -26,6 +26,8 @@ class EnemyController {
   std::array<float, 12> _weights;
   /** Cache vector for objects hit by ray cast. */
   std::unordered_set<cugl::physics2::Obstacle*> _objects;
+  /** Cache array for CW/CCW directions. */
+  std::array<bool, 12> _cw_direcs;
   /** Direction to move the enemy model according to the weights. */
   cugl::Vec2 _direction;
   /** Timer for doing ray casting. */
