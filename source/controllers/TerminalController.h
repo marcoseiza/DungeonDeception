@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 
 #include "../models/Player.h"
+#include "../models/tiles/TerminalSensor.h"
 #include "../scenes/voting_scenes/ActivateTerminalScene.h"
 #include "../scenes/voting_scenes/VoteForLeaderScene.h"
 #include "../scenes/voting_scenes/VoteForTeamScene.h"
@@ -44,6 +45,8 @@ class TerminalController : public Controller {
 
   /** Player Controller */
   std::shared_ptr<PlayerController> _player_controller;
+
+  TerminalSensor* _terminal_sensor;
 
   /** The number of players required for this terminal. */
   int _num_players_req;
@@ -112,11 +115,13 @@ class TerminalController : public Controller {
    * @param terminal_room_id The room this controller will handle.
    * @param num_players_req The number of players required for this terminal.
    */
-  void setActive(int terminal_room_id, int num_players_req) {
+  void setActive(int terminal_room_id, int num_players_req,
+                 TerminalSensor* sensor) {
     if (_active) return;
     _active = true;
     _num_players_req = num_players_req;
     _terminal_room_id = terminal_room_id;
+    _terminal_sensor = sensor;
     _scene->setVisible(true);
     InputController::get()->pause();
   }
@@ -151,6 +156,7 @@ class TerminalController : public Controller {
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
+    _wait_for_players_scene->setPlayerController(_player_controller);
     _vote_for_leader_scene->setPlayerController(_player_controller);
     _vote_for_team_scene->setPlayerController(_player_controller);
     _activate_terminal_scene->setPlayerController(_player_controller);
@@ -177,6 +183,7 @@ class TerminalController : public Controller {
     _scene->setVisible(false);
     _stage = Stage::WAIT_FOR_PLAYERS;
     InputController::get()->resume();
+    _terminal_sensor->activate();
   }
 };
 

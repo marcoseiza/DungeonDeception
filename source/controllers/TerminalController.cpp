@@ -46,6 +46,12 @@ void TerminalController::update(float timestep) {
         }
       }
 
+      if (_wait_for_players_scene->didExit()) {
+        _wait_for_players_scene->dispose();
+        done();
+        _terminal_sensor->deactivate();
+      }
+
       if (_wait_for_players_scene->isDone()) {
         _wait_for_players_scene->dispose();
         _stage = Stage::VOTE_LEADER;
@@ -240,6 +246,21 @@ void TerminalController::processNetworkData(
 
         int num_players_req = info->getInt("num_players_req");
         _voting_info[terminal_room_id]->num_players_req = num_players_req;
+      }
+    } break;
+    case NC_CLIENT_PLAYER_REMOVED: {
+      if (_stage == Stage::WAIT_FOR_PLAYERS) {
+        std::shared_ptr<cugl::JsonValue> info =
+            std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+        int terminal_room_id = info->getInt("terminal_room_id");
+        int player_id = info->getInt("player_id");
+
+        if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+          std::vector<int> &players = _voting_info[terminal_room_id]->players;
+          players.erase(std::remove(players.begin(), players.end(), player_id),
+                        players.end());
+        }
       }
     } break;
     case NC_CLIENT_VOTING_INFO: {

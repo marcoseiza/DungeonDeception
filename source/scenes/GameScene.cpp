@@ -670,7 +670,8 @@ void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id,
   if (_ishost) {
     _deserializer.receive(msg);
     std::get<Sint32>(_deserializer.read());
-    _terminal_controller->processNetworkData(7, _deserializer.read());
+    _terminal_controller->processNetworkData(NC_CLIENT_PLAYER_ADDED,
+                                             _deserializer.read());
     _deserializer.reset();
   }
 }
@@ -987,25 +988,25 @@ void GameScene::beginContact(b2Contact* contact) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
+
       _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired());
+                                      room->getNumPlayersRequired(),
+                                      dynamic_cast<TerminalSensor*>(ob1));
 
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
                                 room->getNumPlayersRequired());
-
-      dynamic_cast<TerminalSensor*>(ob1)->activate();
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
+
       _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired());
+                                      room->getNumPlayersRequired(),
+                                      dynamic_cast<TerminalSensor*>(ob2));
 
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
                                 room->getNumPlayersRequired());
-
-      dynamic_cast<TerminalSensor*>(ob2)->activate();
     }
   }
 }

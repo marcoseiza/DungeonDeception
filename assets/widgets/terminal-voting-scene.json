@@ -35,6 +35,46 @@
               "y_anchor": "fill"
             },
             "children": {
+              "leave": {
+                "type": "Button",
+                "data": {
+                  "upnode": "up",
+                  "anchor": [0.0, 1.0],
+                  "size": [20, 20]
+                },
+                "children": {
+                  "up": {
+                    "type": "Image",
+                    "data": {
+                      "texture": "left",
+                      "scale": 6,
+                      "color": "#222222"
+                    }
+                  }
+                },
+                "layout": {
+                  "x_anchor": "left",
+                  "y_anchor": "middle",
+                  "x_offset": 0.17
+                }
+              },
+              "leave-label": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.0, 1.0],
+                  "font": "pixelmix",
+                  "text": "LEAVE",
+                  "halign": "left",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "left",
+                  "y_anchor": "middle",
+                  "x_offset": 0.17,
+                  "y_offset": -0.04
+                }
+              },
               "num-required": {
                 "type": "Label",
                 "data": {
