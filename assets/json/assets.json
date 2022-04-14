@@ -209,12 +209,27 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "player-cropped": {
+      "file": "textures/player_cropped.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "settings": {
+      "file": "textures/settings.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
   },
     "jsons": {
         "server": "json/server.json"
     },
     "widgets": {
+        "background": "widgets/background.json",
         "ui-scene": "widgets/ui-scene.json",
         "terminal-voting-scene": "widgets/terminal-voting-scene.json",
         "win-scene": "widgets/win-scene.json",
@@ -238,10 +253,17 @@
                 "variables": {}
             }
         },
-        "wall-top": {
+      "wall-top": {
+        "type": "Widget",
+        "data": {
+          "key": "wall-top",
+          "variables": {}
+        }
+      },
+      "background": {
             "type": "Widget",
             "data": {
-                "key": "wall-top",
+                "key": "background",
                 "variables": {}
             }
         },
@@ -821,9 +843,13 @@
             "file": "fonts/pixelmix.ttf",
             "size": 36
         },
-        "pixelmix_small": {
+      "pixelmix_small": {
+        "file": "fonts/pixelmix.ttf",
+        "size": 18
+      },
+      "pixelmix_extra_small": {
             "file": "fonts/pixelmix.ttf",
-            "size": 18
+            "size": 10
         },
         "pixelmix_bold": {
             "file": "fonts/pixelmix_bold.ttf",

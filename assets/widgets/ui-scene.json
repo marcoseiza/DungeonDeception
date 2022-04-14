@@ -6,197 +6,361 @@
         "format": {
             "type": "Anchored"
         },
-        "children": {
-            "joystick-base": {
-                "type": "Image",
-                "format": {
-                    "type": "Anchored"
-                },
-                "data": {
-                    "texture": "joystick-base",
-                    "anchor": [0.5, 0.5],
-                    "scale": 0.5
-                },
-                "layout": {
-                    "x_anchor": "left",
-                    "y_anchor": "bottom"
-                }
-            },
-            "joystick": {
-                "type": "Image",
-                "data": {
-                    "texture": "joystick",
-                    "anchor": [0.5, 0.5],
-                    "scale": 0.7
-                },
-                "layout": {
-                    "x_anchor": "left",
-                    "y_anchor": "bottom"
-                }
-            },
-            "attack-base": {
-                "type": "Image",
-                "format": {
-                    "type": "Anchored"
-                },
-                "data": {
-                    "texture": "joystick-base",
-                    "anchor": [0.5, 0.5],
-                    "scale": 0.60
-                },
-                "layout": {
-                    "x_anchor": "left",
-                    "y_anchor": "bottom"
-                }
-            },
-            "attack": {
-                "type": "Button",
-                "data": {
-                    "upnode": "up",
-                    "anchor": [0.5, 0.5],
-                    "scale": 0.6
-                },
-                "layout": {
-                    "x_anchor": "right",
-                    "y_anchor": "bottom",
-                    "x_offset": -0.12,
-                    "y_offset": 0.21
-                },
-                "children": {
-                    "up": {
-                        "type": "Image",
-                        "data": {
-                            "texture": "attack"
-                        }
-                    }
-                }
-            },
-            "role": {
-                "type": "Label",
-                "data": {
-                    "anchor": [0, 0],
-                    "font": "pixel32",
-                    "text": "Role: Cooperator",
-                    "padding": [20, 20, 20, 20],
-                    "halign": "left",
-                    "valign": "top"
-                },
-                "layout": {
-                    "priority": 1,
-                    "x_anchor": "left",
-                    "y_anchor": "top",
-                    "x_offset": 0.05,
-                    "y_offset": -0.2
-                }
-            },
-            "health": {
-                "type": "Label",
-                "data": {
-                    "anchor": [0, 0],
-                    "font": "pixel32",
-                    "text": "Health: 100",
-                    "padding": [20, 20, 20, 20],
-                    "halign": "left",
-                    "valign": "top"
-                },
-                "layout": {
-                    "priority": 1,
-                    "x_anchor": "left",
-                    "y_anchor": "top",
-                    "x_offset": 0.05,
-                    "y_offset": -0.15
-                }
-            },
-            "terminal": {
-                "type": "Label",
-                "data": {
-                    "anchor": [-0.5, 0],
-                    "font": "pixel32",
-                    "text": "Terminals Activated: 0",
-                    "padding": [20, 20, 20, 20],
-                    "halign": "left",
-                    "valign": "top"
-                },
-                "layout": {
-                    "priority": 1,
-                    "x_anchor": "left",
-                    "y_anchor": "top",
-                    "x_offset": 0.05,
-                    "y_offset": -0.15
-                }
-            },
-            "timer": {
-                "type": "Label",
-                "data": {
-                    "anchor": [-0.5, 0],
-                    "font": "pixel32",
-                    "text": "15:00",
-                    "padding": [20, 20, 20, 20],
-                    "halign": "left",
-                    "valign": "top"
-                },
-                "layout": {
-                    "priority": 1,
-                    "x_anchor": "left",
-                    "y_anchor": "top",
-                    "x_offset": 0.75,
-                    "y_offset": -0.15
-                }
-            },
-            "map": {
-                "type": "Button",
-                "format": {
-                    "type": "Anchored"
-                },
-                "data": {
-                    "upnode": "up",
-                    "anchor": [0.5, 0.5],
-                    "scale": 1
-                },
-                "layout": {
-                    "x_anchor": "right",
-                    "y_anchor": "top",
-                    "x_offset": -0.12,
-                    "y_offset": -0.17
-                },
-                "children": {
-                    "up": {
-                        "type": "Image",
-                        "data": {
-                            "texture": "map",
-                            "anchor": [0.5, 0.5],
-                            "scale": 0.8
-                        }
-                    }
-                }
-            },
-            "dash": {
-                "type": "Button",
-                "format": {
-                    "type": "Anchored"
-                },
-                "data": {
-                    "upnode": "up",
-                    "anchor": [0.5, 0.5],
-                    "scale": 1
-                },
-                "layout": {
-                    "x_anchor": "right",
-                    "y_anchor": "bottom",
-                    "x_offset": -0.24,
-                    "y_offset": 0.15
-                },
-                "children": {
-                    "up": {
-                        "type": "Image",
-                        "data": {
-                            "texture": "dash",
-                            "anchor": [0.5, 0.5],
-                            "scale": 1
-                        }
-                    }
-                }
+      "children": {
+        "joystick-base": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "joystick-base",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.5
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          }
+        },
+        "joystick": {
+          "type": "Image",
+          "data": {
+            "texture": "joystick",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.7
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          }
+        },
+        "attack-base": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "joystick-base",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.60
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          }
+        },
+        "attack": {
+          "type": "Button",
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.6
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "bottom",
+            "x_offset": -0.17,
+            "y_offset": 0.15
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "attack"
+              }
             }
+          }
+        },
+        "name": {
+          "type": "Label",
+          "data": {
+            "anchor": [ 0, 0 ],
+            "font": "pixelmix_extra_small",
+            "text": "judy",
+            "padding": [ 20, 20, 20, 20 ],
+            "halign": "left",
+            "valign": "top"
+          },
+          "layout": {
+            "priority": 1,
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.045,
+            "y_offset": -0.1
+          }
+        },
+        "player-cropped": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "player-cropped",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.8
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.04,
+            "y_offset": -0.07
+          }
+        },
+        "role": {
+          "type": "Label",
+          "data": {
+            "anchor": [ 0, 0 ],
+            "font": "pixelmix_extra_small",
+            "text": "(COOPERATOR)",
+            "padding": [ 20, 20, 20, 20 ],
+            "halign": "left",
+            "valign": "top"
+          },
+          "layout": {
+            "priority": 1,
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.11,
+            "y_offset": -0.1
+          }
+        },
+        "health-bar": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "health-bar",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.25
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.15,
+            "y_offset": -0.08
+          }
+        },
+        "health-fill": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "health-fill",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.25
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.15,
+            "y_offset": -0.08
+          }
+        },
+        "health-outline": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "health-outline",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.25
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.15,
+            "y_offset": -0.08
+          }
+        },
+        "activated": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "activated",
+            "anchor": [ 0.5, 0.25 ],
+            "scale": 0.6
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.28,
+            "y_offset": -0.08
+          }
+        },
+        "activated_num": {
+          "type": "Label",
+          "data": {
+            "anchor": [ 0.5, 0.25 ],
+            "font": "pixelmix_extra_small",
+            "text": "0",
+            "padding": [ 20, 20, 20, 20 ],
+            "halign": "left",
+            "valign": "top"
+          },
+          "layout": {
+            "priority": 1,
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.31,
+            "y_offset": -0.09
+          }
+        },
+        "corrupted": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "corrupted",
+            "anchor": [ 0.5, 0.25 ],
+            "scale": 0.6
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.35,
+            "y_offset": -0.08
+          }
+        },
+        "corrupted_num": {
+          "type": "Label",
+          "data": {
+            "anchor": [ 0.5, 0.25 ],
+            "font": "pixelmix_extra_small",
+            "text": "0",
+            "padding": [ 20, 20, 20, 20 ],
+            "halign": "left",
+            "valign": "top"
+          },
+          "layout": {
+            "priority": 1,
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.38,
+            "y_offset": -0.09
+          }
+        },
+        "timer_img": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "timer",
+            "anchor": [ 0.5, 0.25 ],
+            "scale": 0.4
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.46,
+            "y_offset": -0.07
+          }
+        },
+        "timer": {
+          "type": "Label",
+          "data": {
+            "anchor": [ -0.5, 0 ],
+            "font": "pixelmix_extra_small",
+            "text": "15:00",
+            "padding": [ 20, 20, 20, 20 ],
+            "halign": "left",
+            "valign": "top"
+          },
+          "layout": {
+            "priority": 1,
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.4,
+            "y_offset": -0.12
+          }
+        },
+        "map": {
+          "type": "Button",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.75
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "top",
+            "x_offset": -0.05,
+            "y_offset": -0.16
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "map",
+                "anchor": [ 0.5, 0.5 ],
+                "scale": 0.8
+              }
+            }
+          }
+        },
+        "settings": {
+          "type": "Button",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "top",
+            "x_offset": -0.05,
+            "y_offset": -0.07
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "settings",
+                "anchor": [ 0.5, 0.5 ],
+                "scale": 0.5
+              }
+            }
+          }
+        },
+        "dash": {
+          "type": "Button",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "bottom",
+            "x_offset": -0.06,
+            "y_offset": 0.15
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "dash",
+                "anchor": [ 0.5, 0.5 ],
+                "scale": 1
+              }
+            }
+          }
         }
+      }
     }
 }
