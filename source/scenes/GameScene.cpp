@@ -129,24 +129,18 @@ bool GameScene::init(
   auto target_player_button = ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(is_betrayer);
 
+  auto enrage_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("enrage");
+  enrage_button->setVisible(is_betrayer);
+
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
   timer_text->setForeground(cugl::Color4::BLACK);
 
-  auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
-  std::string msg =
-      cugl::strtool::format("Health: %d", _my_player->getHealth());
-  text->setText(msg);
-  text->setForeground(cugl::Color4::WHITE);
 
   _num_terminals_activated = 0;
-  auto terminal_text =
-      ui_layer->getChildByName<cugl::scene2::Label>("terminal");
-  std::string terminal_msg = cugl::strtool::format("Terminals Activated: %d",
-                                                   _num_terminals_activated);
-  terminal_text->setText(terminal_msg);
-  terminal_text->setForeground(cugl::Color4::RED);
+  _num_terminals_corrupted = 0;
 
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
@@ -171,8 +165,8 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
-  cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(background_layer);
+  cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(ui_layer);
@@ -271,7 +265,6 @@ void GameScene::update(float timestep) {
         [this](const std::vector<uint8_t>& data) { processData(data); });
     checkConnection();
   }
-
   _health_bar->setProgress(static_cast<float>(_my_player->getHealth()) / 100);
 
   if (checkCooperatorWin()) {
@@ -372,18 +365,26 @@ void GameScene::update(float timestep) {
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::WHITE);
+  timer_text->setForeground(cugl::Color4::BLACK);
 
-  auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
+  auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
+  std::string name_msg =
+      cugl::strtool::format("player %d", _my_player->getPlayerId());
+  name_text->setText(name_msg);
+  name_text->setForeground(cugl::Color4::BLACK);
+
+  auto corrupted_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
+  std::string corrupted_msg =
+      cugl::strtool::format(std::to_string(_num_terminals_corrupted));
+  corrupted_text->setText(corrupted_msg);
+  corrupted_text->setForeground(cugl::Color4::BLACK);
+
   //
   //  auto minimap =
   //  ui_layer->getChildByName<cugl::scene2::SceneNode>("minimap");
   //  std::unordered_map<int, std::shared_ptr<RoomModel>> rooms =
   //    _level_controller->getLevelModel()->getRooms();
-
-  std::string msg =
-      cugl::strtool::format("Health: %d", _my_player->getHealth());
-  text->setText(msg);
 
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
@@ -1016,11 +1017,11 @@ void GameScene::beginContact(b2Contact* contact) {
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
 
       dynamic_cast<TerminalSensor*>(ob1)->activate();
-      if (!_is_betrayer) {
-        _num_terminals_activated += 1;
-      } else {
-        _num_terminals_corrupted += 1;
-      }
+      //if (!_is_betrayer) {
+      //  _num_terminals_activated += 1;
+      //} else {
+      //  _num_terminals_corrupted += 1;
+      //}
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {

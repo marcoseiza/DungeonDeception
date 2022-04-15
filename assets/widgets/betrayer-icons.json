@@ -7,50 +7,7 @@
             "type": "Anchored"
         },
       "children": {
-        "enrage": {
-          "type": "Button",
-          "data": {
-            "upnode": "up",
-            "anchor": [ 0.5, 0.5 ],
-            "scale": 1
-          },
-          "layout": {
-            "x_anchor": "right",
-            "y_anchor": "bottom",
-            "x_offset": -0.11,
-            "y_offset": 0.37
-          },
-          "children": {
-            "up": {
-              "type": "Image",
-              "data": {
-                "texture": "enrage"
-              }
-            }
-          }
-        },
-        "target": {
-          "type": "Button",
-          "data": {
-            "upnode": "up",
-            "anchor": [ 0.5, 0.5 ],
-            "scale": 1
-          },
-          "layout": {
-            "x_anchor": "right",
-            "y_anchor": "bottom",
-            "x_offset": -0.18,
-            "y_offset": 0.30
-          },
-          "children": {
-            "up": {
-              "type": "Image",
-              "data": {
-                "texture": "target"
-              }
-            }
-          }
-        }
+
       }
     }
 }

@@ -50,12 +50,12 @@
       "wrapT": "clamp"
     },
     "target-player": {
-        "file": "textures/target-player.png",
-        "minfilter": "nearest",
-        "magfilter": "linear",
-        "wrapS": "clamp",
-        "wrapT": "clamp"
-      },
+      "file": "textures/target-player.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "player": {
       "file": "textures/player.png",
       "minfilter": "nearest",
@@ -201,7 +201,11 @@
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp"
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [ 0, 0, 1, 50 ],
+        "rightcap": [ 467, 0, 468, 50 ]
+      }
     },
     "health-outline": {
       "file": "textures/health-outline.png",
@@ -226,6 +230,13 @@
     },
     "settings": {
       "file": "textures/settings.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "enrage": {
+      "file": "textures/enrage.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
