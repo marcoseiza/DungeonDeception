@@ -64,11 +64,11 @@ class TerminalController : public Controller {
 
   /** The terminal voting stage. */
   enum Stage {
-    NONE,
-    WAIT_FOR_PLAYERS,
-    VOTE_LEADER,
-    VOTE_TEAM,
-    ACTIVATE_TERMINAL
+    NONE = 0,
+    WAIT_FOR_PLAYERS = 1,
+    VOTE_LEADER = 2,
+    VOTE_TEAM = 3,
+    ACTIVATE_TERMINAL = 4
   } _stage;
 
  public:
@@ -118,6 +118,14 @@ class TerminalController : public Controller {
   void setActive(int terminal_room_id, int num_players_req,
                  TerminalSensor* sensor) {
     if (_active) return;
+
+    // If the voting room has already started.
+    if (_voting_info.find(terminal_room_id) != _voting_info.end() &&
+        _voting_info[terminal_room_id]->buffer_timer >
+            WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED) {
+      return;
+    }
+
     _active = true;
     _num_players_req = num_players_req;
     _terminal_room_id = terminal_room_id;

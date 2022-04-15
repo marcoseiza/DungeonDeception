@@ -102,6 +102,9 @@ class WaitForPlayersScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
+  /** If the scene is done. */
+  void setDone() { _done = true; }
+
   /** If the player exited the scene. */
   bool didExit() { return _exit; }
 

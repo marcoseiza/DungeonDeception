@@ -106,6 +106,9 @@ class ActivateTerminalScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
+  /** If the scene is done. */
+  void setDone() { _done = true; }
+
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;

@@ -66,12 +66,12 @@
                   "text": "LEAVE",
                   "halign": "left",
                   "valign": "middle",
-                  "scale": 1.5
+                  "scale": 1
                 },
                 "layout": {
                   "x_anchor": "left",
                   "y_anchor": "middle",
-                  "x_offset": 0.17,
+                  "x_offset": 0.16,
                   "y_offset": -0.04
                 }
               },

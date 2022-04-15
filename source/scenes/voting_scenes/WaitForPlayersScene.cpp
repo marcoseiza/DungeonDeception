@@ -10,14 +10,6 @@ bool WaitForPlayersScene::init(
       "terminal-voting-scene_voting-background_wait-for-player");
   _node->setVisible(false);
 
-  auto leave_butt = _node->getChildByName<cugl::scene2::Button>("leave");
-
-  leave_butt->addListener([=](const std::string& name, bool down) {
-    this->leaveButtonListener(name, down);
-  });
-
-  leave_butt->activate();
-
   _initialized = true;
   return true;
 }
@@ -34,6 +26,14 @@ void WaitForPlayersScene::start(std::shared_ptr<VotingInfo> voting_info,
       _node->getChildByName("num-required"));
   num_required_label->setText(
       "Number Of People Required: " + std::to_string(num_players_req), true);
+
+  auto leave_butt = _node->getChildByName<cugl::scene2::Button>("leave");
+
+  leave_butt->addListener([=](const std::string& name, bool down) {
+    this->leaveButtonListener(name, down);
+  });
+
+  leave_butt->activate();
 
   _node->doLayout();
 }

@@ -40,6 +40,23 @@ void TerminalController::update(float timestep) {
 
         _wait_for_players_scene->start(_voting_info[_terminal_room_id],
                                        _num_players_req);
+
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          auto stage_info = cugl::JsonValue::alloc(static_cast<long>(_stage));
+          info->appendChild(stage_info);
+          stage_info->setKey("stage");
+
+          if (NetworkController::get()->isHost()) {
+            NetworkController::get()->send(NC_HOST_CHANGE_STAGE, info);
+          }
+        }
+
       } else {
         if (_voting_info.find(_terminal_room_id) != _voting_info.end()) {
           _wait_for_players_scene->update();
@@ -61,6 +78,22 @@ void TerminalController::update(float timestep) {
       if (!_vote_for_leader_scene->isActive()) {
         _vote_for_leader_scene->start(_voting_info[_terminal_room_id],
                                       _terminal_room_id);
+
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          auto stage_info = cugl::JsonValue::alloc(static_cast<long>(_stage));
+          info->appendChild(stage_info);
+          stage_info->setKey("stage");
+
+          if (NetworkController::get()->isHost()) {
+            NetworkController::get()->send(NC_HOST_CHANGE_STAGE, info);
+          }
+        }
       }
 
       _vote_for_leader_scene->update();
@@ -77,9 +110,36 @@ void TerminalController::update(float timestep) {
         _voting_info[_terminal_room_id]->votes[_leader_id] = std::vector<int>();
         _voting_info[_terminal_room_id]->done.clear();
 
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          NetworkController::get()->sendOnlyToHost(NC_CLIENT_CLEAR_VOTES, info);
+          NetworkController::get()->sendOnlyToHost(NC_CLIENT_CLEAR_DONE, info);
+        }
+
         _vote_for_team_scene->start(_voting_info[_terminal_room_id],
                                     _terminal_room_id, _leader_id,
                                     _num_players_req);
+
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          auto stage_info = cugl::JsonValue::alloc(static_cast<long>(_stage));
+          info->appendChild(stage_info);
+          stage_info->setKey("stage");
+
+          if (NetworkController::get()->isHost()) {
+            NetworkController::get()->send(NC_HOST_CHANGE_STAGE, info);
+          }
+        }
       }
 
       _vote_for_team_scene->update();
@@ -104,8 +164,35 @@ void TerminalController::update(float timestep) {
     case Stage::ACTIVATE_TERMINAL:
       if (!_activate_terminal_scene->isActive()) {
         _voting_info[_terminal_room_id]->done.clear();
+
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          NetworkController::get()->sendOnlyToHost(NC_CLIENT_CLEAR_DONE, info);
+        }
+
         _activate_terminal_scene->start(_voting_info[_terminal_room_id],
                                         _terminal_room_id, _num_players_req);
+
+        {
+          auto info = cugl::JsonValue::allocObject();
+          auto terminal_room_id_info =
+              cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+          info->appendChild(terminal_room_id_info);
+          terminal_room_id_info->setKey("terminal_room_id");
+
+          auto stage_info = cugl::JsonValue::alloc(static_cast<long>(_stage));
+          info->appendChild(stage_info);
+          stage_info->setKey("stage");
+
+          if (NetworkController::get()->isHost()) {
+            NetworkController::get()->send(NC_HOST_CHANGE_STAGE, info);
+          }
+        }
       }
 
       _activate_terminal_scene->update();
@@ -165,9 +252,7 @@ void TerminalController::sendNetworkData() {
       }
 
       {
-        if ((it->second)->players.size() >= (it->second)->num_players_req &&
-            (it->second)->buffer_timer <=
-                WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED) {
+        if ((it->second)->players.size() >= (it->second)->num_players_req) {
           (it->second)->buffer_timer++;
           auto buffer_timer_info = cugl::JsonValue::alloc(
               static_cast<long>((it->second)->buffer_timer));
@@ -272,10 +357,7 @@ void TerminalController::processNetworkData(
       std::vector<int> voted_for = info->get("voted_for")->asIntArray();
 
       if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
-        if (_voting_info[terminal_room_id]->votes.find(player_id) !=
-            _voting_info[terminal_room_id]->votes.end()) {
-          _voting_info[terminal_room_id]->votes[player_id] = voted_for;
-        }
+        _voting_info[terminal_room_id]->votes[player_id] = voted_for;
       }
     } break;
     case NC_HOST_VOTING_INFO: {
@@ -299,6 +381,10 @@ void TerminalController::processNetworkData(
             info->getBool("terminal_done");
 
         if (votes->isArray()) {
+          if (votes->children().size() == 0) {
+            _voting_info[terminal_room_id]->votes.clear();
+          }
+
           for (auto vote : votes->children()) {
             int player_id = vote->getInt("player_id");
             std::vector<int> voted_for = vote->get("voted_for")->asIntArray();
@@ -313,6 +399,9 @@ void TerminalController::processNetworkData(
         new_voting_info->done = done;
 
         if (votes->isArray()) {
+          if (votes->children().size() == 0) {
+            new_voting_info->votes.clear();
+          }
           for (auto vote : votes->children()) {
             int player_id = vote->getInt("player_id");
             std::vector<int> voted_for = vote->get("voted_for")->asIntArray();
@@ -373,6 +462,38 @@ void TerminalController::processNetworkData(
         std::shared_ptr<VotingInfo> v = _voting_info[terminal_room_id];
         v->terminal_done = terminal_done;
       }
+    } break;
+    case NC_CLIENT_CLEAR_VOTES: {
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+
+      if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+        _voting_info[terminal_room_id]->votes.clear();
+      }
+    } break;
+    case NC_CLIENT_CLEAR_DONE: {
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+
+      if (_voting_info.find(terminal_room_id) != _voting_info.end()) {
+        _voting_info[terminal_room_id]->done.clear();
+      }
+    } break;
+    case NC_HOST_CHANGE_STAGE: {
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+      int terminal_room_id = info->getInt("terminal_room_id");
+      int stage = info->getInt("stage");
+
+      if (stage > Stage::WAIT_FOR_PLAYERS) _wait_for_players_scene->setDone();
+      if (stage > Stage::VOTE_LEADER) _vote_for_leader_scene->setDone();
+      if (stage > Stage::VOTE_TEAM) _vote_for_team_scene->setDone();
+
     } break;
   }
 }

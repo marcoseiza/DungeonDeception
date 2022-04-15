@@ -2,8 +2,6 @@
 
 #include "../../controllers/NetworkController.h"
 
-#define WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED 300
-
 bool ActivateTerminalScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
@@ -30,6 +28,7 @@ void ActivateTerminalScene::start(std::shared_ptr<VotingInfo> voting_info,
       _node->getChildByName("activate-button-wrapper")
           ->getChildByName("button"));
   _activate_butt->activate();
+  _activate_butt->setVisible(true);
 
   _activate_butt->addListener([=](const std::string& name, bool down) {
     this->buttonListener("activate", down);
@@ -81,6 +80,9 @@ void ActivateTerminalScene::update() {
   if (found != _voting_info->done.end()) {
     _corrupt_butt->setVisible(false);
     _activate_butt->setVisible(false);
+  } else {
+    _corrupt_butt->setVisible(_is_betrayer);
+    _activate_butt->setVisible(true);
   }
 }
 

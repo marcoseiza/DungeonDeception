@@ -103,6 +103,9 @@ class VoteForTeamScene {
   /** If the scene is done. */
   bool isDone() { return _done; }
 
+  /** If the scene is done. */
+  void setDone() { _done = true; }
+
   /** Voting Button listener.  */
   void voteButtonListener(const std::string& name, bool down);
 
