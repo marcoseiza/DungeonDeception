@@ -699,7 +699,12 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
   _network->sendOnlyToHost(msg);
   // Send this to host, as sendOnlyToHost doesn't send to host if it was called
   // by the host.
-  if (_ishost) processData(msg);
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    processData(12, _deserializer.read());
+    _deserializer.reset();
+  }
 }
 
 /*
@@ -724,7 +729,12 @@ void GameScene::sendDisablePlayerInfo(int target_player_id) {
   _network->send(msg);
   // Send this to host, as sendOnlyToHost doesn't send to host if it was called
   // by the host.
-  if (_ishost) processData(msg);
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    processData(13, _deserializer.read());
+    _deserializer.reset();
+  }
 }
 
 /**
