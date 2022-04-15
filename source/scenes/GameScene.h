@@ -97,9 +97,6 @@ class GameScene : public cugl::Scene2 {
   /** The label that represents the number of terminals corrupted. */
   std::shared_ptr<cugl::scene2::Label> _terminals_corrupted_label;
 
-  /** The number of terminals corrupted in the world. */
-  int _num_terminals_corrupted;
-
   /** The milliseconds remaining in the game before it ends. */
   int _millis_remaining;
 
