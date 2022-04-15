@@ -46,6 +46,9 @@
 		CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
+		CA958FCF27F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
+		CA958FD027F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
+		CA958FD127F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
 		CA9B3EB027DE9A6900755902 /* HostGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9B3EAF27DE9A6900755902 /* HostGameScene.cpp */; };
 		CA9B3EB127DE9A6900755902 /* HostGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9B3EAF27DE9A6900755902 /* HostGameScene.cpp */; };
 		CA9B3EB227DE9A6900755902 /* HostGameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA9B3EAF27DE9A6900755902 /* HostGameScene.cpp */; };
@@ -250,6 +253,8 @@
 		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		CA5F188A27DBC1B70077AEBB /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
+		CA958FCA27F68E3900359E0D /* TargetPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetPlayer.h; sourceTree = "<group>"; };
+		CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TargetPlayer.cpp; sourceTree = "<group>"; };
 		CA9B3EAB27DE9A6900755902 /* HostGameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostGameScene.h; sourceTree = "<group>"; };
 		CA9B3EAF27DE9A6900755902 /* HostGameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostGameScene.cpp; sourceTree = "<group>"; };
 		CAAF4CE827DCA79600024986 /* ClientMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientMenuScene.cpp; sourceTree = "<group>"; };
@@ -534,6 +539,8 @@
 				D5EB744C27C335C7007D157D /* Movement.cpp */,
 				CA53F11B27ED970B00F2699C /* OpenMap.h */,
 				CA53F11727ED96E800F2699C /* OpenMap.cpp */,
+				CA958FCA27F68E3900359E0D /* TargetPlayer.h */,
+				CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */,
 				CAB1A84A27F23CCD000B9F20 /* Dash.h */,
 				CAB1A84B27F23CD3000B9F20 /* Dash.cpp */,
 			);
@@ -908,6 +915,7 @@
 				D598E69D27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F427D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */,
+				CA958FD127F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7B27C5E62E00D1692A /* Player.cpp in Sources */,
 				57D18F8C27E14F100085A52E /* TankController.cpp in Sources */,
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
@@ -954,6 +962,7 @@
 				D598E69C27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F327D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */,
+				CA958FD027F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7A27C5E62E00D1692A /* Player.cpp in Sources */,
 				57D18F8B27E14F100085A52E /* TankController.cpp in Sources */,
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
@@ -1000,6 +1009,7 @@
 				D598E69B27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F227D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */,
+				CA958FCF27F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7927C5E62E00D1692A /* Player.cpp in Sources */,
 				57D18F8A27E14F100085A52E /* TankController.cpp in Sources */,
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,

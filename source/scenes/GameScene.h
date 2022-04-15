@@ -67,6 +67,7 @@ class GameScene : public cugl::Scene2 {
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
 
+
   /** The serializer used to serialize complex data to send through the network.
    */
   cugl::NetworkSerializer _serializer;
@@ -301,16 +302,31 @@ class GameScene : public cugl::Scene2 {
    * @param player_id
    */
   void sendTerminalAddPlayerInfo(int room_id, int player_id);
-
+  
+  /**
+   * Broadcast a player being targeted by the betrayer target player ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendBetrayalTargetInfo(int target_player_id);
+  
+  /**
+   * Broadcast a player being disabled by a betrayer ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendDisablePlayerInfo(int target_player_id);
+  
   /**
    * Updates the position of the player with the corresponding player_id in
    * the _players list.
    *
    * @param player_id The player id
+   * @param room_id   The room id
    * @param pos_x The updated player x position
    * @param pos_y The updated player y position
    */
-  void updatePlayerInfo(int player_id, float pos_x, float pos_y);
+  void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
    * Updates the health and position of the enemy with the corresponding
