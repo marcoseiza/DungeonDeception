@@ -323,8 +323,8 @@
           "layout": {
             "x_anchor": "right",
             "y_anchor": "bottom",
-            "x_offset": -0.21,
-            "y_offset": 0.33
+            "x_offset": -0.20,
+            "y_offset": 0.34
           },
           "children": {
             "up": {
@@ -348,7 +348,7 @@
             "x_anchor": "right",
             "y_anchor": "bottom",
             "x_offset": -0.11,
-            "y_offset": 0.39
+            "y_offset": 0.41
           },
           "children": {
             "up": {
