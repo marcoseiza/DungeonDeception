@@ -157,7 +157,7 @@
     "background": {
       "file": "textures/ui/background_art.png",
       "minfilter": "nearest",
-      "magfilter": "linear",
+      "magfilter": "nearest",
       "wrapS": "repeat",
       "wrapT": "repeat"
     },

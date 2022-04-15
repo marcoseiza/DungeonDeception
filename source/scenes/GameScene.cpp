@@ -155,8 +155,9 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
-  cugl::Scene2::addChild(background_layer);
+
   cugl::Scene2::addChild(_world_node);
+  cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(ui_layer);
