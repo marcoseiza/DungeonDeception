@@ -100,6 +100,19 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   bool _promise_to_enable;
 
  public:
+  
+  /** The set of polygon nodes corresponding to the weights for the direction of the enemy. */
+  std::vector<std::shared_ptr<cugl::scene2::PolygonNode>> _polys;
+  
+  /** Whether the enemy is moving in a CW motion (when attacking). */
+  bool _move_CW;
+  
+  /** Timer for switching from attack to chase. */
+  int _atc_timer;
+  
+  /** Timer for switching from chase to attack. */
+  int _cta_timer;
+  
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.
@@ -341,7 +354,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node);
+  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node);
 
   /**
    * Gets the grunt scene graph node.

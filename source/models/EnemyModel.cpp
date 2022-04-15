@@ -22,7 +22,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _enemy_node = nullptr;
   _health = 100;
   _facing_left = false;
-  _speed = .001f;
+  _speed = .05f;
 
   _attack_cooldown = 0;
 
@@ -33,6 +33,12 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
+  }
+  
+  // Initialize the polygon nodes
+  for (int i = 0; i < 16; i++) {
+    auto p = cugl::scene2::PolygonNode::alloc();
+    _polys.emplace_back(p);
   }
 
   return true;
@@ -99,8 +105,13 @@ void EnemyModel::setType(std::string type) {
 #pragma mark Animation & Drawing
 
 void EnemyModel::setNode(
-    const std::shared_ptr<cugl::scene2::SpriteNode>& node) {
+    const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
   _enemy_node = node;
+  
+  // Add the ray cast weights to the debug node.
+  for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
+    debug_node->addChild(poly);
+  }
 }
 
 std::shared_ptr<cugl::scene2::SpriteNode>& EnemyModel::getNode() {
@@ -206,8 +217,7 @@ void EnemyModel::move(float forwardX, float forwardY) {
   if (forwardX == 0) {
     setVX(0);
   } else {
-    // set facing left appropriately if x direction has changed
-    setFacingLeft(forwardX < 0);
+//    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
   }
 
   if (forwardY == 0) setVY(0);

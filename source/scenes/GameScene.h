@@ -60,12 +60,13 @@ class GameScene : public cugl::Scene2 {
 
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
-
-  /** The controllers for the game */
+  
+  /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
 
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
+
 
   /** The serializer used to serialize complex data to send through the network.
    */
@@ -193,6 +194,15 @@ class GameScene : public cugl::Scene2 {
    * @param timestep  The amount of time (in seconds) since the last frame.
    */
   void update(float timestep) override;
+  
+  /**
+   * This method serves as a helper to updating all the enemies
+   *
+   * @param timestep The amount of time (in seconds) since the last frame.
+   * @param current_room The current room the player is in.
+   * @param room_id The room id of the room.
+   */
+  void updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id);
 
   /**
    * Draws all this scene to the given SpriteBatch.
@@ -223,6 +233,8 @@ class GameScene : public cugl::Scene2 {
    * @param timestep The amount of time (in seconds) since the last frame.
    */
   void updateCamera(float timestep);
+  
+#pragma mark Networking
 
   /**
    * Returns the network connection (as made by this scene).
@@ -301,16 +313,31 @@ class GameScene : public cugl::Scene2 {
    * @param player_id
    */
   void sendTerminalAddPlayerInfo(int room_id, int player_id);
-
+  
+  /**
+   * Broadcast a player being targeted by the betrayer target player ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendBetrayalTargetInfo(int target_player_id);
+  
+  /**
+   * Broadcast a player being disabled by a betrayer ability.
+   *
+   * @param target_player_id The player being targeted.
+   */
+  void sendDisablePlayerInfo(int target_player_id);
+  
   /**
    * Updates the position of the player with the corresponding player_id in
    * the _players list.
    *
    * @param player_id The player id
+   * @param room_id   The room id
    * @param pos_x The updated player x position
    * @param pos_y The updated player y position
    */
-  void updatePlayerInfo(int player_id, float pos_x, float pos_y);
+  void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
    * Updates the health and position of the enemy with the corresponding

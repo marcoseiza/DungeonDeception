@@ -309,6 +309,33 @@
               }
             }
           }
+        },
+        "target-player": {
+          "type": "Button",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "bottom",
+            "x_offset": -0.20,
+            "y_offset": 0.32
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "target-player",
+                "anchor": [ 0.5, 0.5 ],
+                "scale": 1
+              }
+            }
+          }
         }
       }
     }

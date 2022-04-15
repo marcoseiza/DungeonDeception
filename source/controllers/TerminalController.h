@@ -51,7 +51,7 @@ class TerminalController : public Controller {
   } _stage;
 
  public:
-  TerminalController() : _stage(Stage::NONE) {}
+  TerminalController() : _stage(Stage::NONE), _active(false) {}
   ~TerminalController() { dispose(); }
 
   /**
