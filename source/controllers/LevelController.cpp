@@ -248,7 +248,7 @@ void LevelController::instantiateEnemies(
     enemies.push_back(enemy);
 
     auto e_node = cugl::scene2::SpriteNode::alloc(enemy_texture, 1, 1);
-    enemy->setNode(e_node);
+    enemy->setNode(e_node, _debug_node);
 
     enemy->setRoomPos(room_model->getNode()->getPosition());
     room_model->getNode()->addChild(enemy->getNode());
