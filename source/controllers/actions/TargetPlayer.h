@@ -119,9 +119,7 @@ class TargetPlayer : public Action {
    * @param player_id The player to target.
    */
   void setTarget(int player_id) {
-    if (player_id != -1) {
-      _dirty_players.insert(player_id);
-    }
+    _dirty_players.insert(player_id);
     _target_player_id = player_id;
     
   }
