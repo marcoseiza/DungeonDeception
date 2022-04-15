@@ -110,6 +110,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** Timer for switching from attack to chase. */
   int _atc_timer;
   
+  /** Timer for switching from chase to attack. */
+  int _cta_timer;
+  
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.

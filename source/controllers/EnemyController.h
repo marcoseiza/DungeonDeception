@@ -23,11 +23,11 @@ class EnemyController {
   /** Cache set for vertices to update the polys. */
   std::vector<cugl::Vec2> _vertices_cache;
   /** Cache array for weights. */
-  std::array<float, 12> _weights;
+  std::array<float, 16> _weights;
   /** Cache vector for objects hit by ray cast. */
   std::unordered_set<cugl::physics2::Obstacle*> _objects;
   /** Cache array for CW/CCW directions. */
-  std::array<bool, 12> _cw_direcs;
+  std::array<bool, 16> _cw_direcs;
   /** Direction to move the enemy model according to the weights. */
   cugl::Vec2 _direction;
   /** Timer for doing ray casting. */

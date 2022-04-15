@@ -5,9 +5,9 @@
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 100
 
-#define NUM_RAYCASTS 128
+#define NUM_RAYCASTS 64
 #define RAYCAST_LENGTH 15
-#define NUM_WEIGHTS 12
+#define NUM_WEIGHTS 16
 
 #define MAX_SPEED 0.1f
 
@@ -39,7 +39,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
-  diff.scale(enemy->getSpeed()*0.75); // Make speed slower when strafing
+  diff.scale(enemy->getSpeed()*0.6); // Make speed slower when strafing
   enemy->move(diff.x, diff.y);
 }
 
@@ -48,7 +48,7 @@ void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = p - enemy->getPosition();
   diff.subtract(enemy->getVX(), enemy->getVY());
   diff.add(enemy->getVX(), enemy->getVY());
-  diff.scale(enemy->getSpeed() / 2);
+  diff.scale(enemy->getSpeed()/2);
   enemy->move(-diff.x, -diff.y);
 }
 
@@ -162,55 +162,46 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   }
   
   // Adjust the weights (raise them) according to the player position.
-//  if (found_player) {
   cugl::Vec2 p = player->getPosition() - enemy->getPosition();
   p.normalize();
   theta = 0;
   for (int i = 0; i < NUM_WEIGHTS; i++) {
     // If attacking, move at a normal instead of directly at the player.
+    cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
       // Determine the angle in which the enemy wants to move, to figure out if it should move CW or CCW.
-      cugl::Vec2 plus = p + cugl::Vec2(cos(theta)*_weights[i], sin(theta)*_weights[i]);
-//      cugl::Vec2 plus = p + cugl::Vec2(cos(theta), sin(theta));
+      int direc = (0 < _weights[i]) - (_weights[i] < 0);
+      cugl::Vec2 plus = p + cugl::Vec2(cos(theta)*direc, sin(theta)*direc);
       plus.normalize();
       float angle = cugl::Vec2::angle(p, plus);
-      if (angle != 0) {
-        _cw_direcs[i] = angle > 0;
-      } else {
+      _cw_direcs[i] = angle > 0;
+      if (angle == 0) {
         _cw_direcs[i] = enemy->_move_CW;
       }
       int CW = _cw_direcs[i] ? -1 : 1;
-      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
-      float dot = cugl::Vec2::dot(p, weight_vec);
-      if (dot > 0) {
-        _weights[i] += dot/2;
-      }
-    } else {
-      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
-      float dot = cugl::Vec2::dot(p, weight_vec);
-      if (dot > 0) {
-        _weights[i] += dot/2;
-      }
+      weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
     }
+    float dot = cugl::Vec2::dot(p, weight_vec);
+    _weights[i] += dot/2;
     theta += M_PI/(NUM_WEIGHTS/2);
   }
   
   // Adjust weights to slightly prefer current direction.
-//  theta = 0;
-//  for (int i = 0; i < NUM_WEIGHTS; i++) {
-//    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
-//    float dot = cugl::Vec2::dot(direc, _direction);
-//    if (dot > 0) {
-//      _weights[i] += dot/5;
-//    }
-//    theta += M_PI/(NUM_WEIGHTS/2);
-//  }
+  theta = 0;
+  for (int i = 0; i < NUM_WEIGHTS; i++) {
+    cugl::Vec2 direc = cugl::Vec2(cos(theta), sin(theta));
+    float dot = cugl::Vec2::dot(direc, _direction);
+    if (dot > 0) {
+      _weights[i] += dot/5;
+    }
+    theta += M_PI/(NUM_WEIGHTS/2);
+  }
   
   // Find the weight with the highest value, move in that direction.
   // In case of tie, will take the weight in the most CCW direction from theta = 0.
   float highest = _weights[0];
   int highest_ind = 0;
-  for (int i = 1; i < NUM_WEIGHTS; i++) {
+  for (int i = 0; i < NUM_WEIGHTS; i++) {
     if (_weights[i] > _weights[highest_ind]) {
       highest = _weights[i];
       highest_ind = i;

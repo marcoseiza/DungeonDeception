@@ -136,7 +136,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
-  _debug_node->setVisible(true);
+  _debug_node->setVisible(false);
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
 
