@@ -7,72 +7,41 @@
       "type": "Anchored"
     },
     "children": {
-      "joystick-base": {
-        "type": "Image",
-        "format": {
-          "type": "Anchored"
-        },
-        "data": {
-          "texture": "joystick-base",
-          "anchor": [0.5, 0.5],
-          "scale": 0.5
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
-        }
-      },
-      "joystick": {
-        "type": "Image",
-        "data": {
-          "texture": "joystick",
-          "anchor": [0.5, 0.5],
-          "scale": 0.7
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
-        }
-      },
-      "attack": {
-        "type": "Button",
-        "data": {
-          "upnode": "up",
-          "anchor": [1, 0],
-          "scale": 0.6
-        },
-        "layout": {
-          "x_anchor": "right",
-          "y_anchor": "bottom",
-          "x_offset": -0.03,
-          "y_offset": 0.05
-        },
-        "children": {
-          "up": {
-            "type": "Image",
-            "data": {
-              "texture": "attack"
-            }
-          }
-        }
-      },
       "cooperator": {
-          "type": "Label",
-          "data": {
-              "anchor"   : [-0.9, 2],
-              "font"     : "pixel32",
-              "text"     : "Cooperators Win!",
-              "padding"  : [20, 20, 20, 20],
-              "halign"   : "left",
-              "valign"   : "top"
-          },
-          "layout" : {
-              "priority" : 1,
-              "x_anchor": "left",
-              "y_anchor": "top",
-              "x_offset": 0.05,
-              "y_offset": -0.15
-          }
+        "type": "Label",
+        "data": {
+          "anchor": [ -0.9, 2 ],
+          "font": "pixel32",
+          "text": "Cooperators Win!",
+          "padding": [ 20, 20, 20, 20 ],
+          "halign": "left",
+          "valign": "top"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "x_offset": 0.05,
+          "y_offset": -0.15
+        }
+      },
+      "betrayer": {
+        "type": "Label",
+        "data": {
+          "anchor": [ -0.9, 2 ],
+          "font": "pixel32",
+          "text": "Betrayers Win!",
+          "padding": [ 20, 20, 20, 20 ],
+          "halign": "left",
+          "valign": "top"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "x_offset": 0.05,
+          "y_offset": -0.15
+        }
       }
     }
   }

@@ -97,6 +97,11 @@ bool GameScene::init(
   _terminal_controller = TerminalController::alloc(_assets);
   _controllers.push_back(_terminal_controller);
 
+
+  auto background_layer = assets->get<cugl::scene2::SceneNode>("background");
+  background_layer->setContentSize(dim);
+  background_layer->doLayout();
+
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
@@ -112,33 +117,41 @@ bool GameScene::init(
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::WHITE);
-
-  auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
-  std::string msg =
-      cugl::strtool::format("Health: %d", _my_player->getHealth());
-  text->setText(msg);
-  text->setForeground(cugl::Color4::WHITE);
+  timer_text->setForeground(cugl::Color4::BLACK);
 
   _num_terminals_activated = 0;
-  auto terminal_text =
-      ui_layer->getChildByName<cugl::scene2::Label>("terminal");
-  std::string terminal_msg = cugl::strtool::format("Terminals Activated: %d",
-                                                   _num_terminals_activated);
-  terminal_text->setText(terminal_msg);
-  terminal_text->setForeground(cugl::Color4::RED);
+  _num_terminals_corrupted = 0;
+  auto activated_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
+  std::string activated_msg =
+      cugl::strtool::format(std::to_string(_num_terminals_activated));
+  activated_text->setText(activated_msg);
+  activated_text->setForeground(cugl::Color4::BLACK);
+
+  auto corrupted_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
+  std::string corrupted_msg =
+      cugl::strtool::format(std::to_string(_num_terminals_corrupted));
+  corrupted_text->setText(corrupted_msg);
+  corrupted_text->setForeground(cugl::Color4::BLACK);
+
+  auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
+  std::string name_msg =  cugl::strtool::format("player %d", _my_player->getPlayerId());
+  name_text->setText(name_msg);
+  name_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "Role: Betrayer";
-    role_text->setForeground(cugl::Color4::RED);
+    role_msg = "(B)";
+    role_text->setForeground(cugl::Color4::BLACK);
   } else {
-    role_msg = "Role: Cooperator";
-    role_text->setForeground(cugl::Color4::GREEN);
+    role_msg = "(C)";
+    role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
 
+  cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(ui_layer);
@@ -199,7 +212,7 @@ void GameScene::populate(cugl::Size dim) {
   for (std::shared_ptr<BasicTile> tile : loader->getTiles("terminal")) {
     auto terminal = std::dynamic_pointer_cast<Terminal>(tile);
     _world->addObstacle(terminal->initBox2d());
-    terminal->getObstacle()->setDebugColor(cugl::Color4::RED);
+    terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
@@ -223,6 +236,10 @@ bool GameScene::checkCooperatorWin() {
   return _num_terminals / 2 < _num_terminals_activated;
 }
 
+bool GameScene::checkBetrayerWin() {
+  return _num_terminals / 2 < _num_terminals_corrupted;
+}
+
 void GameScene::update(float timestep) {
   if (_network) {
     sendNetworkInfo();
@@ -238,6 +255,13 @@ void GameScene::update(float timestep) {
     std::string msg = cugl::strtool::format("Cooperators Win!");
     text->setText(msg);
     text->setForeground(cugl::Color4::GREEN);
+    win_layer->setVisible(true);
+  } else if (checkBetrayerWin()) {
+    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
+    auto text = win_layer->getChildByName<cugl::scene2::Label>("betrayer");
+    std::string msg = cugl::strtool::format("Betrayers Win!");
+    text->setText(msg);
+    text->setForeground(cugl::Color4::BLACK);
     win_layer->setVisible(true);
   }
 
@@ -341,28 +365,31 @@ void GameScene::update(float timestep) {
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::WHITE);
+  timer_text->setForeground(cugl::Color4::BLACK);
 
-  auto text = ui_layer->getChildByName<cugl::scene2::Label>("health");
+  auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
+  std::string name_msg =
+      cugl::strtool::format("player %d", _my_player->getPlayerId());
+  name_text->setText(name_msg);
+  name_text->setForeground(cugl::Color4::BLACK);
 
-  std::string msg =
-      cugl::strtool::format("Health: %d", _my_player->getHealth());
-  text->setText(msg);
-  
-  auto terminal_text =
-      ui_layer->getChildByName<cugl::scene2::Label>("terminal");
-  std::string terminal_msg = cugl::strtool::format("Terminals Activated: %d",
-                                                   _num_terminals_activated);
-  terminal_text->setText(terminal_msg);
+  auto activated_text = ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
+  std::string activated_msg = cugl::strtool::format(std::to_string(_num_terminals_activated));
+  activated_text->setText(activated_msg);
+
+  auto corrupted_text = ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
+  std::string corrupted_msg = cugl::strtool::format(std::to_string(_num_terminals_corrupted));
+  corrupted_text->setText(corrupted_msg);
+
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "Role: Betrayer";
-    role_text->setForeground(cugl::Color4::RED);
+    role_msg = "(B)";
+    role_text->setForeground(cugl::Color4::BLACK);
   } else {
-    role_msg = "Role: Cooperator";
-    role_text->setForeground(cugl::Color4::GREEN);
+    role_msg = "(C)";
+    role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
 
@@ -961,7 +988,11 @@ void GameScene::beginContact(b2Contact* contact) {
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
 
       dynamic_cast<TerminalSensor*>(ob1)->activate();
-      _num_terminals_activated += 1;
+      if (!_is_betrayer) {
+        _num_terminals_activated += 1;
+      } else {
+        _num_terminals_corrupted += 1;
+      }
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
@@ -973,7 +1004,11 @@ void GameScene::beginContact(b2Contact* contact) {
       sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
 
       dynamic_cast<TerminalSensor*>(ob2)->activate();
-      _num_terminals_activated += 1;
+      if (!_is_betrayer) {
+        _num_terminals_activated += 1;
+      } else {
+        _num_terminals_corrupted += 1;
+      }
     }
   }
 }

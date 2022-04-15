@@ -1,185 +1,242 @@
 {
-    "textures": {
-        "close-normal": {
-            "file": "textures/CloseNormal.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "close-selected": {
-            "file": "textures/CloseSelected.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "joystick": {
-            "file": "textures/joystick.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "joystick-base": {
-            "file": "textures/joystick-base.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "attack": {
-            "file": "textures/attack.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "map": {
-            "file": "textures/map.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "dash": {
-            "file": "textures/dash.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "target-player": {
-            "file": "textures/target-player.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "player": {
-            "file": "textures/player.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "grunt": {
-            "file": "textures/grunt.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "turtle": {
-            "file": "textures/turtle.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "tank": {
-            "file": "textures/tank.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "shotgunner": {
-            "file": "textures/shotgunner.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "terminal-activated": {
-            "file": "textures/terminal-activated.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "projectile-red-large": {
-            "file": "textures/projectile-red-large.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "projectile-blue-large": {
-            "file": "textures/projectile-blue-large.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "projectile-orange-large": {
-            "file": "textures/projectile-orange-large.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "energy-slash": {
-            "file": "textures/energy-slash.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "button": {
-            "file": "textures/ui/button_rounded.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "button_white": {
-            "file": "textures/ui/button_rounded_white.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "button_beige": {
-            "file": "textures/ui/button_rounded_beige.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "left": {
-            "file": "textures/left_arrow.png",
-            "minfilter": "nearest",
-            "magfilter": "nearest",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "frame": {
-            "file": "textures/frame.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        },
-        "background": {
-            "file": "textures/ui/background_art.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "repeat",
-            "wrapT": "repeat"
-        },
-        "terminal-voting-background": {
-            "file": "textures/ui/terminal_screen.png",
-            "minfilter": "nearest",
-            "magfilter": "linear",
-            "wrapS": "clamp",
-            "wrapT": "clamp"
-        }
+  "textures": {
+    "close-normal": {
+      "file": "textures/CloseNormal.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     },
+    "close-selected": {
+      "file": "textures/CloseSelected.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "joystick": {
+      "file": "textures/joystick.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "joystick-base": {
+      "file": "textures/joystick-base.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "attack": {
+      "file": "textures/attack.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "map": {
+      "file": "textures/map.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dash": {
+      "file": "textures/dash.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "target-player": {
+        "file": "textures/target-player.png",
+        "minfilter": "nearest",
+        "magfilter": "linear",
+        "wrapS": "clamp",
+        "wrapT": "clamp"
+      },
+    "player": {
+      "file": "textures/player.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "grunt": {
+      "file": "textures/grunt.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "turtle": {
+      "file": "textures/turtle.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "tank": {
+      "file": "textures/tank.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "shotgunner": {
+      "file": "textures/shotgunner.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "terminal-activated": {
+      "file": "textures/terminal-activated.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "projectile-red-large": {
+      "file": "textures/projectile-red-large.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "projectile-blue-large": {
+      "file": "textures/projectile-blue-large.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "projectile-orange-large": {
+      "file": "textures/projectile-orange-large.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "energy-slash": {
+      "file": "textures/energy-slash.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "button": {
+      "file": "textures/ui/button_rounded.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "button_white": {
+      "file": "textures/ui/button_rounded_white.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "button_beige": {
+      "file": "textures/ui/button_rounded_beige.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "left": {
+      "file": "textures/left_arrow.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "frame": {
+      "file": "textures/frame.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "background": {
+      "file": "textures/ui/background_art.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "repeat",
+      "wrapT": "repeat"
+    },
+    "terminal-voting-background": {
+      "file": "textures/ui/terminal_screen.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "activated": {
+      "file": "textures/activated.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "corrupted": {
+      "file": "textures/corrupted.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "health-bar": {
+      "file": "textures/health-bar.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "health-fill": {
+      "file": "textures/health-fill.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "health-outline": {
+      "file": "textures/health-outline.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "timer": {
+      "file": "textures/timer.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-cropped": {
+      "file": "textures/player-cropped.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "settings": {
+      "file": "textures/settings.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    }
+  },
     "jsons": {
         "server": "json/server.json"
     },
     "widgets": {
+        "background": "widgets/background.json",
         "ui-scene": "widgets/ui-scene.json",
         "terminal-voting-scene": "widgets/terminal-voting-scene.json",
         "win-scene": "widgets/win-scene.json",
@@ -203,10 +260,17 @@
                 "variables": {}
             }
         },
-        "wall-top": {
+      "wall-top": {
+        "type": "Widget",
+        "data": {
+          "key": "wall-top",
+          "variables": {}
+        }
+      },
+      "background": {
             "type": "Widget",
             "data": {
-                "key": "wall-top",
+                "key": "background",
                 "variables": {}
             }
         },
@@ -786,9 +850,13 @@
             "file": "fonts/pixelmix.ttf",
             "size": 36
         },
-        "pixelmix_small": {
+      "pixelmix_small": {
+        "file": "fonts/pixelmix.ttf",
+        "size": 18
+      },
+      "pixelmix_extra_small": {
             "file": "fonts/pixelmix.ttf",
-            "size": 18
+            "size": 12
         },
         "pixelmix_bold": {
             "file": "fonts/pixelmix_bold.ttf",
