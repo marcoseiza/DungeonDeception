@@ -217,7 +217,7 @@ void EnemyModel::move(float forwardX, float forwardY) {
   if (forwardX == 0) {
     setVX(0);
   } else {
-//    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
+    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
   }
 
   if (forwardY == 0) setVY(0);
