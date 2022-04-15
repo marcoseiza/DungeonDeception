@@ -93,8 +93,7 @@ const RoomConfig kStandard8 = {
 /** A list of all the regular rooms. */
 const std::vector<RoomConfig> kRegularRooms{kStandard1, kStandard2, kStandard3,
                                             kStandard4, kStandard5, kStandard6,
-                                            kStandard7, kStandard8
-};
+                                            kStandard7, kStandard8};
 
 };  // namespace default_rooms
 
