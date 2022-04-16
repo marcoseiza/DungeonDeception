@@ -1,8 +1,8 @@
 #include "GameScene.h"
 
-#include <box2d/b2_world.h>
 #include <box2d/b2_collision.h>
 #include <box2d/b2_contact.h>
+#include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
 #include "../controllers/VotingInfo.h"
@@ -68,6 +68,7 @@ bool GameScene::init(
 
   // Get the world from level controller and attach the listeners.
   _world = _level_controller->getWorld();
+  _world->setGravity(cugl::Vec2::ZERO);
   _world->activateCollisionCallbacks(true);
   _world->onBeginContact = [this](b2Contact* contact) {
     this->beginContact(contact);
@@ -107,6 +108,12 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
+  auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
+  health_layer->setContentSize(dim);
+  health_layer->doLayout();
+
+  _health_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
+      assets->get<cugl::scene2::SceneNode>("health_bar"));
 
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
@@ -117,6 +124,9 @@ bool GameScene::init(
       ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(is_betrayer);
 
+  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
+  enrage_button->setVisible(is_betrayer);
+
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
@@ -124,12 +134,6 @@ bool GameScene::init(
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
-  auto activated_text =
-      ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
-  std::string activated_msg =
-      cugl::strtool::format(std::to_string(_num_terminals_activated));
-  activated_text->setText(activated_msg);
-  activated_text->setForeground(cugl::Color4::BLACK);
 
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
@@ -158,6 +162,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
+  cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
@@ -176,6 +181,7 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
+  _health_bar->dispose();
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -253,6 +259,7 @@ void GameScene::update(float timestep) {
     // Receives information and calls listeners (eg. processData).
     NetworkController::get()->update();
   }
+  _health_bar->setProgress(static_cast<float>(_my_player->getHealth()) / 100);
 
   if (checkCooperatorWin()) {
     auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
@@ -278,7 +285,7 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  {
+  {  // Update the number of terminals activated and corrupted.
     _num_terminals_activated = 0;
     _num_terminals_corrupted = 0;
     for (auto it : _terminal_controller->getVotingInfo()) {
@@ -361,7 +368,7 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   int room_id = current_room->getKey();
   _my_player->setRoomId(current_room->getKey());
-  
+
   updateEnemies(timestep, current_room, room_id);
 
   updateCamera(timestep);
@@ -387,12 +394,14 @@ void GameScene::update(float timestep) {
   std::string activated_msg =
       cugl::strtool::format(std::to_string(_num_terminals_activated));
   activated_text->setText(activated_msg);
+  activated_text->setForeground(cugl::Color4::BLACK);
 
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
   std::string corrupted_msg =
       cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
+  corrupted_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
@@ -428,7 +437,9 @@ void GameScene::update(float timestep) {
   _my_player->checkDeleteSlashes(_world, _world_node);
 }
 
-void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id) {
+void GameScene::updateEnemies(float timestep,
+                              std::shared_ptr<RoomModel> current_room,
+                              int room_id) {
   // Update the enemy controllers
   for (std::shared_ptr<EnemyModel>& enemy : current_room->getEnemies()) {
     switch (enemy->getType()) {
@@ -853,16 +864,16 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x,
       cugl::Vec2 old_position = player->getPosition();
 
       // Movement must exceed this value to be animated
-      const float MOVEMENT_THRESH = 1;
-      if (abs(pos_x - old_position.x) > MOVEMENT_THRESH ||
-          abs(pos_y - old_position.y) > MOVEMENT_THRESH) {
+      if (abs(pos_x - old_position.x) > 0 || abs(pos_y - old_position.y) > 0) {
         player->setState(Player::MOVING);
       } else {
         player->setState(Player::IDLE);
       }
       player->setRoomId(room_id);
       player->setPosition(pos_x, pos_y);
-      player->animate(pos_x - old_position.x, pos_y - old_position.y);
+      player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
+      player->animate();
+
       return;
     }
   }
@@ -876,6 +887,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x,
 
   std::shared_ptr<Player> new_player =
       Player::alloc(dim + cugl::Vec2(20, 20), "Johnathan");
+  new_player->setDensity(0.0f);  // Makes it so we don't move other players
   new_player->setPlayerId(player_id);
   _players.push_back(new_player);
   _player_controller->addPlayer(new_player);
