@@ -55,13 +55,18 @@ void PlayerController::update(float timestep, cugl::Vec2 forward,
   }
 
   // Animate the player
-  _player->animate(forward);
+  _player->animate();
 }
 
 void PlayerController::move(float timestep, bool didDash, cugl::Vec2 forward) {
   if (!_player->getDead()) {
     if (didDash) {
       forward.scale(10);
+    } 
+    else if (_player->getState() == Player::ATTACKING &&
+             (_player->_frame_count == 3)) {
+      forward.scale(3);
+      _player->move(forward);
     }
     _player->move(forward);
 
