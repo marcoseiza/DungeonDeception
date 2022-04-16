@@ -386,12 +386,6 @@ void GameScene::update(float timestep) {
   corrupted_text->setText(corrupted_msg);
   corrupted_text->setForeground(cugl::Color4::BLACK);
 
-  //
-  //  auto minimap =
-  //  ui_layer->getChildByName<cugl::scene2::SceneNode>("minimap");
-  //  std::unordered_map<int, std::shared_ptr<RoomModel>> rooms =
-  //    _level_controller->getLevelModel()->getRooms();
-
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
