@@ -1,0 +1,13 @@
+{
+    "variables": {},
+    "contents": {
+        "comments": "This is the root node for the betrayer icons",
+        "type": "Node",
+        "format": {
+            "type": "Anchored"
+        },
+      "children": {
+
+      }
+    }
+}

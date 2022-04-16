@@ -107,6 +107,12 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
+  auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
+  health_layer->setContentSize(dim);
+  health_layer->doLayout();
+
+  _health_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
+      assets->get<cugl::scene2::SceneNode>("health_bar"));
 
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
@@ -117,6 +123,9 @@ bool GameScene::init(
       ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(is_betrayer);
 
+  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
+  enrage_button->setVisible(is_betrayer);
+
   auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
   std::string timer_msg = getTimerString();
   timer_text->setText(timer_msg);
@@ -124,12 +133,6 @@ bool GameScene::init(
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
-  auto activated_text =
-      ui_layer->getChildByName<cugl::scene2::Label>("activated_num");
-  std::string activated_msg =
-      cugl::strtool::format(std::to_string(_num_terminals_activated));
-  activated_text->setText(activated_msg);
-  activated_text->setForeground(cugl::Color4::BLACK);
 
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
@@ -158,6 +161,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
+  cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
@@ -176,6 +180,7 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
+  _health_bar->dispose();
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -252,6 +257,7 @@ void GameScene::update(float timestep) {
         [this](const std::vector<uint8_t>& data) { processData(data); });
     checkConnection();
   }
+  _health_bar->setProgress(static_cast<float>(_my_player->getHealth()) / 100);
 
   if (checkCooperatorWin()) {
     auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
@@ -371,12 +377,14 @@ void GameScene::update(float timestep) {
   std::string activated_msg =
       cugl::strtool::format(std::to_string(_num_terminals_activated));
   activated_text->setText(activated_msg);
+  activated_text->setForeground(cugl::Color4::BLACK);
 
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
   std::string corrupted_msg =
       cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
+  corrupted_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";

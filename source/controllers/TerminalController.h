@@ -71,7 +71,6 @@ class TerminalController : public Controller {
       const std::shared_ptr<cugl::AssetManager>& assets) {
     auto result = std::make_shared<TerminalController>();
     InputController::get()->resume();
-
     if (result->init(assets)) return result;
     return nullptr;
   }

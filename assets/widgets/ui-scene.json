@@ -59,7 +59,7 @@
           "layout": {
             "x_anchor": "right",
             "y_anchor": "bottom",
-            "x_offset": -0.11,
+            "x_offset": -0.10,
             "y_offset": 0.18
           },
           "children": {
@@ -122,57 +122,6 @@
             "y_anchor": "top",
             "x_offset": 0.23,
             "y_offset": -0.15
-          }
-        },
-        "health-bar": {
-          "type": "Image",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "texture": "health-bar",
-            "anchor": [ 0.5, 0.5 ],
-            "scale": 0.4
-          },
-          "layout": {
-            "x_anchor": "left",
-            "y_anchor": "top",
-            "x_offset": 0.2,
-            "y_offset": -0.13
-          }
-        },
-        "health-fill": {
-          "type": "Image",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "texture": "health-fill",
-            "anchor": [ 0.5, 0.5 ],
-            "scale": 0.4
-          },
-          "layout": {
-            "x_anchor": "left",
-            "y_anchor": "top",
-            "x_offset": 0.2,
-            "y_offset": -0.13
-          }
-        },
-        "health-outline": {
-          "type": "Image",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "texture": "health-outline",
-            "anchor": [ 0.5, 0.5 ],
-            "scale": 0.4
-          },
-          "layout": {
-            "x_anchor": "left",
-            "y_anchor": "top",
-            "x_offset": 0.2,
-            "y_offset": -0.13
           }
         },
         "activated": {
@@ -347,8 +296,8 @@
           "layout": {
             "x_anchor": "right",
             "y_anchor": "bottom",
-            "x_offset": -0.24,
-            "y_offset": 0.18
+            "x_offset": -0.23,
+            "y_offset": 0.16
           },
           "children": {
             "up": {
@@ -364,28 +313,50 @@
         "target-player": {
           "type": "Button",
           "format": {
-              "type": "Anchored"
+            "type": "Anchored"
           },
           "data": {
-              "upnode": "up",
-              "anchor": [0.5, 0.5],
-              "scale": 1
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1
           },
           "layout": {
-              "x_anchor": "right",
-              "y_anchor": "bottom",
-              "x_offset": -0.20,
-              "y_offset": 0.32
+            "x_anchor": "right",
+            "y_anchor": "bottom",
+            "x_offset": -0.20,
+            "y_offset": 0.34
           },
           "children": {
-              "up": {
-                  "type": "Image",
-                  "data": {
-                      "texture": "target-player",
-                      "anchor": [0.5, 0.5],
-                      "scale": 1
-                  }
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "target-player",
+                "anchor": [ 0.5, 0.5 ],
+                "scale": 1
               }
+            }
+          }
+        },
+        "enrage": {
+          "type": "Button",
+          "data": {
+            "upnode": "up",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1
+          },
+          "layout": {
+            "x_anchor": "right",
+            "y_anchor": "bottom",
+            "x_offset": -0.11,
+            "y_offset": 0.41
+          },
+          "children": {
+            "up": {
+              "type": "Image",
+              "data": {
+                "texture": "enrage"
+              }
+            }
           }
         }
       }
