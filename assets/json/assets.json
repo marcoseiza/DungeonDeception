@@ -293,13 +293,6 @@
         "variables": {}
       }
     },
-    "betrayer-icons": {
-      "type": "Widget",
-      "data": {
-        "key": "betrayer-icons",
-        "variables": {}
-      }
-    },
     "terminal-voting-scene": {
       "type": "Widget",
       "data": {

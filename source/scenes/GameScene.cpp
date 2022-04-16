@@ -107,15 +107,6 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
-
-  auto betrayer_icons_layer =
-      assets->get<cugl::scene2::SceneNode>("betrayer-icons");
-  betrayer_icons_layer->setContentSize(dim);
-  betrayer_icons_layer->doLayout();
-  if (!is_betrayer) {
-    betrayer_icons_layer->setVisible(false);
-  }
-
   auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
   health_layer->setContentSize(dim);
   health_layer->doLayout();
@@ -172,7 +163,6 @@ bool GameScene::init(
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(ui_layer);
-  cugl::Scene2::addChild(betrayer_icons_layer);
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
