@@ -819,20 +819,14 @@ void GameScene::processData(const Sint32& code,
       }
     }
   } else if (code == 12 && _ishost) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg =
-        _deserializer.read();
-
     std::shared_ptr<cugl::JsonValue> target_data =
-        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int player_id = target_data->getInt("target_player_id");
     sendDisablePlayerInfo(player_id);
   } else if (code == 13) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg =
-        _deserializer.read();
-
     std::shared_ptr<cugl::JsonValue> target_data =
-        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int player_id = target_data->getInt("target_player_id");
 
