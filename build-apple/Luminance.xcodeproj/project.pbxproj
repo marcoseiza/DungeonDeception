@@ -815,7 +815,7 @@
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 37AKFHT6H5;
+						DevelopmentTeam = LR67JRR3TA;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -941,7 +941,6 @@
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5B8BE6727F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
-				57D18F9227E14F100085A52E /* ShotgunnerController.cpp in Sources */,
 				D578BFC627F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
 				57FEE3F527F69C7800D7EF23 /* GruntController.cpp in Sources */,
@@ -994,7 +993,6 @@
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5B8BE6627F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
-				57D18F9127E14F100085A52E /* ShotgunnerController.cpp in Sources */,
 				D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
@@ -1044,7 +1042,6 @@
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5B8BE6527F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
-				57D18F9027E14F100085A52E /* ShotgunnerController.cpp in Sources */,
 				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
 				D52E673D27BF305A00F8E2B8 /* Attack.cpp in Sources */,
@@ -1146,7 +1143,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = LR67JRR3TA;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
@@ -1168,7 +1165,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = LR67JRR3TA;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
