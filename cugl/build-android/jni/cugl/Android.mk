@@ -5,6 +5,7 @@
 ###########################
 LOCAL_PATH := $(call my-dir)
 CUGL_PATH  := $(LOCAL_PATH)/../../..
+SOURCE_PATH  := $(LOCAL_PATH)/../../../../source
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := CUGL
@@ -45,7 +46,12 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(CUGL_PATH)/external/box2d/common/*.cpp) \
 	$(wildcard $(CUGL_PATH)/external/box2d/dynamics/*.cpp) \
 	$(wildcard $(CUGL_PATH)/external/box2d/rope/*.cpp) \
-	$(wildcard $(CUGL_PATH)/external/slikenet/Source/src/*.cpp))
+	$(wildcard $(CUGL_PATH)/external/slikenet/Source/src/*.cpp) \
+	$(wildcard $(SOURCE_PATH)/*.cpp) \
+	$(wildcard $(SOURCE_PATH)/**/*.cpp) \
+	$(wildcard $(SOURCE_PATH)/**/**/*.cpp))
+
+
 
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 
