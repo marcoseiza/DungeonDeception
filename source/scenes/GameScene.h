@@ -23,12 +23,6 @@ class GameScene : public cugl::Scene2 {
   /** The network connection (as made by this scene). */
   std::shared_ptr<cugl::NetworkConnection> _network;
 
-  /** The player.  */
-  std::shared_ptr<Player> _my_player;
-
-  /** The list of all players. */
-  std::vector<std::shared_ptr<Player>> _players;
-
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
 
@@ -249,7 +243,7 @@ class GameScene : public cugl::Scene2 {
     NetworkController::get()->init(_network);
     NetworkController::get()->addListener(
         [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
-          processData(code, msg);
+          this->processData(code, msg);
         });
   }
 
