@@ -191,8 +191,6 @@ void GameScene::populate(cugl::Size dim) {
   auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
   my_player->setBetrayer(_is_betrayer);
 
-  _level_controller->getLevelModel()->setPlayer(my_player);
-
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
   my_player->setPlayerNode(player_node);
   if (auto id = NetworkController::get()->getConnection()->getPlayerID()) {
@@ -206,6 +204,7 @@ void GameScene::populate(cugl::Size dim) {
                                                _world_node, _debug_node);
   _player_controller->addPlayer(my_player);
   _terminal_controller->setPlayerController(_player_controller);
+  _level_controller->setPlayerController(_player_controller);
 
   _sword = Sword::alloc(dim / 2.0f);
   _world->addObstacle(_sword);

@@ -11,10 +11,15 @@
 #define ATTACK_FRAMES 32
 #define HURT_FRAMES 10
 #define DEAD_FRAMES 175
-#define SLASH_FRAMES \
-  7  // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
+// MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
+#define SLASH_FRAMES 7
 
 #define HEALTH 100
+
+#define MIN_POS_CHANGE 0.005
+
+// The max number of milliseconds between player network position updates.
+#define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
 
 #pragma mark PlayerController
 
@@ -44,6 +49,9 @@ bool PlayerController::init(
 void PlayerController::update(float timestep, cugl::Vec2 forward,
                               bool didAttack, bool didDash, bool holdAttack,
                               std::shared_ptr<Sword> sword) {
+  for (auto it : _players) {
+    if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
+  }
   move(timestep, didDash, forward);
   attack(didAttack, holdAttack, sword);
   updateSlashes(timestep);
@@ -113,7 +121,7 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
     cugl::Vec2 pos = ((cugl::Vec2)_world_node->getContentSize()) / 2.0f;
     std::shared_ptr<Player> new_player =
         Player::alloc(pos + cugl::Vec2(20, 20), "Johnathan");
-    new_player->setDensity(0.0f);  // Makes it so we don't move other players
+    new_player->setSensor(true);  // Makes it so we don't move other players
     new_player->setPlayerId(player_id);
     addPlayer(new_player);
 
@@ -132,16 +140,34 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
     cugl::Vec2 old_position = player->getPosition();
 
     // Movement must exceed this value to be animated
-    if (abs(pos_x - old_position.x) > 0 || abs(pos_y - old_position.y) > 0) {
+    if (abs(pos_x - old_position.x) > MIN_POS_CHANGE ||
+        abs(pos_y - old_position.y) > MIN_POS_CHANGE) {
       player->setState(Player::MOVING);
     } else {
       player->setState(Player::IDLE);
     }
     player->setRoomId(room_id);
-    player->setPosition(pos_x, pos_y);
+    player->setNetworkPos(cugl::Vec2(pos_x, pos_y));
     player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
     player->animate();
   }
+}
+
+void PlayerController::interpolate(float timestep,
+                                   const std::shared_ptr<Player>& player) {
+  cugl::Vec2 new_pos = player->getNetworkPosCache()[0];
+  cugl::Vec2 old_pos = player->getNetworkPosCache()[1];
+  cugl::Vec2 cur_pos = old_pos;
+
+  float time = player->getTimeSinceLastNetworkPosUpdate();
+
+  if (time <= PLAYER_NETWORK_POS_UPDATE_MAX) {
+    cur_pos.lerp(new_pos, time / PLAYER_NETWORK_POS_UPDATE_MAX);
+  } else {
+    cur_pos = new_pos;
+  }
+
+  player->setPosition(cur_pos);
 }
 
 void PlayerController::move(float timestep, bool didDash, cugl::Vec2 forward) {
