@@ -7,6 +7,7 @@
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
 #include "../controllers/PlayerController.h"
+#include "../controllers/SoundController.h"
 #include "../controllers/enemies/GruntController.h"
 #include "../controllers/enemies/ShotgunnerController.h"
 #include "../controllers/enemies/TankController.h"
@@ -37,9 +38,10 @@ class GameScene : public cugl::Scene2 {
   /** The Box2d world */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
 
+  /** The sound controller that starts, pauses and keeps track of sounds. */
+  std::shared_ptr<SoundController> _sound_controller;
   /** The player controller for the game*/
   std::shared_ptr<PlayerController> _player_controller;
-
   /** The grunt controller for the game. */
   std::shared_ptr<GruntController> _grunt_controller;
   /** The shotgunner controller for the game. */
@@ -57,11 +59,6 @@ class GameScene : public cugl::Scene2 {
 
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
-
-  /** The time stamp for when the music started. */
-  std::chrono::system_clock::time_point _music_start;
-  /** If the host has sent the music start time. */
-  bool _has_sent_music_start;
 
   /** The serializer used to serialize complex data to send through the network.
    */

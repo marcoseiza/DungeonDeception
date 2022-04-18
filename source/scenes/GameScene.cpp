@@ -37,8 +37,6 @@ bool GameScene::init(
 
   _assets = assets;
 
-  _has_sent_music_start = false;
-
   _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
   _world_node->setContentSize(dim);
 
@@ -168,6 +166,9 @@ bool GameScene::init(
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
 
+  _sound_controller = SoundController::alloc(_assets);
+  _controllers.push_back(_sound_controller);
+
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
 
@@ -178,7 +179,6 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
-  _has_sent_music_start = false;
   _health_bar->dispose();
   _luminance_bar->dispose();
 }
@@ -266,27 +266,6 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
-  // Start the game music if not already started and we have received
-  // the start time.
-  if (_has_sent_music_start &&
-      cugl::AudioEngine::get()->getState("music-main") ==
-          cugl::AudioEngine::State::INACTIVE) {
-    using namespace std::chrono;
-
-    system_clock::time_point now = system_clock::now();
-    long now_micros = now.time_since_epoch().count();
-    long start_micros = _music_start.time_since_epoch().count();
-
-    if (now_micros > start_micros) {
-      // Sufficiently equal considering game tick speed.
-      cugl::AudioEngine::get()->play("music-main",
-                                     _assets->get<cugl::Sound>("music-main"),
-                                     true, 1.0f, true);
-      float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
-      cugl::AudioEngine::get()->setTimeElapsed("music-main", sec_diff);
-    }
-  }
-
   if (checkCooperatorWin()) {
     auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
     auto text = win_layer->getChildByName<cugl::scene2::Label>("cooperator");
@@ -304,6 +283,11 @@ void GameScene::update(float timestep) {
   }
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
+
+  if (_players.size() ==
+      NetworkController::get()->getConnection()->getNumPlayers()) {
+    _sound_controller->allPlayersPresent();
+  }
 
   InputController::get()->update();
 
@@ -859,16 +843,6 @@ void GameScene::processData(const Sint32& code,
       _player_controller->getMyPlayer()->reduceHealth(35);
       _player_controller->getMyPlayer()->takeDamage();
     }
-  }
-
-  else if (code == NC_HOST_MUSIC_START) {  // Receive music start info.
-    auto data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-
-    long start_time = data->getLong("start_time");
-
-    _music_start = std::chrono::system_clock::time_point(
-        std::chrono::microseconds{start_time});
-    _has_sent_music_start = true;
   }
 
   _deserializer.reset();

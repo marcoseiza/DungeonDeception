@@ -52,6 +52,12 @@ class NetworkController {
   }
 
   /**
+   * @return The cugl network connection for functionality not supported in the
+   * network controller.
+   */
+  std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
+
+  /**
    * Initialize the NetworkController and all the actions.
    *
    * @param network A reference to the game network.
