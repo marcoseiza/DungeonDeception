@@ -260,6 +260,7 @@
     "menu": "widgets/menu.json",
     "client": "widgets/client.json",
     "host": "widgets/host.json",
+    "client-lobby-scene": "widgets/client-lobby-scene.json",
     "menutitle": "widgets/menutitle.json",
     "keypad": "widgets/keypad.json",
     "keypad-button": "widgets/keypad-button.json"
@@ -290,6 +291,13 @@
       "type": "Widget",
       "data": {
         "key": "ui-scene",
+        "variables": {}
+      }
+    },
+    "client-lobby-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "client-lobby-scene",
         "variables": {}
       }
     },
