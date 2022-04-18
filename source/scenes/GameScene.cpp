@@ -37,6 +37,8 @@ bool GameScene::init(
 
   _assets = assets;
 
+  _has_sent_music_start = false;
+
   _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
   _world_node->setContentSize(dim);
 
@@ -176,6 +178,7 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
+  _has_sent_music_start = false;
   _health_bar->dispose();
   _luminance_bar->dispose();
 }
@@ -261,6 +264,27 @@ void GameScene::update(float timestep) {
     // TODO: Change this to new terminal system. #233
     _level_controller->moveToCenterOfRoom(
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
+  }
+
+  // Start the game music if not already started and we have received
+  // the start time.
+  if (_has_sent_music_start &&
+      cugl::AudioEngine::get()->getState("music-main") ==
+          cugl::AudioEngine::State::INACTIVE) {
+    using namespace std::chrono;
+
+    system_clock::time_point now = system_clock::now();
+    long now_micros = now.time_since_epoch().count();
+    long start_micros = _music_start.time_since_epoch().count();
+
+    if (now_micros > start_micros) {
+      // Sufficiently equal considering game tick speed.
+      cugl::AudioEngine::get()->play("music-main",
+                                     _assets->get<cugl::Sound>("music-main"),
+                                     true, 1.0f, true);
+      float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
+      cugl::AudioEngine::get()->setTimeElapsed("music-main", sec_diff);
+    }
   }
 
   if (checkCooperatorWin()) {
@@ -593,6 +617,29 @@ void GameScene::sendNetworkInfo() {
       _serializer.reset();
       NetworkController::get()->send(msg);
     }
+
+    // ====== SEND MUSIC START INFORMATION ========
+    {
+      if (!_has_sent_music_start) {  // Only send once.
+        if ((int)_players.size() == (int)_network->getNumPlayers()) {
+          using namespace std::chrono;
+          _has_sent_music_start = true;
+          auto info = cugl::JsonValue::allocObject();
+          auto now = system_clock::now();
+          // This music needs to start a little later due to network lag.
+          _music_start = now + milliseconds(200);
+
+          auto start_time = cugl::JsonValue::alloc(
+              (long)_music_start.time_since_epoch().count());
+
+          info->appendChild(start_time);
+          start_time->setKey("start_time");
+
+          NetworkController::get()->send(NC_HOST_MUSIC_START, info);
+        }
+      }
+    }
+
   } else {
     // Send just the current player information.
 
@@ -812,6 +859,16 @@ void GameScene::processData(const Sint32& code,
       _player_controller->getMyPlayer()->reduceHealth(35);
       _player_controller->getMyPlayer()->takeDamage();
     }
+  }
+
+  else if (code == NC_HOST_MUSIC_START) {  // Receive music start info.
+    auto data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+    long start_time = data->getLong("start_time");
+
+    _music_start = std::chrono::system_clock::time_point(
+        std::chrono::microseconds{start_time});
+    _has_sent_music_start = true;
   }
 
   _deserializer.reset();

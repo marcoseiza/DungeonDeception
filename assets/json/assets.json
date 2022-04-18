@@ -577,5 +577,13 @@
       "file": "fonts/RetroGame.ttf",
       "size": 16
     }
+  },
+  "sounds": {
+    "music-main": {
+      "type": "sample",
+      "file": "sounds/music-main.ogg",
+      "stream": true,
+      "volume": 1.0
+    }
   }
 }

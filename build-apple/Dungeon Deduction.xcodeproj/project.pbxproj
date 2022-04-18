@@ -106,6 +106,12 @@
 		D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
 		D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
 		D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
+		D57B3464280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B3465280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B3466280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
+		D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
+		D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
 		D58B0FCE27DC1BC500E65692 /* LevelController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D58B0FCD27DC1BC500E65692 /* LevelController.cpp */; };
 		D58B0FCF27DC1BC500E65692 /* LevelController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D58B0FCD27DC1BC500E65692 /* LevelController.cpp */; };
 		D58B0FD027DC1BC500E65692 /* LevelController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D58B0FCD27DC1BC500E65692 /* LevelController.cpp */; };
@@ -298,6 +304,9 @@
 		D57B34AF280F7076002DEBBA /* CollisionFiltering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionFiltering.h; sourceTree = "<group>"; };
 		D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientLobbyScene.h; sourceTree = "<group>"; };
 		D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientLobbyScene.cpp; sourceTree = "<group>"; };
+		D57B3460280DA437002DEBBA /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		D57B346A280E097B002DEBBA /* SoundController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
+		D57B346E280E097B002DEBBA /* SoundController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		D58B0FC827DC1BC500E65692 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		D58B0FCC27DC1BC500E65692 /* LevelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelController.h; sourceTree = "<group>"; };
 		D58B0FCD27DC1BC500E65692 /* LevelController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelController.cpp; sourceTree = "<group>"; };
@@ -520,6 +529,8 @@
 			isa = PBXGroup;
 			children = (
 				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
+				D57B346E280E097B002DEBBA /* SoundController.cpp */,
+				D57B346A280E097B002DEBBA /* SoundController.h */,
 				57FEE3E427F69C7800D7EF23 /* enemies */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
 				57CEFE4227DE5E6100EF2B90 /* EnemyController.h */,
@@ -618,6 +629,7 @@
 		EB2BE9B71D749870002FE78B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D57B3460280DA437002DEBBA /* sounds */,
 				D5A1467827E38A57002B3FFD /* tiles */,
 				D58B972027DC7EBD0071D1FC /* rooms */,
 				572894E827D189E200F9BBA5 /* fonts */,
@@ -872,6 +884,7 @@
 				EB22BF9B25D0EA5C002ACE41 /* DeviceMargins.plist in Resources */,
 				EB22BF9625D0EA50002ACE41 /* json in Resources */,
 				EB22BF9725D0EA51002ACE41 /* textures in Resources */,
+				D57B3466280DA437002DEBBA /* sounds in Resources */,
 				EB22BF9025D0EA49002ACE41 /* iOS.xcassets in Resources */,
 				D521FB1127C43BA500D14172 /* widgets in Resources */,
 				EB22BF9125D0EA49002ACE41 /* Landscape.storyboard in Resources */,
@@ -889,6 +902,7 @@
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
+				D57B3465280DA437002DEBBA /* sounds in Resources */,
 				EBFE7C051E19B496001007C2 /* json in Resources */,
 				D521FB1027C43BA500D14172 /* widgets in Resources */,
 				EB7454AD1D74D846002FBAE6 /* Portrait.storyboard in Resources */,
@@ -903,6 +917,7 @@
 			files = (
 				EBFE7C091E19B4AC001007C2 /* json in Resources */,
 				572894E927D189E200F9BBA5 /* fonts in Resources */,
+				D57B3464280DA437002DEBBA /* sounds in Resources */,
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
 				D5A1467927E38A58002B3FFD /* tiles in Resources */,
 				D58B972427DC7EBD0071D1FC /* rooms in Resources */,
@@ -927,6 +942,7 @@
 				57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
@@ -974,6 +990,7 @@
 				57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
@@ -1021,6 +1038,7 @@
 				57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,

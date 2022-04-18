@@ -133,6 +133,26 @@ public:
     timestamp_t getTime() const { return _time; }
 
     /**
+     * Returns the current time stamp in seconds.
+     *
+     * @return the current time stamp in seconds.
+     */
+    float getSec() const { 
+        auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(_time.time_since_epoch());
+        return (float)elapsed.count() / 1000000.0;
+    }
+
+    /**
+     * Returns the current time stamp in milliseconds.
+     *
+     * @return the current time stamp in milliseconds.
+     */
+    Uint64 getMillis() const { 
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(_time.time_since_epoch());
+        return (Uint64)elapsed.count();
+    }
+
+    /**
      * Returns the ellapsed time between the given two timestamps.
      *
      * The value is returned in milliseconds.

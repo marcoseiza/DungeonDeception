@@ -18,9 +18,12 @@ void GameApp::onStartup() {
   cugl::Input::activate<cugl::Keyboard>();
   cugl::Input::activate<cugl::TextInput>();
 
+  cugl::AudioEngine::start();
+
   // Add asset loaders.
   _assets->attach<cugl::Texture>(cugl::TextureLoader::alloc()->getHook());
   _assets->attach<cugl::Font>(cugl::FontLoader::alloc()->getHook());
+  _assets->attach<cugl::Sound>(cugl::SoundLoader::alloc()->getHook());
   _assets->attach<cugl::JsonValue>(cugl::JsonLoader::alloc()->getHook());
   _assets->attach<cugl::WidgetValue>(cugl::WidgetLoader::alloc()->getHook());
   _assets->attach<cugl::scene2::SceneNode>(
@@ -48,6 +51,8 @@ void GameApp::onShutdown() {
   _level_loading.dispose();
   _assets = nullptr;
   _batch = nullptr;
+
+  cugl::AudioEngine::stop();
 
 #ifdef CU_TOUCH_SCREEN
   cugl::Input::deactivate<cugl::Touchscreen>();

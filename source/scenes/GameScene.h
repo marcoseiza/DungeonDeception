@@ -58,6 +58,11 @@ class GameScene : public cugl::Scene2 {
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
 
+  /** The time stamp for when the music started. */
+  std::chrono::system_clock::time_point _music_start;
+  /** If the host has sent the music start time. */
+  bool _has_sent_music_start;
+
   /** The serializer used to serialize complex data to send through the network.
    */
   cugl::NetworkSerializer _serializer;
