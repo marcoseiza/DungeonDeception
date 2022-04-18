@@ -4,6 +4,7 @@
 
 #include "scenes/GameScene.h"
 //#include "scenes/HostGameScene.h"
+#include "scenes/ClientLobbyScene.h"
 #include "scenes/ClientMenuScene.h"
 #include "scenes/HostMenuScene.h"
 #include "scenes/LoadingLevelScene.h"
@@ -27,6 +28,8 @@ class GameApp : public cugl::Application {
     HOST,
     /** The scene to join a game */
     CLIENT,
+    /** The scene to wait in a lobby */
+    CLIENT_LOBBY,
     /** The scene when the level is loading */
     LEVEL_LOADING,
     /** The scene to play the game */
@@ -50,6 +53,8 @@ class GameApp : public cugl::Application {
   HostMenuScene _hostgame;
   /** The scene to join a game */
   ClientMenuScene _joingame;
+  /** The scene to wait in a lobby */
+  ClientLobbyScene _joinlobby;
   /** The current active scene */
   State _scene;
   /** The controller for the level generation loading scene. */
@@ -160,6 +165,16 @@ class GameApp : public cugl::Application {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   void updateClientMenuScene(float timestep);
+
+  /**
+   * Individualized update method for the client lobby.
+   *
+   * This method keeps the primary {@link #update} from being a mess of switch
+   * statements. It also handles the transition logic from the client scene.
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame
+   */
+  void updateClientLobbyScene(float timestep);
 
   /**
    * Individualized update method for the level loading scene.

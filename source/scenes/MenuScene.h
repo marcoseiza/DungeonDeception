@@ -18,7 +18,9 @@ class MenuScene : public cugl::Scene2 {
     /** User wants to host a game */
     HOST,
     /** User wants to join a game */
-    JOIN
+    JOIN,
+    /** User is in a lobby waiting to join a game */
+    JOIN_LOBBY
   };
 
  protected:
