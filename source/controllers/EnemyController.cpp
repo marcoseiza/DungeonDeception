@@ -6,7 +6,7 @@
 #define ATTACK_RANGE 100
 
 #define NUM_RAYCASTS 64
-#define RAYCAST_LENGTH 15
+#define RAYCAST_LENGTH 20
 #define NUM_WEIGHTS 16
 
 #define MAX_SPEED 0.1f
@@ -131,9 +131,17 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       cugl::physics2::Obstacle* ob = static_cast<cugl::physics2::Obstacle*>(
           (void*)bd->GetUserData().pointer);
       
-      // If the ray cast hit an object, add it to the set to determine weights after (need set so that it doesn't do  calculations for the same object multiple times).
+      // If the ray cast hit an object, add it to the map to determine weights after (need set so that it doesn't do  calculations for the same object multiple times). Also need to find the closest distanced ray cast.
       if (ob->getName() == "Wall" || fx_name == "enemy_hitbox") {
-        _objects.emplace(ob);
+        if (_objects.contains(ob)) {
+          float rc_diff = cugl::Vec2(raycast.m_point.x - enemy->getPosition().x, raycast.m_point.y - enemy->getPosition().y).length();
+          float min_diff = cugl::Vec2(_objects.at(ob).x - enemy->getPosition().x, _objects.at(ob).y - enemy->getPosition().y).length();
+          if (rc_diff < min_diff) {
+            _objects.emplace(ob, cugl::Vec2(raycast.m_point.x, raycast.m_point.y));
+          }
+        } else {
+          _objects.emplace(ob, cugl::Vec2(raycast.m_point.x, raycast.m_point.y));
+        }
       }
       
       // Check if the player is in the circle of vision.
@@ -145,19 +153,29 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   }
   
   // Adjust the weights (lower them) according to walls and other enemies that were raycasted against.
-  for (auto ob : _objects) {
-    cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
-    ob_vec.normalize();
-    theta = 0;
-    for (int i = 0; i < NUM_WEIGHTS; i++) {
-      cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
-      if (ob->getName() != "Wall") {
+  for (const auto & [ ob, point ] : _objects) {
+    // Wall weight adjustments, done according to point hit to the wall.
+    if (ob->getName() == "Wall") {
+      cugl::Vec2 ob_vec = point - enemy->getPosition();
+      ob_vec.normalize();
+      theta = 0;
+      for (int i = 0; i < NUM_WEIGHTS; i++) {
+        cugl::Vec2 weight_vec = cugl::Vec2(cos(theta), sin(theta));
+        float dot = cugl::Vec2::dot(ob_vec, weight_vec);
+        _weights[i] -= dot;
+        theta += M_PI/(NUM_WEIGHTS/2);
+      }
+    } else { // Enemy weight adjustments, done according to enemy position.
+      cugl::Vec2 ob_vec = ob->getPosition() - enemy->getPosition();
+      ob_vec.normalize();
+      theta = 0;
+      for (int i = 0; i < NUM_WEIGHTS; i++) {
         // Move away from the other enemies at an angle.
         cugl::Vec2 weight_vec = cugl::Vec2(cos(theta + M_PI/4), sin(theta + M_PI/4));
+        float dot = cugl::Vec2::dot(ob_vec, weight_vec);
+        _weights[i] -= dot;
+        theta += M_PI/(NUM_WEIGHTS/2);
       }
-      float dot = cugl::Vec2::dot(ob_vec, weight_vec);
-      _weights[i] -= dot;
-      theta += M_PI/(NUM_WEIGHTS/2);
     }
   }
   
@@ -182,7 +200,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       weight_vec = cugl::Vec2(cos(theta + CW*M_PI/2), sin(theta + CW*M_PI/2));
     }
     float dot = cugl::Vec2::dot(p, weight_vec);
-    _weights[i] += dot/2;
+    _weights[i] += dot;
     theta += M_PI/(NUM_WEIGHTS/2);
   }
   
@@ -214,7 +232,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   if (_debug_node->isVisible()) {
     theta = 0;
     for (int i = 0; i < NUM_WEIGHTS; i++) {
-      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + RAYCAST_LENGTH*cos(theta), enemy->getPosition().y + RAYCAST_LENGTH*sin(theta));
+      cugl::Vec2 p4 = cugl::Vec2(enemy->getPosition().x + RAYCAST_LENGTH*cos(theta)*abs(_weights[i]), enemy->getPosition().y + RAYCAST_LENGTH*sin(theta)*abs(_weights[i]));
       cugl::Path2 x = cugl::Path2();
       x.push(enemy->getPosition());
       x.push(p4);
@@ -224,7 +242,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       cugl::Poly2 p = ex.getPolygon();
       enemy->_polys.at(i)->setVisible(true);
       enemy->_polys.at(i)->setPolygon(p);
-      enemy->_polys.at(i)->setPosition(cugl::Vec2(enemy->getPosition().x + (RAYCAST_LENGTH/2)*cos(theta), enemy->getPosition().y + (RAYCAST_LENGTH/2)*sin(theta)));
+      enemy->_polys.at(i)->setPosition(cugl::Vec2(enemy->getPosition().x + (RAYCAST_LENGTH/2)*cos(theta)*abs(_weights[i]), enemy->getPosition().y + (RAYCAST_LENGTH/2)*sin(theta)*abs(_weights[i])));
       if (_weights[i] < 0) {
         enemy->_polys.at(i)->setColor(cugl::Color4::RED);
       } else {
