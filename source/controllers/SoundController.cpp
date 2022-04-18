@@ -38,22 +38,28 @@ void SoundController::update(float timestep) {
 
   // Start the game music if not already started and we have received
   // the start time.
-  if (_has_sent_music_start &&
-      cugl::AudioEngine::get()->getState("music-main") ==
-          cugl::AudioEngine::State::INACTIVE) {
-    using namespace std::chrono;
 
-    system_clock::time_point now = system_clock::now();
-    long now_micros = now.time_since_epoch().count();
-    long start_micros = _music_start.time_since_epoch().count();
+  if (_has_sent_music_start) {
+    auto q = cugl::AudioEngine::get()->getMusicQueue();
+    if (q->getState() == cugl::AudioEngine::State::INACTIVE) {
+      using namespace std::chrono;
 
-    if (now_micros > start_micros) {
-      // Sufficiently equal considering game tick speed.
-      cugl::AudioEngine::get()->play("music-main",
-                                     _assets->get<cugl::Sound>("music-main"),
-                                     true, 1.0f, true);
-      float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
-      cugl::AudioEngine::get()->setTimeElapsed("music-main", sec_diff);
+      system_clock::time_point now = system_clock::now();
+      long now_micros = now.time_since_epoch().count();
+      long start_micros = _music_start.time_since_epoch().count();
+
+      if (now_micros > start_micros) {
+        q->play(_assets->get<cugl::Sound>("music-main"), true, 1.0f, 1.0f);
+
+        float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
+        double elapsed = q->getTimeElapsed();
+        double remaining = q->getTimeRemaining();
+        if (elapsed >= 0 && remaining >= 0) {
+          sec_diff = std::fmod(sec_diff, elapsed + remaining);
+        }
+
+        q->setTimeElapsed(sec_diff);
+      }
     }
   }
 }
