@@ -11,24 +11,27 @@
 void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= 18) {
     if (enemy->getAttackCooldown() == 18) {
-      enemy->_attack_dir = p - enemy->getPosition();
-      enemy->_attack_dir.normalize();
       enemy->setSensor(true);
-    } 
-    cugl::Vec2 dir = enemy->_attack_dir;
-    dir.scale(5);
-    enemy->move(dir.x, dir.y);
+    }
     if (enemy->getAttackCooldown() <= 0) {
       enemy->setAttackCooldown(rand() % 50 + 155);
       enemy->resetSensors();
+    } else {
+      cugl::Vec2 dir = enemy->_attack_dir;
+      dir.scale(5);
+      enemy->move(dir.x, dir.y);
     }
   } else if (enemy->getAttackCooldown() <= 45) {
     enemy->move(0, 0);
+    if (enemy->getAttackCooldown() == 45) {
+      enemy->_attack_dir = p - enemy->getPosition();
+      enemy->_attack_dir.normalize();
+    }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
-    diff.scale(0.6);
+    diff.scale(0.6 * enemy->getSpeed());
     enemy->move(diff.x, diff.y);
   }
 }
