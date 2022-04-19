@@ -24,6 +24,8 @@ class PlayerController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+  /** A reference to the game assets. */
+  std::shared_ptr<cugl::AssetManager> _assets;
 
  public:
 #pragma mark Constructors
@@ -43,11 +45,11 @@ class PlayerController {
    *
    * @return true if the obstacle is initialized properly, false otherwise.
    */
-  bool init(std::shared_ptr<Player> player,
-            std::shared_ptr<cugl::AssetManager> assets,
-            std::shared_ptr<cugl::physics2::ObstacleWorld> world,
-            std::shared_ptr<cugl::scene2::SceneNode> world_node,
-            std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+  bool init(const std::shared_ptr<Player>& player,
+            const std::shared_ptr<cugl::AssetManager>& assets,
+            const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
+            const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
+            const std::shared_ptr<cugl::scene2::SceneNode>& debug_node);
 
   /**
    * Disposes the controller.
@@ -71,11 +73,11 @@ class PlayerController {
    * @return a new capsule object at the given point with no size.
    */
   static std::shared_ptr<PlayerController> alloc(
-      std::shared_ptr<Player> player,
-      std::shared_ptr<cugl::AssetManager> assets,
-      std::shared_ptr<cugl::physics2::ObstacleWorld> world,
-      std::shared_ptr<cugl::scene2::SceneNode> world_node,
-      std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+      const std::shared_ptr<Player>& player,
+      const std::shared_ptr<cugl::AssetManager>& assets,
+      const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
+      const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
+      const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
     std::shared_ptr<PlayerController> result =
         std::make_shared<PlayerController>();
 
@@ -91,15 +93,37 @@ class PlayerController {
   void update(float timestep, cugl::Vec2 forward, bool didAttack, bool didDash,
               bool holdAttack, std::shared_ptr<Sword> sword);
 
+  /**
+   * Processes data sent over the network.
+   *
+   * @param code The message code
+   * @param msg The deserialized message
+   */
+  void processData(const Sint32& code,
+                   const cugl::NetworkDeserializer::Message& msg);
+
+  /**
+   * Process the position of the player with the corresponding player_id in the
+   * _players list.
+   *
+   * @param player_id The player ids
+   * @param pos_x The updated player x position
+   * @param pos_y The updated player y position
+   */
+  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
+
   /** Update the projectiles. */
   void updateSlashes(float timestep);
+
+  /** Linearly interpolate the player by the network positions. */
+  void interpolate(float timestep, const std::shared_ptr<Player>& player);
 
   void move(float timestep, bool didDash, cugl::Vec2 forward);
 
   void attack(bool didAttack, bool holdAttack, std::shared_ptr<Sword> sword);
 
   void addPlayer(const std::shared_ptr<Player>& player) {
-    if (_players.find(player->getPlayerId()) != _players.end()) {
+    if (_players.find(player->getPlayerId()) == _players.end()) {
       _players[player->getPlayerId()] = player;
     }
   }
@@ -111,6 +135,12 @@ class PlayerController {
       return _players[id];
     }
     return nullptr;
+  }
+
+  std::vector<std::shared_ptr<Player>> getPlayerList() {
+    std::vector<std::shared_ptr<Player>> player_list;
+    for (auto it : _players) player_list.push_back(it.second);
+    return player_list;
   }
 
   std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {

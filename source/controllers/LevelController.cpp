@@ -26,27 +26,37 @@ bool LevelController::init(
 }
 
 void LevelController::update(float timestep) {
-  std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
-  std::shared_ptr<Player> player = _level_model->getPlayer();
-  float rel_player_y =
-      player->getBody()->GetPosition().y - current->getNode()->getPosition().y;
-  float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
-  player->getPlayerNode()->setPriority(current->getGridSize().height - row);
+  // Update all the player's ordering in the scene graph.
+  for (std::shared_ptr<Player> &player : _player_controller->getPlayerList()) {
+    std::shared_ptr<RoomModel> room =
+        _level_model->getRoom(player->getRoomId());
 
-  for (std::shared_ptr<EnemyModel> enemy : current->getEnemies()) {
-    b2Body *enemy_body = enemy->getBody();
-    if (enemy_body != nullptr) {
-      float rel_enemy_y =
-          enemy_body->GetPosition().y - current->getNode()->getPosition().y;
-      row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y);
-      enemy->getNode()->setPriority(current->getGridSize().height - row);
+    float rel_player_y =
+        player->getBody()->GetPosition().y - room->getNode()->getPosition().y;
+    float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
+    player->getPlayerNode()->setPriority(room->getGridSize().height - row);
+  }
 
-      for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
-        float rel_projectile_y = projectile->getBody()->GetPosition().y -
-                                 current->getNode()->getPosition().y;
-        row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
-        player->getPlayerNode()->setPriority(current->getGridSize().height -
-                                             row);
+  // Update the ordering of all the enemies in my player's current room.
+  {
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+    std::shared_ptr<RoomModel> current =
+        _level_model->getRoom(player->getRoomId());
+    for (std::shared_ptr<EnemyModel> enemy : current->getEnemies()) {
+      b2Body *enemy_body = enemy->getBody();
+      if (enemy_body != nullptr) {
+        float rel_enemy_y =
+            enemy_body->GetPosition().y - current->getNode()->getPosition().y;
+        float row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y);
+        enemy->getNode()->setPriority(current->getGridSize().height - row);
+
+        for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
+          float rel_projectile_y = projectile->getBody()->GetPosition().y -
+                                   current->getNode()->getPosition().y;
+          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
+          player->getPlayerNode()->setPriority(current->getGridSize().height -
+                                               row);
+        }
       }
     }
   }
@@ -94,7 +104,7 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 
   new_current->setVisible(true);
 
-  _level_model->getPlayer()->setPosPromise(
+  _player_controller->getMyPlayer()->setPosPromise(
       new_current->getNode()->getPosition() +
       door_pos * (TILE_SIZE * TILE_SCALE));
 
