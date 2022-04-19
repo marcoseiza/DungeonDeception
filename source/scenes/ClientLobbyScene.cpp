@@ -107,12 +107,12 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
         break;
       }
     }
-  }
+  } */
 
   if (code == 255) {
     _seed = std::get<Uint64>(_deserializer.read());
     _status = Status::START;
-  } */
+  }
 }
 
 bool ClientLobbyScene::checkConnection() {
@@ -122,7 +122,7 @@ bool ClientLobbyScene::checkConnection() {
       _status = WAIT;
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
-      _player->setText(std::to_string(_network->getNumPlayers()));
+      // _player->setText(std::to_string(_network->getNumPlayers()));
       if (_status != START) {
         _status = WAIT;
       }
