@@ -1,7 +1,7 @@
 #include "TankController.h"
 
 #define MIN_DISTANCE 300
-#define ATTACK_RANGE 100
+#define ATTACK_RANGE 75
 
 #define STATE_CHANGE_LIM 10
 
@@ -21,19 +21,19 @@ bool TankController::init(std::shared_ptr<cugl::AssetManager> assets,
 
 void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() == 20) {
+  if (enemy->getAttackCooldown() == 18) {
     enemy->_attack_dir = p - enemy->getPosition();
     enemy->_attack_dir.normalize();
     enemy->setSensor(true);
   }
   
-  if (enemy->getAttackCooldown() <= 20) {
+  if (enemy->getAttackCooldown() <= 18) {
     cugl::Vec2 dir = enemy->_attack_dir;
-    dir.scale(10);
+    dir.scale(5);
     enemy->move(dir.x, dir.y);
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(120);
-      enemy->setSensor(false);
+      enemy->setAttackCooldown(180);
+      enemy->resetSensors();
     }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
