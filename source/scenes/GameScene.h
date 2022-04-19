@@ -199,11 +199,21 @@ class GameScene : public cugl::Scene2 {
    * This method serves as a helper to updating all the enemies
    *
    * @param timestep The amount of time (in seconds) since the last frame.
-   * @param current_room The current room the player is in.
-   * @param room_id The room id of the room.
+   * @param room The room to update the enemies in.
    */
-  void updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room,
-                     int room_id);
+  void updateEnemies(float timestep, std::shared_ptr<RoomModel> room);
+  
+  /**
+   * Returns an unordered set of all the room ids players are in
+   */
+  std::unordered_set<int> getRoomIdsWithPlayers() {
+    std::unordered_set<int> room_ids_with_players;
+    for (std::shared_ptr<Player> player : _players) {
+      int room_id = _level_controller->getLevelModel()->getRoom(player->getRoomId())->getKey();
+      room_ids_with_players.emplace(room_id);
+    }
+    return room_ids_with_players;
+  }
 
   /**
    * Draws all this scene to the given SpriteBatch.

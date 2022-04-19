@@ -366,10 +366,15 @@ void GameScene::update(float timestep) {
 
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
-  int room_id = current_room->getKey();
   _my_player->setRoomId(current_room->getKey());
 
-  updateEnemies(timestep, current_room, room_id);
+  if (_ishost) {
+    std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
+    for (auto room_id_to_update: room_ids_with_players) {
+      auto room_to_update = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      updateEnemies(timestep, room_to_update);
+    }
+  }
 
   updateCamera(timestep);
   updateMillisRemainingIfHost();
@@ -437,11 +442,11 @@ void GameScene::update(float timestep) {
   _my_player->checkDeleteSlashes(_world, _world_node);
 }
 
-void GameScene::updateEnemies(float timestep,
-                              std::shared_ptr<RoomModel> current_room,
-                              int room_id) {
+
+void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {
+  int room_id = room->getKey();
   // Update the enemy controllers
-  for (std::shared_ptr<EnemyModel>& enemy : current_room->getEnemies()) {
+  for (std::shared_ptr<EnemyModel>& enemy : room->getEnemies()) {
     switch (enemy->getType()) {
       case EnemyModel::GRUNT: {
         _grunt_controller->update(timestep, enemy, _players, room_id);
@@ -515,46 +520,51 @@ void GameScene::sendNetworkInfo() {
         }
         rooms_checked_for_enemies.insert(room_id);
 
-        // get enemy info only for the rooms that players are in
-        for (std::shared_ptr<EnemyModel> enemy : player_room->getEnemies()) {
-          std::shared_ptr<cugl::JsonValue> enemy_info =
-              cugl::JsonValue::allocObject();
+        auto room_ids_with_players = getRoomIdsWithPlayers();
+        for (auto room_id: room_ids_with_players) {
+          // get enemy info only for the rooms that players are in
+          auto room = _level_controller->getLevelModel()->getRoom(room_id);
+          for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
+            
+            std::shared_ptr<cugl::JsonValue> enemy_info =
+                cugl::JsonValue::allocObject();
 
-          std::shared_ptr<cugl::JsonValue> enemy_id =
-              cugl::JsonValue::alloc(static_cast<long>(enemy->getEnemyId()));
-          enemy_info->appendChild(enemy_id);
-          enemy_id->setKey("enemy_id");
+            std::shared_ptr<cugl::JsonValue> enemy_id =
+                cugl::JsonValue::alloc(static_cast<long>(enemy->getEnemyId()));
+            enemy_info->appendChild(enemy_id);
+            enemy_id->setKey("enemy_id");
 
-          std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
-          std::shared_ptr<cugl::JsonValue> pos_x =
-              cugl::JsonValue::alloc(enemy->getPosition().x);
-          std::shared_ptr<cugl::JsonValue> pos_y =
-              cugl::JsonValue::alloc(enemy->getPosition().y);
-          pos->appendChild(pos_x);
-          pos->appendChild(pos_y);
-          enemy_info->appendChild(pos);
-          pos->setKey("position");
+            std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
+            std::shared_ptr<cugl::JsonValue> pos_x =
+                cugl::JsonValue::alloc(enemy->getPosition().x);
+            std::shared_ptr<cugl::JsonValue> pos_y =
+                cugl::JsonValue::alloc(enemy->getPosition().y);
+            pos->appendChild(pos_x);
+            pos->appendChild(pos_y);
+            enemy_info->appendChild(pos);
+            pos->setKey("position");
 
-          std::shared_ptr<cugl::JsonValue> enemy_health =
-              cugl::JsonValue::alloc(static_cast<long>(enemy->getHealth()));
-          enemy_info->appendChild(enemy_health);
-          enemy_health->setKey("enemy_health");
+            std::shared_ptr<cugl::JsonValue> enemy_health =
+                cugl::JsonValue::alloc(static_cast<long>(enemy->getHealth()));
+            enemy_info->appendChild(enemy_health);
+            enemy_health->setKey("enemy_health");
 
-          std::shared_ptr<cugl::JsonValue> enemy_room =
-              cugl::JsonValue::alloc(static_cast<long>(room_id));
-          enemy_info->appendChild(enemy_room);
-          enemy_room->setKey("enemy_room");
+            std::shared_ptr<cugl::JsonValue> enemy_room =
+                cugl::JsonValue::alloc(static_cast<long>(room_id));
+            enemy_info->appendChild(enemy_room);
+            enemy_room->setKey("enemy_room");
 
-          // TODO network enemy projectiles
+            // TODO network enemy projectiles
 
-          // Serialize one enemy at a time to avoid reaching packet limit
-          _serializer.writeSint32(5);
-          _serializer.writeJson(enemy_info);
+            // Serialize one enemy at a time to avoid reaching packet limit
+            _serializer.writeSint32(5);
+            _serializer.writeJson(enemy_info);
 
-          std::vector<uint8_t> msg2 = _serializer.serialize();
+            std::vector<uint8_t> msg2 = _serializer.serialize();
 
-          _serializer.reset();
-          NetworkController::get()->send(msg2);
+            _serializer.reset();
+            NetworkController::get()->send(msg2);
+          }
         }
       }
 
