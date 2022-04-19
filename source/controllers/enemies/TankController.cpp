@@ -2,6 +2,9 @@
 
 #define MIN_DISTANCE 300
 #define ATTACK_RANGE 75
+#define ATTACK_FRAMES 18
+#define STOP_ATTACK_FRAMES 50
+#define ATTACK_COOLDOWN 180
 
 #define STATE_CHANGE_LIM 10
 
@@ -21,21 +24,21 @@ bool TankController::init(std::shared_ptr<cugl::AssetManager> assets,
 
 void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() <= 18) {
-    if (enemy->getAttackCooldown() == 18) {
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
+    if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->setSensor(true);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + 155);
+      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
       enemy->resetSensors();
     } else {
       cugl::Vec2 dir = enemy->_attack_dir;
       dir.scale(5);
       enemy->move(dir.x, dir.y);
     }
-  } else if (enemy->getAttackCooldown() <= 45) {
+  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     enemy->move(0, 0);
-    if (enemy->getAttackCooldown() == 45) {
+    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
       enemy->_attack_dir = p - enemy->getPosition();
       enemy->_attack_dir.normalize();
     }
