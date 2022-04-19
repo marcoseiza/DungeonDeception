@@ -28,9 +28,9 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   _attack_cooldown = 0;
 
-  setDensity(0);
-  setFriction(0);
-  setRestitution(0);
+  setDensity(0.5f);
+  setFriction(0.5f);
+  setRestitution(0.5f);
   setFixedRotation(true);
 
   if (_enemy_type == TURTLE) {
