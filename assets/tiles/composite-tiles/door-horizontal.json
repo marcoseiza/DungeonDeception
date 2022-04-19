@@ -83,7 +83,7 @@
                 "data": {
                   "key": "tile-26",
                   "variables": {
-                    "priority": 0
+                    "priority": -1
                   }
                 }
               }
@@ -107,7 +107,7 @@
                 "data": {
                   "key": "tile-27",
                   "variables": {
-                    "priority": 0
+                    "priority": -1
                   }
                 }
               }
@@ -131,7 +131,7 @@
                 "data": {
                   "key": "tile-27",
                   "variables": {
-                    "priority": 0
+                    "priority": -1
                   }
                 }
               }
@@ -155,7 +155,7 @@
                 "data": {
                   "key": "tile-27",
                   "variables": {
-                    "priority": 0
+                    "priority": -1
                   }
                 }
               }
@@ -179,7 +179,7 @@
                 "data": {
                   "key": "tile-30",
                   "variables": {
-                    "priority": 0
+                    "priority": -1
                   }
                 }
               }

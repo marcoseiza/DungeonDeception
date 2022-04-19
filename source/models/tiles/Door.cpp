@@ -1,5 +1,6 @@
 #include "Door.h"
 
+#include "TileHelper.h"
 #include "Wall.h"
 
 #define TILE_WIDTH 48
@@ -133,16 +134,28 @@ void Door::setState(State state) {
           del.on_node->setVisible(true);
           del.off_node->setVisible(false);
           del.unused_node->setVisible(false);
+
+          tile_helper::setSensorCascade(del.on_node, false);
+          tile_helper::setSensorCascade(del.off_node, true);
+          tile_helper::setSensorCascade(del.unused_node, true);
           break;
         case OFF:
           del.on_node->setVisible(false);
           del.off_node->setVisible(true);
           del.unused_node->setVisible(false);
+
+          tile_helper::setSensorCascade(del.on_node, true);
+          tile_helper::setSensorCascade(del.off_node, false);
+          tile_helper::setSensorCascade(del.unused_node, true);
           break;
         case UNUSED:
           del.on_node->setVisible(false);
           del.off_node->setVisible(false);
           del.unused_node->setVisible(true);
+
+          tile_helper::setSensorCascade(del.on_node, true);
+          tile_helper::setSensorCascade(del.off_node, true);
+          tile_helper::setSensorCascade(del.unused_node, false);
           break;
       }
     }
@@ -155,7 +168,7 @@ void Door::setPositive() {
   for (const auto& tile_wrapper : negative_node->getChildren()) {
     auto tile =
         std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
-    tile->setInitializePhysics(false);
+    tile->setInitializeAsSensor(true);
     tile->setVisible(false);
   }
 }
@@ -166,7 +179,7 @@ void Door::setNegative() {
   for (const auto& tile_wrapper : positive_node->getChildren()) {
     auto tile =
         std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
-    tile->setInitializePhysics(false);
+    tile->setInitializeAsSensor(true);
     tile->setVisible(false);
   }
 }

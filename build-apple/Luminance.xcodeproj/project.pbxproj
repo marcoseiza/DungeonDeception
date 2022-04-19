@@ -309,6 +309,7 @@
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
 		D57B33DB28053A63002DEBBA /* NetworkCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
+		D57B3487280E5088002DEBBA /* TileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileHelper.h; sourceTree = "<group>"; };
 		D58B0FC827DC1BC500E65692 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		D58B0FCC27DC1BC500E65692 /* LevelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelController.h; sourceTree = "<group>"; };
 		D58B0FCD27DC1BC500E65692 /* LevelController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelController.cpp; sourceTree = "<group>"; };
@@ -490,6 +491,7 @@
 		D5073C8527CFEF2C0000426E /* tiles */ = {
 			isa = PBXGroup;
 			children = (
+				D57B3487280E5088002DEBBA /* TileHelper.h */,
 				D529AAE627E13083006E3D5F /* Terminal.cpp */,
 				D529AAE227E13083006E3D5F /* Terminal.h */,
 				D529AAE827E13083006E3D5F /* TerminalSensor.cpp */,

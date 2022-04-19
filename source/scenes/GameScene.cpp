@@ -218,12 +218,9 @@ void GameScene::populate(cugl::Size dim) {
 
   for (std::shared_ptr<BasicTile> tile : loader->getTiles("wall")) {
     auto wall = std::dynamic_pointer_cast<Wall>(tile);
-    auto obj = wall->initBox2d();
-    if (obj) {
-      _world->addObstacle(obj);
-      wall->getObstacle()->setDebugColor(cugl::Color4::GREEN);
-      wall->getObstacle()->setDebugScene(_debug_node);
-    }
+    _world->addObstacle(wall->initBox2d());
+    wall->getObstacle()->setDebugColor(cugl::Color4::GREEN);
+    wall->getObstacle()->setDebugScene(_debug_node);
   }
 
   _num_terminals = 0;
