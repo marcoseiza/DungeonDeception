@@ -4,24 +4,26 @@
 #include <cugl/cugl.h>
 
 #include "../models/Player.h"
+#include "../models/tiles/TerminalSensor.h"
+#include "../scenes/voting_scenes/ActivateTerminalScene.h"
+#include "../scenes/voting_scenes/VoteForLeaderScene.h"
+#include "../scenes/voting_scenes/VoteForTeamScene.h"
 #include "../scenes/voting_scenes/WaitForPlayersScene.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "LevelController.h"
+#include "PlayerController.h"
+#include "VotingInfo.h"
 
 class TerminalController : public Controller {
- public:
-  struct VotingInfo {
-    int terminal_room_id;
-    std::vector<int> players;
-  };
-
- private:
   /** If a terminal is currently being voted on. */
   bool _active;
 
+  /** The terminal controller just finished all the voting. */
+  bool _just_finished;
+
   /** A map between the terminal room id and the voting info. */
-  std::unordered_map<int, VotingInfo> _voting_info;
+  std::unordered_map<int, std::shared_ptr<VotingInfo>> _voting_info;
 
   /** A reference to the terminal voting scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _scene;
@@ -29,11 +31,22 @@ class TerminalController : public Controller {
   /** A reference to the waiting for players scene. */
   std::shared_ptr<WaitForPlayersScene> _wait_for_players_scene;
 
+  /** A reference to the vote for leader scene. */
+  std::shared_ptr<VoteForLeaderScene> _vote_for_leader_scene;
+
+  /** A reference to the vote for team scene. */
+  std::shared_ptr<VoteForTeamScene> _vote_for_team_scene;
+
+  /** A reference to the activate terminal scene. */
+  std::shared_ptr<ActivateTerminalScene> _activate_terminal_scene;
+
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
-  /** The list of players participating in the voting. */
-  std::vector<std::shared_ptr<Player>> _players;
+  /** Player Controller */
+  std::shared_ptr<PlayerController> _player_controller;
+
+  TerminalSensor* _terminal_sensor;
 
   /** The number of players required for this terminal. */
   int _num_players_req;
@@ -41,17 +54,26 @@ class TerminalController : public Controller {
   /** The terminal room this controller is handleing. */
   int _terminal_room_id;
 
+  /** The chosen team leader player id. */
+  int _leader_id;
+
+  /**
+   * True if the terminal was activated, false if the terminal was corrupted.
+   */
+  bool _terminal_was_activated;
+
   /** The terminal voting stage. */
   enum Stage {
-    NONE,
-    WAIT_FOR_PLAYERS,
-    VOTE_LEADER,
-    VOTE_TEAM,
-    ACTIVATE_TERMINAL
+    NONE = 0,
+    WAIT_FOR_PLAYERS = 1,
+    VOTE_LEADER = 2,
+    VOTE_TEAM = 3,
+    ACTIVATE_TERMINAL = 4
   } _stage;
 
  public:
-  TerminalController() : _stage(Stage::NONE), _active(false) {}
+  TerminalController()
+      : _stage(Stage::NONE), _active(false), _just_finished(false) {}
   ~TerminalController() { dispose(); }
 
   /**
@@ -84,32 +106,31 @@ class TerminalController : public Controller {
     _active = false;
   }
 
+  void sendNetworkData();
+
   /**
    * Set the terminal controller as active due to a terminal being hit.
    *
    * @param terminal_room_id The room this controller will handle.
    * @param num_players_req The number of players required for this terminal.
    */
-  void setActive(int terminal_room_id, int num_players_req) {
+  void setActive(int terminal_room_id, int num_players_req,
+                 TerminalSensor* sensor) {
     if (_active) return;
+
+    // If the voting room has already started.
+    if (_voting_info.find(terminal_room_id) != _voting_info.end() &&
+        _voting_info[terminal_room_id]->buffer_timer >
+            WAIT_TIME_AFTER_REQUIRED_ACCOMPLISHED) {
+      return;
+    }
+
     _active = true;
     _num_players_req = num_players_req;
     _terminal_room_id = terminal_room_id;
+    _terminal_sensor = sensor;
     _scene->setVisible(true);
     InputController::get()->pause();
-  }
-
-  /**
-   * Add this player to the terminal voting scene. Will only add if the player
-   * is not currently in the scene and the terminal is waiting for players.
-   * @param player The player to add.
-   */
-  void addPlayer(std::shared_ptr<Player> player) {
-    if (_stage != Stage::WAIT_FOR_PLAYERS) return;
-
-    if (std::find(_players.begin(), _players.end(), player) == _players.end()) {
-      _players.push_back(player);
-    }
   }
 
   /**
@@ -125,7 +146,8 @@ class TerminalController : public Controller {
    * @param code The message code
    * @param msg The deserialized message
    */
-  void processNetworkData(Sint32 code, cugl::NetworkDeserializer::Message msg);
+  void processNetworkData(const Sint32& code,
+                          const cugl::NetworkDeserializer::Message& msg);
 
   /**
    * Get the state of all the voting info. Returns an unordered map with the
@@ -134,14 +156,41 @@ class TerminalController : public Controller {
    * @return An unordered map with the key being the terminal room id and the
    * value being the voting info.
    */
-  std::unordered_map<int, VotingInfo> getVotingInfo() { return _voting_info; }
+  std::unordered_map<int, std::shared_ptr<VotingInfo>> getVotingInfo() {
+    return _voting_info;
+  }
+
+  void setPlayerController(
+      const std::shared_ptr<PlayerController>& player_controller) {
+    _player_controller = player_controller;
+    _wait_for_players_scene->setPlayerController(_player_controller);
+    _vote_for_leader_scene->setPlayerController(_player_controller);
+    _vote_for_team_scene->setPlayerController(_player_controller);
+    _activate_terminal_scene->setPlayerController(_player_controller);
+  }
+
+  /**
+   * @return True if the terminal was activated, false if it was corrupted.
+   */
+  bool getTerminalWasActivated() { return _terminal_was_activated; }
+
+  /**
+   * @return If the terminal has just finished voting.
+   */
+  bool hasJustFinished() {
+    bool tmp = _just_finished;
+    _just_finished = false;
+    return tmp;
+  }
 
  private:
   /** Called when the terminal voting is done. */
   void done() {
     _active = false;
     _scene->setVisible(false);
+    _stage = Stage::WAIT_FOR_PLAYERS;
     InputController::get()->resume();
+    _terminal_sensor->activate();
   }
 };
 

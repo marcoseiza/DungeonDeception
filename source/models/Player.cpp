@@ -17,6 +17,8 @@
 #define HURT_FRAMES 10
 #define DEAD_FRAMES 175
 
+#define MIN_DIFF_FOR_DIR_CHANGE 0.05
+
 #pragma mark Init
 
 bool Player::init(const cugl::Vec2 pos, string name) {
@@ -27,6 +29,9 @@ bool Player::init(const cugl::Vec2 pos, string name) {
 
   _offset_from_center.y = HEIGHT / 2.0f - size_.height / 2.0f;
   pos_ -= _offset_from_center;
+
+  _network_pos_cache[0] = pos_;
+  _network_pos_cache[1] = pos_;
 
   CapsuleObstacle::init(pos_, size_);
   setName(name);
@@ -67,9 +72,9 @@ void Player::dies() {
 void Player::update(float delta) {
   CapsuleObstacle::update(delta);
   if (_player_node != nullptr) {
-    if (_promise) {
-      setPosition(_promise_pos_cache);
-      _promise = false;
+    if (_promise_pos_cache) {
+      setPosition(*_promise_pos_cache);
+      _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
   }
@@ -133,7 +138,10 @@ void Player::move(float forwardX, float forwardY) {
 
 void Player::updateDirection(float x_diff, float y_diff) {
   int new_direc = _mv_direc;
-  if (std::abs(x_diff) >= std::abs(y_diff)) {
+  bool sufficiently_equal = (std::abs(std::abs(x_diff) - std::abs(y_diff)) <=
+                             MIN_DIFF_FOR_DIR_CHANGE);
+
+  if (std::abs(x_diff) >= std::abs(y_diff) || sufficiently_equal) {
     if (x_diff < 0) {
       new_direc = IDLE_LEFT;
     } else if (x_diff > 0) {

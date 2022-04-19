@@ -92,6 +92,11 @@ class TerminalSensor : public cugl::physics2::BoxObstacle {
    * Activates a terminal.
    */
   void activate() { _activated = true; }
+
+  /**
+   * Deactivates a terminal.
+   */
+  void deactivate() { _activated = false; }
 };
 #endif  // MODELS_TILES_TERMINALSENSOR_H_
 #pragma once
