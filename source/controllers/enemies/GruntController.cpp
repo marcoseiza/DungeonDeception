@@ -95,3 +95,56 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
   }
 }
+
+void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
+  auto node = enemy->getNode();
+  int fc = enemy->_frame_count;
+  switch (enemy->getCurrentState()) {
+    case EnemyModel::State::ATTACKING: {
+      if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 12) {
+        int attack_high_lim = 29;
+        int attack_low_lim = 20;
+
+        // Play the next animation frame.
+        if (fc >= 3) {
+          enemy->_frame_count = 0;
+          if (node->getFrame() >= attack_high_lim) {
+            node->setFrame(attack_low_lim);
+          } else {
+            node->setFrame(node->getFrame() + 1);
+          }
+        }
+        enemy->_frame_count++;
+        break;
+      } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+        node->setFrame(20);
+        break;
+      }
+    }
+    case EnemyModel::State::CHASING: {
+      int run_high_lim = 19;
+      int run_low_lim = 10;
+
+      if (fc == 0) {
+        node->setFrame(run_low_lim);
+      }
+
+      // Play the next animation frame.
+      if (fc >= 4) {
+        enemy->_frame_count = 0;
+        if (node->getFrame() >= run_high_lim) {
+          node->setFrame(run_low_lim);
+        } else {
+          node->setFrame(node->getFrame() + 1);
+        }
+      }
+      enemy->_frame_count++;
+      break;
+    }
+    case EnemyModel::State::IDLE: {
+      node->setFrame(0);
+      enemy->_frame_count = 0;
+      break;
+    }
+  }
+}

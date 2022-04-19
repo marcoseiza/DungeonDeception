@@ -106,6 +106,9 @@ class EnemyController {
   
   /** Figure out the weights for the enemy. */
   void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
+  
+  /** Animate the enemy. */
+  virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
 
 #pragma mark Movement
  protected:

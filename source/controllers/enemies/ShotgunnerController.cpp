@@ -83,3 +83,5 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
   }
 }
+
+void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {}

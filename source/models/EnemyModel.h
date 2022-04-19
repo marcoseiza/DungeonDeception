@@ -116,6 +116,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** When attacking, direction to attack in. */
   cugl::Vec2 _attack_dir;
   
+  /** The count for switching to the next frame. */
+  int _frame_count;
+  
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.
@@ -362,7 +365,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+  void setNode(const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node);
 
   /**
    * Gets the grunt scene graph node.

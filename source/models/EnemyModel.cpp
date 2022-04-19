@@ -108,7 +108,22 @@ void EnemyModel::setType(std::string type) {
 #pragma mark Animation & Drawing
 
 void EnemyModel::setNode(
-    const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+    const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+  std::shared_ptr<cugl::scene2::SpriteNode> node;
+  switch(_enemy_type) {
+    case SHOTGUNNER:
+      node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      break;
+    case TANK:
+      node = cugl::scene2::SpriteNode::alloc(texture, 1, 1);
+      break;
+    case GRUNT:
+      node = cugl::scene2::SpriteNode::alloc(texture, 3, 10);
+      break;
+    default:
+      node = cugl::scene2::SpriteNode::alloc(texture, 3, 8);
+      break;
+  }
   _enemy_node = node;
   
   // Add the ray cast weights to the debug node.

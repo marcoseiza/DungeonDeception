@@ -108,6 +108,8 @@ void EnemyController::update(float timestep, std::shared_ptr<EnemyModel> enemy,
   // Update enemy & projectiles
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
+  
+  animate(enemy);
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player) {
