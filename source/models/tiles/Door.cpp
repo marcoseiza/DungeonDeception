@@ -171,6 +171,15 @@ void Door::setPositive() {
     tile->setInitializeAsSensor(true);
     tile->setVisible(false);
   }
+
+  auto positive_node = getChildByName<cugl::scene2::SceneNode>("positive-edge");
+
+  for (const auto& tile_wrapper : positive_node->getChildren()) {
+    auto tile =
+        std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
+    tile->setInitializeAsSensor(false);
+    tile->setVisible(true);
+  }
 }
 
 void Door::setNegative() {
@@ -181,5 +190,14 @@ void Door::setNegative() {
         std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
     tile->setInitializeAsSensor(true);
     tile->setVisible(false);
+  }
+
+  auto negative_node = getChildByName<cugl::scene2::SceneNode>("negative-edge");
+
+  for (const auto& tile_wrapper : negative_node->getChildren()) {
+    auto tile =
+        std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
+    tile->setInitializeAsSensor(false);
+    tile->setVisible(true);
   }
 }
