@@ -3,7 +3,9 @@
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 150
-#define TANK_RANGE 30
+#define ATTACK_FRAMES 5
+#define STOP_ATTACK_FRAMES 40
+#define ATTACK_COOLDOWN 155
 
 #define STATE_CHANGE_LIM 10
 
@@ -24,13 +26,13 @@ bool ShotgunnerController::init(
 
 void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() <= 30) {
+  if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     enemy->move(0,0);
-    if (enemy->getAttackCooldown() == 20) {
+    if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->addBullet(p);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + 155);
+      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
     }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
@@ -40,7 +42,6 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->move(diff.x, diff.y);
   }
 }
-
 
 void ShotgunnerController::changeStateIfApplicable(
     std::shared_ptr<EnemyModel> enemy, float distance) {
