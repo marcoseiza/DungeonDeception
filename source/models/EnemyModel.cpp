@@ -194,6 +194,12 @@ void EnemyModel::releaseFixtures() {
   }
 }
 
+void EnemyModel::resetSensors() {
+  setSensor(false);
+  _hitbox_sensor->SetSensor(true);
+  _damage_sensor->SetSensor(true);
+}
+
 void EnemyModel::update(float delta) {
   CapsuleObstacle::update(delta);
   if (_enemy_node != nullptr) {

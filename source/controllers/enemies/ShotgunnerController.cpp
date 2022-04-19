@@ -22,21 +22,25 @@ bool ShotgunnerController::init(
   return true;
 }
 
-void ShotgunnerController::skirtPlayer(std::shared_ptr<EnemyModel> enemy,
-                                       cugl::Vec2 p) {
-  // Basically avoid the player, but slower
-  cugl::Vec2 diff = p - enemy->getPosition();
-  diff.subtract(enemy->getVX(), enemy->getVY());
-  diff.add(enemy->getVX(), enemy->getVY());
-  diff.scale(enemy->getSpeed() / 3);
-  enemy->move(-diff.x, -diff.y);
-
-  // Attack enemy if you can
-  if (enemy->getAttackCooldown() <= 0) {
-    enemy->addBullet(p);
-    enemy->setAttackCooldown(120);
+void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
+                                  cugl::Vec2 p) {
+  if (enemy->getAttackCooldown() <= 30) {
+    enemy->move(0,0);
+    if (enemy->getAttackCooldown() == 20) {
+      enemy->addBullet(p);
+    }
+    if (enemy->getAttackCooldown() <= 0) {
+      enemy->setAttackCooldown(120);
+    }
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    diff.add(_direction);
+    diff.scale(0.6); // Make speed slower when strafing
+    enemy->move(diff.x, diff.y);
   }
 }
+
 
 void ShotgunnerController::changeStateIfApplicable(
     std::shared_ptr<EnemyModel> enemy, float distance) {
@@ -71,10 +75,6 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
     case EnemyModel::State::ATTACKING: {
       attackPlayer(enemy, p);
-      break;
-    }
-    case EnemyModel::State::SKIRTING: {
-      skirtPlayer(enemy, p);
       break;
     }
     default: {

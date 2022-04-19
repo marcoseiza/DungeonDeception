@@ -296,6 +296,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return The enemy type.
    */
   EnemyType getType() { return _enemy_type; }
+  
+  /**
+   * Resets the sensors of the enemy.
+   */
+  void resetSensors();
 
 #pragma mark -
 #pragma mark Physics Methods
