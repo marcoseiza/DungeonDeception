@@ -2,7 +2,7 @@
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
-#define ATTACK_RANGE 75
+#define ATTACK_RANGE 60
 #define ATTACK_FRAMES 18
 #define STOP_ATTACK_FRAMES 50
 #define ATTACK_COOLDOWN 155
@@ -21,7 +21,7 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2
       enemy->resetSensors();
     } else {
       cugl::Vec2 dir = enemy->_attack_dir;
-      dir.scale(5);
+      dir.scale(3.5);
       enemy->move(dir.x, dir.y);
     }
   } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
@@ -101,7 +101,8 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
-      if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 12) {
+      CULog("%d", node->getFrame());
+      if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
         int attack_high_lim = 29;
         int attack_low_lim = 20;
 
