@@ -22,13 +22,12 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _enemy_node = nullptr;
   _health = 100;
   _facing_left = false;
-  _speed = .05f;
 
   _attack_cooldown = 0;
 
-  setDensity(0.5f);
-  setFriction(0.5f);
-  setRestitution(0.5f);
+  setDensity(0);
+  setFriction(0);
+  setRestitution(0);
   setFixedRotation(true);
 
   if (_enemy_type == TURTLE) {
@@ -93,12 +92,16 @@ void EnemyModel::deleteAllProjectiles(
 void EnemyModel::setType(std::string type) {
   if (type == "grunt") {
     _enemy_type = GRUNT;
+    _speed = 1.0;
   } else if (type == "shotgunner") {
     _enemy_type = SHOTGUNNER;
+    _speed = 0.85;
   } else if (type == "tank") {
     _enemy_type = TANK;
+    _speed = 0.7;
   } else if (type == "turtle") {
     _enemy_type = TURTLE;
+    _speed = 0;
   }
 }
 
