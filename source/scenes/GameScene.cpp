@@ -990,6 +990,18 @@ void GameScene::beginContact(b2Contact* contact) {
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _my_player->getRoomId());
   }
+  
+  if (fx1_name == "enemy_damage" && ob2->getName() == "Wall") {
+    auto enemy = dynamic_cast<EnemyModel*>(ob1);
+    if (enemy->getAttackCooldown() < 20) {
+      enemy->setAttackCooldown(0);
+    }
+  } else if (fx2_name == "enemy_damage" && ob1->getName() == "Wall") {
+    auto enemy = dynamic_cast<EnemyModel*>(ob2);
+    if (enemy->getAttackCooldown() < 20) {
+      enemy->setAttackCooldown(0);
+    }
+  }
 
   if (ob1->getName() == "projectile" && ob2 == _sword.get()) {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile

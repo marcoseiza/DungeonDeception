@@ -21,12 +21,27 @@ bool TankController::init(std::shared_ptr<cugl::AssetManager> assets,
 
 void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
-  // TODO: add melee fixture onto the tank, for now just attack by hitting body
-  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
-  diff.normalize();
-  diff.add(_direction);
-  diff.scale(enemy->getSpeed()*0.6);
-  enemy->move(diff.x, diff.y);
+  if (enemy->getAttackCooldown() == 20) {
+    enemy->_attack_dir = p - enemy->getPosition();
+    enemy->_attack_dir.normalize();
+    enemy->setSensor(true);
+  }
+  
+  if (enemy->getAttackCooldown() <= 20) {
+    cugl::Vec2 dir = enemy->_attack_dir;
+    dir.scale(10);
+    enemy->move(dir.x, dir.y);
+    if (enemy->getAttackCooldown() <= 0) {
+      enemy->setAttackCooldown(120);
+      enemy->setSensor(false);
+    }
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    diff.add(_direction);
+    diff.scale(0.6);
+    enemy->move(diff.x, diff.y);
+  }
 }
 
 void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
