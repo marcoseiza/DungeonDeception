@@ -213,8 +213,8 @@ void EnemyModel::update(float delta) {
 #pragma mark Movement
 
 void EnemyModel::move(float forwardX, float forwardY) {
-  setVX(1000 * forwardX);
-  setVY(1000 * forwardY);
+  setVX(80 * forwardX);
+  setVY(80 * forwardY);
 
   if (forwardX == 0) {
     setVX(0);
