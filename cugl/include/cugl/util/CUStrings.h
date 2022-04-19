@@ -652,9 +652,9 @@ namespace cugl {
      */
     template<typename ... Args>
     std::string format(const std::string format, Args ... args ) {
-        size_t size = snprintf(nullptr, 0, format.c_str(), args ... ) + 1;
+        size_t size = snprintf(nullptr, 0, format.c_str(), args ..., nullptr ) + 1;
         char* buffer = new char[size];
-        snprintf(buffer, size, format.c_str(), args ... );
+        snprintf(buffer, size, format.c_str(), args ..., nullptr );
         std::string result(buffer);
         delete[] buffer;
         return result;
