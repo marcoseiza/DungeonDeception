@@ -133,7 +133,7 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
       
       // If the ray cast hit an object, add it to the map to determine weights after (need set so that it doesn't do  calculations for the same object multiple times). Also need to find the closest distanced ray cast.
       if (ob->getName() == "Wall" || fx_name == "enemy_hitbox") {
-        if (_objects.contains(ob)) {
+        if (_objects.find(ob) != _objects.end()) {
           float rc_diff = cugl::Vec2(raycast.m_point.x - enemy->getPosition().x, raycast.m_point.y - enemy->getPosition().y).length();
           float min_diff = cugl::Vec2(_objects.at(ob).x - enemy->getPosition().x, _objects.at(ob).y - enemy->getPosition().y).length();
           if (rc_diff < min_diff) {
@@ -153,7 +153,9 @@ void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy, std::shared
   }
   
   // Adjust the weights (lower them) according to walls and other enemies that were raycasted against.
-  for (const auto & [ ob, point ] : _objects) {
+  for (auto it : _objects) {
+    auto ob = it.first;
+    auto point = it.second;
     // Wall weight adjustments, done according to point hit to the wall.
     if (ob->getName() == "Wall") {
       cugl::Vec2 ob_vec = point - enemy->getPosition();
