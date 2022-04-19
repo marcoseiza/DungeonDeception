@@ -16,8 +16,6 @@ class PlayerController {
   std::shared_ptr<Player> _player;
   /** A list of all the players in the game. */
   std::unordered_map<int, std::shared_ptr<Player>> _players;
-  /** A list of the last time a player's position was updated. */
-  std::unordered_map<int, cugl::Timestamp> _player_last_updated;
   /** The slash texture. */
   std::shared_ptr<cugl::Texture> _slash_texture;
   /** A reference to the world node. */
