@@ -95,7 +95,7 @@ class ClientLobbyScene : public cugl::Scene2 {
    *
    * @param id the game id
    */
-  virtual void setGameId(string id) { _gameid->setText(id); };
+  virtual void setGameId(string id) { _gameid->setText("GAME ID: " + id); };
 
   /**
    * The method called to update the scene.
