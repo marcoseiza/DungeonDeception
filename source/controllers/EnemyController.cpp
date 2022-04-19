@@ -59,6 +59,8 @@ bool EnemyController::init(
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
+  
+  srand(time(NULL));
 
   return true;
 }

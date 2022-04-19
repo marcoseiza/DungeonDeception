@@ -1,6 +1,8 @@
 #ifndef CONTROLLERS_ENEMY_CONTROLLER_H_
 #define CONTROLLERS_ENEMY_CONTROLLER_H_
 #include <cugl/cugl.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "RayCastController.h"
 #include "../models/EnemyModel.h"

@@ -9,20 +9,21 @@
 #pragma mark GruntController
 
 void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() == 18) {
-    enemy->_attack_dir = p - enemy->getPosition();
-    enemy->_attack_dir.normalize();
-    enemy->setSensor(true);
-  }
-  
   if (enemy->getAttackCooldown() <= 18) {
+    if (enemy->getAttackCooldown() == 18) {
+      enemy->_attack_dir = p - enemy->getPosition();
+      enemy->_attack_dir.normalize();
+      enemy->setSensor(true);
+    } 
     cugl::Vec2 dir = enemy->_attack_dir;
     dir.scale(5);
     enemy->move(dir.x, dir.y);
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(180);
+      enemy->setAttackCooldown(rand() % 50 + 155);
       enemy->resetSensors();
     }
+  } else if (enemy->getAttackCooldown() <= 45) {
+    enemy->move(0, 0);
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();

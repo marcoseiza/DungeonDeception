@@ -30,7 +30,7 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
       enemy->addBullet(p);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(120);
+      enemy->setAttackCooldown(rand() % 50 + 155);
     }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
