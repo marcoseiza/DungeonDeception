@@ -35,6 +35,8 @@ bool Wall::initWithData(const cugl::Scene2Loader* loader,
 }
 
 std::shared_ptr<cugl::physics2::PolygonObstacle> Wall::initBox2d() {
+  if (!_init_physics) return nullptr;
+
   _obstacle = cugl::physics2::PolygonObstacle::alloc(_obstacle_shape);
 
   cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();

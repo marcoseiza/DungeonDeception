@@ -148,3 +148,25 @@ void Door::setState(State state) {
     }
   }
 }
+
+void Door::setPositive() {
+  auto negative_node = getChildByName<cugl::scene2::SceneNode>("negative-edge");
+
+  for (const auto& tile_wrapper : negative_node->getChildren()) {
+    auto tile =
+        std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
+    tile->setInitializePhysics(false);
+    tile->setVisible(false);
+  }
+}
+
+void Door::setNegative() {
+  auto positive_node = getChildByName<cugl::scene2::SceneNode>("positive-edge");
+
+  for (const auto& tile_wrapper : positive_node->getChildren()) {
+    auto tile =
+        std::dynamic_pointer_cast<Wall>(tile_wrapper->getChildByName("tile"));
+    tile->setInitializePhysics(false);
+    tile->setVisible(false);
+  }
+}
