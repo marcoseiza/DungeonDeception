@@ -133,6 +133,13 @@ class PeerScene : public cugl::Scene2 {
   Status getStatus() const { return _status; }
 
   /**
+   * Returns the text representing the game_id
+   *
+   * @return the game_id in the label
+   */
+  std::string getGameId() const { return _gameid->getText(); }
+
+  /**
    * The method called to update the scene by constantly talking to the server
    *
    * @param timestep  The amount of time (in seconds) since the last frame

@@ -37,10 +37,10 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>(
-          "client-lobby-scene_center_content_info_game_field_text"));
+          "client-lobby-scene_center_bottom_game_text"));
   _player = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>(
-          "client-lobby-scene_center_content_info_players_field_text"));
+          "client-lobby-scene_center_bottom_players_text"));
 
   _status = Status::WAIT;
 
@@ -122,7 +122,8 @@ bool ClientLobbyScene::checkConnection() {
       _status = WAIT;
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
-      // _player->setText(std::to_string(_network->getNumPlayers()));
+      // Set the text from the network
+      _player->setText(std::to_string(_network->getNumPlayers()));
       if (_status != START) {
         _status = WAIT;
       }

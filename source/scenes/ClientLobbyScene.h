@@ -91,6 +91,13 @@ class ClientLobbyScene : public cugl::Scene2 {
                          std::shared_ptr<cugl::NetworkConnection> network);
 
   /**
+   * Sets the game id from the network to the lobby
+   *
+   * @param id the game id
+   */
+  virtual void setGameId(string id) { _gameid->setText(id); };
+
+  /**
    * The method called to update the scene.
    *
    * @param timestep  The amount of time (in seconds) since the last frame
@@ -101,8 +108,8 @@ class ClientLobbyScene : public cugl::Scene2 {
   /**
    * Processes data (byte vectors) sent over the network.
    *
-   * Note that this function may be called *multiple times* per animation frame,
-   * as the messages can come from several sources.
+   * Note that this function may be called *multiple times* per animation
+   * frame, as the messages can come from several sources.
    *
    * @param data  The data received
    */

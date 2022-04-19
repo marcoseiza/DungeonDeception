@@ -61,7 +61,7 @@
               "y_anchor": "middle"
             }
           },
-          "game": {
+          "name": {
             "type": "Node",
             "format": {
               "type": "Float",
@@ -80,7 +80,7 @@
                   "key": "labelbox",
                   "variables": {
                     "size": [ 170, 70 ],
-                    "text": "GAME ID:",
+                    "text": "NAME:",
                     "halign": "center",
                     "background": [ 239, 235, 227, 179 ]
                   }
@@ -96,58 +96,7 @@
                   "key": "labelbox",
                   "variables": {
                     "size": [ 170, 70 ],
-                    "text": "",
-                    "halign": "center",
-                    "foreground": "#ffffff",
-                    "background": [ 70, 70, 70, 179 ]
-                  }
-                },
-                "layout": {
-                  "priority": 2
-                }
-              }
-            },
-            "layout": {
-              "priority": 1,
-              "padding": [ 0, 0, 0, 5 ]
-            }
-          },
-          "players": {
-            "type": "Node",
-            "format": {
-              "type": "Float",
-              "orientation": "horizontal",
-              "x_alignment": "center",
-              "y_alignment": "middle"
-            },
-            "data": {
-              "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 100 ]
-            },
-            "children": {
-              "label": {
-                "type": "Widget",
-                "data": {
-                  "key": "labelbox",
-                  "variables": {
-                    "size": [ 170, 70 ],
-                    "text": "PLAYERS:",
-                    "halign": "center",
-                    "background": [ 239, 235, 227, 179 ]
-                  }
-                },
-                "layout": {
-                  "priority": 1,
-                  "padding": [ 0, 0, 25, 0 ]
-                }
-              },
-              "field": {
-                "type": "Widget",
-                "data": {
-                  "key": "labelbox",
-                  "variables": {
-                    "size": [ 170, 70 ],
-                    "text": "1",
+                    "text": "runner_id",
                     "halign": "center",
                     "foreground": "#ffffff",
                     "background": [ 70, 70, 70, 179 ]
@@ -163,19 +112,70 @@
               "padding": [ 0, 25, 0, 0 ]
             }
           },
-          "start": {
-            "type": "Widget",
+          "bottom": {
+            "type": "Node",
+            "format": {
+              "type": "Float",
+              "orientation": "horizontal",
+              "x_alignment": "center",
+              "y_alignment": "middle"
+            },
             "data": {
-              "key": "textbutton",
-              "variables": {
-                "size": [ 220, 75 ],
-                "text": "START GAME",
-                "font": "pixelmix",
-                "color": "#efebe3"
+              "anchor": [ 0.5, 0.5 ],
+              "size": [ 1000, 100 ]
+            },
+            "children": {
+              "game": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "game_id",
+                    "halign": "center",
+                    "background": [ 239, 235, 227, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 1,
+                  "padding": [ 0, 0, 25, 0 ]
+                }
+              },
+              "countdown": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "3...",
+                    "halign": "center",
+                    "foreground": "#ffffff",
+                    "background": [ 70, 70, 70, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 2
+                }
+              },
+              "players": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "1",
+                    "halign": "center",
+                    "foreground": "#ffffff",
+                    "background": [ 70, 70, 70, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 3
+                }
               }
             },
             "layout": {
-              "priority": 3,
+              "priority": 2,
               "padding": [ 0, 25, 0, 0 ]
             }
           }
