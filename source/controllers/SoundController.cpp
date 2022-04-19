@@ -2,6 +2,12 @@
 
 #include "NetworkController.h"
 
+// Todo: Find a nicer way of getting duration
+// The problem is that getting the duration right after playing the sound is not
+// always safe. The device can take long to actually register the sound and
+// within that wait time, the code can crash.
+#define MUSIC_MAIN_DURATION 133.953491
+
 bool SoundController::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
   _has_sent_music_start = false;
@@ -52,11 +58,8 @@ void SoundController::update(float timestep) {
         q->play(_assets->get<cugl::Sound>("music-main"), true, 1.0f, 1.0f);
 
         float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
-        double elapsed = q->getTimeElapsed();
-        double remaining = q->getTimeRemaining();
-        if (elapsed >= 0 && remaining >= 0) {
-          sec_diff = std::fmod(sec_diff, elapsed + remaining);
-        }
+        sec_diff = std::fmod(sec_diff, MUSIC_MAIN_DURATION);
+        CULog("%f, %ld", sec_diff, start_micros);
 
         q->setTimeElapsed(sec_diff);
       }
