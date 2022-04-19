@@ -170,6 +170,22 @@ class Door : public BasicTile {
    * Set the door state and change the drawing and physics attributes.
    */
   void setState(State state);
+
+  /**
+   * Set that the door is positive. Positive for a horizontal door means that
+   * it's at the top of the level. Positive for a vertical door means that it's
+   * at the right of the level. This function is used for drawing the edges of
+   * the room.
+   */
+  void setPositive();
+
+  /**
+   * Set that the door is negative. Negative for a horizontal door means that
+   * it's at the bottom of the level. Negative for a vertical door means that
+   * it's at the left of the level. This function is used for drawing the edges
+   * of the room.
+   */
+  void setNegative();
 };
 
 #endif  // MODELS_TILES_DOOR_H_
