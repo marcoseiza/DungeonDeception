@@ -61,6 +61,12 @@
 		D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
 		D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5073C8727CFEF2C0000426E /* Wall.cpp */; };
+		D51861EB27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
+		D51861EC27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
+		D51861ED27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */; };
+		D51D196827F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
+		D51D196927F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
+		D51D196A27F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */; };
 		D521FB0F27C43BA500D14172 /* widgets in Resources */ = {isa = PBXBuildFile; fileRef = D521FB0E27C43BA500D14172 /* widgets */; };
 		D521FB1027C43BA500D14172 /* widgets in Resources */ = {isa = PBXBuildFile; fileRef = D521FB0E27C43BA500D14172 /* widgets */; };
 		D521FB1127C43BA500D14172 /* widgets in Resources */ = {isa = PBXBuildFile; fileRef = D521FB0E27C43BA500D14172 /* widgets */; };
@@ -124,6 +130,12 @@
 		D5A1467927E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
 		D5A1467A27E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
 		D5A1467B27E38A58002B3FFD /* tiles in Resources */ = {isa = PBXBuildFile; fileRef = D5A1467827E38A57002B3FFD /* tiles */; };
+		D5B8BE6527F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
+		D5B8BE6627F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
+		D5B8BE6727F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */; };
+		D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
+		D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
+		D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -262,6 +274,10 @@
 		CAB1A84B27F23CD3000B9F20 /* Dash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dash.cpp; sourceTree = "<group>"; };
 		D5073C8627CFEF2C0000426E /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		D5073C8727CFEF2C0000426E /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
+		D51861E627F6BE8500B63D6F /* ActivateTerminalScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivateTerminalScene.h; sourceTree = "<group>"; };
+		D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActivateTerminalScene.cpp; sourceTree = "<group>"; };
+		D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoteForTeamScene.cpp; sourceTree = "<group>"; };
+		D51D196727F65C7900FD9E1F /* VoteForTeamScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteForTeamScene.h; sourceTree = "<group>"; };
 		D521FB0E27C43BA500D14172 /* widgets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = widgets; sourceTree = "<group>"; };
 		D529AAE227E13083006E3D5F /* Terminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terminal.h; sourceTree = "<group>"; };
 		D529AAE627E13083006E3D5F /* Terminal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Terminal.cpp; sourceTree = "<group>"; };
@@ -292,6 +308,7 @@
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
+		D57B33DB28053A63002DEBBA /* NetworkCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
 		D58B0FC827DC1BC500E65692 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		D58B0FCC27DC1BC500E65692 /* LevelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelController.h; sourceTree = "<group>"; };
 		D58B0FCD27DC1BC500E65692 /* LevelController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelController.cpp; sourceTree = "<group>"; };
@@ -304,6 +321,11 @@
 		D598E69A27C57E3C0039326B /* LevelGenerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelGenerator.h; sourceTree = "<group>"; };
 		D5A1467827E38A57002B3FFD /* tiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tiles; sourceTree = "<group>"; };
 		D5B8BE5327F421F500A4A836 /* RoomTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomTypes.h; sourceTree = "<group>"; };
+		D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VoteForLeaderScene.cpp; sourceTree = "<group>"; };
+		D5B8BE6427F4239400A4A836 /* VoteForLeaderScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteForLeaderScene.h; sourceTree = "<group>"; };
+		D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
+		D5B8BE7B27F50ED300A4A836 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
+		D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingInfo.h; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
@@ -507,6 +529,9 @@
 			isa = PBXGroup;
 			children = (
 				57FEE3E427F69C7800D7EF23 /* enemies */,
+				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
+				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
+				D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */,
 				D578BFBF27F0A32600C7B05F /* TerminalController.cpp */,
 				D578BFC327F0A32600C7B05F /* TerminalController.h */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
@@ -520,6 +545,7 @@
 				57FEE39E27F145D600D7EF23 /* RayCastController.h */,
 				57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */,
 				57A1E55527E3BF2C009EF19A /* PlayerController.h */,
+				D57B33DB28053A63002DEBBA /* NetworkCodes.h */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -545,6 +571,12 @@
 		D578BFC727F0A33400C7B05F /* voting_scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D51861EA27F6BE8500B63D6F /* ActivateTerminalScene.cpp */,
+				D51861E627F6BE8500B63D6F /* ActivateTerminalScene.h */,
+				D51D196327F65C7800FD9E1F /* VoteForTeamScene.cpp */,
+				D51D196727F65C7900FD9E1F /* VoteForTeamScene.h */,
+				D5B8BE6027F4239400A4A836 /* VoteForLeaderScene.cpp */,
+				D5B8BE6427F4239400A4A836 /* VoteForLeaderScene.h */,
 				D578BFC827F0A33400C7B05F /* WaitForPlayersScene.cpp */,
 				D578BFC927F0A33400C7B05F /* WaitForPlayersScene.h */,
 			);
@@ -908,11 +940,15 @@
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				D5B8BE6727F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
+				57D18F9227E14F100085A52E /* ShotgunnerController.cpp in Sources */,
 				D578BFC627F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
 				57FEE3F527F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673F27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861ED27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -921,6 +957,7 @@
 				57FEE3F227F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FD027DC1BC500E65692 /* LevelController.cpp in Sources */,
 				EB9CDA3925D0EAB100EE1A09 /* main.cpp in Sources */,
+				D51D196A27F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */,
 				D56B743D27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */,
 				CAB1A84E27F23CD3000B9F20 /* Dash.cpp in Sources */,
@@ -955,10 +992,15 @@
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				D5B8BE6627F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
+				57D18F9127E14F100085A52E /* ShotgunnerController.cpp in Sources */,
 				D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D52E673E27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861EC27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -967,6 +1009,7 @@
 				57FEE3F127F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCF27DC1BC500E65692 /* LevelController.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
+				D51D196927F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */,
 				D56B743C27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */,
 				CAB1A84D27F23CD3000B9F20 /* Dash.cpp in Sources */,
@@ -999,12 +1042,18 @@
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
+				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
+				D5B8BE6527F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
+				57D18F9027E14F100085A52E /* ShotgunnerController.cpp in Sources */,
+				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
 				D52E673D27BF305A00F8E2B8 /* Attack.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				57FEE3F327F69C7800D7EF23 /* GruntController.cpp in Sources */,
 				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
+				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
+				D51861EB27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -1013,6 +1062,7 @@
 				57FEE3F027F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCE27DC1BC500E65692 /* LevelController.cpp in Sources */,
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
+				D51D196827F65C7900FD9E1F /* VoteForTeamScene.cpp in Sources */,
 				D56B743B27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */,
 				CAB1A84C27F23CD3000B9F20 /* Dash.cpp in Sources */,

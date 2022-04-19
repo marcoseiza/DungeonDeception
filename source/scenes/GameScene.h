@@ -6,6 +6,7 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
+#include "../controllers/NetworkController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
@@ -60,13 +61,12 @@ class GameScene : public cugl::Scene2 {
 
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
-  
+
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
 
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
-
 
   /** The serializer used to serialize complex data to send through the network.
    */
@@ -194,7 +194,7 @@ class GameScene : public cugl::Scene2 {
    * @param timestep  The amount of time (in seconds) since the last frame.
    */
   void update(float timestep) override;
-  
+
   /**
    * This method serves as a helper to updating all the enemies
    *
@@ -202,7 +202,8 @@ class GameScene : public cugl::Scene2 {
    * @param current_room The current room the player is in.
    * @param room_id The room id of the room.
    */
-  void updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room, int room_id);
+  void updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room,
+                     int room_id);
 
   /**
    * Draws all this scene to the given SpriteBatch.
@@ -233,7 +234,7 @@ class GameScene : public cugl::Scene2 {
    * @param timestep The amount of time (in seconds) since the last frame.
    */
   void updateCamera(float timestep);
-  
+
 #pragma mark Networking
 
   /**
@@ -245,6 +246,11 @@ class GameScene : public cugl::Scene2 {
    */
   void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
     _network = network;
+    NetworkController::get()->init(_network);
+    NetworkController::get()->addListener(
+        [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+          processData(code, msg);
+        });
   }
 
   /**
@@ -261,7 +267,10 @@ class GameScene : public cugl::Scene2 {
    *
    * @param host  Whether the player is host.
    */
-  void setHost(bool host) { _ishost = host; }
+  void setHost(bool host) {
+    _ishost = host;
+    NetworkController::get()->setIsHost(host);
+  }
 
   /**
    * Sets whether the player is a betrayer or cooperator.
@@ -289,9 +298,11 @@ class GameScene : public cugl::Scene2 {
    * Note that this function may be called *multiple times* per animation frame,
    * as the messages can come from several sources.
    *
-   * @param data  The data received
+   * @param code The message code
+   * @param msg The deserialized message
    */
-  void processData(const std::vector<uint8_t>& data);
+  void processData(const Sint32& code,
+                   const cugl::NetworkDeserializer::Message& msg);
 
   /**
    * Broadcasts the relevant network information to all clients and/or the host.
@@ -311,23 +322,25 @@ class GameScene : public cugl::Scene2 {
    *
    * @param room_id
    * @param player_id
+   * @param num_players_req
    */
-  void sendTerminalAddPlayerInfo(int room_id, int player_id);
-  
+  void sendTerminalAddPlayerInfo(int room_id, int player_id,
+                                 int num_players_req);
+
   /**
    * Broadcast a player being targeted by the betrayer target player ability.
    *
    * @param target_player_id The player being targeted.
    */
   void sendBetrayalTargetInfo(int target_player_id);
-  
+
   /**
    * Broadcast a player being disabled by a betrayer ability.
    *
    * @param target_player_id The player being targeted.
    */
   void sendDisablePlayerInfo(int target_player_id);
-  
+
   /**
    * Updates the position of the player with the corresponding player_id in
    * the _players list.

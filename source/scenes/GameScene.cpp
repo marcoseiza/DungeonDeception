@@ -5,6 +5,7 @@
 #include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
+#include "../controllers/VotingInfo.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -88,6 +89,9 @@ bool GameScene::init(
 
   setBetrayer(is_betrayer);
 
+  _terminal_controller = TerminalController::alloc(_assets);
+  _controllers.push_back(_terminal_controller);
+
   populate(dim);
 
   _world_node->doLayout();
@@ -96,9 +100,6 @@ bool GameScene::init(
       assets->get<cugl::scene2::SceneNode>("terminal-voting-scene");
   terminal_voting_layer->setContentSize(dim);
   terminal_voting_layer->doLayout();
-
-  _terminal_controller = TerminalController::alloc(_assets);
-  _controllers.push_back(_terminal_controller);
 
   auto background_layer = assets->get<cugl::scene2::SceneNode>("background");
   background_layer->setContentSize(dim);
@@ -190,6 +191,7 @@ void GameScene::populate(cugl::Size dim) {
   _my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
   _my_player->setBetrayer(_is_betrayer);
   _players.push_back(_my_player);
+
   _level_controller->getLevelModel()->setPlayer(_my_player);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
@@ -199,6 +201,8 @@ void GameScene::populate(cugl::Size dim) {
 
   _player_controller = PlayerController::alloc(_my_player, _assets, _world,
                                                _world_node, _debug_node);
+  _player_controller->addPlayer(_my_player);
+  _terminal_controller->setPlayerController(_player_controller);
 
   _sword = Sword::alloc(dim / 2.0f);
   _world->addObstacle(_sword);
@@ -252,10 +256,8 @@ bool GameScene::checkBetrayerWin() {
 void GameScene::update(float timestep) {
   if (_network) {
     sendNetworkInfo();
-
-    _network->receive(
-        [this](const std::vector<uint8_t>& data) { processData(data); });
-    checkConnection();
+    // Receives information and calls listeners (eg. processData).
+    NetworkController::get()->update();
   }
   _health_bar->setProgress(static_cast<float>(_my_player->getHealth()) / 100);
 
@@ -281,6 +283,21 @@ void GameScene::update(float timestep) {
 
   for (std::shared_ptr<Controller> controller : _controllers) {
     controller->update(timestep);
+  }
+
+  {  // Update the number of terminals activated and corrupted.
+    _num_terminals_activated = 0;
+    _num_terminals_corrupted = 0;
+    for (auto it : _terminal_controller->getVotingInfo()) {
+      std::shared_ptr<VotingInfo>& info = it.second;
+      if (info->terminal_done) {
+        if (info->was_activated) {
+          _num_terminals_activated++;
+        } else {
+          _num_terminals_corrupted++;
+        }
+      }
+    }
   }
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
@@ -395,7 +412,6 @@ void GameScene::update(float timestep) {
     role_msg = "(C)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
-  role_text->setText(role_msg);
 
   // POST-UPDATE
   // Check for disposal
@@ -538,7 +554,7 @@ void GameScene::sendNetworkInfo() {
           std::vector<uint8_t> msg2 = _serializer.serialize();
 
           _serializer.reset();
-          _network->send(msg2);
+          NetworkController::get()->send(msg2);
         }
       }
 
@@ -549,38 +565,7 @@ void GameScene::sendNetworkInfo() {
       std::vector<uint8_t> msg = _serializer.serialize();
 
       _serializer.reset();
-      _network->send(msg);
-    }
-
-    // ======= SEND TERMINAL VOTING INFO ==========
-    {
-      std::unordered_map<int, TerminalController::VotingInfo> voting_info =
-          _terminal_controller->getVotingInfo();
-
-      for (auto it = voting_info.begin(); it != voting_info.end(); ++it) {
-        auto info = cugl::JsonValue::allocObject();
-
-        auto terminal_room_id_info = cugl::JsonValue::alloc(
-            static_cast<long>((it->second).terminal_room_id));
-        info->appendChild(terminal_room_id_info);
-        terminal_room_id_info->setKey("terminal_room_id");
-
-        auto players_ids_info = cugl::JsonValue::allocArray();
-        for (int player_id : (it->second).players) {
-          auto player_id_info =
-              cugl::JsonValue::alloc(static_cast<long>(player_id));
-          players_ids_info->appendChild(player_id_info);
-        }
-        info->appendChild(players_ids_info);
-        players_ids_info->setKey("players");
-
-        _serializer.writeSint32(8);
-        _serializer.writeJson(info);
-
-        std::vector<uint8_t> msg = _serializer.serialize();
-        _serializer.reset();
-        _network->send(msg);
-      }
+      NetworkController::get()->send(msg);
     }
 
     {
@@ -594,9 +579,9 @@ void GameScene::sendNetworkInfo() {
 
       _serializer.writeSint32(3);
       _serializer.writeJson(timer_info);
-      std::vector<uint8_t> timer_msg = _serializer.serialize();
+      std::vector<uint8_t> msg = _serializer.serialize();
       _serializer.reset();
-      _network->send(timer_msg);
+      NetworkController::get()->send(msg);
     }
 
   } else {
@@ -635,7 +620,7 @@ void GameScene::sendNetworkInfo() {
     _serializer.writeJson(player_info);
     std::vector<uint8_t> msg = _serializer.serialize();
     _serializer.reset();
-    _network->sendOnlyToHost(msg);
+    NetworkController::get()->sendOnlyToHost(msg);
   }
 }
 
@@ -658,33 +643,48 @@ void GameScene::sendEnemyHitNetworkInfo(int id, int room_id) {
   std::vector<uint8_t> msg = _serializer.serialize();
 
   _serializer.reset();
-  _network->sendOnlyToHost(msg);
+  NetworkController::get()->sendOnlyToHost(msg);
 }
 
-void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id) {
+void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id,
+                                          int num_players_req) {
   std::shared_ptr<cugl::JsonValue> terminal_info =
       cugl::JsonValue::allocObject();
+  {
+    std::shared_ptr<cugl::JsonValue> room_info =
+        cugl::JsonValue::alloc(static_cast<long>(room_id));
+    terminal_info->appendChild(room_info);
+    room_info->setKey("terminal_room_id");
+  }
+  {
+    std::shared_ptr<cugl::JsonValue> num_req_info =
+        cugl::JsonValue::alloc(static_cast<long>(num_players_req));
+    terminal_info->appendChild(num_req_info);
+    num_req_info->setKey("num_players_req");
+  }
+  {
+    std::shared_ptr<cugl::JsonValue> player_info =
+        cugl::JsonValue::alloc(static_cast<long>(player_id));
+    terminal_info->appendChild(player_info);
+    player_info->setKey("player_id");
+  }
 
-  std::shared_ptr<cugl::JsonValue> room_info =
-      cugl::JsonValue::alloc(static_cast<long>(room_id));
-  terminal_info->appendChild(room_info);
-  room_info->setKey("terminal_room_id");
-
-  std::shared_ptr<cugl::JsonValue> player_info =
-      cugl::JsonValue::alloc(static_cast<long>(player_id));
-  terminal_info->appendChild(player_info);
-  player_info->setKey("player_id");
-
-  _serializer.writeSint32(7);
+  _serializer.writeSint32(NC_CLIENT_PLAYER_ADDED);
   _serializer.writeJson(terminal_info);
 
   std::vector<uint8_t> msg = _serializer.serialize();
 
   _serializer.reset();
-  _network->sendOnlyToHost(msg);
+  NetworkController::get()->sendOnlyToHost(msg);
   // Send this to host, as sendOnlyToHost doesn't send to host if it was called
   // by the host.
-  if (_ishost) processData(msg);
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    _terminal_controller->processNetworkData(NC_CLIENT_PLAYER_ADDED,
+                                             _deserializer.read());
+    _deserializer.reset();
+  }
 }
 
 void GameScene::sendBetrayalTargetInfo(int target_player_id) {
@@ -710,7 +710,12 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
   _network->sendOnlyToHost(msg);
   // Send this to host, as sendOnlyToHost doesn't send to host if it was called
   // by the host.
-  if (_ishost) processData(msg);
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    processData(12, _deserializer.read());
+    _deserializer.reset();
+  }
 }
 
 /*
@@ -735,7 +740,12 @@ void GameScene::sendDisablePlayerInfo(int target_player_id) {
   _network->send(msg);
   // Send this to host, as sendOnlyToHost doesn't send to host if it was called
   // by the host.
-  if (_ishost) processData(msg);
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    processData(13, _deserializer.read());
+    _deserializer.reset();
+  }
 }
 
 /**
@@ -753,14 +763,11 @@ void GameScene::sendDisablePlayerInfo(int target_player_id) {
  *
  * @param data  The data received
  */
-void GameScene::processData(const std::vector<uint8_t>& data) {
-  _deserializer.receive(data);
-  Sint32 code = std::get<Sint32>(_deserializer.read());
+void GameScene::processData(const Sint32& code,
+                            const cugl::NetworkDeserializer::Message& msg) {
   if (code == 2) {  // All player info update
-    cugl::NetworkDeserializer::Message player_msg = _deserializer.read();
-
     std::vector<std::shared_ptr<cugl::JsonValue>> player_positions =
-        std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(player_msg);
+        std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
     for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
       int player_id = player->getInt("player_id");
       int room_id = player->getInt("room");
@@ -771,13 +778,11 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
       updatePlayerInfo(player_id, room_id, pos_x, pos_y);
     }
   } else if (code == 3) {  // Timer info update
-    cugl::NetworkDeserializer::Message timer_msg = _deserializer.read();
     std::shared_ptr<cugl::JsonValue> timer_info =
-        std::get<std::shared_ptr<cugl::JsonValue>>(timer_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
     int millis_remaining = timer_info->getInt("millis_remaining");
     setMillisRemaining(millis_remaining);
   } else if (code == 4) {  // Single player info update
-    cugl::NetworkDeserializer::Message msg = _deserializer.read();
     std::shared_ptr<cugl::JsonValue> player =
         std::get<std::shared_ptr<cugl::JsonValue>>(msg);
     int player_id = player->getInt("player_id");
@@ -787,10 +792,8 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     float pos_y = player_position->get(1)->asFloat();
     updatePlayerInfo(player_id, room_id, pos_x, pos_y);
   } else if (code == 5) {  // Singular enemy update from the host
-    cugl::NetworkDeserializer::Message enemy_msg = _deserializer.read();
-
     std::shared_ptr<cugl::JsonValue> enemy =
-        std::get<std::shared_ptr<cugl::JsonValue>>(enemy_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int enemy_id = enemy->getInt("enemy_id");
     int enemy_health = enemy->getInt("enemy_health");
@@ -800,10 +803,8 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
     float pos_y = enemy_position->get(1)->asFloat();
     updateEnemyInfo(enemy_id, enemy_room, enemy_health, pos_x, pos_y);
   } else if (code == 6) {  // Enemy update from a client that damaged an enemy
-    cugl::NetworkDeserializer::Message enemy_msg = _deserializer.read();
-
     std::shared_ptr<cugl::JsonValue> enemy =
-        std::get<std::shared_ptr<cugl::JsonValue>>(enemy_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int enemy_id = enemy->getInt("enemy_id");
     int enemy_room = enemy->getInt("enemy_room");
@@ -817,29 +818,15 @@ void GameScene::processData(const std::vector<uint8_t>& data) {
         return;
       }
     }
-  } else if (code == 7) {  // Receive one player added to terminal from client.
-    cugl::NetworkDeserializer::Message msg = _deserializer.read();
-    _terminal_controller->processNetworkData(code, msg);
-  } else if (code == 8 && !_ishost) {  // Receive voting info from host.
-    cugl::NetworkDeserializer::Message msg = _deserializer.read();
-    _terminal_controller->processNetworkData(code, msg);
-  }
-
-  else if (code == 12 && _ishost) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg =
-        _deserializer.read();
-
+  } else if (code == 12 && _ishost) {
     std::shared_ptr<cugl::JsonValue> target_data =
-        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int player_id = target_data->getInt("target_player_id");
     sendDisablePlayerInfo(player_id);
   } else if (code == 13) {
-    cugl::NetworkDeserializer::Message betrayal_target_msg =
-        _deserializer.read();
-
     std::shared_ptr<cugl::JsonValue> target_data =
-        std::get<std::shared_ptr<cugl::JsonValue>>(betrayal_target_msg);
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
     int player_id = target_data->getInt("target_player_id");
 
@@ -897,6 +884,7 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x,
   new_player->setDensity(0.0f);  // Makes it so we don't move other players
   new_player->setPlayerId(player_id);
   _players.push_back(new_player);
+  _player_controller->addPlayer(new_player);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
   new_player->setPlayerNode(player_node);
@@ -1016,33 +1004,25 @@ void GameScene::beginContact(b2Contact* contact) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
+
       _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired());
+                                      room->getNumPlayersRequired(),
+                                      dynamic_cast<TerminalSensor*>(ob1));
 
-      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
-
-      dynamic_cast<TerminalSensor*>(ob1)->activate();
-      if (!_is_betrayer) {
-        _num_terminals_activated += 1;
-      } else {
-        _num_terminals_corrupted += 1;
-      }
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
+                                room->getNumPlayersRequired());
     }
   } else if (fx2_name == "terminal_range" && ob1 == _my_player.get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
+
       _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired());
+                                      room->getNumPlayersRequired(),
+                                      dynamic_cast<TerminalSensor*>(ob2));
 
-      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId());
-
-      dynamic_cast<TerminalSensor*>(ob2)->activate();
-      if (!_is_betrayer) {
-        _num_terminals_activated += 1;
-      } else {
-        _num_terminals_corrupted += 1;
-      }
+      sendTerminalAddPlayerInfo(room->getKey(), _my_player->getPlayerId(),
+                                room->getNumPlayersRequired());
     }
   }
 }

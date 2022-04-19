@@ -251,6 +251,7 @@
     "ui-scene": "widgets/ui-scene.json",
     "betrayer-icons": "widgets/betrayer-icons.json",
     "terminal-voting-scene": "widgets/terminal-voting-scene.json",
+    "terminal-voting-button": "widgets/terminal-voting-button.json",
     "win-scene": "widgets/win-scene.json",
     "world-scene": "widgets/world-scene.json",
     "wall-top": "widgets/wall-top.json",
@@ -265,20 +266,6 @@
     "keypad-button": "widgets/keypad-button.json"
   },
   "scene2s": {
-    "wall-side": {
-      "type": "Widget",
-      "data": {
-        "key": "wall-side",
-        "variables": {}
-      }
-    },
-    "wall-top": {
-      "type": "Widget",
-      "data": {
-        "key": "wall-top",
-        "variables": {}
-      }
-    },
     "background": {
       "type": "Widget",
       "data": {
@@ -903,6 +890,10 @@
     "pixelmix_title": {
       "file": "fonts/pixelmix.ttf",
       "size": 36
+    },
+    "pixelmix_medium": {
+      "file": "fonts/pixelmix.ttf",
+      "size": 20
     },
     "pixelmix_small": {
       "file": "fonts/pixelmix.ttf",
