@@ -48,6 +48,9 @@ class ClientLobbyScene : public cugl::Scene2 {
   /** The map seed. */
   Uint64 _seed;
 
+  /** If the user is a betrayer (true) or cooperator (false). */
+  bool _is_betrayer;
+
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -84,6 +87,12 @@ class ClientLobbyScene : public cugl::Scene2 {
   Status getStatus() const { return _status; }
 
   /**
+   * Returns if the scene represents a host or betrayer
+   * @return The role of the player, true if betrayer, false otherwise.
+   */
+  bool isBetrayer() { return _is_betrayer; }
+
+  /**
    * Sets whether the scene is currently active
    *
    * @param value whether the scene is currently active
@@ -107,6 +116,13 @@ class ClientLobbyScene : public cugl::Scene2 {
 
  private:
   /**
+   * Checks that the network connection is still active.
+   *
+   * @return true if the network connection is still active.
+   */
+  virtual bool checkConnection();
+
+  /**
    * Processes data (byte vectors) sent over the network.
    *
    * Note that this function may be called *multiple times* per animation
@@ -115,13 +131,6 @@ class ClientLobbyScene : public cugl::Scene2 {
    * @param data  The data received
    */
   virtual void processData(const std::vector<uint8_t>& data);
-
-  /**
-   * Checks that the network connection is still active.
-   *
-   * @return true if the network connection is still active.
-   */
-  virtual bool checkConnection();
 
   /**
    * Disconnects this scene from the network controller.

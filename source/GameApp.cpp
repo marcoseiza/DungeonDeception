@@ -249,7 +249,7 @@ void GameApp::updateLevelLoadingScene(float timestep) {
                    _hostgame.isBetrayer());
   } else {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _joingame.isBetrayer());
+                   _joinlobby.isBetrayer());
   }
 
   // Transfer connection ownership

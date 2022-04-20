@@ -88,8 +88,6 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
 
   // TODO process data with new codes for starting game, updating players, etc.
 
-  /*
-
   if (code == 254) {
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     std::shared_ptr<cugl::JsonValue> betrayer_info =
@@ -106,7 +104,7 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
         break;
       }
     }
-  } */
+  }
 
   if (code == 255) {
     _seed = std::get<Uint64>(_deserializer.read());
