@@ -968,7 +968,7 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage(damage);
     dynamic_cast<EnemyModel*>(ob1)->knockback(
         _player_controller->getSword()->getMoveDir());
-    if (type == EnemyModel::EnemyType::TURTLE) {
+    if (!type == EnemyModel::EnemyType::TURTLE) {
       _player_controller->getMyPlayer()->setLuminance(
           _player_controller->getMyPlayer()->getLuminance() + 1);
     }
@@ -985,7 +985,7 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage(damage);
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
-    if (type == EnemyModel::EnemyType::TURTLE) {
+    if (!type == EnemyModel::EnemyType::TURTLE) {
       _player_controller->getMyPlayer()->setLuminance(
           _player_controller->getMyPlayer()->getLuminance() + 1);
     }
