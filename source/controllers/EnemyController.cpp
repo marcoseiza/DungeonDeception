@@ -61,8 +61,6 @@ bool EnemyController::init(
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
-  
-  srand(time(NULL));
 
   std::random_device rd;
   _generator = std::default_random_engine(rd());
