@@ -201,6 +201,7 @@ void TerminalController::update(float timestep) {
           _voting_info[_terminal_room_id]->terminal_done) {
         _activate_terminal_scene->dispose();
         done();
+        _latest_terminal_room_id = _terminal_room_id;
       }
       break;
     default:
