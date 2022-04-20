@@ -16,6 +16,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the player (moving). */
   std::shared_ptr<cugl::scene2::SpriteNode> _player_node;
 
+  /** The scene graph node for the player name (moving). */
+  std::shared_ptr<cugl::scene2::TextField> _name_node;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -315,9 +318,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this player.
    */
-  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode> &node) {
-    _player_node = node;
-  }
+  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode> &node);
 
   /**
    * Gets the player scene graph node.

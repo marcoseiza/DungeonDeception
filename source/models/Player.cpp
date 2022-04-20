@@ -62,6 +62,15 @@ bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
   return true;
 }
 
+void Player::setPlayerNode(
+    const std::shared_ptr<cugl::scene2::SpriteNode>& node) {
+  _player_node = node;
+
+  auto name_font = cugl::Font::alloc("fonts/pixelmix.ttf", 24);
+  _name_node = cugl::scene2::TextField::allocWithText("name", name_font);
+  _player_node->addChild(_name_node);
+}
+
 void Player::takeDamage() {
   if (_hurt_frames <= 0) {
     reduceHealth(5);
@@ -86,6 +95,7 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
+    _name_node->setPosition(getPosition() + _offset_from_center);
   }
 }
 
