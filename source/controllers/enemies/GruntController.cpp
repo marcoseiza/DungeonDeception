@@ -142,7 +142,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
       enemy->_frame_count++;
       break;
     }
-    case EnemyModel::State::IDLE: {
+    default: {
       node->setFrame(0);
       enemy->_frame_count = 0;
       break;
