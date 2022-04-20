@@ -214,7 +214,7 @@ void GameApp::updateClientLobbyScene(float timestep) {
     case ClientLobbyScene::Status::START:
       _joinlobby.setActive(false, nullptr);
       _joingame.setActive(false);
-      _level_loading.init(_assets, _joingame.getSeed());
+      _level_loading.init(_assets, _joinlobby.getSeed());
       _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership

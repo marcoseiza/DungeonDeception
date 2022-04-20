@@ -108,6 +108,12 @@ class ClientLobbyScene : public cugl::Scene2 {
   virtual void setGameId(string id) { _gameid->setText(id); };
 
   /**
+   * Returns the seed to be broadcast to all clients.
+   * @return The seed for the map
+   */
+  Uint64 getSeed() { return _seed; }
+
+  /**
    * The method called to update the scene.
    *
    * @param timestep  The amount of time (in seconds) since the last frame
