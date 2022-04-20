@@ -193,7 +193,7 @@ class GameScene : public cugl::Scene2 {
    * @param room The room to update the enemies in.
    */
   void updateEnemies(float timestep, std::shared_ptr<RoomModel> room);
-  
+
   /**
    * Returns an unordered set of all the room ids players are in.
    */
@@ -318,8 +318,9 @@ class GameScene : public cugl::Scene2 {
    * @param id the enemy that was hit
    * @param room_id the room the enemy is in
    * @param amount the amount of damage taken
+   * @param dir The direction the enemy should be knockedback
    */
-  void sendEnemyHitNetworkInfo(int id, int room_id, float amount = 20);
+  void sendEnemyHitNetworkInfo(int id, int room_id, int dir, float amount = 20);
 
   /**
    * Broadcast a player being added to a terminal to the host.
