@@ -15,7 +15,7 @@ bool Sword::init(const cugl::Vec2 pos) {
   CapsuleObstacle::init(cugl::Vec2(pos.x + OFFSET_X_HOR, pos.y + OFFSET_Y_HOR),
                         cugl::Size(SIZE, SIZE));
 
-  setBodyType(b2_kinematicBody);
+  setBodyType(b2_dynamicBody);
   setDensity(0.01f);
   setFriction(0.0f);
   setRestitution(0.01f);

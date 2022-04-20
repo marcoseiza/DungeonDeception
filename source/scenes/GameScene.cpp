@@ -878,14 +878,24 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_hitbox" &&
       ob2 == _player_controller->getSword().get()) {
-    dynamic_cast<EnemyModel*>(ob1)->takeDamage();
+    float damage = 20;
+    EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob1)->getType();
+    if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
+
+    dynamic_cast<EnemyModel*>(ob1)->takeDamage(damage);
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId());
+                            _player_controller->getMyPlayer()->getRoomId(),
+                            damage);
   } else if (fx2_name == "enemy_hitbox" &&
              ob1 == _player_controller->getSword().get()) {
-    dynamic_cast<EnemyModel*>(ob2)->takeDamage();
+    float damage = 20;
+    EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob2)->getType();
+    if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
+
+    dynamic_cast<EnemyModel*>(ob2)->takeDamage(damage);
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId());
+                            _player_controller->getMyPlayer()->getRoomId(),
+                            damage);
   }
 
   if (fx1_name == "enemy_hitbox" &&

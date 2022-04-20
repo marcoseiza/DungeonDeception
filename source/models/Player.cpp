@@ -16,7 +16,7 @@
 
 #define HEIGHT_SHRINK 0.3f
 
-#define HURT_FRAMES 10
+#define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.05
