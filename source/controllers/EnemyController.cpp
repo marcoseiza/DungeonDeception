@@ -27,6 +27,7 @@ void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
   diff.normalize();
   diff.add(_direction);
   diff.scale(enemy->getSpeed());
+
   enemy->move(diff.x, diff.y);
 }
 
@@ -53,6 +54,10 @@ void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
   enemy->move(-diff.x, -diff.y);
 }
 
+void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
+  enemy->move(10, 10);
+ }
+
 bool EnemyController::init(
     std::shared_ptr<cugl::AssetManager> assets,
     std::shared_ptr<cugl::physics2::ObstacleWorld> world,
@@ -68,9 +73,16 @@ bool EnemyController::init(
   return true;
 }
 
-void EnemyController::update(float timestep, std::shared_ptr<EnemyModel> enemy,
+void EnemyController::update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
                              std::vector<std::shared_ptr<Player>> _players,
                              int room_id) {
+  if (!is_host) {
+    // Update enemy & projectiles
+    updateProjectiles(timestep, enemy);
+    enemy->update(timestep);
+    return;
+  }
+  
   float min_distance = std::numeric_limits<float>::max();
   std::shared_ptr<Player> min_player = _players[0];
 

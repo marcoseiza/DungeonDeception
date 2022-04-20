@@ -1,12 +1,14 @@
 #include "Player.h"
 
+#include "../controllers/CollisionFiltering.h"
+
 #define IDLE_RIGHT 82
 #define IDLE_LEFT 80
 #define IDLE_DOWN 81
 #define IDLE_UP 83
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
-#define ATTACK_FRAMES 32
+#define ATTACK_FRAMES 25
 #define HEALTH 100
 
 #define WIDTH 24.0f
@@ -14,7 +16,7 @@
 
 #define HEIGHT_SHRINK 0.3f
 
-#define HURT_FRAMES 10
+#define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.05
@@ -44,11 +46,15 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _hurt_frames = 0;
   _isDead = false;
   _mv_direc = IDLE_LEFT;
+  _room_id = -1;
 
   setDensity(0.01f);
   setFriction(0.0f);
   setRestitution(0.01f);
   setFixedRotation(true);
+
+  _fixture.filter.categoryBits = CATEGORY_PLAYER;
+  _fixture.filter.maskBits = MASK_PLAYER;
 
   return true;
 }
@@ -82,6 +88,7 @@ void Player::update(float delta) {
 
 void Player::animate() {
   switch (_current_state) {
+    case DASHING:
     case MOVING: {
       int run_high_lim = getRunHighLim();
       int run_low_lim = run_high_lim - RUN_LIM_GAP;
@@ -126,9 +133,11 @@ void Player::animate() {
   }
 }
 
-void Player::move(float forwardX, float forwardY) {
-  setVX(175 * forwardX);
-  setVY(175 * forwardY);
+void Player::move(float forwardX, float forwardY, float speed) {
+  _last_move_dir.set(forwardX, forwardY);
+
+  setVX(speed * forwardX);
+  setVY(speed * forwardY);
   if (forwardX == 0) setVX(0);
   if (forwardY == 0) setVY(0);
 

@@ -51,6 +51,9 @@ void LevelController::update(float timestep) {
         enemy->getNode()->setPriority(current->getGridSize().height - row);
 
         for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
+          if (projectile->getNode() == nullptr) { // Not initialized yet
+            continue;
+          }
           float rel_projectile_y = projectile->getBody()->GetPosition().y -
                                    current->getNode()->getPosition().y;
           row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
@@ -90,9 +93,6 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
     }
   }
 
-  for (std::shared_ptr<EnemyModel> enemy : current->getEnemies())
-    enemy->promiseToChangePhysics(false);
-
   if (_room_on_chopping_block != nullptr)
     _room_on_chopping_block->setVisible(false);
   _room_on_chopping_block = current;
@@ -107,9 +107,6 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
   _player_controller->getMyPlayer()->setPosPromise(
       new_current->getNode()->getPosition() +
       door_pos * (TILE_SIZE * TILE_SCALE));
-
-  for (std::shared_ptr<EnemyModel> enemy : new_current->getEnemies())
-    enemy->promiseToChangePhysics(true);
 }
 
 void LevelController::populate() {
@@ -263,6 +260,7 @@ void LevelController::instantiateEnemies(
   // Initialize enemies in room.
   for (std::shared_ptr<cugl::scene2::SceneNode> enemy_node :
        room_model->getNode()->getChildByName("enemies")->getChildren()) {
+    enemy_node = enemy_node->getChildByName("enemy");
     std::string enemy_type = enemy_node->getType();
     auto enemy_texture = _assets->get<cugl::Texture>(enemy_type);
     std::shared_ptr<EnemyModel> enemy = EnemyModel::alloc(
@@ -276,7 +274,7 @@ void LevelController::instantiateEnemies(
     enemy->setRoomPos(room_model->getNode()->getPosition());
     room_model->getNode()->addChild(enemy->getNode());
     _world->addObstacle(enemy);
-    if (room->_type != RoomType::SPAWN) enemy->setEnabled(false);
+//    if (room->_type != RoomType::SPAWN) enemy->setEnabled(false);
 
     enemy->setDebugScene(_debug_node);
     enemy->setDebugColor(cugl::Color4(cugl::Color4::BLACK));

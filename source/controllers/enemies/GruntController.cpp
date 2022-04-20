@@ -90,6 +90,10 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
       attackPlayer(enemy, p);
       break;
     }
+    case EnemyModel::State::STUNNED: {
+      stunned(enemy);
+      break;
+    }
     default: {
       avoidPlayer(enemy, p);
       break;

@@ -310,6 +310,7 @@
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
 		D57B33DB28053A63002DEBBA /* NetworkCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
 		D57B3487280E5088002DEBBA /* TileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileHelper.h; sourceTree = "<group>"; };
+		D57B34AF280F7076002DEBBA /* CollisionFiltering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionFiltering.h; sourceTree = "<group>"; };
 		D58B0FC827DC1BC500E65692 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		D58B0FCC27DC1BC500E65692 /* LevelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelController.h; sourceTree = "<group>"; };
 		D58B0FCD27DC1BC500E65692 /* LevelController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelController.cpp; sourceTree = "<group>"; };
@@ -530,6 +531,7 @@
 		D52E672C27BF305900F8E2B8 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
 				57FEE3E427F69C7800D7EF23 /* enemies */,
 				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
 				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
@@ -993,7 +995,6 @@
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
-				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5B8BE6627F4239400A4A836 /* VoteForLeaderScene.cpp in Sources */,
 				D578BFC527F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3F427F69C7800D7EF23 /* GruntController.cpp in Sources */,
@@ -1047,9 +1048,7 @@
 				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
 				D52E673D27BF305A00F8E2B8 /* Attack.cpp in Sources */,
-				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				57FEE3F327F69C7800D7EF23 /* GruntController.cpp in Sources */,
-				D578BFC427F0A32600C7B05F /* TerminalController.cpp in Sources */,
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D51861EB27F6BE8500B63D6F /* ActivateTerminalScene.cpp in Sources */,

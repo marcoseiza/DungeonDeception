@@ -107,12 +107,34 @@ const levelToScene2 = (fileName) => {
                 "children": Object.assign({}, ...enemies.reduce((enemy, info, index) => {
                     let obj = {};
                     obj[`enemy-(${info["position"][0]}-${info["position"][1]})-${index}`] = {
-                        "type": info["type"],
+                        "type": "Node",
+                        "format": {
+                            "type": "Anchored"
+                        },
+                        "data": {
+                            "anchor": [0, 0],
+                            "size": [pixelWidth, pixelHeight],
+                        },
                         "layout": {
-                            "x_index": info["position"][0],
-                            "y_index": info["position"][1],
+                            "x_index": Math.floor(info["position"][0]),
+                            "y_index": Math.floor(info["position"][1]),
                             "x_anchor": "left",
                             "y_anchor": "bottom",
+                        },
+                        "children": {
+                            "enemy": {
+                                "type": info["type"],
+                                "data": {
+                                    "anchor": [0, 0],
+                                    "size": [pixelWidth, pixelHeight],
+                                },
+                                "layout": {
+                                    "x_anchor": "left",
+                                    "y_anchor": "bottom",
+                                    "x_offset": info["position"][0] - Math.floor(info["position"][0]),
+                                    "y_offset": info["position"][1] - Math.floor(info["position"][1])
+                                }
+                            }
                         }
                     }
                     enemy.push(obj);

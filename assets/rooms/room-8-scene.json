@@ -4156,66 +4156,304 @@
       },
       "children": {
         "enemy-(10.267035590277779-11.6325927734375)-0": {
-          "type": "Turtle",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 10.267035590277779,
-            "y_index": 11.6325927734375,
+            "x_index": 10,
+            "y_index": 11,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Turtle",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.26703559027777857,
+                "y_offset": 0.6325927734374996
+              }
+            }
           }
         },
         "enemy-(8.264073350694444-8.639259168836805)-1": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 8.264073350694444,
-            "y_index": 8.639259168836805,
+            "x_index": 8,
+            "y_index": 8,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.26407335069444393,
+                "y_offset": 0.639259168836805
+              }
+            }
           }
         },
         "enemy-(5.159629991319444-7.760000271267361)-2": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 5.159629991319444,
-            "y_index": 7.760000271267361,
+            "x_index": 5,
+            "y_index": 7,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.1596299913194441,
+                "y_offset": 0.7600002712673612
+              }
+            }
           }
         },
         "enemy-(6.283333333333333-6.702962239583334)-3": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 6.283333333333333,
-            "y_index": 6.702962239583334,
+            "x_index": 6,
+            "y_index": 6,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2833333333333332,
+                "y_offset": 0.7029622395833339
+              }
+            }
           }
         },
         "enemy-(10.155924479166666-6.6362955729166675)-4": {
-          "type": "Tank",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 10.155924479166666,
-            "y_index": 6.6362955729166675,
+            "x_index": 10,
+            "y_index": 6,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Tank",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.15592447916666607,
+                "y_offset": 0.6362955729166675
+              }
+            }
           }
         },
         "enemy-(4.3025933159722225-5.779258897569445)-5": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 4.3025933159722225,
-            "y_index": 5.779258897569445,
+            "x_index": 4,
+            "y_index": 5,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.3025933159722225,
+                "y_offset": 0.779258897569445
+              }
+            }
           }
         },
         "enemy-(7.273703342013889-4.699999999999999)-6": {
-          "type": "Tank",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 7.273703342013889,
-            "y_index": 4.699999999999999,
+            "x_index": 7,
+            "y_index": 4,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Tank",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2737033420138886,
+                "y_offset": 0.6999999999999993
+              }
+            }
           }
         }
       }

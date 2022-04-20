@@ -6,6 +6,7 @@
 
 class Sword : public cugl::physics2::CapsuleObstacle {
  private:
+  int _moveDir;
  public:
 #pragma mark Constructors
   /**
@@ -51,6 +52,12 @@ class Sword : public cugl::physics2::CapsuleObstacle {
    * @param moveDir if sword should be on left or right or up or down.
    */
   void moveSword(cugl::Vec2 pos, cugl::Vec2 vel, int moveDir);
+
+   /**
+   * Resets the sword position with the corresponding offset.
+
+   */
+  int getMoveDir() { return _moveDir; };
 };
 
 #endif /* Sword_h */

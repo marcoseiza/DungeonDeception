@@ -94,7 +94,7 @@ class EnemyController {
 #pragma mark Properties
 
   /** Update the enemy. */
-  void update(float timestep, std::shared_ptr<EnemyModel> enemy,
+  void update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
               std::vector<std::shared_ptr<Player>> players, int room_id);
 
   /** Change the enemy state. */
@@ -136,6 +136,10 @@ class EnemyController {
   /** Idle.
    */
   virtual void idling(std::shared_ptr<EnemyModel> enemy);
+
+  /** Stunned.
+   */
+  virtual void stunned(std::shared_ptr<EnemyModel> enemy);
 };
 
 #endif /* CONTROLLERS_ENEMY_CONTROLLER_H_ */

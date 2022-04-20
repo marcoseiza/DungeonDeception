@@ -23,7 +23,10 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     /** The enemy is tanking the player. */
     TANKING,
     /** The enemy is skirting the player. */
-    SKIRTING
+    SKIRTING,
+    /** The enemy is knocked back. */
+    STUNNED,
+
   };
 
   /** Enum for which enemy this is. */
@@ -45,6 +48,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The enemy type of this enemy. */
   EnemyType _enemy_type;
 
+  /** The size of the enemy. */
+  cugl::Vec2 _size;
+
   /** Enemy unique id. */
   int _id;
 
@@ -57,6 +63,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the enemy. */
   std::shared_ptr<cugl::scene2::SceneNode> _enemy_node;
 
+  /** Represents the def for the hit area for the enemy. */
+  b2FixtureDef _hitbox_sensor_def;
   /** Represents the hit area for the enemy. */
   b2Fixture* _hitbox_sensor;
   /** Keeps an instance of the name alive for collision detection. */
@@ -64,6 +72,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The node for debugging the hitbox sensor */
   std::shared_ptr<cugl::scene2::WireNode> _hitbox_sensor_node;
 
+  /** Represents the def for the damage area for the enemy. */
+  b2FixtureDef _damage_sensor_def;
   /** Represents the hit area for the enemy. */
   b2Fixture* _damage_sensor;
   /** Keeps an instance of the name alive for collision detection. */
@@ -99,26 +109,41 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * disable it */
   bool _promise_to_enable;
 
+  /** If the enemy fired a bullet this update step */
+  bool _did_fire_bullet;
+
+  /** The direction of the bullet fired (if any) */
+  cugl::Vec2 _fired_bullet_direction;
+
  public:
-  
-  /** The set of polygon nodes corresponding to the weights for the direction of the enemy. */
+  /** The set of polygon nodes corresponding to the weights for the direction of
+   * the enemy. */
   std::vector<std::shared_ptr<cugl::scene2::PolygonNode>> _polys;
-  
+
   /** Whether the enemy is moving in a CW motion (when attacking). */
   bool _move_CW;
-  
+
   /** Timer for switching from attack to chase. */
   int _atc_timer;
-  
+
   /** Timer for switching from chase to attack. */
   int _cta_timer;
-  
+
+  /** Whether the enemy was knock backed. */
+  bool _isKnockbacked;
+
+  /** Timer for being stunned. */
+  int _stunned_timer;
+
+  /** Knockback direction. */
+  cugl::Vec2 _knockback_dir;
+
   /** When attacking, direction to attack in. */
   cugl::Vec2 _attack_dir;
-  
+
   /** The count for switching to the next frame. */
   int _frame_count;
-  
+
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.
@@ -234,7 +259,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * The enemy took damage.
    *
    */
-  void takeDamage();
+  void takeDamage(float amount = 20);
 
   /**
    * Returns the speed of the enemy.
@@ -242,6 +267,28 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the enemy speed.
    */
   float getSpeed() const { return _speed; }
+
+  /**
+   * Returns whether the enemy fired a bullet.
+   *
+   * @return whether the enemy fires a bullet.
+   */
+  float didFireBullet() const { return _did_fire_bullet; }
+
+  /**
+   * Resets info about whether there was a bullet fired.
+   */
+  void clearBulletFiredState() {
+    _did_fire_bullet = false;
+    _fired_bullet_direction = cugl::Vec2::ZERO;
+  }
+
+  /**
+   * Returns the direction of the most recently fired bullet.
+   *
+   * @return the bullet direction.
+   */
+  cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
 
   /**
    * Add a bullet.
@@ -299,7 +346,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return The enemy type.
    */
   EnemyType getType() { return _enemy_type; }
-  
+
   /**
    * Resets the sensors of the enemy.
    */
@@ -334,30 +381,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    */
   void update(float dt) override;
 
-  /**
-   * Promise to change the physics state in the next update call.
-   *
-   * @param enable If the physics object should enabled or disabled.
-   */
-  void promiseToChangePhysics(bool enable) {
-    _promise_to_change_physics = true;
-    _promise_to_enable = enable;
-  }
-
-  /**
-   * If this body has promised to change physics state.
-   *
-   * @return If the body has promised to change physics state.
-   */
-  bool getPromiseToChangePhysics() const { return _promise_to_change_physics; }
-
-  /**
-   * If this body has promised to enable or disable physics.
-   *
-   * @return If this body has promised to enable or disable physics.
-   */
-  bool getPromiseToEnable() const { return _promise_to_enable; }
-
 #pragma mark Graphics
 
   /**
@@ -365,7 +388,13 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-  void setNode(const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+<<<<<<< HEAD
+  void setNode(const std::shared_ptr<cugl::Texture>& texture,
+               std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+=======
+  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node,
+               std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+>>>>>>> main
 
   /**
    * Gets the enemy scene graph node.
@@ -396,5 +425,20 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param facing_left is true if character should face left, false otherwise.
    */
   void setFacingLeft(bool facing_left);
+
+  /**
+   * Knocks back the enemy.
+   */
+  void knockback(int moveDir);
+
+  /**
+   * Returns whether or not the enemy is knocked back.
+   */
+  bool isKnockbacked() { return _isKnockbacked; };
+
+  /**
+   * Sets the knockbacked state of the enemy.
+   */
+  void setKnockbacked(bool isKnockbacked) { _isKnockbacked = isKnockbacked; };
 };
 #endif /* ENEMY_MODEL_H */

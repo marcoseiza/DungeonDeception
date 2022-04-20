@@ -1,14 +1,19 @@
 #include "PlayerController.h"
 
+#include "CollisionFiltering.h"
 #include "NetworkController.h"
+#include "actions/Attack.h"
+#include "actions/Dash.h"
+#include "actions/Movement.h"
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 100
 
 #define HOLD_ATTACK_COLOR_LIMIT 5
-#define HOLD_ATTACK_COUNT 60
-#define ATTACK_FRAMES 32
+#define HOLD_ATTACK_COUNT 1000 /* milliseconds */
+#define ATTACK_FRAMES 25
+#define ATTACK_STOP_MOVEMENT 10
 #define HURT_FRAMES 10
 #define DEAD_FRAMES 175
 // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
@@ -38,6 +43,12 @@ bool PlayerController::init(
   _world_node = world_node;
   _debug_node = debug_node;
 
+  _sword = Sword::alloc(cugl::Vec2::ZERO);
+  _world->addObstacle(_sword);
+  _sword->setEnabled(false);
+  _sword->setDebugScene(_debug_node);
+  _sword->setDebugColor(cugl::Color4f::BLACK);
+
   NetworkController::get()->addListener(
       [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
         this->processData(code, msg);
@@ -46,14 +57,13 @@ bool PlayerController::init(
   return true;
 }
 
-void PlayerController::update(float timestep, cugl::Vec2 forward,
-                              bool didAttack, bool didDash, bool holdAttack,
-                              std::shared_ptr<Sword> sword) {
+void PlayerController::update(float timestep) {
   for (auto it : _players) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
-  move(timestep, didDash, forward);
-  attack(didAttack, holdAttack, sword);
+
+  move(timestep);
+  attack();
   updateSlashes(timestep);
 
   if (_player->_hurt_frames == 0) {
@@ -170,61 +180,82 @@ void PlayerController::interpolate(float timestep,
   player->setPosition(cur_pos);
 }
 
-void PlayerController::move(float timestep, bool didDash, cugl::Vec2 forward) {
+void PlayerController::move(float timestep) {
+  cugl::Vec2 forward = InputController::get<Movement>()->getMovement();
+  bool is_dashing = InputController::get<Dash>()->isDashing();
+
   if (!_player->getDead()) {
-    if (didDash) {
-      forward.scale(10);
+    float speed = 175.0f;  // Movement speed.
+
+    b2Filter filter_data = _player->getFilterData();
+    filter_data.maskBits = MASK_PLAYER;
+
+    if (is_dashing) {
+      filter_data.maskBits = MASK_PLAYER_DASHING;
+      forward = _player->getLastMoveDir();
+      speed *= 10.0f;
     } else if (_player->getState() == Player::ATTACKING &&
-             (_player->_frame_count == 3)) {
-      forward.scale(3);
-      _player->move(forward);
+               _player->_attack_frame_count <= ATTACK_STOP_MOVEMENT) {
+      filter_data.maskBits = MASK_PLAYER_ATTACKING;
+      forward = _player->getLastMoveDir();
+      speed *= 1.2f;
     }
-    _player->move(forward);
+
+    _player->setFilterData(filter_data);
+    _player->move(forward, speed);
 
     // Switch states.
     if (forward.x != 0 || forward.y != 0) {
       _player->setState(Player::MOVING);
+      if (is_dashing) _player->setState(Player::State::DASHING);
     } else {
       _player->setState(Player::IDLE);
     }
   } else {
-    _player->move(cugl::Vec2(0, 0));
+    _player->move(cugl::Vec2(0, 0), 0.0f);
     _player->setState(Player::IDLE);
   }
 }
 
-void PlayerController::attack(bool didAttack, bool holdAttack,
-                              std::shared_ptr<Sword> sword) {
+void PlayerController::attack() {
+  bool did_attack = InputController::get<Attack>()->isAttacking();
+  int time_held_down = InputController::get<Attack>()->timeHeldDown();
+
   if (!_player->getDead()) {
-    if (holdAttack && _player->_last_held_attack) {
-      _player->_hold_attack++;
-      if (_player->_hold_attack >= HOLD_ATTACK_COUNT) {
-        _player->getPlayerNode()->setColor(cugl::Color4::BLUE);
-        _player->_can_make_slash = true;
-      }
+    if (time_held_down >= HOLD_ATTACK_COUNT) {
+      _player->getPlayerNode()->setColor(cugl::Color4::BLUE);
+      _player->_can_make_slash = true;
     } else {
-      if (didAttack) {
+      if (did_attack) {
         if (_player->_hurt_frames <= 0) {
           _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
         }
         if (_player->_attack_frame_count == ATTACK_FRAMES) {
           _player->_frame_count = 0;
-          cugl::Vec2 attackDir = cugl::Vec2(0, 1);
-          if (_player->getMoveDir() == 0) {
-            attackDir = cugl::Vec2(-1, 0);
-          } else if (_player->getMoveDir() == 1) {
-            attackDir = cugl::Vec2(0, -1);
-          } else if (_player->getMoveDir() == 2) {
-            attackDir = cugl::Vec2(1, 0);
+
+          cugl::Vec2 attackDir;
+          switch (_player->getMoveDir()) {
+            case 0:  // LEFT
+              attackDir.set(-1, 0);
+              break;
+            case 1:  // DOWN
+              attackDir.set(0, -1);
+              break;
+            case 2:  // RIGHT
+              attackDir.set(1, 0);
+              break;
+            case 3:  // UP
+              attackDir.set(0, 1);
+              break;
           }
+
           if (_player->_can_make_slash) {
-            _player->makeSlash(attackDir, sword->getPosition());
+            _player->makeSlash(attackDir, _sword->getPosition());
             _player->_can_make_slash = false;
-            _player->_hold_attack = 0;
             _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
           }
         }
-        sword->setEnabled(true);
+        _sword->setEnabled(true);
         _player->setState(Player::ATTACKING);
         _player->_attack_frame_count--;
       }
@@ -239,19 +270,15 @@ void PlayerController::attack(bool didAttack, bool holdAttack,
       if (_player->_attack_frame_count <= 0) {
         _player->setState(Player::IDLE);
         _player->_frame_count = 0;
-        sword->setEnabled(false);
+        _sword->setEnabled(false);
         _player->_attack_frame_count = ATTACK_FRAMES;
       }
-
-      _player->_hold_attack = 0;
     }
 
-    _player->_last_held_attack = holdAttack;
-
-    // Set the sword adjacent to the player
-    sword->moveSword(_player->getPosition() + _player->getOffset(),
-                     cugl::Vec2(_player->getVX(), _player->getVY()),
-                     _player->getMoveDir());
+    // Set the _sword adjacent to the player
+    _sword->moveSword(_player->getPosition() + _player->getOffset(),
+                      cugl::Vec2(_player->getVX(), _player->getVY()),
+                      _player->getMoveDir());
   }
 }
 

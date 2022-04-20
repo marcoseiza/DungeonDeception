@@ -109,7 +109,7 @@ class VoteForLeaderScene {
   bool isDone() { return _done; }
 
   /** If the scene is done. */
-  void setDone() { _done = true; }
+  void setDone(bool val) { _done = val; }
 
   /** Voting Button listener.  */
   void voteButtonListener(const std::string& name, bool down);

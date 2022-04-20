@@ -6,12 +6,15 @@
 #include "../models/Projectile.h"
 #include "../models/Sword.h"
 #include "Controller.h"
+#include "InputController.h"
 
 /**
  * A class to handle enemy AI.
  */
-class PlayerController {
+class PlayerController : public Controller {
  protected:
+  /** The sword. */
+  std::shared_ptr<Sword> _sword;
   /** Reference to the player this controls. */
   std::shared_ptr<Player> _player;
   /** A list of all the players in the game. */
@@ -54,7 +57,7 @@ class PlayerController {
   /**
    * Disposes the controller.
    */
-  void dispose() {
+  void dispose() override {
     _player = nullptr;
     _world_node = nullptr;
     _debug_node = nullptr;
@@ -90,8 +93,7 @@ class PlayerController {
 #pragma mark Properties
 
   /** Update the enemy. */
-  void update(float timestep, cugl::Vec2 forward, bool didAttack, bool didDash,
-              bool holdAttack, std::shared_ptr<Sword> sword);
+  void update(float timestep) override;
 
   /**
    * Processes data sent over the network.
@@ -118,9 +120,9 @@ class PlayerController {
   /** Linearly interpolate the player by the network positions. */
   void interpolate(float timestep, const std::shared_ptr<Player>& player);
 
-  void move(float timestep, bool didDash, cugl::Vec2 forward);
+  void move(float timestep);
 
-  void attack(bool didAttack, bool holdAttack, std::shared_ptr<Sword> sword);
+  void attack();
 
   void addPlayer(const std::shared_ptr<Player>& player) {
     if (_players.find(player->getPlayerId()) == _players.end()) {
@@ -146,6 +148,8 @@ class PlayerController {
   std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {
     return _players;
   }
+
+  std::shared_ptr<Sword> getSword() { return _sword; }
 };
 
 #endif /* CONTROLLERS_PLAYER_CONTROLLER_H_ */
