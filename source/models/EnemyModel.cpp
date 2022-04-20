@@ -234,6 +234,7 @@ void EnemyModel::update(float delta) {
     if (_stunned_timer >= 10) {
       CULog("finished");
       _isKnockbacked = false;
+      _stunned_timer = 0;
     }
   }
 }
