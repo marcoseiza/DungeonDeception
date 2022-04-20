@@ -16,7 +16,8 @@
 #include "../models/tiles/Wall.h"
 
 #define SCENE_HEIGHT 720
-#define CAMERA_SMOOTH_SPEED_FACTOR 85.0f
+#define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
+#define CAMERA_LARGEST_DIFF 200.0f
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -1031,9 +1032,16 @@ void GameScene::updateCamera(float timestep) {
 
   cugl::Vec2 smoothed_position;
 
-  float speed = timestep;
-  speed *= _player_controller->getMyPlayer()->getLinearVelocity().length();
+  float speed = _player_controller->getMyPlayer()->getLinearVelocity().length();
+  speed *= timestep;
   speed /= CAMERA_SMOOTH_SPEED_FACTOR;
+
+  if (std::abs((desired_position - _world_node->getPosition()).length()) >
+      CAMERA_LARGEST_DIFF) {
+    speed = timestep * 5.0f;
+  }
+
+  speed = std::max(speed, timestep * 2.0f);
 
   cugl::Vec2::lerp(_world_node->getPosition(), desired_position, speed,
                    &smoothed_position);

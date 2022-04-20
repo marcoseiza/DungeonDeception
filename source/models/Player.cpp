@@ -8,7 +8,7 @@
 #define IDLE_UP 83
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
-#define ATTACK_FRAMES 22
+#define ATTACK_FRAMES 25
 #define HEALTH 100
 
 #define WIDTH 24.0f

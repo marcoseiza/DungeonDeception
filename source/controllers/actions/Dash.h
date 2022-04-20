@@ -27,9 +27,13 @@ class Dash : public Action {
 
   /* The duration of the dash */
   int _dash_frames;
-
   /* The counter for the dash duration*/
   int _dash_frame_counter;
+
+  /** The duration of the dash cooldown. */
+  int _dash_cooldown;
+  /** The counter for the dash cooldown. */
+  int _dash_cooldown_counter;
 
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
@@ -94,7 +98,7 @@ class Dash : public Action {
    * @param value The activation state.
    */
   void setActive(bool value);
-  
+
 #ifdef CU_TOUCH_SCREEN
 
   /** Touch listener for when the player moves their finger. */

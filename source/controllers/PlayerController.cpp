@@ -12,7 +12,7 @@
 
 #define HOLD_ATTACK_COLOR_LIMIT 5
 #define HOLD_ATTACK_COUNT 1000 /* milliseconds */
-#define ATTACK_FRAMES 22
+#define ATTACK_FRAMES 25
 #define ATTACK_STOP_MOVEMENT 10
 #define HURT_FRAMES 10
 #define DEAD_FRAMES 175
