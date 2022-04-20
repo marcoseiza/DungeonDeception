@@ -243,8 +243,8 @@ void EnemyModel::update(float delta) {
 
 void EnemyModel::move(float forwardX, float forwardY) {
   if (_isKnockbacked) {
-    setVX(1000000 * _knockback_dir.x);
-    setVY(1000000 * _knockback_dir.y);
+    setVX(200 * _knockback_dir.x);
+    setVY(200 * _knockback_dir.y);
 
   } else {
     setVX(80 * forwardX);
