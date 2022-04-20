@@ -41,7 +41,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
-  diff.scale(0.6 * enemy->getSpeed());  // Make speed slower when strafing
+  diff.scale(0.6 * enemy->getSpeed()); // Make speed slower when strafing
   enemy->move(diff.x, diff.y);
 }
 
@@ -122,6 +122,8 @@ void EnemyController::update(bool is_host, float timestep, std::shared_ptr<Enemy
   // Update enemy & projectiles
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
+  
+  animate(enemy);
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy,

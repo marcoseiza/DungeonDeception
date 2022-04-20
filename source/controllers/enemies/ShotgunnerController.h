@@ -71,6 +71,11 @@ class ShotgunnerController : public EnemyController {
   /** Perform the action according to the enemy state. */
   void performAction(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
   
+  /**
+   * Animate the shotgunner.
+   */
+  void animate(std::shared_ptr<EnemyModel> enemy) override;
+  
   /** Attack the player.
    *
    * @param p the player position.

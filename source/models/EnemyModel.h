@@ -61,7 +61,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   float _speed;
 
   /** The scene graph node for the enemy. */
-  std::shared_ptr<cugl::scene2::SpriteNode> _enemy_node;
+  std::shared_ptr<cugl::scene2::SceneNode> _enemy_node;
 
   /** Represents the def for the hit area for the enemy. */
   b2FixtureDef _hitbox_sensor_def;
@@ -140,6 +140,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** When attacking, direction to attack in. */
   cugl::Vec2 _attack_dir;
+
+  /** The count for switching to the next frame. */
+  int _frame_count;
 
 #pragma mark Constructors
   /**
@@ -385,15 +388,15 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node,
+  void setNode(const std::shared_ptr<cugl::Texture>& texture,
                std::shared_ptr<cugl::scene2::SceneNode> debug_node);
 
   /**
-   * Gets the grunt scene graph node.
+   * Gets the enemy scene graph node.
    *
    * @return node the node that has been set.
    */
-  std::shared_ptr<cugl::scene2::SpriteNode>& getNode();
+  std::shared_ptr<cugl::scene2::SceneNode>& getNode();
 
   /**
    * Sets the position of the room the enemy is in, for drawing purposes.

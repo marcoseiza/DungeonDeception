@@ -2,7 +2,7 @@
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
-#define ATTACK_RANGE 75
+#define ATTACK_RANGE 60
 #define ATTACK_FRAMES 18
 #define STOP_ATTACK_FRAMES 50
 #define ATTACK_COOLDOWN 155
@@ -11,8 +11,7 @@
 
 #pragma mark GruntController
 
-void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
-                                   cugl::Vec2 p) {
+void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->setSensor(true);
@@ -23,7 +22,7 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
       enemy->resetSensors();
     } else {
       cugl::Vec2 dir = enemy->_attack_dir;
-      dir.scale(5);
+      dir.scale(3.5);
       enemy->move(dir.x, dir.y);
     }
   } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
@@ -97,6 +96,59 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
     default: {
       avoidPlayer(enemy, p);
+      break;
+    }
+  }
+}
+
+void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
+  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  int fc = enemy->_frame_count;
+  switch (enemy->getCurrentState()) {
+    case EnemyModel::State::ATTACKING: {
+      if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
+        int attack_high_lim = 29;
+        int attack_low_lim = 20;
+
+        // Play the next animation frame.
+        if (fc >= 3) {
+          enemy->_frame_count = 0;
+          if (node->getFrame() >= attack_high_lim) {
+            node->setFrame(attack_low_lim);
+          } else {
+            node->setFrame(node->getFrame() + 1);
+          }
+        }
+        enemy->_frame_count++;
+        break;
+      } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+        node->setFrame(20);
+        break;
+      }
+    }
+    case EnemyModel::State::CHASING: {
+      int run_high_lim = 19;
+      int run_low_lim = 10;
+
+      if (fc == 0) {
+        node->setFrame(run_low_lim);
+      }
+
+      // Play the next animation frame.
+      if (fc >= 4) {
+        enemy->_frame_count = 0;
+        if (node->getFrame() >= run_high_lim) {
+          node->setFrame(run_low_lim);
+        } else {
+          node->setFrame(node->getFrame() + 1);
+        }
+      }
+      enemy->_frame_count++;
+      break;
+    }
+    default: {
+      node->setFrame(0);
+      enemy->_frame_count = 0;
       break;
     }
   }

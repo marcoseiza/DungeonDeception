@@ -108,8 +108,10 @@ class EnemyController {
   void updateProjectiles(float timestep, std::shared_ptr<EnemyModel> enemy);
 
   /** Figure out the weights for the enemy. */
-  void findWeights(std::shared_ptr<EnemyModel> enemy,
-                   std::shared_ptr<Player> player);
+  void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
+  
+  /** Animate the enemy. */
+  virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
 
 #pragma mark Movement
  protected:
