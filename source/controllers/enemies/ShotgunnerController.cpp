@@ -25,20 +25,21 @@ bool ShotgunnerController::init(
 }
 
 void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
-                                  cugl::Vec2 p) {
+                                        cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
-    enemy->move(0,0);
+    enemy->move(0, 0);
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->addBullet(p);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
+      std::uniform_int_distribution<float> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
     }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
-    diff.scale(0.6 * enemy->getSpeed()); // Make speed slower when strafing
+    diff.scale(0.6 * enemy->getSpeed());  // Make speed slower when strafing
     enemy->move(diff.x, diff.y);
   }
 }

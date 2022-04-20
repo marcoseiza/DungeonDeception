@@ -11,13 +11,15 @@
 
 #pragma mark GruntController
 
-void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
+                                   cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->setSensor(true);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
+      std::uniform_int_distribution<float> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
       enemy->resetSensors();
     } else {
       cugl::Vec2 dir = enemy->_attack_dir;
