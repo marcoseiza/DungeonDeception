@@ -109,6 +109,40 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
       door_pos * (TILE_SIZE * TILE_SCALE));
 }
 
+void LevelController::moveToCenterOfRoom(int destination_room_id) {
+  std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
+
+  // Update the map SceneNodes.
+  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
+    if (room->_key == current->getKey()) {
+      room->_node->setColor(room->getRoomNodeColor());
+    }
+    if (room->_key == destination_room_id) {
+      room->_node->setColor(cugl::Color4(255, 0, 0, 127));
+      room->_node->setVisible(true);
+
+      for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
+        if (edge->_source->_node->isVisible() &&
+            edge->_neighbor->_node->isVisible())
+          edge->_node->setVisible(true);
+      }
+    }
+  }
+  
+  if (_room_on_chopping_block != nullptr)
+    _room_on_chopping_block->setVisible(false);
+  _room_on_chopping_block = current;
+  
+  _level_model->setCurrentRoom(destination_room_id);
+  std::shared_ptr<RoomModel> new_current =
+      _level_model->getCurrentRoom();  // New current level.
+
+  new_current->setVisible(true);
+
+  _player_controller->getMyPlayer()->setPosPromise(
+      new_current->getNode()->getPosition() + new_current->getGridSize().width / 2 * (TILE_SIZE * TILE_SCALE));
+}
+
 void LevelController::populate() {
   _level_model = LevelModel::alloc();
 

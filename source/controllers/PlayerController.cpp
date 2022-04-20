@@ -80,6 +80,7 @@ void PlayerController::update(float timestep) {
   if (_player->getDead() && _player->_hurt_frames <= 0) {
     _player->setHealth(HEALTH);
     _player->setDead(false);
+    _player->setRespawning(true);
   }
 
   // Animate the player

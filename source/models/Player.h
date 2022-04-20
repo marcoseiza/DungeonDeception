@@ -45,6 +45,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Is this player dead? */
   bool _isDead;
+  
+  /** Is the player respawning? */
+  bool _is_respawning;
 
   /** Represents the offset between the center of the player and the center of
    * the capsule obstacle. */
@@ -182,6 +185,20 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param dead if player is dead.
    */
   void setDead(bool dead) { _isDead = dead; }
+  
+  /**
+   * Returns if the player is respawnings;
+   *
+   * @return if player is respawning.
+   */
+  bool getRespawning() const { return _is_respawning; }
+  
+  /**
+   * Sets if the player is respawning.
+   *
+   * @param respawning if player is respawning.
+   */
+  void setRespawning(bool respawning) { _is_respawning = respawning; }
 
   /**
    * Gets the player's movement direction.

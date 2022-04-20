@@ -82,6 +82,11 @@ class LevelController : public Controller {
    * @param door_sensor_name The name of the door sensor that was hit.
    */
   void changeRoom(std::string &door_sensor_name);
+  
+  /** Change room and move to the center.
+   * @param destination_room_id The room destination id
+   */
+  void moveToCenterOfRoom(int destination_room_id);
 
   /**
    * Get the box2d world.
