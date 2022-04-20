@@ -97,11 +97,10 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
-  auto node = enemy->getNode();
+  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
-      CULog("%d", node->getFrame());
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
         int attack_high_lim = 29;
         int attack_low_lim = 20;

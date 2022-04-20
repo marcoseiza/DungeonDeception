@@ -109,22 +109,37 @@ void EnemyModel::setType(std::string type) {
 
 void EnemyModel::setNode(
     const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
-  std::shared_ptr<cugl::scene2::SpriteNode> node;
+//  _enemy_node = cugl::scene2::OrderedNode::alloc();
   switch(_enemy_type) {
-    case SHOTGUNNER:
-      node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+    case SHOTGUNNER: {
+      _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(cugl::scene2::OrderedNode::Order::ASCEND);
+      auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      enemy_node->setTag(0);
+      enemy_node->setPriority(0);
+      enemy_node->setPosition(0, 0);
+      _enemy_node->addChild(enemy_node);
+      auto gun_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      gun_node->setFrame(2);
+      gun_node->setTag(1);
+      gun_node->setPriority(1);
+      gun_node->setPosition(0, 0);
+      gun_node->setVisible(false);
+      _enemy_node->addChild(gun_node);
       break;
-    case TANK:
-      node = cugl::scene2::SpriteNode::alloc(texture, 1, 1);
+    }
+    case TANK: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 1, 1);
       break;
-    case GRUNT:
-      node = cugl::scene2::SpriteNode::alloc(texture, 3, 10);
+    }
+    case GRUNT: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 10);
       break;
-    default:
-      node = cugl::scene2::SpriteNode::alloc(texture, 3, 8);
+    }
+    default: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 8);
       break;
+    }
   }
-  _enemy_node = node;
   
   // Add the ray cast weights to the debug node.
   for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
@@ -132,7 +147,7 @@ void EnemyModel::setNode(
   }
 }
 
-std::shared_ptr<cugl::scene2::SpriteNode>& EnemyModel::getNode() {
+std::shared_ptr<cugl::scene2::SceneNode>& EnemyModel::getNode() {
   return _enemy_node;
 }
 
@@ -251,6 +266,6 @@ void EnemyModel::setFacingLeft(bool facing_left) {
   // flip texture if direction has changed
   if (_facing_left != facing_left) {
     _facing_left = facing_left;
-    _enemy_node->flipHorizontal(_facing_left);
+//    _enemy_node->flipHorizontal(_facing_left);
   }
 }

@@ -3,7 +3,7 @@
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
 #define ATTACK_RANGE 150
-#define ATTACK_FRAMES 5
+#define ATTACK_FRAMES 20
 #define STOP_ATTACK_FRAMES 40
 #define ATTACK_COOLDOWN 155
 
@@ -28,8 +28,11 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     enemy->move(0,0);
+    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+      enemy->_attack_dir = p;
+    }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
-      enemy->addBullet(p);
+      enemy->addBullet(enemy->_attack_dir);
     }
     if (enemy->getAttackCooldown() <= 0) {
       enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
@@ -85,6 +88,58 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
-  
-  
+  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode()->getChildByTag(0).get());
+  auto gun_node = enemy->getNode()->getChildByTag(1);
+  int fc = enemy->_frame_count;
+  switch (enemy->getCurrentState()) {
+    case EnemyModel::State::ATTACKING: {
+      if (enemy->getAttackCooldown() <= ATTACK_FRAMES - 5) {
+        // See if u can comment these later
+        node->setFrame(1);
+        gun_node->setVisible(true);
+        float angle_inc = cugl::Vec2::angle(enemy->_attack_dir, enemy->getPosition()) / 10;
+        gun_node->setAngle(angle_inc * enemy->getAttackCooldown());
+        if (enemy->getAttackCooldown() == 0) {
+          gun_node->setAngle(0);
+          gun_node->setVisible(false);
+        }
+        break;
+      } else if (enemy->getAttackCooldown() >= ATTACK_FRAMES + 5 && enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+        // Here, move up to the desired position
+        node->setFrame(1);
+        gun_node->setVisible(true);
+        float angle_inc = cugl::Vec2::angle(enemy->_attack_dir, enemy->getPosition()) / 10;
+//        CULog("%f", angle_inc);
+        gun_node->setAngle(angle_inc * (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
+        break;
+      } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 && enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
+        break;
+      }
+    }
+    case EnemyModel::State::CHASING: {
+      int run_high_lim = 19;
+      int run_low_lim = 10;
+
+      if (fc == 0 || node->getFrame() < run_low_lim) {
+        node->setFrame(run_low_lim);
+      }
+
+      // Play the next animation frame.
+      if (fc >= 4) {
+        enemy->_frame_count = 0;
+        if (node->getFrame() >= run_high_lim) {
+          node->setFrame(run_low_lim);
+        } else {
+          node->setFrame(node->getFrame() + 1);
+        }
+      }
+      enemy->_frame_count++;
+      break;
+    }
+    case EnemyModel::State::IDLE: {
+      node->setFrame(0);
+      enemy->_frame_count = 0;
+      break;
+    }
+  }
 }
