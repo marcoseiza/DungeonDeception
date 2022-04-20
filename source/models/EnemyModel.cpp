@@ -23,6 +23,8 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _health = 100;
   _facing_left = false;
   _speed = .05f;
+  _atc_timer = 0;
+  _cta_timer = 0;
 
   _attack_cooldown = 0;
 
