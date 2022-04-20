@@ -252,10 +252,10 @@ void GameApp::updateLevelLoadingScene(float timestep) {
 
   if (_level_loading.getIsHost()) {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _hostgame.isBetrayer());
+                   _hostgame.isBetrayer(), "runner_0");
   } else {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _joinlobby.isBetrayer());
+                   _joinlobby.isBetrayer(), _joinlobby.getPlayerName());
   }
 
   _level_loading.setActive(false);

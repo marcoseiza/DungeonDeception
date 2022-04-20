@@ -114,6 +114,12 @@ class ClientLobbyScene : public cugl::Scene2 {
   Uint64 getSeed() { return _seed; }
 
   /**
+   * Returns the player name to be used in game.
+   * @return The player name
+   */
+  std::string getPlayerName() { return _name->getText(); }
+
+  /**
    * The method called to update the scene.
    *
    * @param timestep  The amount of time (in seconds) since the last frame

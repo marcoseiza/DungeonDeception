@@ -22,9 +22,11 @@
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
-    bool is_betrayer) {
+    bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
+
+  _display_name = display_name;
 
   // Initialize the scene to a locked width.
 
@@ -142,9 +144,7 @@ bool GameScene::init(
   corrupted_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
-  std::string name_msg = cugl::strtool::format(
-      "player %d", _player_controller->getMyPlayer()->getPlayerId());
-  name_text->setText(name_msg);
+  name_text->setText(_display_name);
   name_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
@@ -395,9 +395,7 @@ void GameScene::update(float timestep) {
   timer_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
-  std::string name_msg = cugl::strtool::format(
-      "player %d", _player_controller->getMyPlayer()->getPlayerId());
-  name_text->setText(name_msg);
+  name_text->setText(_display_name);
   name_text->setForeground(cugl::Color4::BLACK);
 
   auto activated_text =
