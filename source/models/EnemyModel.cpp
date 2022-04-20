@@ -109,7 +109,6 @@ void EnemyModel::setType(std::string type) {
 
 void EnemyModel::setNode(
     const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
-//  _enemy_node = cugl::scene2::OrderedNode::alloc();
   switch(_enemy_type) {
     case SHOTGUNNER: {
       _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(cugl::scene2::OrderedNode::Order::ASCEND);
@@ -124,6 +123,7 @@ void EnemyModel::setNode(
       gun_node->setPriority(1);
       gun_node->setPosition(0, 0);
       gun_node->setVisible(false);
+      gun_node->setAnchor(0.35, 0.65);
       _enemy_node->addChild(gun_node);
       break;
     }

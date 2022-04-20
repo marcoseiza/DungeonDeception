@@ -2,8 +2,8 @@
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
-#define ATTACK_RANGE 100
-#define TANK_RANGE 30
+#define ATTACK_RANGE 150
+#define TANK_RANGE 100
 
 #pragma mark Turtle Controller
 
@@ -70,4 +70,20 @@ void TurtleController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TurtleController::animate(std::shared_ptr<EnemyModel> enemy) {}
+void TurtleController::animate(std::shared_ptr<EnemyModel> enemy) {
+  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  int fc = enemy->_frame_count;
+  switch (enemy->getCurrentState()) {
+    case EnemyModel::State::ATTACKING: {
+      node->setFrame(0);
+      break;
+    }
+    case EnemyModel::State::TANKING: {
+      node->setFrame(1);
+      break;
+    }
+    default: {
+      node->setFrame(0);
+    }
+  }
+}

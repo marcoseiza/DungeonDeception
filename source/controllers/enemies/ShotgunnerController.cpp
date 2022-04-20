@@ -94,10 +94,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES - 5) {
-        // See if u can comment these later
-        node->setFrame(1);
-        gun_node->setVisible(true);
-        float angle_inc = cugl::Vec2::angle(enemy->_attack_dir, enemy->getPosition()) / 10;
+        float angle_inc = cugl::Vec2::angle(cugl::Vec2(1, 0), enemy->_attack_dir - enemy->getPosition()) / 15;
         gun_node->setAngle(angle_inc * enemy->getAttackCooldown());
         if (enemy->getAttackCooldown() == 0) {
           gun_node->setAngle(0);
@@ -108,8 +105,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
         // Here, move up to the desired position
         node->setFrame(1);
         gun_node->setVisible(true);
-        float angle_inc = cugl::Vec2::angle(enemy->_attack_dir, enemy->getPosition()) / 10;
-//        CULog("%f", angle_inc);
+        float angle_inc = cugl::Vec2::angle(cugl::Vec2(1, 0), enemy->_attack_dir - enemy->getPosition()) / 15;
         gun_node->setAngle(angle_inc * (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
         break;
       } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 && enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
@@ -117,6 +113,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
       }
     }
     case EnemyModel::State::CHASING: {
+      gun_node->setVisible(false);
       int run_high_lim = 19;
       int run_low_lim = 10;
 
