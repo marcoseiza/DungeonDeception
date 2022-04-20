@@ -95,24 +95,27 @@ void PlayerController::processData(
           std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
       for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
         int player_id = player->getInt("player_id");
+        string player_display_name = player->getString("player_display_name");
         int room_id = player->getInt("room");
         std::shared_ptr<cugl::JsonValue> player_position =
             player->get("position");
         float pos_x = player_position->get(0)->asFloat();
         float pos_y = player_position->get(1)->asFloat();
-        processPlayerInfo(player_id, room_id, pos_x, pos_y);
+        processPlayerInfo(player_id, room_id, pos_x, pos_y,
+                          player_display_name);
       }
     } break;
     case NC_CLIENT_ONE_PLAYER_INFO: {
       std::shared_ptr<cugl::JsonValue> player =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
       int player_id = player->getInt("player_id");
+      string player_display_name = player->getString("player_display_name");
       int room_id = player->getInt("room");
       std::shared_ptr<cugl::JsonValue> player_position =
           player->get("position");
       float pos_x = player_position->get(0)->asFloat();
       float pos_y = player_position->get(1)->asFloat();
-      processPlayerInfo(player_id, room_id, pos_x, pos_y);
+      processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name);
     } break;
     default:
       break;
@@ -120,7 +123,8 @@ void PlayerController::processData(
 }
 
 void PlayerController::processPlayerInfo(int player_id, int room_id,
-                                         float pos_x, float pos_y) {
+                                         float pos_x, float pos_y,
+                                         string player_display_name) {
   if (player_id == _player->getPlayerId()) return;
 
   if (getPlayer(player_id) == nullptr) {
@@ -130,8 +134,8 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
         _assets->get<cugl::Texture>("player");
 
     cugl::Vec2 pos = ((cugl::Vec2)_world_node->getContentSize()) / 2.0f;
-    std::shared_ptr<Player> new_player =
-        Player::alloc(pos + cugl::Vec2(20, 20), "Johnathan");
+    std::shared_ptr<Player> new_player = Player::alloc(
+        pos + cugl::Vec2(20, 20), "Johnathan", player_display_name);
     new_player->setSensor(true);  // Makes it so we don't move other players
     new_player->setPlayerId(player_id);
     addPlayer(new_player);
@@ -157,6 +161,9 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
     } else {
       player->setState(Player::IDLE);
     }
+    // TODO does name need to be updated here? Yes if it seems to not be set
+    // right?
+
     player->setRoomId(room_id);
     player->setNetworkPos(cugl::Vec2(pos_x, pos_y));
     player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);

@@ -193,7 +193,7 @@ void GameScene::populate(cugl::Size dim) {
   // Initialize the player with texture and size, then add to world.
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
 
-  auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
+  auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan", _display_name);
   my_player->setBetrayer(_is_betrayer);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
@@ -496,6 +496,13 @@ void GameScene::sendNetworkInfo() {
         player_info->appendChild(player_id);
         player_id->setKey("player_id");
 
+        // send host-stored player's set display name to all clients
+        std::shared_ptr<cugl::JsonValue> player_display_name =
+            cugl::JsonValue::alloc(
+                static_cast<std::string>(player->getDisplayName()));
+        player_info->appendChild(player_display_name);
+        player_display_name->setKey("player_display_name");
+
         std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
         std::shared_ptr<cugl::JsonValue> pos_x =
             cugl::JsonValue::alloc(player->getPosition().x);
@@ -631,6 +638,12 @@ void GameScene::sendNetworkInfo() {
         static_cast<long>(_player_controller->getMyPlayer()->getPlayerId()));
     player_info->appendChild(player_id);
     player_id->setKey("player_id");
+
+    // send a player's set display name from itself to host
+    std::shared_ptr<cugl::JsonValue> player_display_name =
+        cugl::JsonValue::alloc(static_cast<std::string>(_display_name));
+    player_info->appendChild(player_display_name);
+    player_display_name->setKey("player_display_name");
 
     std::shared_ptr<cugl::JsonValue> room = cugl::JsonValue::alloc(
         static_cast<long>(_player_controller->getMyPlayer()->getRoomId()));

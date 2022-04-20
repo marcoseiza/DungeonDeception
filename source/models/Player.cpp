@@ -23,7 +23,7 @@
 
 #pragma mark Init
 
-bool Player::init(const cugl::Vec2 pos, string name) {
+bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
   cugl::Vec2 pos_ = pos;
   cugl::Size size_ = cugl::Size(WIDTH, HEIGHT);
 
@@ -37,6 +37,8 @@ bool Player::init(const cugl::Vec2 pos, string name) {
 
   CapsuleObstacle::init(pos_, size_);
   setName(name);
+
+  _display_name = display_name;
 
   _player_node = nullptr;
   _current_state = IDLE;

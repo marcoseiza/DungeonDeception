@@ -34,6 +34,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The player's unique id. */
   int _id;
 
+  /** The player's display name. */
+  std::string _display_name;
+
   /** The unique id of the room the player is in. */
   int _room_id;
 
@@ -45,7 +48,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Is this player dead? */
   bool _isDead;
-  
+
   /** Is the player respawning? */
   bool _is_respawning;
 
@@ -91,24 +94,29 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Initializes a new player with the given position and name.
    *
-   * @param  pos      Initial position in world coordinates.
-   * @param  name       The name of the player.
+   * @param  pos          Initial position in world coordinates.
+   * @param  name         The name of the player (for Box2D).
+   * @param  display_name The chosen name of the player.
+
    *
    * @return  true if the obstacle is initialized properly, false otherwise.
    */
-  virtual bool init(const cugl::Vec2 pos, string name);
+  virtual bool init(const cugl::Vec2 pos, string name, string display_name);
 
 #pragma mark Static Constructors
   /**
    * Returns a new capsule object at the given point with no size.
    *
-   * @param pos   Initial position in world coordinates.
+   * @param  pos          Initial position in world coordinates.
+   * @param  name         The name of the player (for Box2D).
+   * @param  display_name The chosen name of the player.
    *
    * @return a new capsule object at the given point with no size.
    */
-  static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, string name) {
+  static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, string name,
+                                       string display_name) {
     std::shared_ptr<Player> result = std::make_shared<Player>();
-    return (result->init(pos, name) ? result : nullptr);
+    return (result->init(pos, name, display_name) ? result : nullptr);
   }
 
 #pragma mark Properties
@@ -185,14 +193,14 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param dead if player is dead.
    */
   void setDead(bool dead) { _isDead = dead; }
-  
+
   /**
    * Returns if the player is respawnings;
    *
    * @return if player is respawning.
    */
   bool getRespawning() const { return _is_respawning; }
-  
+
   /**
    * Sets if the player is respawning.
    *
@@ -213,6 +221,13 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @return the offset from center.
    */
   cugl::Vec2 getOffset() const { return _offset_from_center; }
+
+  /**
+   * Gets the player's display name
+   *
+   * @return the display name
+   */
+  std::string getDisplayName() { return _display_name; }
 
   /**
    * Returns the player's slashes made.

@@ -108,11 +108,14 @@ class PlayerController : public Controller {
    * Process the position of the player with the corresponding player_id in the
    * _players list.
    *
-   * @param player_id The player ids
-   * @param pos_x The updated player x position
-   * @param pos_y The updated player y position
+   * @param player_id     The player ids
+   * @param pos_x         The updated player x position
+   * @param pos_y         The updated player y position
+   * @param display_name  The name of this player
+   *
    */
-  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
+  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y,
+                         string display_name);
 
   /** Update the projectiles. */
   void updateSlashes(float timestep);
