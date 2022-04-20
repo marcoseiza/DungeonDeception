@@ -53,6 +53,10 @@ void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
   enemy->move(-diff.x, -diff.y);
 }
 
+void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
+  enemy->move(10, 10);
+ }
+
 bool EnemyController::init(
     std::shared_ptr<cugl::AssetManager> assets,
     std::shared_ptr<cugl::physics2::ObstacleWorld> world,

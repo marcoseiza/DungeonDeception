@@ -26,6 +26,8 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _facing_left = false;
   _atc_timer = 0;
   _cta_timer = 0;
+  _isKnockbacked = false;
+  _stunned_timer = 0;
 
   _attack_cooldown = 0;
 
@@ -226,13 +228,27 @@ void EnemyModel::update(float delta) {
   } else {
     _damage_count--;
   }
+
+  if (_isKnockbacked) {
+    _stunned_timer++;
+    if (_stunned_timer >= 10) {
+      _isKnockbacked = false;
+      _stunned_timer = 0;
+    }
+  }
 }
 
 #pragma mark Movement
 
 void EnemyModel::move(float forwardX, float forwardY) {
-  setVX(80 * forwardX);
-  setVY(80 * forwardY);
+  if (_isKnockbacked) {
+    setVX(200 * _knockback_dir.x);
+    setVY(200 * _knockback_dir.y);
+
+  } else {
+    setVX(80 * forwardX);
+    setVY(80 * forwardY);
+  }
 
   if (forwardX == 0) {
     setVX(0);
@@ -241,6 +257,23 @@ void EnemyModel::move(float forwardX, float forwardY) {
   }
 
   if (forwardY == 0) setVY(0);
+}
+
+void EnemyModel::knockback(int moveDir) {
+  _isKnockbacked = true;
+  if (moveDir == 0) {
+    _knockback_dir.x = -1;
+    _knockback_dir.y = 0;
+  } else if (moveDir == 1) {
+    _knockback_dir.x = 0;
+    _knockback_dir.y = -1;
+  } else if (moveDir == 2) {
+    _knockback_dir.x = 1;
+    _knockback_dir.y = 0;
+  } else {
+    _knockback_dir.x = 0;
+    _knockback_dir.y = 1;
+  }
 }
 
 void EnemyModel::setFacingLeft(bool facing_left) {

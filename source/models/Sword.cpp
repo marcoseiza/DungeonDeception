@@ -25,10 +25,13 @@ bool Sword::init(const cugl::Vec2 pos) {
   _fixture.filter.categoryBits = CATEGORY_SWORD;
   _fixture.filter.maskBits = MASK_SWORD;
 
+  _moveDir = 0;
+
   return true;
 }
 
 void Sword::moveSword(const cugl::Vec2 pos, const cugl::Vec2 vel, int moveDir) {
+  _moveDir = moveDir;
   if (moveDir == 0) {
     setPosition(pos.x + OFFSET_X_HOR * -1, pos.y + OFFSET_Y_HOR);
   } else if (moveDir == 1) {

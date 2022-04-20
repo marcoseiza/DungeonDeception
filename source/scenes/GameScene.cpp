@@ -883,6 +883,8 @@ void GameScene::beginContact(b2Contact* contact) {
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
 
     dynamic_cast<EnemyModel*>(ob1)->takeDamage(damage);
+    dynamic_cast<EnemyModel*>(ob1)->knockback(
+        _player_controller->getSword()->getMoveDir());
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
                             damage);
@@ -893,6 +895,8 @@ void GameScene::beginContact(b2Contact* contact) {
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
 
     dynamic_cast<EnemyModel*>(ob2)->takeDamage(damage);
+    dynamic_cast<EnemyModel*>(ob2)->knockback(
+        _player_controller->getSword()->getMoveDir());
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
                             damage);
@@ -938,16 +942,18 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage();
+    dynamic_cast<EnemyModel*>(ob1)->knockback(_sword->getMoveDir());
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId());
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
+    dynamic_cast<EnemyModel*>(ob2)->knockback(_sword->getMoveDir());
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId());
   }
-  
+
   if (fx1_name == "enemy_damage" && ob2->getName() == "Wall") {
     auto enemy = dynamic_cast<EnemyModel*>(ob1);
     if (enemy->getAttackCooldown() < 20) {
