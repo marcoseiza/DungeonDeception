@@ -134,6 +134,10 @@ class EnemyController {
   /** Idle.
    */
   virtual void idling(std::shared_ptr<EnemyModel> enemy);
+
+  /** Stunned.
+   */
+  virtual void stunned(std::shared_ptr<EnemyModel> enemy);
 };
 
 #endif /* CONTROLLERS_ENEMY_CONTROLLER_H_ */

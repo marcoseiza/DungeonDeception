@@ -23,7 +23,10 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     /** The enemy is tanking the player. */
     TANKING,
     /** The enemy is skirting the player. */
-    SKIRTING
+    SKIRTING,
+    /** The enemy is knocked back. */
+    STUNNED,
+
   };
 
   /** Enum for which enemy this is. */
@@ -53,9 +56,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Enemy speed. */
   float _speed;
-
-  /** Whether the enemy was knock backed. */
-  bool _isKnockbacked;
 
   /** The scene graph node for the enemy. */
   std::shared_ptr<cugl::scene2::SpriteNode> _enemy_node;
@@ -119,6 +119,15 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Timer for switching from chase to attack. */
   int _cta_timer;
+
+  /** Whether the enemy was knock backed. */
+  bool _isKnockbacked;
+
+  /** Timer for being stunned. */
+  int _stunned_timer;
+
+  /** Knockback direction. */
+  cugl::Vec2 _knockback_dir;
   
   /** When attacking, direction to attack in. */
   cugl::Vec2 _attack_dir;
@@ -411,6 +420,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * Returns whether or not the enemy is knocked back.
    */
   bool isKnockbacked() { return _isKnockbacked; };
+
+   /**
+   * Sets the knockbacked state of the enemy.
+   */
+  void setKnockbacked(bool isKnockbacked) { _isKnockbacked = isKnockbacked; };
 
 };
 #endif /* ENEMY_MODEL_H */
