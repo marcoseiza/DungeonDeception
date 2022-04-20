@@ -257,6 +257,7 @@
     "wall-top": "widgets/wall-top.json",
     "wall-side": "widgets/wall-side.json",
     "textbutton": "widgets/textbutton.json",
+    "textfield": "widgets/textfield.json",
     "labelbox": "widgets/labelbox.json",
     "menu": "widgets/menu.json",
     "client": "widgets/client.json",

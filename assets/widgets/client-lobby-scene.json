@@ -71,7 +71,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 100 ]
+              "size": [ 450, 100 ]
             },
             "children": {
               "label": {
@@ -79,7 +79,7 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 170, 70 ],
+                    "size": [ 200, 70 ],
                     "text": "NAME:",
                     "halign": "center",
                     "background": [ 239, 235, 227, 179 ]
@@ -95,7 +95,7 @@
                 "data": {
                   "key": "textfield",
                   "variables": {
-                    "size": [ 170, 70 ],
+                    "size": [ 200, 70 ],
                     "text": "runner_id",
                     "halign": "center",
                     "foreground": "#ffffff",

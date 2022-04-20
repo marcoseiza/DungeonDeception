@@ -29,11 +29,11 @@ class ClientLobbyScene : public cugl::Scene2 {
   std::shared_ptr<cugl::NetworkConnection> _network;
 
   /** The number of players label */
-  std::shared_ptr<cugl::scene2::TextField> _player;
+  std::shared_ptr<cugl::scene2::Label> _player;
   /** The game id label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _gameid;
   /** The player name label */
-  std::shared_ptr<cugl::scene2::Label> _name;
+  std::shared_ptr<cugl::scene2::TextField> _name;
 
   /** The serializer used to serialize complex data to send through the network.
    */
