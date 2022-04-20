@@ -26,6 +26,7 @@ void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
   diff.normalize();
   diff.add(_direction);
   diff.scale(enemy->getSpeed());
+
   enemy->move(diff.x, diff.y);
 }
 
@@ -73,7 +74,6 @@ void EnemyController::update(bool is_host, float timestep, std::shared_ptr<Enemy
     enemy->update(timestep);
     return;
   }
-  
   
   float min_distance = std::numeric_limits<float>::max();
   std::shared_ptr<Player> min_player = _players[0];

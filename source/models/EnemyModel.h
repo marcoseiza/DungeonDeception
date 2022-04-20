@@ -351,30 +351,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    */
   void update(float dt) override;
 
-  /**
-   * Promise to change the physics state in the next update call.
-   *
-   * @param enable If the physics object should enabled or disabled.
-   */
-  void promiseToChangePhysics(bool enable) {
-    _promise_to_change_physics = true;
-    _promise_to_enable = enable;
-  }
-
-  /**
-   * If this body has promised to change physics state.
-   *
-   * @return If the body has promised to change physics state.
-   */
-  bool getPromiseToChangePhysics() const { return _promise_to_change_physics; }
-
-  /**
-   * If this body has promised to enable or disable physics.
-   *
-   * @return If this body has promised to enable or disable physics.
-   */
-  bool getPromiseToEnable() const { return _promise_to_enable; }
-
 #pragma mark Graphics
 
   /**

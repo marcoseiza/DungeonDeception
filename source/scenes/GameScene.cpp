@@ -167,7 +167,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
-  _debug_node->setVisible(false);
+  _debug_node->setVisible(true);
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
@@ -376,7 +376,23 @@ void GameScene::update(float timestep) {
 
   updateCamera(timestep);
   updateMillisRemainingIfHost();
+    
+  for (auto room_id_to_update: room_ids_with_players) {
+    auto enemies = _level_controller->getLevelModel()->getRoom(room_id_to_update)->getEnemies();
+    for (auto enemy : enemies) {
+      CULog("before: %s, %s", enemy->getPosition().toString().c_str(), enemy->getLinearVelocity().toString().c_str());
+    }
+  }
+  
   _world->update(timestep);
+  
+  for (auto room_id_to_update: room_ids_with_players) {
+    auto enemies = _level_controller->getLevelModel()->getRoom(room_id_to_update)->getEnemies();
+    for (auto enemy : enemies) {
+      CULog("after: %s, %s", enemy->getPosition().toString().c_str(), enemy->getLinearVelocity().toString().c_str());
+    }
+  }
+
 
   // ===== POST-UPDATE =======
   auto ui_layer = _assets->get<cugl::scene2::SceneNode>("ui-scene");
@@ -432,8 +448,6 @@ void GameScene::update(float timestep) {
       it = enemies.erase(it);
     } else {
       enemy->deleteProjectile(_world, _world_node);
-      if (enemy->getPromiseToChangePhysics())
-        enemy->setEnabled(enemy->getPromiseToEnable());
       ++it;
     }
   }
@@ -523,7 +537,7 @@ void GameScene::sendNetworkInfo() {
           // get enemy info only for the rooms that players are in
           auto room = _level_controller->getLevelModel()->getRoom(room_id);
           for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-            
+                        
             std::shared_ptr<cugl::JsonValue> enemy_info =
                 cugl::JsonValue::allocObject();
 

@@ -33,7 +33,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   setFriction(0.5f);
   setRestitution(0.5f);
   setFixedRotation(true);
-
+  
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
   }
