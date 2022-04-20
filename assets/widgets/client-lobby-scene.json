@@ -43,7 +43,7 @@
         },
         "data": {
           "anchor": [ 0.5, 0.0 ],
-          "size": [ 1000, 670 ]
+          "size": [ 1000, 820 ]
         },
         "children": {
           "title": {
@@ -109,7 +109,7 @@
             },
             "layout": {
               "priority": 2,
-              "padding": [ 0, 25, 0, 0 ]
+              "padding": [ 0, 25, 0, 55 ]
             }
           }
         },
