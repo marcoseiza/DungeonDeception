@@ -64,9 +64,17 @@ bool EnemyController::init(
   return true;
 }
 
-void EnemyController::update(float timestep, std::shared_ptr<EnemyModel> enemy,
+void EnemyController::update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
                              std::vector<std::shared_ptr<Player>> _players,
                              int room_id) {
+  if (!is_host) {
+    // Update enemy & projectiles
+    updateProjectiles(timestep, enemy);
+    enemy->update(timestep);
+    return;
+  }
+  
+  
   float min_distance = std::numeric_limits<float>::max();
   std::shared_ptr<Player> min_player = _players[0];
 

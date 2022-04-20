@@ -368,12 +368,10 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   _my_player->setRoomId(current_room->getKey());
 
-  if (_ishost) {
-    std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
-    for (auto room_id_to_update: room_ids_with_players) {
-      auto room_to_update = _level_controller->getLevelModel()->getRoom(room_id_to_update);
-      updateEnemies(timestep, room_to_update);
-    }
+  std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
+  for (auto room_id_to_update: room_ids_with_players) {
+    auto room_to_update = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+    updateEnemies(timestep, room_to_update);
   }
 
   updateCamera(timestep);
@@ -449,19 +447,19 @@ void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {
   for (std::shared_ptr<EnemyModel>& enemy : room->getEnemies()) {
     switch (enemy->getType()) {
       case EnemyModel::GRUNT: {
-        _grunt_controller->update(timestep, enemy, _players, room_id);
+        _grunt_controller->update(_ishost, timestep, enemy, _players, room_id);
         break;
       }
       case EnemyModel::SHOTGUNNER: {
-        _shotgunner_controller->update(timestep, enemy, _players, room_id);
+        _shotgunner_controller->update(_ishost, timestep, enemy, _players, room_id);
         break;
       }
       case EnemyModel::TANK: {
-        _tank_controller->update(timestep, enemy, _players, room_id);
+        _tank_controller->update(_ishost, timestep, enemy, _players, room_id);
         break;
       }
       case EnemyModel::TURTLE: {
-        _turtle_controller->update(timestep, enemy, _players, room_id);
+        _turtle_controller->update(_ishost, timestep, enemy, _players, room_id);
         break;
       }
     }
@@ -543,6 +541,24 @@ void GameScene::sendNetworkInfo() {
             pos->appendChild(pos_y);
             enemy_info->appendChild(pos);
             pos->setKey("position");
+            
+            std::shared_ptr<cugl::JsonValue> did_shoot =
+                cugl::JsonValue::alloc(static_cast<bool>(enemy->didFireBullet()));
+            enemy_info->appendChild(did_shoot);
+            did_shoot->setKey("did_shoot");
+            
+            std::shared_ptr<cugl::JsonValue> target_pos = cugl::JsonValue::allocArray();
+            std::shared_ptr<cugl::JsonValue> target_pos_x =
+                cugl::JsonValue::alloc(enemy->getFiredBulletDirection().x);
+            std::shared_ptr<cugl::JsonValue> target_pos_y =
+                cugl::JsonValue::alloc(enemy->getFiredBulletDirection().y);
+            target_pos->appendChild(target_pos_x);
+            target_pos->appendChild(target_pos_y);
+            enemy_info->appendChild(target_pos);
+            target_pos->setKey("target_pos");
+            
+            // Make sure bullet is only fired once
+            enemy->clearBulletFiredState();
 
             std::shared_ptr<cugl::JsonValue> enemy_health =
                 cugl::JsonValue::alloc(static_cast<long>(enemy->getHealth()));
@@ -808,10 +824,21 @@ void GameScene::processData(const Sint32& code,
     int enemy_id = enemy->getInt("enemy_id");
     int enemy_health = enemy->getInt("enemy_health");
     int enemy_room = enemy->getInt("enemy_room");
+    
     std::shared_ptr<cugl::JsonValue> enemy_position = enemy->get("position");
     float pos_x = enemy_position->get(0)->asFloat();
     float pos_y = enemy_position->get(1)->asFloat();
-    updateEnemyInfo(enemy_id, enemy_room, enemy_health, pos_x, pos_y);
+    
+    bool did_shoot = enemy->getBool("did_shoot");
+    std::shared_ptr<cugl::JsonValue> target_pos = enemy->get("target_pos");
+    float target_pos_x = target_pos->get(0)->asFloat();
+    float target_pos_y = target_pos->get(1)->asFloat();
+    
+    if (did_shoot) {
+      CULog("did shoot");
+    }
+    
+    updateEnemyInfo(enemy_id, enemy_room, enemy_health, pos_x, pos_y, did_shoot, target_pos_x, target_pos_y);
   } else if (code == 6) {  // Enemy update from a client that damaged an enemy
     std::shared_ptr<cugl::JsonValue> enemy =
         std::get<std::shared_ptr<cugl::JsonValue>>(msg);
@@ -914,9 +941,13 @@ void GameScene::updatePlayerInfo(int player_id, int room_id, float pos_x,
  * @param enemy_health  The updated enemy health.
  * @param pos_x         The updated enemy x position.
  * @param pos_y         The updated enemy y position.
+ * @param did_shoot   Whether the enemy shot.
+ * @param bullet_dir_x  The last shot bullet's x direction
+ * @param bullet_dir_y  The last shot bullet's y direction
  */
 void GameScene::updateEnemyInfo(int enemy_id, int enemy_room, int enemy_health,
-                                float pos_x, float pos_y) {
+                                float pos_x, float pos_y, bool did_shoot,
+                                float target_pos_x, float target_pos_y) {
   std::shared_ptr<RoomModel> room =
       _level_controller->getLevelModel()->getRoom(enemy_room);
 
@@ -924,6 +955,9 @@ void GameScene::updateEnemyInfo(int enemy_id, int enemy_room, int enemy_health,
     if (enemy->getEnemyId() == enemy_id) {
       enemy->setPosition(pos_x, pos_y);
       enemy->setHealth(enemy_health);
+      if (did_shoot) {
+        enemy->addBullet(cugl::Vec2(target_pos_x, target_pos_y));
+      }
       return;
     }
   }

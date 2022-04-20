@@ -89,7 +89,7 @@ class EnemyController {
 #pragma mark Properties
 
   /** Update the enemy. */
-  void update(float timestep, std::shared_ptr<EnemyModel> enemy,
+  void update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
               std::vector<std::shared_ptr<Player>> players, int room_id);
 
   /** Change the enemy state. */

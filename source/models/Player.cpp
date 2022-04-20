@@ -39,6 +39,7 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _hurt_frames = 0;
   _isDead = false;
   _mv_direc = IDLE_LEFT;
+  _room_id = -1;
 
   setDensity(0.01f);
   setFriction(0.0f);

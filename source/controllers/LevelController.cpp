@@ -42,6 +42,9 @@ void LevelController::update(float timestep) {
       enemy->getNode()->setPriority(current->getGridSize().height - row);
 
       for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
+        if (projectile->getNode() == nullptr) { // Not initialized yet
+          continue;
+        }
         float rel_projectile_y = projectile->getBody()->GetPosition().y -
                                  current->getNode()->getPosition().y;
         row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);

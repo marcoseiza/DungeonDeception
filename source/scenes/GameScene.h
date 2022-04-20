@@ -204,13 +204,15 @@ class GameScene : public cugl::Scene2 {
   void updateEnemies(float timestep, std::shared_ptr<RoomModel> room);
   
   /**
-   * Returns an unordered set of all the room ids players are in
+   * Returns an unordered set of all the room ids players are in.
    */
   std::unordered_set<int> getRoomIdsWithPlayers() {
     std::unordered_set<int> room_ids_with_players;
     for (std::shared_ptr<Player> player : _players) {
-      int room_id = _level_controller->getLevelModel()->getRoom(player->getRoomId())->getKey();
-      room_ids_with_players.emplace(room_id);
+      int room_id = player->getRoomId();
+      if (room_id != -1) {
+        room_ids_with_players.emplace(room_id);
+      }
     }
     return room_ids_with_players;
   }
@@ -371,9 +373,13 @@ class GameScene : public cugl::Scene2 {
    * @param enemy_health  The updated enemy health.
    * @param pos_x         The updated enemy x position.
    * @param pos_y         The updated enemy y position.
+   * @param did_shoot   Whether the enemy shot.
+   * @param bullet_dir_x  The last shot bullet's x direction
+   * @param bullet_dir_y  The last shot bullet's y direction
    */
   void updateEnemyInfo(int enemy_id, int enemy_room, int enemy_health,
-                       float pos_x, float pos_y);
+                       float pos_x, float pos_y, bool did_shoot,
+                       float bullet_dir_x, float bullet_dir_y);
 
   /**
    * Returns true if the player quits the game.
