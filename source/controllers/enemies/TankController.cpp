@@ -29,7 +29,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
       enemy->setSensor(true);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      std::uniform_int_distribution<float> dist(0.0f, 50.0f);
+      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
       enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
       enemy->resetSensors();
     } else {
