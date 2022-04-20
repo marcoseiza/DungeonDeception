@@ -189,13 +189,13 @@ void GameApp::updateClientMenuScene(float timestep) {
       _menu.setActive(true);
       _scene = State::MENU;
       break;
-    case ClientMenuScene::Status::JOIN:
+    case ClientMenuScene::Status::WAIT:
       _joingame.setActive(false);
       _joinlobby.setGameId(_joingame.getGameId());
       _joinlobby.setActive(true, _joingame.getConnection());
       _scene = State::CLIENT_LOBBY;
       break;
-    case ClientMenuScene::Status::WAIT:
+    case ClientMenuScene::Status::JOIN:
     case ClientMenuScene::Status::IDLE:
     case ClientMenuScene::Status::START:
       // DO NOTHING
