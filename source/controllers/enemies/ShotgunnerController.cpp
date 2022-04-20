@@ -25,17 +25,15 @@ bool ShotgunnerController::init(
 }
 
 void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
-                                  cugl::Vec2 p) {
+                                        cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
-    enemy->move(0,0);
-    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
-      enemy->_attack_dir = p;
-    }
+    enemy->move(0, 0);
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->addBullet(enemy->_attack_dir);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
+      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
     }
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());

@@ -228,6 +228,16 @@ const getVariables = (type, row) => {
                 "laser-priority": row,
                 "right-pillar-priority": row,
                 "right-pillar-off-priority": row,
+                "positive-edge-1": row - 1,
+                "positive-edge-2": row - 1,
+                "positive-edge-3": row - 1,
+                "positive-edge-4": row - 1,
+                "positive-edge-5": row - 1,
+                "negative-edge-1": row + 1,
+                "negative-edge-2": row + 1,
+                "negative-edge-3": row + 1,
+                "negative-edge-4": row + 1,
+                "negative-edge-5": row + 1,
             };
         case 201: // Door Vertical
             return {
@@ -235,6 +245,16 @@ const getVariables = (type, row) => {
                 "top-pillar-off-priority": row - 1,
                 "bottom-pillar-priority": row + 1,
                 "bottom-pillar-off-priority": row + 1,
+                "positive-edge-1": row + 2,
+                "positive-edge-2": row + 1,
+                "positive-edge-3": row,
+                "positive-edge-4": row - 1,
+                "positive-edge-5": row - 2,
+                "negative-edge-1": row + 2,
+                "negative-edge-2": row + 1,
+                "negative-edge-3": row,
+                "negative-edge-4": row - 1,
+                "negative-edge-5": row - 2,
             };
         default:
             return ({

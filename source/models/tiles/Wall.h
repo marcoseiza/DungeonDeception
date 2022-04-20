@@ -17,6 +17,9 @@ class Wall : public BasicTile {
   /** The shape of the obstacle as defined in scene2 json. */
   cugl::Poly2 _obstacle_shape;
 
+  /** If the wall should not have physics. */
+  bool _init_as_sensor;
+
  public:
   /**
    * Creates an empty scene graph node with the degenerate texture.
@@ -24,7 +27,9 @@ class Wall : public BasicTile {
    * This constructor should never be called directly, as this is an abstract
    * class.
    */
-  Wall() : _obstacle(nullptr), BasicTile() { _classname = "Wall"; }
+  Wall() : _obstacle(nullptr), _init_as_sensor(false), BasicTile() {
+    _classname = "Wall";
+  }
 
   /**
    * Deletes this node, releasing all resources.
@@ -111,6 +116,13 @@ class Wall : public BasicTile {
   std::shared_ptr<cugl::physics2::PolygonObstacle> getObstacle() {
     return _obstacle;
   }
+
+  /**
+   * Set if the wall should initialize physics as sensor.
+   *
+   * @param val If the wall should initialize physics as sensor.
+   */
+  void setInitializeAsSensor(bool val) { _init_as_sensor = val; }
 };
 
 #endif  // MODELS_TILES_WALL_H_

@@ -29,7 +29,8 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
       enemy->setSensor(true);
     }
     if (enemy->getAttackCooldown() <= 0) {
-      enemy->setAttackCooldown(rand() % 50 + ATTACK_COOLDOWN);
+      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
       enemy->resetSensors();
     } else {
       cugl::Vec2 dir = enemy->_attack_dir;

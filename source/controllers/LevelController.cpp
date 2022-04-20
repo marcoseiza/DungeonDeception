@@ -198,6 +198,13 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
     if (door_room_node) {
       door_room_node->initDelegates();
 
+      if (x == 0 || y == 0) {
+        door_room_node->setNegative();
+      } else if (x == room_model->getGridSize().width - 1 ||
+                 y == room_model->getGridSize().height - 1) {
+        door_room_node->setPositive();
+      }
+
       std::string door_sensor_name = door_name + "-door";
       _world->addObstacle(door_room_node->initBox2d(door_sensor_name));
 
@@ -238,6 +245,13 @@ void LevelController::coverUnusedDoors(
     if (door_room_node) {
       door_room_node->initDelegates();
       door_room_node->setState(Door::State::UNUSED);
+
+      if (x == 0 || y == 0) {
+        door_room_node->setNegative();
+      } else if (x == room_model->getGridSize().width - 1 ||
+                 y == room_model->getGridSize().height - 1) {
+        door_room_node->setPositive();
+      }
     }
   }
 }

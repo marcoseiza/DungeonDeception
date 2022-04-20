@@ -40,6 +40,7 @@ std::shared_ptr<cugl::physics2::PolygonObstacle> Wall::initBox2d() {
   cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
 
   if (_obstacle != nullptr) {
+    _obstacle->setSensor(_init_as_sensor);
     _obstacle->setPosition(pos);
     _obstacle->setName(_classname.c_str());
 
