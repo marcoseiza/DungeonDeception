@@ -6,7 +6,7 @@ Dash::Dash()
       _button(nullptr),
       _dash_frames(12),
       _dash_frame_counter(0),
-      _dash_cooldown(80),
+      _dash_cooldown(60),
       _dash_cooldown_counter(-1) {}
 
 bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
