@@ -28,6 +28,9 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                         cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     enemy->move(0, 0);
+    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+      enemy->_attack_dir = p;
+    }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->addBullet(enemy->_attack_dir);
     }
