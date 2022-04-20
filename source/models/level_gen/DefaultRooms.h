@@ -98,7 +98,9 @@ const RoomConfig kStandard9 = {
     "rooms/room-9-scene.json"};
 
 /** A list of all the regular rooms. */
-const std::vector<RoomConfig> kRegularRooms{kStandard9};
+const std::vector<RoomConfig> kRegularRooms{kStandard1, kStandard2, kStandard3,
+                                            kStandard4, kStandard5, kStandard6,
+                                            kStandard7, kStandard8, kStandard9};
 
 };  // namespace default_rooms
 
