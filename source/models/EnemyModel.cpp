@@ -22,7 +22,6 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _enemy_node = nullptr;
   _health = 100;
   _facing_left = false;
-  _speed = .05f;
   _atc_timer = 0;
   _cta_timer = 0;
 
@@ -36,7 +35,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
   }
-  
+
   // Initialize the polygon nodes
   for (int i = 0; i < 16; i++) {
     auto p = cugl::scene2::PolygonNode::alloc();
@@ -95,21 +94,25 @@ void EnemyModel::deleteAllProjectiles(
 void EnemyModel::setType(std::string type) {
   if (type == "grunt") {
     _enemy_type = GRUNT;
+    _speed = 0.7;
   } else if (type == "shotgunner") {
     _enemy_type = SHOTGUNNER;
+    _speed = 0.6;
   } else if (type == "tank") {
     _enemy_type = TANK;
+    _speed = 0.6;
   } else if (type == "turtle") {
     _enemy_type = TURTLE;
+    _speed = 0;
   }
 }
 
 #pragma mark Animation & Drawing
 
-void EnemyModel::setNode(
-    const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+void EnemyModel::setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node,
+                         std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
   _enemy_node = node;
-  
+
   // Add the ray cast weights to the debug node.
   for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
     debug_node->addChild(poly);
@@ -196,6 +199,12 @@ void EnemyModel::releaseFixtures() {
   }
 }
 
+void EnemyModel::resetSensors() {
+  setSensor(false);
+  _hitbox_sensor->SetSensor(true);
+  _damage_sensor->SetSensor(true);
+}
+
 void EnemyModel::update(float delta) {
   CapsuleObstacle::update(delta);
   if (_enemy_node != nullptr) {
@@ -213,13 +222,13 @@ void EnemyModel::update(float delta) {
 #pragma mark Movement
 
 void EnemyModel::move(float forwardX, float forwardY) {
-  setVX(1000 * forwardX);
-  setVY(1000 * forwardY);
+  setVX(80 * forwardX);
+  setVY(80 * forwardY);
 
   if (forwardX == 0) {
     setVX(0);
   } else {
-//    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
+    //    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
   }
 
   if (forwardY == 0) setVY(0);
