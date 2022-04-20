@@ -1,5 +1,7 @@
 #include "EnemyModel.h"
 
+#include "../controllers/CollisionFiltering.h"
+
 #define WIDTH 24.0f
 #define HEIGHT 48.0f
 
@@ -32,6 +34,15 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   setRestitution(0.5f);
   setFixedRotation(true);
 
+  _fixture.filter.categoryBits = CATEGORY_ENEMY;
+  _fixture.filter.maskBits = MASK_ENEMY;
+
+  _hitbox_sensor_def.filter.categoryBits = CATEGORY_ENEMY_HITBOX;
+  _hitbox_sensor_def.filter.maskBits = MASK_ENEMY_HITBOX;
+
+  _damage_sensor_def.filter.categoryBits = CATEGORY_ENEMY_DAMAGE;
+  _damage_sensor_def.filter.maskBits = MASK_ENEMY_DAMAGE;
+
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
   }
@@ -45,8 +56,8 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   return true;
 }
 
-void EnemyModel::takeDamage() {
-  reduceHealth(20);
+void EnemyModel::takeDamage(float amount) {
+  reduceHealth(amount);
   _enemy_node->setColor(cugl::Color4::RED);
   _damage_count = 10;
 }
@@ -132,11 +143,10 @@ void EnemyModel::createFixtures() {
   CapsuleObstacle::createFixtures();
 
   if (_hitbox_sensor == nullptr) {
-    b2FixtureDef sensorDef;
-    sensorDef.density = 0.0f;
-    sensorDef.isSensor = true;
+    _hitbox_sensor_def.density = 0.0f;
+    _hitbox_sensor_def.isSensor = true;
     _hitbox_sensor_name = std::make_shared<std::string>("enemy_hitbox");
-    sensorDef.userData.pointer =
+    _hitbox_sensor_def.userData.pointer =
         reinterpret_cast<uintptr_t>(_hitbox_sensor_name.get());
 
     // Sensor dimensions
@@ -153,16 +163,15 @@ void EnemyModel::createFixtures() {
     b2PolygonShape sensorShape;
     sensorShape.Set(corners, 4);
 
-    sensorDef.shape = &sensorShape;
-    _hitbox_sensor = _body->CreateFixture(&sensorDef);
+    _hitbox_sensor_def.shape = &sensorShape;
+    _hitbox_sensor = _body->CreateFixture(&_hitbox_sensor_def);
   }
 
   if (_damage_sensor == nullptr) {
-    b2FixtureDef sensorDef;
-    sensorDef.density = 0.0f;
-    sensorDef.isSensor = true;
+    _damage_sensor_def.density = 0.0f;
+    _damage_sensor_def.isSensor = true;
     _damage_sensor_name = std::make_shared<std::string>("enemy_damage");
-    sensorDef.userData.pointer =
+    _damage_sensor_def.userData.pointer =
         reinterpret_cast<uintptr_t>(_damage_sensor_name.get());
 
     // Sensor dimensions
@@ -179,8 +188,8 @@ void EnemyModel::createFixtures() {
     b2PolygonShape sensorShape;
     sensorShape.Set(corners, 4);
 
-    sensorDef.shape = &sensorShape;
-    _damage_sensor = _body->CreateFixture(&sensorDef);
+    _damage_sensor_def.shape = &sensorShape;
+    _damage_sensor = _body->CreateFixture(&_damage_sensor_def);
   }
 }
 

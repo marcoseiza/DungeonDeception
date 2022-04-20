@@ -26,9 +26,6 @@ class GameScene : public cugl::Scene2 {
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
 
-  /** The sword. */
-  std::shared_ptr<Sword> _sword;
-
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
@@ -308,8 +305,9 @@ class GameScene : public cugl::Scene2 {
    *
    * @param id the enemy that was hit
    * @param room_id the room the enemy is in
+   * @param amount the amount of damage taken
    */
-  void sendEnemyHitNetworkInfo(int id, int room_id);
+  void sendEnemyHitNetworkInfo(int id, int room_id, float amount = 20);
 
   /**
    * Broadcast a player being added to a terminal to the host.
