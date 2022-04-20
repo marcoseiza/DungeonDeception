@@ -214,6 +214,7 @@
     <ClInclude Include="..\..\source\models\tiles\Door.h" />
     <ClInclude Include="..\..\source\models\tiles\Terminal.h" />
     <ClInclude Include="..\..\source\models\tiles\TerminalSensor.h" />
+    <ClInclude Include="..\..\source\scenes\ClientLobbyScene.h" />
     <ClInclude Include="..\..\source\models\tiles\TileHelper.h" />
     <ClInclude Include="..\..\source\scenes\GameScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingLevelScene.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="..\..\source\models\tiles\Door.cpp" />
     <ClCompile Include="..\..\source\models\tiles\Terminal.cpp" />
     <ClCompile Include="..\..\source\models\tiles\TerminalSensor.cpp" />
+    <ClCompile Include="..\..\source\scenes\ClientLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\GameScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingLevelScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingScene.cpp" />

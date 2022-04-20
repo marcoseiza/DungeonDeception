@@ -58,9 +58,6 @@ class PeerScene : public cugl::Scene2 {
   /** The map seed. */
   Uint64 _seed;
 
-  /** If the user is a betrayer (true) or cooperator (false). */
-  bool _is_betrayer;
-
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -119,18 +116,19 @@ class PeerScene : public cugl::Scene2 {
   Uint64 getSeed() { return _seed; }
 
   /**
-   * Returns if the scene represents a host or betrayer
-   * @return The role of the player, true if betrayer, false otherwise.
-   */
-  bool isBetrayer() { return _is_betrayer; }
-
-  /**
    * Returns the scene status. Any value other than WAIT will transition to
    * a new scene.
    *
    * @return the scene status
    */
   Status getStatus() const { return _status; }
+
+  /**
+   * Returns the text representing the game_id
+   *
+   * @return the game_id in the label
+   */
+  std::string getGameId() const { return _gameid->getText(); }
 
   /**
    * The method called to update the scene by constantly talking to the server

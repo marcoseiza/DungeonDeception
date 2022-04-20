@@ -102,4 +102,4 @@ class ClientMenuScene : public PeerScene {
   virtual bool checkConnection() override;
 };
 
-#endif /* SCENES_CLIENT_SCENE_H_ */
+#endif /* SCENES_CLIENT_MENU_SCENE_H_ */

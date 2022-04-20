@@ -1,0 +1,235 @@
+{
+  "contents": {
+    "type": "Image",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "texture": "background"
+    },
+    "children": {
+      "back": {
+        "type": "Button",
+        "data": {
+          "upnode": "up",
+          "anchor": [ 0.0, 0.0 ],
+          "size": [ 20, 20 ]
+        },
+        "children": {
+          "up": {
+            "type": "Image",
+            "data": {
+              "texture": "left",
+              "scale": 4,
+              "color": "#222222"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "y_offset": -80,
+          "x_offset": 45,
+          "absolute": true
+        }
+      },
+      "center": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 820 ]
+        },
+        "children": {
+          "title": {
+            "type": "Widget",
+            "data": {
+              "key": "menutitle",
+              "variables": {
+                "text": "WAITING"
+              },
+              "anchor": [ 0.5, 1.0 ]
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "middle"
+            }
+          },
+          "name": {
+            "type": "Node",
+            "format": {
+              "type": "Float",
+              "orientation": "horizontal",
+              "x_alignment": "center",
+              "y_alignment": "middle"
+            },
+            "data": {
+              "anchor": [ 0.5, 0.5 ],
+              "size": [ 370, 100 ]
+            },
+            "children": {
+              "label": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "NAME:",
+                    "halign": "center",
+                    "background": [ 239, 235, 227, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 1,
+                  "padding": [ 0, 0, 25, 0 ]
+                }
+              },
+              "field": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "runner_id",
+                    "halign": "center",
+                    "foreground": "#ffffff",
+                    "background": [ 70, 70, 70, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 2
+                }
+              }
+            },
+            "layout": {
+              "priority": 2,
+              "padding": [ 0, 25, 0, 55 ]
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom"
+        }
+      },
+      "id": {
+        "type": "Label",
+        "data": {
+          "size": [ 300, 70 ],
+          "text": "GAME ID: ",
+          "halign": "center",
+          "font": "pixelmix",
+          "valign": "middle",
+          "foreground": "#ffffff"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "bottom",
+          "absolute": true,
+          "x_offset": 250,
+          "y_offset": 80
+        }
+      },
+      "game": {
+        "type": "Label",
+        "data": {
+          "size": [ 300, 70 ],
+          "text": "",
+          "halign": "center",
+          "font": "pixelmix",
+          "valign": "middle",
+          "foreground": "#ffffff"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "bottom",
+          "absolute": true,
+          "x_offset": 245,
+          "y_offset": 40
+        }
+      },
+      "countdown": {
+        "type": "Label",
+        "data": {
+          "size": [ 170, 70 ],
+          "text": "WAITING",
+          "halign": "center",
+          "font": "pixelmix",
+          "valign": "middle",
+          "foreground": "#ffffff"
+        },
+        "layout": {
+          "priority": 2,
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "absolute": true,
+          "x_offset": -85,
+          "y_offset": 60
+        }
+      },
+      "players": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "horizontal",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.5 ],
+          "size": [ 300, 70 ]
+        },
+        "children": {
+          "icon": {
+            "type": "Image",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "texture": "player-cropped",
+              "anchor": [ 0.5, 0.5 ],
+              "scale": 1.5
+            },
+            "layout": {
+              "x_anchor": "left",
+              "y_anchor": "top",
+              "priority": 1
+            }
+          },
+          "field": {
+            "type": "Label",
+            "data": {
+              "font": "pixelmix",
+              "size": [ 40, 70 ],
+              "text": ": 1",
+              "halign": "center",
+              "valign": "middle",
+              "foreground": "#ffffff"
+            },
+            "layout": {
+              "priority": 2,
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            }
+          }
+        },
+        "layout": {
+          "priority": 3,
+          "x_anchor": "right",
+          "y_anchor": "bottom",
+          "absolute": true,
+          "y_offset": 100,
+          "x_offset": -350
+        }
+      }
+    }
+  }
+}

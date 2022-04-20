@@ -42,6 +42,7 @@ void GameApp::onShutdown() {
   _gameplay.dispose();
   _hostgame.dispose();
   _joingame.dispose();
+  _joinlobby.dispose();
   _menu.dispose();
   _level_loading.dispose();
   _assets = nullptr;
@@ -70,6 +71,9 @@ void GameApp::update(float timestep) {
     case CLIENT:
       updateClientMenuScene(timestep);
       break;
+    case CLIENT_LOBBY:
+      updateClientLobbyScene(timestep);
+      break;
     case LEVEL_LOADING:
       updateLevelLoadingScene(timestep);
       break;
@@ -93,6 +97,9 @@ void GameApp::draw() {
     case CLIENT:
       _joingame.render(_batch);
       break;
+    case CLIENT_LOBBY:
+      _joinlobby.render(_batch);
+      break;
     case LEVEL_LOADING:
       _level_loading.render(_batch);
       break;
@@ -102,14 +109,6 @@ void GameApp::draw() {
   }
 }
 
-/**
- * Individualized update method for the loading scene.
- *
- * This method keeps the primary {@link #update} from being a mess of switch
- * statements. It also handles the transition logic from the loading scene.
- *
- * @param timestep  The amount of time (in seconds) since the last frame
- */
 void GameApp::updateLoadingScene(float timestep) {
   if (!_loaded && _loading.isActive()) {
     _loading.update(timestep);
@@ -119,23 +118,17 @@ void GameApp::updateLoadingScene(float timestep) {
     _menu.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
+    _joinlobby.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
     _joingame.setActive(false);
+    _joinlobby.setActive(false, nullptr);
     _gameplay.setActive(false);
     _scene = State::MENU;
     _loaded = true;
   }
 }
 
-/**
- * Individualized update method for the menu scene.
- *
- * This method keeps the primary {@link #update} from being a mess of switch
- * statements. It also handles the transition logic from the menu scene.
- *
- * @param timestep  The amount of time (in seconds) since the last frame
- */
 void GameApp::updateMenuScene(float timestep) {
   _menu.update(timestep);
   switch (_menu.getChoice()) {
@@ -149,20 +142,18 @@ void GameApp::updateMenuScene(float timestep) {
       _joingame.setActive(true);
       _scene = State::CLIENT;
       break;
+    case MenuScene::Choice::JOIN_LOBBY:
+      // TODO does menu scene ever make this choice?
+      _joingame.setActive(false);
+      _joinlobby.setActive(true, _joingame.getConnection());
+      _scene = State::CLIENT_LOBBY;
+      break;
     case MenuScene::Choice::NONE:
       // DO NOTHING
       break;
   }
 }
 
-/**
- * Individualized update method for the host scene.
- *
- * This method keeps the primary {@link #update} from being a mess of switch
- * statements. It also handles the transition logic from the host scene.
- *
- * @param timestep  The amount of time (in seconds) since the last frame
- */
 void GameApp::updateHostMenuScene(float timestep) {
   _hostgame.update(timestep);
   switch (_hostgame.getStatus()) {
@@ -189,15 +180,8 @@ void GameApp::updateHostMenuScene(float timestep) {
   }
 }
 
-/**
- * Individualized update method for the client scene.
- *
- * This method keeps the primary {@link #update} from being a mess of switch
- * statements. It also handles the transition logic from the client scene.
- *
- * @param timestep  The amount of time (in seconds) since the last frame
- */
 void GameApp::updateClientMenuScene(float timestep) {
+  // TODO client menu scene should not have start status, etc.
   _joingame.update(timestep);
   switch (_joingame.getStatus()) {
     case ClientMenuScene::Status::ABORT:
@@ -205,10 +189,32 @@ void GameApp::updateClientMenuScene(float timestep) {
       _menu.setActive(true);
       _scene = State::MENU;
       break;
-    case ClientMenuScene::Status::START:
+    case ClientMenuScene::Status::WAIT:
       _joingame.setActive(false);
-      _menu.setActive(false);
-      _level_loading.init(_assets, _joingame.getSeed());
+      _joinlobby.setGameId(_joingame.getGameId());
+      _joinlobby.setActive(true, _joingame.getConnection());
+      _scene = State::CLIENT_LOBBY;
+      break;
+    case ClientMenuScene::Status::JOIN:
+    case ClientMenuScene::Status::IDLE:
+    case ClientMenuScene::Status::START:
+      // DO NOTHING
+      break;
+  }
+}
+
+void GameApp::updateClientLobbyScene(float timestep) {
+  _joinlobby.update(timestep);
+  switch (_joinlobby.getStatus()) {
+    case ClientLobbyScene::Status::ABORT:
+      _joinlobby.setActive(false, nullptr);
+      _joingame.setActive(true);
+      _scene = State::CLIENT;
+      break;
+    case ClientLobbyScene::Status::START:
+      _joinlobby.setActive(false, nullptr);
+      _joingame.setActive(false);
+      _level_loading.init(_assets, _joinlobby.getSeed());
       _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership
@@ -216,9 +222,7 @@ void GameApp::updateClientMenuScene(float timestep) {
       _hostgame.disconnect();
       _level_loading.setHost(false);
       break;
-    case ClientMenuScene::Status::WAIT:
-    case ClientMenuScene::Status::IDLE:
-    case ClientMenuScene::Status::JOIN:
+    case ClientLobbyScene::Status::WAIT:
       // DO NOTHING
       break;
   }
@@ -251,7 +255,7 @@ void GameApp::updateLevelLoadingScene(float timestep) {
                    _hostgame.isBetrayer());
   } else {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _joingame.isBetrayer());
+                   _joinlobby.isBetrayer());
   }
 
   _level_loading.setActive(false);

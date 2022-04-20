@@ -12,6 +12,10 @@
  * This class is an implementation of PeerScene.
  */
 class HostMenuScene : public PeerScene {
+ protected:
+  /** If the user is a betrayer (true) or cooperator (false). */
+  bool _is_betrayer;
+
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -45,6 +49,12 @@ class HostMenuScene : public PeerScene {
    * @param value whether the scene is currently active
    */
   virtual void setActive(bool value) override;
+
+  /**
+   * Returns if the scene represents a host or betrayer
+   * @return The role of the player, true if betrayer, false otherwise.
+   */
+  bool isBetrayer() { return _is_betrayer; }
 
   /**
    * The method called to update the scene.
