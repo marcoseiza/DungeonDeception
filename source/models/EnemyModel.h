@@ -388,13 +388,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-<<<<<<< HEAD
   void setNode(const std::shared_ptr<cugl::Texture>& texture,
                std::shared_ptr<cugl::scene2::SceneNode> debug_node);
-=======
-  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node,
-               std::shared_ptr<cugl::scene2::SceneNode> debug_node);
->>>>>>> main
 
   /**
    * Gets the enemy scene graph node.

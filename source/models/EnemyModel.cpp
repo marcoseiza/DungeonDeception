@@ -49,7 +49,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _stunned_timer = 0;
 
   _attack_cooldown = 0;
-  
+
   _did_fire_bullet = false;
   _fired_bullet_direction = cugl::Vec2::ZERO;
 
@@ -146,11 +146,12 @@ void EnemyModel::setType(std::string type) {
 
 #pragma mark Animation & Drawing
 
-void EnemyModel::setNode(
-    const std::shared_ptr<cugl::Texture>& texture, std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
-  switch(_enemy_type) {
+void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
+                         std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+  switch (_enemy_type) {
     case SHOTGUNNER: {
-      _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(cugl::scene2::OrderedNode::Order::ASCEND);
+      _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(
+          cugl::scene2::OrderedNode::Order::ASCEND);
       auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
       enemy_node->setTag(0);
       enemy_node->setPriority(0);
@@ -179,7 +180,7 @@ void EnemyModel::setNode(
       break;
     }
   }
-  
+
   // Add the ray cast weights to the debug node.
   for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
     debug_node->addChild(poly);
@@ -334,6 +335,6 @@ void EnemyModel::setFacingLeft(bool facing_left) {
   // flip texture if direction has changed
   if (_facing_left != facing_left) {
     _facing_left = facing_left;
-//    _enemy_node->flipHorizontal(_facing_left);
+    //    _enemy_node->flipHorizontal(_facing_left);
   }
 }
