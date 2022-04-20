@@ -48,6 +48,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The enemy type of this enemy. */
   EnemyType _enemy_type;
 
+  /** The size of the enemy. */
+  cugl::Vec2 _size;
+
   /** Enemy unique id. */
   int _id;
 
@@ -105,10 +108,10 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** If the promise to change physics state should enable the body or
    * disable it */
   bool _promise_to_enable;
-  
+
   /** If the enemy fired a bullet this update step */
   bool _did_fire_bullet;
-  
+
   /** The direction of the bullet fired (if any) */
   cugl::Vec2 _fired_bullet_direction;
 
@@ -134,7 +137,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Knockback direction. */
   cugl::Vec2 _knockback_dir;
-  
+
   /** When attacking, direction to attack in. */
   cugl::Vec2 _attack_dir;
 
@@ -268,7 +271,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return whether the enemy fires a bullet.
    */
   float didFireBullet() const { return _did_fire_bullet; }
-  
+
   /**
    * Resets info about whether there was a bullet fired.
    */
@@ -276,14 +279,14 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     _did_fire_bullet = false;
     _fired_bullet_direction = cugl::Vec2::ZERO;
   }
-  
+
   /**
    * Returns the direction of the most recently fired bullet.
    *
    * @return the bullet direction.
    */
   cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
-  
+
   /**
    * Add a bullet.
    *
@@ -340,7 +343,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return The enemy type.
    */
   EnemyType getType() { return _enemy_type; }
-  
+
   /**
    * Resets the sensors of the enemy.
    */
@@ -415,20 +418,19 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    */
   void setFacingLeft(bool facing_left);
 
-   /**
+  /**
    * Knocks back the enemy.
    */
   void knockback(int moveDir);
 
-   /**
+  /**
    * Returns whether or not the enemy is knocked back.
    */
   bool isKnockbacked() { return _isKnockbacked; };
 
-   /**
+  /**
    * Sets the knockbacked state of the enemy.
    */
   void setKnockbacked(bool isKnockbacked) { _isKnockbacked = isKnockbacked; };
-
 };
 #endif /* ENEMY_MODEL_H */

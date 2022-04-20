@@ -2,8 +2,14 @@
 
 #include "../controllers/CollisionFiltering.h"
 
-#define WIDTH 24.0f
-#define HEIGHT 48.0f
+#define WIDTH_GRUNT 24.0f
+#define HEIGHT_GRUNT 48.0f
+#define WIDTH_TANK 24.0f
+#define HEIGHT_TANK 48.0f
+#define WIDTH_SHOTGUNNER 24.0f
+#define HEIGHT_SHOTGUNNER 48.0f
+#define WIDTH_TURTLE 40.0f
+#define HEIGHT_TURTLE 35.0f
 
 #define HEIGHT_SHRINK 0.3f
 
@@ -13,13 +19,26 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   setType(type);
 
   cugl::Vec2 pos_ = pos;
-  cugl::Size size_ = cugl::Size(WIDTH, HEIGHT);
 
-  size_.height *= HEIGHT_SHRINK;
-  _offset_from_center.y = HEIGHT / 2.0f - size_.height / 2.0f;
+  switch (_enemy_type) {
+    case GRUNT:
+      _size.set(WIDTH_GRUNT, HEIGHT_GRUNT);
+      break;
+    case TANK:
+      _size.set(WIDTH_TANK, HEIGHT_TANK);
+      break;
+    case SHOTGUNNER:
+      _size.set(WIDTH_SHOTGUNNER, HEIGHT_SHOTGUNNER);
+      break;
+    case TURTLE:
+      _size.set(WIDTH_TURTLE, HEIGHT_TURTLE);
+      break;
+  }
+
+  _offset_from_center.y = _size.y / 2.0f * (1 - HEIGHT_SHRINK / 2.0f);
   pos_ -= _offset_from_center;
 
-  CapsuleObstacle::init(pos_, size_);
+  CapsuleObstacle::init(pos_, _size);
 
   _enemy_node = nullptr;
   _health = 100;
@@ -159,13 +178,13 @@ void EnemyModel::createFixtures() {
     // Sensor dimensions
     b2Vec2 corners[4];
     corners[0].x = -CapsuleObstacle::getWidth() / 2.0f;
-    corners[0].y = HEIGHT;
+    corners[0].y = _size.y;
     corners[1].x = -CapsuleObstacle::getWidth() / 2.0f;
-    corners[1].y = -HEIGHT / 2.0f;
+    corners[1].y = -_size.y / 2.0f;
     corners[2].x = CapsuleObstacle::getWidth() / 2.0f;
-    corners[2].y = -HEIGHT / 2.0f;
+    corners[2].y = -_size.y / 2.0f;
     corners[3].x = CapsuleObstacle::getWidth() / 2.0f;
-    corners[3].y = HEIGHT;
+    corners[3].y = _size.y;
 
     b2PolygonShape sensorShape;
     sensorShape.Set(corners, 4);

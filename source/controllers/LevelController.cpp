@@ -260,6 +260,7 @@ void LevelController::instantiateEnemies(
   // Initialize enemies in room.
   for (std::shared_ptr<cugl::scene2::SceneNode> enemy_node :
        room_model->getNode()->getChildByName("enemies")->getChildren()) {
+    enemy_node = enemy_node->getChildByName("enemy");
     std::string enemy_type = enemy_node->getType();
     auto enemy_texture = _assets->get<cugl::Texture>(enemy_type);
     std::shared_ptr<EnemyModel> enemy = EnemyModel::alloc(

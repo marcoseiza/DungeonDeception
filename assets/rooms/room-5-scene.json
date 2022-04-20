@@ -4144,48 +4144,218 @@
       },
       "children": {
         "enemy-(6.084073893229166-12.935555691189236)-0": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 6.084073893229166,
-            "y_index": 12.935555691189236,
+            "x_index": 6,
+            "y_index": 12,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.08407389322916625,
+                "y_offset": 0.9355556911892364
+              }
+            }
           }
         },
         "enemy-(6.238888888888889-10.711111111111112)-1": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 6.238888888888889,
-            "y_index": 10.711111111111112,
+            "x_index": 6,
+            "y_index": 10,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.23888888888888893,
+                "y_offset": 0.7111111111111121
+              }
+            }
           }
         },
         "enemy-(9.867035590277778-10.098518880208333)-2": {
-          "type": "Turtle",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 9.867035590277778,
-            "y_index": 10.098518880208333,
+            "x_index": 9,
+            "y_index": 10,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Turtle",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.8670355902777782,
+                "y_offset": 0.09851888020833321
+              }
+            }
           }
         },
         "enemy-(10.256667751736112-6.143703884548611)-3": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 10.256667751736112,
-            "y_index": 6.143703884548611,
+            "x_index": 10,
+            "y_index": 6,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2566677517361118,
+                "y_offset": 0.14370388454861072
+              }
+            }
           }
         },
         "enemy-(11.589629448784722-6.832222493489583)-4": {
-          "type": "Tank",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 11.589629448784722,
-            "y_index": 6.832222493489583,
+            "x_index": 11,
+            "y_index": 6,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Tank",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.5896294487847218,
+                "y_offset": 0.8322224934895832
+              }
+            }
           }
         }
       }
