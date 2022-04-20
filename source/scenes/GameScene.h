@@ -190,11 +190,23 @@ class GameScene : public cugl::Scene2 {
    * This method serves as a helper to updating all the enemies
    *
    * @param timestep The amount of time (in seconds) since the last frame.
-   * @param current_room The current room the player is in.
-   * @param room_id The room id of the room.
+   * @param room The room to update the enemies in.
    */
-  void updateEnemies(float timestep, std::shared_ptr<RoomModel> current_room,
-                     int room_id);
+  void updateEnemies(float timestep, std::shared_ptr<RoomModel> room);
+  
+  /**
+   * Returns an unordered set of all the room ids players are in.
+   */
+  std::unordered_set<int> getRoomIdsWithPlayers() {
+    std::unordered_set<int> room_ids_with_players;
+    for (std::shared_ptr<Player> player : _player_controller->getPlayerList()) {
+      int room_id = player->getRoomId();
+      if (room_id != -1) {
+        room_ids_with_players.emplace(room_id);
+      }
+    }
+    return room_ids_with_players;
+  }
 
   /**
    * Draws all this scene to the given SpriteBatch.
@@ -353,9 +365,13 @@ class GameScene : public cugl::Scene2 {
    * @param enemy_health  The updated enemy health.
    * @param pos_x         The updated enemy x position.
    * @param pos_y         The updated enemy y position.
+   * @param did_shoot   Whether the enemy shot.
+   * @param bullet_dir_x  The last shot bullet's x direction
+   * @param bullet_dir_y  The last shot bullet's y direction
    */
   void updateEnemyInfo(int enemy_id, int enemy_room, int enemy_health,
-                       float pos_x, float pos_y);
+                       float pos_x, float pos_y, bool did_shoot,
+                       float bullet_dir_x, float bullet_dir_y);
 
   /**
    * Returns true if the player quits the game.

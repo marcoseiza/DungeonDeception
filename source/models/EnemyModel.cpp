@@ -30,6 +30,9 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _stunned_timer = 0;
 
   _attack_cooldown = 0;
+  
+  _did_fire_bullet = false;
+  _fired_bullet_direction = cugl::Vec2::ZERO;
 
   setDensity(0.5f);
   setFriction(0.5f);
@@ -65,6 +68,8 @@ void EnemyModel::takeDamage(float amount) {
 }
 
 void EnemyModel::addBullet(const cugl::Vec2 p) {
+  _did_fire_bullet = true;
+  _fired_bullet_direction = p;
   cugl::Vec2 diff = p - getPosition();
   auto bullet = Projectile::alloc(
       cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),

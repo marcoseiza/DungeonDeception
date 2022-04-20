@@ -105,6 +105,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** If the promise to change physics state should enable the body or
    * disable it */
   bool _promise_to_enable;
+  
+  /** If the enemy fired a bullet this update step */
+  bool _did_fire_bullet;
+  
+  /** The direction of the bullet fired (if any) */
+  cugl::Vec2 _fired_bullet_direction;
 
  public:
   /** The set of polygon nodes corresponding to the weights for the direction of
@@ -257,6 +263,28 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   float getSpeed() const { return _speed; }
 
   /**
+   * Returns whether the enemy fired a bullet.
+   *
+   * @return whether the enemy fires a bullet.
+   */
+  float didFireBullet() const { return _did_fire_bullet; }
+  
+  /**
+   * Resets info about whether there was a bullet fired.
+   */
+  void clearBulletFiredState() {
+    _did_fire_bullet = false;
+    _fired_bullet_direction = cugl::Vec2::ZERO;
+  }
+  
+  /**
+   * Returns the direction of the most recently fired bullet.
+   *
+   * @return the bullet direction.
+   */
+  cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
+  
+  /**
    * Add a bullet.
    *
    * @param p the position of the bullet to spawn in.
@@ -346,30 +374,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param delta Number of seconds since last animation frame
    */
   void update(float dt) override;
-
-  /**
-   * Promise to change the physics state in the next update call.
-   *
-   * @param enable If the physics object should enabled or disabled.
-   */
-  void promiseToChangePhysics(bool enable) {
-    _promise_to_change_physics = true;
-    _promise_to_enable = enable;
-  }
-
-  /**
-   * If this body has promised to change physics state.
-   *
-   * @return If the body has promised to change physics state.
-   */
-  bool getPromiseToChangePhysics() const { return _promise_to_change_physics; }
-
-  /**
-   * If this body has promised to enable or disable physics.
-   *
-   * @return If this body has promised to enable or disable physics.
-   */
-  bool getPromiseToEnable() const { return _promise_to_enable; }
 
 #pragma mark Graphics
 
