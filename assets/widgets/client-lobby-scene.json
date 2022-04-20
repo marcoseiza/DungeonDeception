@@ -118,7 +118,7 @@
           "y_anchor": "bottom"
         }
       },
-      "game": {
+      "id": {
         "type": "Label",
         "data": {
           "size": [ 300, 70 ],
@@ -134,7 +134,26 @@
           "y_anchor": "bottom",
           "absolute": true,
           "x_offset": 250,
-          "y_offset": 60
+          "y_offset": 80
+        }
+      },
+      "game": {
+        "type": "Label",
+        "data": {
+          "size": [ 300, 70 ],
+          "text": "",
+          "halign": "center",
+          "font": "pixelmix",
+          "valign": "middle",
+          "foreground": "#ffffff"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "bottom",
+          "absolute": true,
+          "x_offset": 245,
+          "y_offset": 40
         }
       },
       "countdown": {

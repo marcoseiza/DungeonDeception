@@ -28,12 +28,13 @@ class ClientLobbyScene : public cugl::Scene2 {
   /** The network connection (as made by this scene) */
   std::shared_ptr<cugl::NetworkConnection> _network;
 
+  /** The number of players label */
   std::shared_ptr<cugl::scene2::Label> _player;
   /** The game id label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _gameid;
+  /** The player name label */
+  std::shared_ptr<cugl::scene2::Label> _name;
 
-  /** The network configuration */
-  cugl::NetworkConnection::ConnectionConfig _config;
   /** The serializer used to serialize complex data to send through the network.
    */
   cugl::NetworkSerializer _serializer;
@@ -95,7 +96,7 @@ class ClientLobbyScene : public cugl::Scene2 {
    *
    * @param id the game id
    */
-  virtual void setGameId(string id) { _gameid->setText("GAME ID: " + id); };
+  virtual void setGameId(string id) { _gameid->setText(id); };
 
   /**
    * The method called to update the scene.
