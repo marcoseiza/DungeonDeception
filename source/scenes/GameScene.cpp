@@ -834,10 +834,6 @@ void GameScene::processData(const Sint32& code,
     float target_pos_x = target_pos->get(0)->asFloat();
     float target_pos_y = target_pos->get(1)->asFloat();
     
-    if (did_shoot) {
-      CULog("did shoot");
-    }
-    
     updateEnemyInfo(enemy_id, enemy_room, enemy_health, pos_x, pos_y, did_shoot, target_pos_x, target_pos_y);
   } else if (code == 6) {  // Enemy update from a client that damaged an enemy
     std::shared_ptr<cugl::JsonValue> enemy =
