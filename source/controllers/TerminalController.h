@@ -51,7 +51,10 @@ class TerminalController : public Controller {
   /** The number of players required for this terminal. */
   int _num_players_req;
 
-  /** The terminal room this controller is handleing. */
+  /** The most recent terminal room id voted at. */
+  int _latest_terminal_room_id;
+  
+  /** The terminal room this controller is handling. */
   int _terminal_room_id;
 
   /** The chosen team leader player id. */
@@ -73,7 +76,7 @@ class TerminalController : public Controller {
 
  public:
   TerminalController()
-      : _stage(Stage::NONE), _active(false), _just_finished(false) {}
+      : _stage(Stage::NONE), _active(false), _just_finished(false), _latest_terminal_room_id(0) {}
   ~TerminalController() { dispose(); }
 
   /**
@@ -188,6 +191,12 @@ class TerminalController : public Controller {
     _just_finished = false;
     return tmp;
   }
+  
+  /**
+   * Returns the latest terminal the player voted at.
+   * @return the latest terminal the player voted at.
+   */
+  int getLatestTerminalRoomId() const { return _latest_terminal_room_id; }
 
  private:
   /** Called when the terminal voting is done. */
@@ -195,6 +204,7 @@ class TerminalController : public Controller {
     _active = false;
     _scene->setVisible(false);
     _stage = Stage::WAIT_FOR_PLAYERS;
+    _latest_terminal_room_id = _terminal_room_id;
     InputController::get()->resume();
     _terminal_sensor->activate();
   }

@@ -45,6 +45,7 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
   _isDead = false;
+  _is_respawning = false;
   _mv_direc = IDLE_LEFT;
   _room_id = -1;
 

@@ -260,6 +260,12 @@ void GameScene::update(float timestep) {
   }
   _health_bar->setProgress(
       static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
+  
+  if (_player_controller->getMyPlayer()->getRespawning()) {
+    _player_controller->getMyPlayer()->setRespawning(false);
+    auto latest_terminal_room = _level_controller->getLevelModel()->getRoom(_terminal_controller->getLatestTerminalRoomId());
+    _level_controller->moveToCenterOfRoom(latest_terminal_room->getKey());
+  }
 
   if (checkCooperatorWin()) {
     auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
