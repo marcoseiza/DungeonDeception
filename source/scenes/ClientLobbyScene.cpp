@@ -37,9 +37,9 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>("client-lobby-scene_game"));
-  _player = std::dynamic_pointer_cast<cugl::scene2::Label>(
+  _player = std::dynamic_pointer_cast<cugl::scene2::TextField>(
       _assets->get<cugl::scene2::SceneNode>(
-          "client-lobby-scene_players_field"));
+          "client-lobby-scene_players_field_text"));
   _name = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>(
           "client-lobby-scene_center_name_field_text"));
@@ -65,11 +65,13 @@ void ClientLobbyScene::setActive(
     if (value) {
       _status = WAIT;
       _network = network;
+      _player->activate();
 
       auto x = *(_network->getPlayerID());
       _name->setText("runner_" + to_string(x));
     } else {
       // TODO deactivate things as necessary
+      _player->deactivate();
     }
   }
 }

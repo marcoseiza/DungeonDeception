@@ -93,7 +93,7 @@
               "field": {
                 "type": "Widget",
                 "data": {
-                  "key": "labelbox",
+                  "key": "textfield",
                   "variables": {
                     "size": [ 170, 70 ],
                     "text": "runner_id",
