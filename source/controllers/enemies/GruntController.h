@@ -74,6 +74,11 @@ class GruntController : public EnemyController {
    * @param p the player position.
    */
   void attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
+  
+  /**
+   * Animate the grunt.
+   */
+  void animate(std::shared_ptr<EnemyModel> enemy) override;
 };
 
 #endif /* CONTROLLERS_ENEMIES_GRUNT_CONTROLLER_H_ */

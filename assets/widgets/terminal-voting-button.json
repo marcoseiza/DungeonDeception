@@ -1,0 +1,83 @@
+{
+  "variables": {
+    "size": ["data", "size"],
+    "anchor": ["data", "anchor"],
+    "text": ["children", "up", "children", "label", "data", "text"],
+    "font": ["children", "up", "children", "label", "data", "font"],
+    "color": ["children", "up", "children", "patch", "data", "color"],
+    "num-votes-default-text": ["children", "up", "children", "num-votes", "data", "text"]
+  },
+  "contents": {
+    "type": "Button",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "upnode": "up",
+      "anchor": [0.5, 0.5],
+      "size": [300, 75]
+    },
+    "children": {
+      "up": {
+        "type": "Node",
+        "format": {
+          "type": "Anchored"
+        },
+        "children": {
+          "patch": {
+            "type": "NinePatch",
+            "data": {
+              "texture": "button_white",
+              "anchor": [0.5, 0.5],
+              "interior": [4, 4, 24, 24],
+              "color": "#ffffff"
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            }
+          },
+          "label": {
+            "type": "Label",
+            "data": {
+              "font": "pixelmix",
+              "text": "Option 1",
+              "foreground": [0, 0, 0, 255],
+              "anchor": [0.5, 0.5],
+              "halign": "center",
+              "valign": "middle"
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            }
+          },
+          "num-votes": {
+            "type": "Label",
+            "data": {
+              "font": "pixelmix",
+              "text": "0",
+              "foreground": [0, 0, 0, 255],
+              "anchor": [1.0, 0.5],
+              "halign": "right",
+              "valign": "middle"
+            },
+            "layout": {
+              "x_anchor": "right",
+              "y_anchor": "center",
+              "x_offset": -0.05
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "fill",
+          "y_anchor": "fill"
+        }
+      }
+    },
+    "layout": {
+      "x_anchor": "center",
+      "y_anchor": "middle"
+    }
+  }
+}

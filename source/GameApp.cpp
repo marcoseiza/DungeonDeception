@@ -244,6 +244,12 @@ void GameApp::updateLevelLoadingScene(float timestep) {
 
   _level_loading.cugl::Scene2::removeChild(
       _level_loading.getLevelGenerator()->getMap());
+
+  // Transfer connection ownership
+  _gameplay.setConnection(_level_loading.getConnection());
+  _level_loading.disconnect();
+  _gameplay.setHost(_level_loading.getIsHost());
+
   if (_level_loading.getIsHost()) {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
                    _hostgame.isBetrayer());
@@ -251,11 +257,6 @@ void GameApp::updateLevelLoadingScene(float timestep) {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
                    _joinlobby.isBetrayer());
   }
-
-  // Transfer connection ownership
-  _gameplay.setConnection(_level_loading.getConnection());
-  _level_loading.disconnect();
-  _gameplay.setHost(_level_loading.getIsHost());
 
   _level_loading.setActive(false);
   _gameplay.setActive(true);

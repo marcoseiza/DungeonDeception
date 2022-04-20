@@ -10,17 +10,20 @@
 class Player : public cugl::physics2::CapsuleObstacle {
  public:
   /** Enum for the player's state (for animation). */
-  enum State { IDLE, MOVING, ATTACKING };
+  enum State { IDLE, MOVING, ATTACKING, DASHING };
 
  private:
   /** The scene graph node for the player (moving). */
   std::shared_ptr<cugl::scene2::SpriteNode> _player_node;
 
   /** Promise to move to this position in next update. */
-  cugl::Vec2 _promise_pos_cache;
-  /** A boolean representing if we should move to the promise pos cache next
-   * udpate call. */
-  bool _promise;
+  std::optional<cugl::Vec2> _promise_pos_cache;
+
+  /** The last two positions the server has sent to this player. */
+  std::array<cugl::Vec2, 2> _network_pos_cache;
+
+  /** A timestamp that represents the last time the player position was set. */
+  cugl::Timestamp _last_network_pos_udpate;
 
   /** The player's current state. */
   State _current_state;
@@ -53,6 +56,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** If the player is moving left (80), down (81), right (82), or up (83). */
   int _mv_direc;
 
+  /** The move direction for the last frame. */
+  cugl::Vec2 _last_move_dir;
+
  public:
   /** Countdown to change animation frame. */
   int _frame_count;
@@ -64,8 +70,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
-  /** Whether the player held attack last frame. */
-  bool _last_held_attack;
 
 #pragma mark Constructors
   /**
@@ -229,10 +233,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param pos The position the player promises to.
    */
-  void setPosPromise(cugl::Vec2 pos) {
-    _promise_pos_cache = pos;
-    _promise = true;
-  }
+  void setPosPromise(cugl::Vec2 pos) { _promise_pos_cache = pos; }
 
   /**
    * Get the player position promise. The player will move to this
@@ -240,7 +241,40 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @return The position promise currently set.
    */
-  cugl::Vec2 getPosPromise() const { return _promise_pos_cache; }
+  cugl::Vec2 getPosPromise() const { return *_promise_pos_cache; }
+
+  /**
+   * Set a network position promise for this player. This is used by the network
+   * for interpolation of the current and true player positions.
+   *
+   * @param pos The network position.
+   */
+  void setNetworkPos(cugl::Vec2 pos) {
+    _last_network_pos_udpate.mark();
+    _network_pos_cache[1] = _network_pos_cache[0];
+    _network_pos_cache[0] = pos;
+  }
+
+  /**
+   * Get the last two positions given to this player by the network.
+   *
+   * @return The last two positions given to this player by the network.
+   */
+  std::array<cugl::Vec2, 2> getNetworkPosCache() { return _network_pos_cache; }
+
+  /**
+   * Get the time since the last packet for player position was received. In
+   * milliseconds.
+   *
+   * @return The time since the last packet for player position was received. In
+   * milliseconds.
+   */
+  float getTimeSinceLastNetworkPosUpdate() {
+    cugl::Timestamp time;
+    Uint32 millis =
+        (Uint32)time.ellapsedMicros(_last_network_pos_udpate) / 1000;
+    return (float)millis;
+  }
 
 #pragma mark Graphics
 
@@ -293,19 +327,29 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * Moves the player by the specified amount.
    *
    * @param forward Amount to move in the x and y direction
+   * @param speed The speed of movement.
    */
-  void move(cugl::Vec2 forward) { move(forward.x, forward.y); }
+  void move(cugl::Vec2 forward, float speed) {
+    move(forward.x, forward.y, speed);
+  }
 
   /**
    * Moves the player by the specified amount.
    *
    * @param forwardX Amount to move in the x direction.
    * @param forwardY Amount to move in the y direction.
+   * @param speed The speed of movement.
    */
-  void move(float forwardX, float forwardY);
-  
+  void move(float forwardX, float forwardY, float speed);
+
   /**
-   * Updates the directino the player sprite is facing based on changes in x and y.
+   * @return Returns the last move direction given to the player.
+   */
+  cugl::Vec2 getLastMoveDir() const { return _last_move_dir; }
+
+  /**
+   * Updates the directino the player sprite is facing based on changes in x and
+   * y.
    *
    * @param x_diff The change in x.
    * @param y_diff The change in y.

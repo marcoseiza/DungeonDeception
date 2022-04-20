@@ -6,14 +6,19 @@
 #include "../models/Projectile.h"
 #include "../models/Sword.h"
 #include "Controller.h"
+#include "InputController.h"
 
 /**
  * A class to handle enemy AI.
  */
-class PlayerController {
+class PlayerController : public Controller {
  protected:
+  /** The sword. */
+  std::shared_ptr<Sword> _sword;
   /** Reference to the player this controls. */
   std::shared_ptr<Player> _player;
+  /** A list of all the players in the game. */
+  std::unordered_map<int, std::shared_ptr<Player>> _players;
   /** The slash texture. */
   std::shared_ptr<cugl::Texture> _slash_texture;
   /** A reference to the world node. */
@@ -22,6 +27,8 @@ class PlayerController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+  /** A reference to the game assets. */
+  std::shared_ptr<cugl::AssetManager> _assets;
 
  public:
 #pragma mark Constructors
@@ -41,16 +48,16 @@ class PlayerController {
    *
    * @return true if the obstacle is initialized properly, false otherwise.
    */
-  bool init(std::shared_ptr<Player> player,
-            std::shared_ptr<cugl::AssetManager> assets,
-            std::shared_ptr<cugl::physics2::ObstacleWorld> world,
-            std::shared_ptr<cugl::scene2::SceneNode> world_node,
-            std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+  bool init(const std::shared_ptr<Player>& player,
+            const std::shared_ptr<cugl::AssetManager>& assets,
+            const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
+            const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
+            const std::shared_ptr<cugl::scene2::SceneNode>& debug_node);
 
   /**
    * Disposes the controller.
    */
-  void dispose() {
+  void dispose() override {
     _player = nullptr;
     _world_node = nullptr;
     _debug_node = nullptr;
@@ -69,11 +76,11 @@ class PlayerController {
    * @return a new capsule object at the given point with no size.
    */
   static std::shared_ptr<PlayerController> alloc(
-      std::shared_ptr<Player> player,
-      std::shared_ptr<cugl::AssetManager> assets,
-      std::shared_ptr<cugl::physics2::ObstacleWorld> world,
-      std::shared_ptr<cugl::scene2::SceneNode> world_node,
-      std::shared_ptr<cugl::scene2::SceneNode> debug_node) {
+      const std::shared_ptr<Player>& player,
+      const std::shared_ptr<cugl::AssetManager>& assets,
+      const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
+      const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
+      const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
     std::shared_ptr<PlayerController> result =
         std::make_shared<PlayerController>();
 
@@ -86,15 +93,63 @@ class PlayerController {
 #pragma mark Properties
 
   /** Update the enemy. */
-  void update(float timestep, cugl::Vec2 forward, bool didAttack, bool didDash,
-              bool holdAttack, std::shared_ptr<Sword> sword);
+  void update(float timestep) override;
+
+  /**
+   * Processes data sent over the network.
+   *
+   * @param code The message code
+   * @param msg The deserialized message
+   */
+  void processData(const Sint32& code,
+                   const cugl::NetworkDeserializer::Message& msg);
+
+  /**
+   * Process the position of the player with the corresponding player_id in the
+   * _players list.
+   *
+   * @param player_id The player ids
+   * @param pos_x The updated player x position
+   * @param pos_y The updated player y position
+   */
+  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /** Update the projectiles. */
   void updateSlashes(float timestep);
 
-  void move(float timestep, bool didDash, cugl::Vec2 forward);
+  /** Linearly interpolate the player by the network positions. */
+  void interpolate(float timestep, const std::shared_ptr<Player>& player);
 
-  void attack(bool didAttack, bool holdAttack, std::shared_ptr<Sword> sword);
+  void move(float timestep);
+
+  void attack();
+
+  void addPlayer(const std::shared_ptr<Player>& player) {
+    if (_players.find(player->getPlayerId()) == _players.end()) {
+      _players[player->getPlayerId()] = player;
+    }
+  }
+
+  std::shared_ptr<Player> getMyPlayer() { return _player; }
+
+  std::shared_ptr<Player> getPlayer(int id) {
+    if (_players.find(id) != _players.end()) {
+      return _players[id];
+    }
+    return nullptr;
+  }
+
+  std::vector<std::shared_ptr<Player>> getPlayerList() {
+    std::vector<std::shared_ptr<Player>> player_list;
+    for (auto it : _players) player_list.push_back(it.second);
+    return player_list;
+  }
+
+  std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {
+    return _players;
+  }
+
+  std::shared_ptr<Sword> getSword() { return _sword; }
 };
 
 #endif /* CONTROLLERS_PLAYER_CONTROLLER_H_ */

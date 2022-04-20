@@ -107,12 +107,34 @@ const levelToScene2 = (fileName) => {
                 "children": Object.assign({}, ...enemies.reduce((enemy, info, index) => {
                     let obj = {};
                     obj[`enemy-(${info["position"][0]}-${info["position"][1]})-${index}`] = {
-                        "type": info["type"],
+                        "type": "Node",
+                        "format": {
+                            "type": "Anchored"
+                        },
+                        "data": {
+                            "anchor": [0, 0],
+                            "size": [pixelWidth, pixelHeight],
+                        },
                         "layout": {
-                            "x_index": info["position"][0],
-                            "y_index": info["position"][1],
+                            "x_index": Math.floor(info["position"][0]),
+                            "y_index": Math.floor(info["position"][1]),
                             "x_anchor": "left",
                             "y_anchor": "bottom",
+                        },
+                        "children": {
+                            "enemy": {
+                                "type": info["type"],
+                                "data": {
+                                    "anchor": [0, 0],
+                                    "size": [pixelWidth, pixelHeight],
+                                },
+                                "layout": {
+                                    "x_anchor": "left",
+                                    "y_anchor": "bottom",
+                                    "x_offset": info["position"][0] - Math.floor(info["position"][0]),
+                                    "y_offset": info["position"][1] - Math.floor(info["position"][1])
+                                }
+                            }
                         }
                     }
                     enemy.push(obj);
@@ -228,6 +250,16 @@ const getVariables = (type, row) => {
                 "laser-priority": row,
                 "right-pillar-priority": row,
                 "right-pillar-off-priority": row,
+                "positive-edge-1": row - 1,
+                "positive-edge-2": row - 1,
+                "positive-edge-3": row - 1,
+                "positive-edge-4": row - 1,
+                "positive-edge-5": row - 1,
+                "negative-edge-1": row + 1,
+                "negative-edge-2": row + 1,
+                "negative-edge-3": row + 1,
+                "negative-edge-4": row + 1,
+                "negative-edge-5": row + 1,
             };
         case 201: // Door Vertical
             return {
@@ -235,6 +267,16 @@ const getVariables = (type, row) => {
                 "top-pillar-off-priority": row - 1,
                 "bottom-pillar-priority": row + 1,
                 "bottom-pillar-off-priority": row + 1,
+                "positive-edge-1": row + 2,
+                "positive-edge-2": row + 1,
+                "positive-edge-3": row,
+                "positive-edge-4": row - 1,
+                "positive-edge-5": row - 2,
+                "negative-edge-1": row + 2,
+                "negative-edge-2": row + 1,
+                "negative-edge-3": row,
+                "negative-edge-4": row - 1,
+                "negative-edge-5": row - 2,
             };
         default:
             return ({

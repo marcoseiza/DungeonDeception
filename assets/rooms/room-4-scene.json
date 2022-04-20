@@ -75,7 +75,17 @@
                   "left-pillar-off-priority": 0,
                   "laser-priority": 0,
                   "right-pillar-priority": 0,
-                  "right-pillar-off-priority": 0
+                  "right-pillar-off-priority": 0,
+                  "positive-edge-1": -1,
+                  "positive-edge-2": -1,
+                  "positive-edge-3": -1,
+                  "positive-edge-4": -1,
+                  "positive-edge-5": -1,
+                  "negative-edge-1": 1,
+                  "negative-edge-2": 1,
+                  "negative-edge-3": 1,
+                  "negative-edge-4": 1,
+                  "negative-edge-5": 1
                 }
               }
             }
@@ -1223,7 +1233,17 @@
                   "top-pillar-priority": 2,
                   "top-pillar-off-priority": 2,
                   "bottom-pillar-priority": 4,
-                  "bottom-pillar-off-priority": 4
+                  "bottom-pillar-off-priority": 4,
+                  "positive-edge-1": 5,
+                  "positive-edge-2": 4,
+                  "positive-edge-3": 3,
+                  "positive-edge-4": 2,
+                  "positive-edge-5": 1,
+                  "negative-edge-1": 5,
+                  "negative-edge-2": 4,
+                  "negative-edge-3": 3,
+                  "negative-edge-4": 2,
+                  "negative-edge-5": 1
                 }
               }
             }
@@ -3520,7 +3540,17 @@
                   "top-pillar-priority": 10,
                   "top-pillar-off-priority": 10,
                   "bottom-pillar-priority": 12,
-                  "bottom-pillar-off-priority": 12
+                  "bottom-pillar-off-priority": 12,
+                  "positive-edge-1": 13,
+                  "positive-edge-2": 12,
+                  "positive-edge-3": 11,
+                  "positive-edge-4": 10,
+                  "positive-edge-5": 9,
+                  "negative-edge-1": 13,
+                  "negative-edge-2": 12,
+                  "negative-edge-3": 11,
+                  "negative-edge-4": 10,
+                  "negative-edge-5": 9
                 }
               }
             }
@@ -4669,7 +4699,17 @@
                   "left-pillar-off-priority": 14,
                   "laser-priority": 14,
                   "right-pillar-priority": 14,
-                  "right-pillar-off-priority": 14
+                  "right-pillar-off-priority": 14,
+                  "positive-edge-1": 13,
+                  "positive-edge-2": 13,
+                  "positive-edge-3": 13,
+                  "positive-edge-4": 13,
+                  "positive-edge-5": 13,
+                  "negative-edge-1": 15,
+                  "negative-edge-2": 15,
+                  "negative-edge-3": 15,
+                  "negative-edge-4": 15,
+                  "negative-edge-5": 15
                 }
               }
             }
@@ -5646,75 +5686,347 @@
       },
       "children": {
         "enemy-(5.183506944444445-12.399131944444445)-0": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 5.183506944444445,
-            "y_index": 12.399131944444445,
+            "x_index": 5,
+            "y_index": 12,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.18350694444444482,
+                "y_offset": 0.399131944444445
+              }
+            }
           }
         },
         "enemy-(8.241851128472222-12.736666531032986)-1": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 8.241851128472222,
-            "y_index": 12.736666531032986,
+            "x_index": 8,
+            "y_index": 12,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2418511284722218,
+                "y_offset": 0.7366665310329861
+              }
+            }
           }
         },
         "enemy-(3.2455552842881943-9.743333604600695)-2": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 3.2455552842881943,
-            "y_index": 9.743333604600695,
+            "x_index": 3,
+            "y_index": 9,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2455552842881943,
+                "y_offset": 0.7433336046006946
+              }
+            }
           }
         },
         "enemy-(11.279630533854167-8.775185139973958)-3": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 11.279630533854167,
-            "y_index": 8.775185139973958,
+            "x_index": 11,
+            "y_index": 8,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.27963053385416714,
+                "y_offset": 0.7751851399739582
+              }
+            }
           }
         },
         "enemy-(3.312221950954861-6.661111111111111)-4": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 3.312221950954861,
-            "y_index": 6.661111111111111,
+            "x_index": 3,
+            "y_index": 6,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.31222195095486116,
+                "y_offset": 0.6611111111111114
+              }
+            }
           }
         },
         "enemy-(11.30185275607639-5.5818522135416675)-5": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 11.30185275607639,
-            "y_index": 5.5818522135416675,
+            "x_index": 11,
+            "y_index": 5,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.3018527560763893,
+                "y_offset": 0.5818522135416675
+              }
+            }
           }
         },
         "enemy-(9.254443359375-3.8011108398437496)-6": {
-          "type": "Grunt",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 9.254443359375,
-            "y_index": 3.8011108398437496,
+            "x_index": 9,
+            "y_index": 3,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Grunt",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.2544433593749993,
+                "y_offset": 0.8011108398437496
+              }
+            }
           }
         },
         "enemy-(6.1722222222222225-2.8774074978298607)-7": {
-          "type": "Shotgunner",
+          "type": "Node",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "anchor": [
+              0,
+              0
+            ],
+            "size": [
+              48,
+              48
+            ]
+          },
           "layout": {
-            "x_index": 6.1722222222222225,
-            "y_index": 2.8774074978298607,
+            "x_index": 6,
+            "y_index": 2,
             "x_anchor": "left",
             "y_anchor": "bottom"
+          },
+          "children": {
+            "enemy": {
+              "type": "Shotgunner",
+              "data": {
+                "anchor": [
+                  0,
+                  0
+                ],
+                "size": [
+                  48,
+                  48
+                ]
+              },
+              "layout": {
+                "x_anchor": "left",
+                "y_anchor": "bottom",
+                "x_offset": 0.1722222222222225,
+                "y_offset": 0.8774074978298607
+              }
+            }
           }
         }
       }

@@ -1,12 +1,12 @@
 {
     "variables": {
-        "size": [ "data", "size" ],
-        "anchor": [ "data", "anchor" ],
-        "text": [ "children", "up", "children", "label", "data", "text" ],
-        "font": [ "children", "up", "children", "label", "data", "font" ],
-        "color": [ "children", "up", "children", "patch", "data", "color" ],
-        "texture": [ "children", "up", "children", "patch", "data", "texture" ],
-        "foreground": [ "children", "up", "children", "label", "data", "foreground" ]
+        "size": ["data", "size"],
+        "anchor": ["data", "anchor"],
+        "text": ["children", "up", "children", "label", "data", "text"],
+        "font": ["children", "up", "children", "label", "data", "font"],
+        "color": ["children", "up", "children", "patch", "data", "color"],
+        "texture": ["children", "up", "children", "patch", "data", "texture"],
+        "foreground": ["children", "up", "children", "label", "data", "foreground"]
     },
     "contents": {
         "type": "Button",
@@ -15,8 +15,8 @@
         },
         "data": {
             "upnode": "up",
-            "anchor": [ 0.5, 0.5 ],
-            "size": [ 300, 75 ]
+            "anchor": [0.5, 0.5],
+            "size": [300, 75]
         },
         "children": {
             "up": {
@@ -29,8 +29,8 @@
                         "type": "NinePatch",
                         "data": {
                             "texture": "button_beige",
-                            "anchor": [ 0.5, 0.5 ],
-                            "interior": [ 4, 4, 24, 24 ],
+                            "anchor": [0.5, 0.5],
+                            "interior": [4, 4, 24, 24],
                             "color": "#ffffff"
                         },
                         "layout": {
@@ -43,8 +43,8 @@
                         "data": {
                             "font": "pixelmix",
                             "text": "Option 1",
-                            "foreground": [ 0, 0, 0, 255 ],
-                            "anchor": [ 0.5, 0.5 ],
+                            "foreground": [0, 0, 0, 255],
+                            "anchor": [0.5, 0.5],
                             "halign": "center",
                             "valign": "middle"
                         },

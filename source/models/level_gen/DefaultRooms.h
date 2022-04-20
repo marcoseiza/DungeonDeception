@@ -90,10 +90,17 @@ const RoomConfig kStandard8 = {
                             cugl::Vec2(0.0f, 4.0f), cugl::Vec2(11.0f, 0.0f)},
     "rooms/room-8-scene.json"};
 
+/** Represents a standard room. */
+const RoomConfig kStandard9 = {
+    cugl::Size(15.0f, 15.0f),
+    std::vector<cugl::Vec2>{cugl::Vec2(14.0f, 11.0f), cugl::Vec2(3.0f, 14.0f),
+                            cugl::Vec2(0.0f, 3.0f), cugl::Vec2(11.0f, 0.0f)},
+    "rooms/room-9-scene.json"};
+
 /** A list of all the regular rooms. */
 const std::vector<RoomConfig> kRegularRooms{kStandard1, kStandard2, kStandard3,
                                             kStandard4, kStandard5, kStandard6,
-                                            kStandard7, kStandard8};
+                                            kStandard7, kStandard8, kStandard9};
 
 };  // namespace default_rooms
 

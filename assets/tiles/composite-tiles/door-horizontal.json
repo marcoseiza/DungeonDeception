@@ -4,7 +4,17 @@
     "left-pillar-off-priority": ["children", "left-pillar-wrapper", "children", "left-pillar-off", "data", "variables", "priority"],
     "laser-priority": ["children", "laser-wrapper", "children", "laser", "data", "variables", "priority"],
     "right-pillar-priority": ["children", "right-pillar-wrapper", "children", "right-pillar", "data", "variables", "priority"],
-    "right-pillar-off-priority": ["children", "right-pillar-wrapper", "children", "right-pillar-off", "data", "variables", "priority"]
+    "right-pillar-off-priority": ["children", "right-pillar-wrapper", "children", "right-pillar-off", "data", "variables", "priority"],
+    "positive-edge-1": ["children", "positive-edge", "children", "tile-1-wrapper", "children", "tile", "data", "variables", "priority"],
+    "positive-edge-2": ["children", "positive-edge", "children", "tile-2-wrapper", "children", "tile", "data", "variables", "priority"],
+    "positive-edge-3": ["children", "positive-edge", "children", "tile-3-wrapper", "children", "tile", "data", "variables", "priority"],
+    "positive-edge-4": ["children", "positive-edge", "children", "tile-4-wrapper", "children", "tile", "data", "variables", "priority"],
+    "positive-edge-5": ["children", "positive-edge", "children", "tile-5-wrapper", "children", "tile", "data", "variables", "priority"],
+    "negative-edge-1": ["children", "negative-edge", "children", "tile-1-wrapper", "children", "tile", "data", "variables", "priority"],
+    "negative-edge-2": ["children", "negative-edge", "children", "tile-2-wrapper", "children", "tile", "data", "variables", "priority"],
+    "negative-edge-3": ["children", "negative-edge", "children", "tile-3-wrapper", "children", "tile", "data", "variables", "priority"],
+    "negative-edge-4": ["children", "negative-edge", "children", "tile-4-wrapper", "children", "tile", "data", "variables", "priority"],
+    "negative-edge-5": ["children", "negative-edge", "children", "tile-5-wrapper", "children", "tile", "data", "variables", "priority"]
   },
   "contents": {
     "type": "Door",
@@ -39,6 +49,144 @@
       "y_anchor": "bottom"
     },
     "children": {
+      "positive-edge": {
+        "type": "Node",
+        "format": {
+          "type": "Grid",
+          "width": 5,
+          "height": 3
+        },
+        "data": {
+          "anchor": [0.5, 0.5],
+          "size": [240, 144]
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "tile-1-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 0,
+              "y_index": 2,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-26",
+                  "variables": {
+                    "priority": -1
+                  }
+                }
+              }
+            }
+          },
+          "tile-2-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 1,
+              "y_index": 2,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-27",
+                  "variables": {
+                    "priority": -1
+                  }
+                }
+              }
+            }
+          },
+          "tile-3-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 2,
+              "y_index": 2,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-27",
+                  "variables": {
+                    "priority": -1
+                  }
+                }
+              }
+            }
+          },
+          "tile-4-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 3,
+              "y_index": 2,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-27",
+                  "variables": {
+                    "priority": -1
+                  }
+                }
+              }
+            }
+          },
+          "tile-5-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 4,
+              "y_index": 2,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-30",
+                  "variables": {
+                    "priority": -1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "left-pillar-wrapper": {
         "type": "Node",
         "format": {
@@ -156,6 +304,144 @@
             "data": {
               "key": "tile-1",
               "variables": {}
+            }
+          }
+        }
+      },
+      "negative-edge": {
+        "type": "Node",
+        "format": {
+          "type": "Grid",
+          "width": 5,
+          "height": 3
+        },
+        "data": {
+          "anchor": [0.5, 0.5],
+          "size": [240, 144]
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "tile-1-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 0,
+              "y_index": 0,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-51",
+                  "variables": {
+                    "priority": 0
+                  }
+                }
+              }
+            }
+          },
+          "tile-2-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 1,
+              "y_index": 0,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-52",
+                  "variables": {
+                    "priority": 0
+                  }
+                }
+              }
+            }
+          },
+          "tile-3-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 2,
+              "y_index": 0,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-52",
+                  "variables": {
+                    "priority": 0
+                  }
+                }
+              }
+            }
+          },
+          "tile-4-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 3,
+              "y_index": 0,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-52",
+                  "variables": {
+                    "priority": 0
+                  }
+                }
+              }
+            }
+          },
+          "tile-5-wrapper": {
+            "type": "Node",
+            "data": {
+              "anchor": [0, 0],
+              "size": [48, 48]
+            },
+            "layout": {
+              "x_index": 4,
+              "y_index": 0,
+              "x_anchor": "left",
+              "y_anchor": "bottom"
+            },
+            "children": {
+              "tile": {
+                "type": "Widget",
+                "data": {
+                  "key": "tile-55",
+                  "variables": {
+                    "priority": 0
+                  }
+                }
+              }
             }
           }
         }

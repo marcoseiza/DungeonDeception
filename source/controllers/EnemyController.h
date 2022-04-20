@@ -1,10 +1,12 @@
 #ifndef CONTROLLERS_ENEMY_CONTROLLER_H_
 #define CONTROLLERS_ENEMY_CONTROLLER_H_
 #include <cugl/cugl.h>
+#include <stdlib.h>
+#include <time.h>
 
-#include "RayCastController.h"
 #include "../models/EnemyModel.h"
 #include "../models/Player.h"
+#include "RayCastController.h"
 
 /**
  * A class to handle enemy AI.
@@ -19,19 +21,22 @@ class EnemyController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
-  
+
   /** Cache set for vertices to update the polys. */
   std::vector<cugl::Vec2> _vertices_cache;
   /** Cache array for weights. */
   std::array<float, 16> _weights;
   /** Cache vector for objects hit by ray cast. */
-  std::unordered_set<cugl::physics2::Obstacle*> _objects;
+  std::unordered_map<cugl::physics2::Obstacle*, cugl::Vec2> _objects;
   /** Cache array for CW/CCW directions. */
   std::array<bool, 16> _cw_direcs;
   /** Direction to move the enemy model according to the weights. */
   cugl::Vec2 _direction;
   /** Timer for doing ray casting. */
   int _timer;
+
+  /** A generator for random numbers. */
+  std::default_random_engine _generator;
 
  public:
 #pragma mark Constructors
@@ -89,7 +94,7 @@ class EnemyController {
 #pragma mark Properties
 
   /** Update the enemy. */
-  void update(float timestep, std::shared_ptr<EnemyModel> enemy,
+  void update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
               std::vector<std::shared_ptr<Player>> players, int room_id);
 
   /** Change the enemy state. */
@@ -101,9 +106,12 @@ class EnemyController {
 
   /** Update the projectiles. */
   void updateProjectiles(float timestep, std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Figure out the weights for the enemy. */
   void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
+  
+  /** Animate the enemy. */
+  virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
 
 #pragma mark Movement
  protected:
@@ -128,6 +136,10 @@ class EnemyController {
   /** Idle.
    */
   virtual void idling(std::shared_ptr<EnemyModel> enemy);
+
+  /** Stunned.
+   */
+  virtual void stunned(std::shared_ptr<EnemyModel> enemy);
 };
 
 #endif /* CONTROLLERS_ENEMY_CONTROLLER_H_ */

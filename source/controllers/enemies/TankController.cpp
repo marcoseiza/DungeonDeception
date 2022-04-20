@@ -1,7 +1,10 @@
 #include "TankController.h"
 
 #define MIN_DISTANCE 300
-#define ATTACK_RANGE 50
+#define ATTACK_RANGE 75
+#define ATTACK_FRAMES 18
+#define STOP_ATTACK_FRAMES 50
+#define ATTACK_COOLDOWN 180
 
 #define STATE_CHANGE_LIM 10
 
@@ -21,12 +24,32 @@ bool TankController::init(std::shared_ptr<cugl::AssetManager> assets,
 
 void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                   cugl::Vec2 p) {
-  // TODO: add melee fixture onto the tank, for now just attack by hitting body
-  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
-  diff.normalize();
-  diff.add(_direction);
-  diff.scale(enemy->getSpeed()*0.6);
-  enemy->move(diff.x, diff.y);
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
+    if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
+      enemy->setSensor(true);
+    }
+    if (enemy->getAttackCooldown() <= 0) {
+      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
+      enemy->resetSensors();
+    } else {
+      cugl::Vec2 dir = enemy->_attack_dir;
+      dir.scale(5);
+      enemy->move(dir.x, dir.y);
+    }
+  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    enemy->move(0, 0);
+    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+      enemy->_attack_dir = p - enemy->getPosition();
+      enemy->_attack_dir.normalize();
+    }
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    diff.add(_direction);
+    diff.scale(0.6 * enemy->getSpeed());
+    enemy->move(diff.x, diff.y);
+  }
 }
 
 void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
@@ -69,3 +92,5 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
   }
 }
+
+void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}
