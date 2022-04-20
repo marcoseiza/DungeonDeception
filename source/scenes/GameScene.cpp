@@ -176,6 +176,8 @@ bool GameScene::init(
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
 
   setMillisRemaining(900000);
+  // Start the timer.
+  _last_timestamp.mark();
 
   return true;
 }
@@ -260,10 +262,11 @@ void GameScene::update(float timestep) {
   }
   _health_bar->setProgress(
       static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
-  
+
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
-    auto latest_terminal_room = _level_controller->getLevelModel()->getRoom(_terminal_controller->getLatestTerminalRoomId());
+    auto latest_terminal_room = _level_controller->getLevelModel()->getRoom(
+        _terminal_controller->getLatestTerminalRoomId());
     _level_controller->moveToCenterOfRoom(latest_terminal_room->getKey());
   }
 
