@@ -26,6 +26,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _facing_left = false;
   _atc_timer = 0;
   _cta_timer = 0;
+  _isKnockbacked = false;
 
   _attack_cooldown = 0;
 
@@ -241,6 +242,21 @@ void EnemyModel::move(float forwardX, float forwardY) {
   }
 
   if (forwardY == 0) setVY(0);
+}
+
+void EnemyModel::knockback(int moveDir) {
+  setPosition(getPosition().x - 10, getPosition().y);
+
+  for (int x = 0; x < 10; x++) {
+    if (moveDir == 0) {
+    } else if (moveDir == 1) {
+      move(0, INT_MIN);
+    } else if (moveDir == 2) {
+      move(INT_MAX, 0);
+    } else {
+      move(0, INT_MAX);
+    }
+  }
 }
 
 void EnemyModel::setFacingLeft(bool facing_left) {

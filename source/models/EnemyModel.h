@@ -54,6 +54,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** Enemy speed. */
   float _speed;
 
+  /** Whether the enemy was knock backed. */
+  bool _isKnockbacked;
+
   /** The scene graph node for the enemy. */
   std::shared_ptr<cugl::scene2::SpriteNode> _enemy_node;
 
@@ -398,5 +401,16 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param facing_left is true if character should face left, false otherwise.
    */
   void setFacingLeft(bool facing_left);
+
+   /**
+   * Knocks back the enemy.
+   */
+  void knockback(int moveDir);
+
+   /**
+   * Returns whether or not the enemy is knocked back.
+   */
+  bool isKnockbacked() { return _isKnockbacked; };
+
 };
 #endif /* ENEMY_MODEL_H */
