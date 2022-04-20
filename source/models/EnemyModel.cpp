@@ -15,6 +15,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   size_.height *= HEIGHT_SHRINK;
   _offset_from_center.y = HEIGHT / 2.0f - size_.height / 2.0f;
   pos_ -= _offset_from_center;
+  pos_ += cugl::Vec2(24.0f, 24.0f);
 
   CapsuleObstacle::init(pos_, size_);
 
