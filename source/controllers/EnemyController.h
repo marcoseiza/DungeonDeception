@@ -1,10 +1,12 @@
 #ifndef CONTROLLERS_ENEMY_CONTROLLER_H_
 #define CONTROLLERS_ENEMY_CONTROLLER_H_
 #include <cugl/cugl.h>
+#include <stdlib.h>
+#include <time.h>
 
-#include "RayCastController.h"
 #include "../models/EnemyModel.h"
 #include "../models/Player.h"
+#include "RayCastController.h"
 
 /**
  * A class to handle enemy AI.
@@ -19,7 +21,7 @@ class EnemyController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
-  
+
   /** Cache set for vertices to update the polys. */
   std::vector<cugl::Vec2> _vertices_cache;
   /** Cache array for weights. */
@@ -32,6 +34,9 @@ class EnemyController {
   cugl::Vec2 _direction;
   /** Timer for doing ray casting. */
   int _timer;
+
+  /** A generator for random numbers. */
+  std::default_random_engine _generator;
 
  public:
 #pragma mark Constructors
@@ -101,9 +106,10 @@ class EnemyController {
 
   /** Update the projectiles. */
   void updateProjectiles(float timestep, std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Figure out the weights for the enemy. */
-  void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
+  void findWeights(std::shared_ptr<EnemyModel> enemy,
+                   std::shared_ptr<Player> player);
 
 #pragma mark Movement
  protected:

@@ -24,7 +24,6 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _enemy_node = nullptr;
   _health = 100;
   _facing_left = false;
-  _speed = .05f;
   _atc_timer = 0;
   _cta_timer = 0;
 
@@ -106,12 +105,16 @@ void EnemyModel::deleteAllProjectiles(
 void EnemyModel::setType(std::string type) {
   if (type == "grunt") {
     _enemy_type = GRUNT;
+    _speed = 0.7;
   } else if (type == "shotgunner") {
     _enemy_type = SHOTGUNNER;
+    _speed = 0.6;
   } else if (type == "tank") {
     _enemy_type = TANK;
+    _speed = 0.6;
   } else if (type == "turtle") {
     _enemy_type = TURTLE;
+    _speed = 0;
   }
 }
 
@@ -205,6 +208,12 @@ void EnemyModel::releaseFixtures() {
   }
 }
 
+void EnemyModel::resetSensors() {
+  setSensor(false);
+  _hitbox_sensor->SetSensor(true);
+  _damage_sensor->SetSensor(true);
+}
+
 void EnemyModel::update(float delta) {
   CapsuleObstacle::update(delta);
   if (_enemy_node != nullptr) {
@@ -222,8 +231,8 @@ void EnemyModel::update(float delta) {
 #pragma mark Movement
 
 void EnemyModel::move(float forwardX, float forwardY) {
-  setVX(1000 * forwardX);
-  setVY(1000 * forwardY);
+  setVX(80 * forwardX);
+  setVY(80 * forwardY);
 
   if (forwardX == 0) {
     setVX(0);

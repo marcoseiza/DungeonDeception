@@ -125,6 +125,12 @@ class TerminalController : public Controller {
       return;
     }
 
+    _stage = Stage::WAIT_FOR_PLAYERS;
+    _wait_for_players_scene->setDone(false);
+    _vote_for_leader_scene->setDone(false);
+    _vote_for_team_scene->setDone(false);
+    _activate_terminal_scene->setDone(false);
+
     _active = true;
     _num_players_req = num_players_req;
     _terminal_room_id = terminal_room_id;

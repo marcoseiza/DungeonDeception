@@ -116,6 +116,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Timer for switching from chase to attack. */
   int _cta_timer;
+  
+  /** When attacking, direction to attack in. */
+  cugl::Vec2 _attack_dir;
 
 #pragma mark Constructors
   /**
@@ -297,6 +300,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return The enemy type.
    */
   EnemyType getType() { return _enemy_type; }
+  
+  /**
+   * Resets the sensors of the enemy.
+   */
+  void resetSensors();
 
 #pragma mark -
 #pragma mark Physics Methods

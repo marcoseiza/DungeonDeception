@@ -490,9 +490,15 @@ void TerminalController::processNetworkData(
       int terminal_room_id = info->getInt("terminal_room_id");
       int stage = info->getInt("stage");
 
-      if (stage > Stage::WAIT_FOR_PLAYERS) _wait_for_players_scene->setDone();
-      if (stage > Stage::VOTE_LEADER) _vote_for_leader_scene->setDone();
-      if (stage > Stage::VOTE_TEAM) _vote_for_team_scene->setDone();
+      if (stage > Stage::WAIT_FOR_PLAYERS) {
+        _wait_for_players_scene->setDone(true);
+      }
+      if (stage > Stage::VOTE_LEADER) {
+        _vote_for_leader_scene->setDone(true);
+      }
+      if (stage > Stage::VOTE_TEAM) {
+        _vote_for_team_scene->setDone(true);
+      }
 
     } break;
   }

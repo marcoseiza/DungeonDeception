@@ -10,14 +10,6 @@
  * A class to handle enemy AI.
  */
 class ShotgunnerController : public EnemyController {
- private:
-  /**
-   * Try to avoid the player while shooting at the same time.
-   *
-   * @param p the player position.
-   */
-  void skirtPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p);
-
  public:
 #pragma mark Constructors
   /**
@@ -78,6 +70,12 @@ class ShotgunnerController : public EnemyController {
 
   /** Perform the action according to the enemy state. */
   void performAction(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
+  
+  /** Attack the player.
+   *
+   * @param p the player position.
+   */
+  void attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
 };
 
 #endif /* CONTROLLERS_SHOTGUNNER_CONTROLLER_H_ */
