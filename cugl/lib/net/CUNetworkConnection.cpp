@@ -80,7 +80,7 @@ constexpr uint8_t ROOM_LENGTH = 5;
 constexpr unsigned int SHUTDOWN_BLOCK = 10;
 
 /** How long to wait before considering ourselves disconnected (ms) */
-constexpr size_t DISCONN_TIME = 5000;
+constexpr size_t DISCONN_TIME = std::numeric_limits<size_t>::max();
 // constexpr size_t DISCONN_TIME = std::numeric_limits<std::size_t>::max();
 
 /** How long to wait between reconnection attempts (seconds) */
