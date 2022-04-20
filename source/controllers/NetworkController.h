@@ -90,6 +90,7 @@ class NetworkController {
    * @return true if the network connection is still active.
    */
   bool checkConnection();
+
   /**
    * Add a listener to the network receive call.
    *
@@ -196,6 +197,9 @@ class NetworkController {
     _serializer.reset();
     _network->sendOnlyToHost(msg);
   }
+
+  /** Get the cugl network connection. */
+  std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
 
   /**
    * Set if this network controller is a host controller.

@@ -5,7 +5,9 @@ Dash::Dash()
       _prev_down(false),
       _button(nullptr),
       _dash_frames(12),
-      _dash_frame_counter(0) {}
+      _dash_frame_counter(0),
+      _dash_cooldown(60),
+      _dash_cooldown_counter(-1) {}
 
 bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
                 cugl::Rect bounds) {
@@ -33,6 +35,7 @@ bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
 }
 
 bool Dash::update() {
+  if (_butt_down) _button->setColor(cugl::Color4::GRAY);
   _prev_down = _curr_down;
   _curr_down = _butt_down;
   // Increment counter if dash button was just released or dash frames are still
@@ -41,6 +44,17 @@ bool Dash::update() {
     _dash_frame_counter++;
     if (_dash_frame_counter > _dash_frames) {
       _dash_frame_counter = 0;
+      _dash_cooldown_counter = 0;
+    }
+  }
+
+  if (_dash_cooldown_counter >= 0) {
+    setActive(false);
+    _dash_cooldown_counter++;
+    if (_dash_cooldown_counter > _dash_cooldown) {
+      setActive(true);
+      _button->setColor(cugl::Color4::WHITE);
+      _dash_cooldown_counter = -1;
     }
   }
   return true;

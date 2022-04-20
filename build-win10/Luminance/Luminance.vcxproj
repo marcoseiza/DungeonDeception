@@ -214,6 +214,7 @@
     <ClInclude Include="..\..\source\models\tiles\Door.h" />
     <ClInclude Include="..\..\source\models\tiles\Terminal.h" />
     <ClInclude Include="..\..\source\models\tiles\TerminalSensor.h" />
+    <ClInclude Include="..\..\source\models\tiles\TileHelper.h" />
     <ClInclude Include="..\..\source\scenes\GameScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingLevelScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingScene.h" />
@@ -221,9 +222,12 @@
     <ClInclude Include="..\..\source\scenes\ClientMenuScene.h" />
     <ClInclude Include="..\..\source\scenes\HostMenuScene.h" />
     <ClInclude Include="..\..\source\scenes\PeerScene.h" />
-    <ClInclude Include="..\..\source\scenes\HostGameScene.h" />
     <ClInclude Include="..\..\source\scenes\voting_scenes\WaitForPlayersScene.h" />
+    <ClInclude Include="..\..\source\scenes\voting_scenes\VoteForTeamScene.h" />
+    <ClInclude Include="..\..\source\scenes\voting_scenes\VoteForLeaderScene.h" />
+    <ClInclude Include="..\..\source\scenes\voting_scenes\ActivateTerminalScene.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
+    <ClInclude Include="..\..\source\controllers\NetworkController.h" />
     <ClInclude Include="..\..\source\controllers\actions\Action.h" />
     <ClInclude Include="..\..\source\controllers\actions\Attack.h" />
     <ClInclude Include="..\..\source\controllers\actions\Movement.h" />
@@ -268,9 +272,12 @@
     <ClCompile Include="..\..\source\scenes\MenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\ClientMenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\HostMenuScene.cpp" />
-    <ClCompile Include="..\..\source\scenes\HostGameScene.cpp" />
     <ClCompile Include="..\..\source\scenes\voting_scenes\WaitForPlayersScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\voting_scenes\VoteForTeamScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\voting_scenes\VoteForLeaderScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\voting_scenes\ActivateTerminalScene.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
+    <ClCompile Include="..\..\source\controllers\NetworkController.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Movement.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />

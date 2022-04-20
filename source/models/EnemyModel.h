@@ -57,6 +57,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the enemy. */
   std::shared_ptr<cugl::scene2::SpriteNode> _enemy_node;
 
+  /** Represents the def for the hit area for the enemy. */
+  b2FixtureDef _hitbox_sensor_def;
   /** Represents the hit area for the enemy. */
   b2Fixture* _hitbox_sensor;
   /** Keeps an instance of the name alive for collision detection. */
@@ -64,6 +66,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The node for debugging the hitbox sensor */
   std::shared_ptr<cugl::scene2::WireNode> _hitbox_sensor_node;
 
+  /** Represents the def for the damage area for the enemy. */
+  b2FixtureDef _damage_sensor_def;
   /** Represents the hit area for the enemy. */
   b2Fixture* _damage_sensor;
   /** Keeps an instance of the name alive for collision detection. */
@@ -106,19 +110,22 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   cugl::Vec2 _fired_bullet_direction;
 
  public:
-  
-  /** The set of polygon nodes corresponding to the weights for the direction of the enemy. */
+  /** The set of polygon nodes corresponding to the weights for the direction of
+   * the enemy. */
   std::vector<std::shared_ptr<cugl::scene2::PolygonNode>> _polys;
-  
+
   /** Whether the enemy is moving in a CW motion (when attacking). */
   bool _move_CW;
-  
+
   /** Timer for switching from attack to chase. */
   int _atc_timer;
-  
+
   /** Timer for switching from chase to attack. */
   int _cta_timer;
   
+  /** When attacking, direction to attack in. */
+  cugl::Vec2 _attack_dir;
+
 #pragma mark Constructors
   /**
    * Creates a enemy with the given position and data.
@@ -234,7 +241,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * The enemy took damage.
    *
    */
-  void takeDamage();
+  void takeDamage(float amount = 20);
 
   /**
    * Returns the speed of the enemy.
@@ -321,6 +328,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return The enemy type.
    */
   EnemyType getType() { return _enemy_type; }
+  
+  /**
+   * Resets the sensors of the enemy.
+   */
+  void resetSensors();
 
 #pragma mark -
 #pragma mark Physics Methods
@@ -358,7 +370,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @param node  The scene graph node representing this enemy.
    */
-  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node, std::shared_ptr<cugl::scene2::SceneNode> debug_node);
+  void setNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node,
+               std::shared_ptr<cugl::scene2::SceneNode> debug_node);
 
   /**
    * Gets the grunt scene graph node.

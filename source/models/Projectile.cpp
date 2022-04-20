@@ -1,5 +1,7 @@
 #include "Projectile.h"
 
+#include "../controllers/CollisionFiltering.h"
+
 #define MAX_LIVE_FRAMES 42  // Must match player slash animation frames
 
 #pragma mark Init
@@ -15,6 +17,9 @@ bool Projectile::init(const cugl::Vec2 pos, const cugl::Vec2 v) {
   setFixedRotation(true);
 
   setName("projectile");
+
+  _fixture.filter.categoryBits = CATEGORY_PROJECTILE;
+  _fixture.filter.maskBits = MASK_PROJECTILE;
 
   _live_frames = MAX_LIVE_FRAMES;
   _in_world = false;

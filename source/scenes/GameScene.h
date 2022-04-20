@@ -23,17 +23,8 @@ class GameScene : public cugl::Scene2 {
   /** The network connection (as made by this scene). */
   std::shared_ptr<cugl::NetworkConnection> _network;
 
-  /** The player.  */
-  std::shared_ptr<Player> _my_player;
-
-  /** The list of all players. */
-  std::vector<std::shared_ptr<Player>> _players;
-
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
-
-  /** The sword. */
-  std::shared_ptr<Sword> _sword;
 
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
@@ -208,7 +199,7 @@ class GameScene : public cugl::Scene2 {
    */
   std::unordered_set<int> getRoomIdsWithPlayers() {
     std::unordered_set<int> room_ids_with_players;
-    for (std::shared_ptr<Player> player : _players) {
+    for (std::shared_ptr<Player> player : _player_controller->getPlayerList()) {
       int room_id = player->getRoomId();
       if (room_id != -1) {
         room_ids_with_players.emplace(room_id);
@@ -261,7 +252,7 @@ class GameScene : public cugl::Scene2 {
     NetworkController::get()->init(_network);
     NetworkController::get()->addListener(
         [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
-          processData(code, msg);
+          this->processData(code, msg);
         });
   }
 
@@ -326,8 +317,9 @@ class GameScene : public cugl::Scene2 {
    *
    * @param id the enemy that was hit
    * @param room_id the room the enemy is in
+   * @param amount the amount of damage taken
    */
-  void sendEnemyHitNetworkInfo(int id, int room_id);
+  void sendEnemyHitNetworkInfo(int id, int room_id, float amount = 20);
 
   /**
    * Broadcast a player being added to a terminal to the host.

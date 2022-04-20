@@ -37,6 +37,11 @@ class Attack : public Action {
      you move. */
   cugl::Vec2 _joystick_diff;
 
+  /** A timestamp for the time the button was first held down. */
+  cugl::Timestamp _time_down_start;
+  /** Time the button has been held down in milliseconds. */
+  int _time_held_down;
+
   // The screen is divided into two zones: Left, Right
   // These are all shown in the diagram below.
   //
@@ -53,6 +58,9 @@ class Attack : public Action {
 
   /** If the joystick base should be shown. */
   bool _show_joystick_base;
+
+  /** If the joystick should be used. */
+  bool _joystick_on;
 
  public:
   /**
@@ -112,8 +120,17 @@ class Attack : public Action {
   bool holdAttack() const { return _prev_down && _curr_down; }
 
   /**
-   * Toggels activation on attack button. When deactivated, the button cannot
-   * be pressed.
+   * @return The time the player held down the button.
+   */
+  int timeHeldDown() const {
+    if (!_butt_down) return 0;
+    cugl::Timestamp time;
+    return (Uint32)time.ellapsedMillis(_time_down_start);
+  }
+
+  /**
+   * Toggels activation on attack button. When deactivated, the button
+   * cannot be pressed.
    * @param value The activation state.
    */
   void setActive(bool value);
@@ -127,10 +144,14 @@ class Attack : public Action {
 #endif  // CU_TOUCH_SCREEN
 
   /**
+   * !!DEPRECATED!!
    * Get input vector for attacking. X and Y values range from -1.0f to 1.0f.
    * @return Movement vector.
    */
-  cugl::Vec2 getAttackDir() { return cugl::Vec2(_joystick_diff).normalize(); }
+  cugl::Vec2 getAttackDir() {
+    if (!_joystick_on) return cugl::Vec2::ZERO;
+    return cugl::Vec2(_joystick_diff).normalize();
+  }
 
   Attack();
   ~Attack() {}

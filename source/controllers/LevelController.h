@@ -6,6 +6,7 @@
 #include "../generators/LevelGenerator.h"
 #include "../models/LevelModel.h"
 #include "Controller.h"
+#include "PlayerController.h"
 
 /**
  * A level controller that takes care of initializing the board model.
@@ -22,6 +23,8 @@ class LevelController : public Controller {
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
   /** A level generator. */
   std::shared_ptr<level_gen::LevelGenerator> _level_gen;
+  /** A reference to the player controller for player access. */
+  std::shared_ptr<PlayerController> _player_controller;
   /** The level model. */
   std::shared_ptr<LevelModel> _level_model;
   /** The room to be removed after moving from neighboring tile. */
@@ -93,6 +96,16 @@ class LevelController : public Controller {
    * @return The level model.
    */
   std::shared_ptr<LevelModel> getLevelModel() const { return _level_model; }
+
+  /**
+   * Set the player controller for player access.
+   *
+   * @param player_controller The player controller.
+   */
+  void setPlayerController(
+      const std::shared_ptr<PlayerController> &player_controller) {
+    _player_controller = player_controller;
+  }
 
  private:
   /** Populate the level. */

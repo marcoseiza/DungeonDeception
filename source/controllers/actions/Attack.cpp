@@ -13,6 +13,9 @@ Attack::Attack()
 bool Attack::init(const std::shared_ptr<cugl::AssetManager> &assets,
                   cugl::Rect bounds) {
   Action::init(assets, bounds);
+  // !IMPORTANT! If joystick should be used, set this to true.
+  _joystick_on = false;
+
   _right_screen_bounds = Action::_display_coord_bounds;
   _right_screen_bounds.size.width *= 0.5f;
   _right_screen_bounds.origin.x += _right_screen_bounds.size.width;
@@ -26,9 +29,16 @@ bool Attack::init(const std::shared_ptr<cugl::AssetManager> &assets,
   _attack_base->setPosition(_button->getPosition());
   _attack_base->setVisible(false);
 
+  _butt_down = false;
   _button->addListener([=](const std::string &name, bool down) {
+    if (!_butt_down && down) {
+      // If previously not down and button pressed. (i.e. first time down).
+      _time_down_start.mark();
+    }
+
     _butt_down = down;
-    if (!down) {
+
+    if (!down && _joystick_on) {
       this->_joystick_diff.set(0, 0);
       this->_show_joystick_base = false;
     }
@@ -36,16 +46,20 @@ bool Attack::init(const std::shared_ptr<cugl::AssetManager> &assets,
 
   _button->activate();
 
-  _joystick_anchor = _button->getPosition();
+  if (_joystick_on) {
+    _joystick_anchor = _button->getPosition();
+  }
 
 #ifdef CU_TOUCH_SCREEN
-  cugl::Touchscreen *touch = cugl::Input::get<cugl::Touchscreen>();
-  _listener_key = touch->acquireKey();
+  if (_joystick_on) {
+    cugl::Touchscreen *touch = cugl::Input::get<cugl::Touchscreen>();
+    _listener_key = touch->acquireKey();
 
-  touch->addMotionListener(
-      _listener_key,
-      [=](const cugl::TouchEvent &event, const cugl::Vec2 &previous,
-          bool focus) { this->touchMoved(event, previous, focus); });
+    touch->addMotionListener(
+        _listener_key,
+        [=](const cugl::TouchEvent &event, const cugl::Vec2 &previous,
+            bool focus) { this->touchMoved(event, previous, focus); });
+  }
 #endif  // CU_TOUCH_SCREEN
 
   return true;
@@ -55,10 +69,12 @@ bool Attack::update() {
   _prev_down = _curr_down;
   _curr_down = _butt_down;
 
-  if (_joystick_diff.length() > 0.1f) _show_joystick_base = true;
+  if (_joystick_on) {
+    if (_joystick_diff.length() > 0.1f) _show_joystick_base = true;
 
-  _attack_base->setVisible(_show_joystick_base);
-  _button->setPosition(_joystick_anchor + _joystick_diff);
+    _attack_base->setVisible(_show_joystick_base);
+    _button->setPosition(_joystick_anchor + _joystick_diff);
+  }
 
   return true;
 }
@@ -68,8 +84,10 @@ bool Attack::dispose() {
   _attack_base = nullptr;
 
 #ifdef CU_TOUCH_SCREEN
-  cugl::Touchscreen *touch = cugl::Input::get<cugl::Touchscreen>();
-  touch->removeMotionListener(_listener_key);
+  if (_joystick_on) {
+    cugl::Touchscreen *touch = cugl::Input::get<cugl::Touchscreen>();
+    touch->removeMotionListener(_listener_key);
+  }
 #endif
 
   return true;
@@ -83,8 +101,8 @@ void Attack::setActive(bool value) {
 
 void Attack::touchMoved(const cugl::TouchEvent &event,
                         const cugl::Vec2 &previous, bool focus) {
-  if (_button->getTouchIds().find(event.touch) !=
-      _button->getTouchIds().end()) {
+  if (_joystick_on && _button->getTouchIds().find(event.touch) !=
+                          _button->getTouchIds().end()) {
     _joystick_diff =
         Action::displayToScreenCoord(event.position).subtract(_joystick_anchor);
 

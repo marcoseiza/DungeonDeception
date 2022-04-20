@@ -26,30 +26,40 @@ bool LevelController::init(
 }
 
 void LevelController::update(float timestep) {
-  std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
-  std::shared_ptr<Player> player = _level_model->getPlayer();
-  float rel_player_y =
-      player->getBody()->GetPosition().y - current->getNode()->getPosition().y;
-  float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
-  player->getPlayerNode()->setPriority(current->getGridSize().height - row);
+  // Update all the player's ordering in the scene graph.
+  for (std::shared_ptr<Player> &player : _player_controller->getPlayerList()) {
+    std::shared_ptr<RoomModel> room =
+        _level_model->getRoom(player->getRoomId());
 
-  for (std::shared_ptr<EnemyModel> enemy : current->getEnemies()) {
-    b2Body *enemy_body = enemy->getBody();
-    if (enemy_body != nullptr) {
-      float rel_enemy_y =
-          enemy_body->GetPosition().y - current->getNode()->getPosition().y;
-      row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y);
-      enemy->getNode()->setPriority(current->getGridSize().height - row);
+    float rel_player_y =
+        player->getBody()->GetPosition().y - room->getNode()->getPosition().y;
+    float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
+    player->getPlayerNode()->setPriority(room->getGridSize().height - row);
+  }
 
-      for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
-        if (projectile->getNode() == nullptr) { // Not initialized yet
-          continue;
+  // Update the ordering of all the enemies in my player's current room.
+  {
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+    std::shared_ptr<RoomModel> current =
+        _level_model->getRoom(player->getRoomId());
+    for (std::shared_ptr<EnemyModel> enemy : current->getEnemies()) {
+      b2Body *enemy_body = enemy->getBody();
+      if (enemy_body != nullptr) {
+        float rel_enemy_y =
+            enemy_body->GetPosition().y - current->getNode()->getPosition().y;
+        float row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y);
+        enemy->getNode()->setPriority(current->getGridSize().height - row);
+
+        for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
+          if (projectile->getNode() == nullptr) { // Not initialized yet
+            continue;
+          }
+          float rel_projectile_y = projectile->getBody()->GetPosition().y -
+                                   current->getNode()->getPosition().y;
+          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
+          player->getPlayerNode()->setPriority(current->getGridSize().height -
+                                               row);
         }
-        float rel_projectile_y = projectile->getBody()->GetPosition().y -
-                                 current->getNode()->getPosition().y;
-        row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
-        player->getPlayerNode()->setPriority(current->getGridSize().height -
-                                             row);
       }
     }
   }
@@ -94,7 +104,7 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 
   new_current->setVisible(true);
 
-  _level_model->getPlayer()->setPosPromise(
+  _player_controller->getMyPlayer()->setPosPromise(
       new_current->getNode()->getPosition() +
       door_pos * (TILE_SIZE * TILE_SCALE));
 }
@@ -185,6 +195,13 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
     if (door_room_node) {
       door_room_node->initDelegates();
 
+      if (x == 0 || y == 0) {
+        door_room_node->setNegative();
+      } else if (x == room_model->getGridSize().width - 1 ||
+                 y == room_model->getGridSize().height - 1) {
+        door_room_node->setPositive();
+      }
+
       std::string door_sensor_name = door_name + "-door";
       _world->addObstacle(door_room_node->initBox2d(door_sensor_name));
 
@@ -225,6 +242,13 @@ void LevelController::coverUnusedDoors(
     if (door_room_node) {
       door_room_node->initDelegates();
       door_room_node->setState(Door::State::UNUSED);
+
+      if (x == 0 || y == 0) {
+        door_room_node->setNegative();
+      } else if (x == room_model->getGridSize().width - 1 ||
+                 y == room_model->getGridSize().height - 1) {
+        door_room_node->setPositive();
+      }
     }
   }
 }

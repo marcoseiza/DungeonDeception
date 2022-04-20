@@ -1,5 +1,7 @@
 #include "Wall.h"
 
+#include "../../controllers/CollisionFiltering.h"
+
 #define TILE_WIDTH 48
 
 bool Wall::initWithData(const cugl::Scene2Loader* loader,
@@ -40,10 +42,16 @@ std::shared_ptr<cugl::physics2::PolygonObstacle> Wall::initBox2d() {
   cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
 
   if (_obstacle != nullptr) {
+    _obstacle->setSensor(_init_as_sensor);
     _obstacle->setPosition(pos);
     _obstacle->setName(_classname.c_str());
 
     _obstacle->setBodyType(b2BodyType::b2_staticBody);
+
+    b2Filter filter_data = _obstacle->getFilterData();
+    filter_data.categoryBits = CATEGORY_WALL;
+    filter_data.maskBits = MASK_WALL;
+    _obstacle->setFilterData(filter_data);
   }
 
   return _obstacle;

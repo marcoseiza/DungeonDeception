@@ -75,7 +75,17 @@
                   "left-pillar-off-priority": 0,
                   "laser-priority": 0,
                   "right-pillar-priority": 0,
-                  "right-pillar-off-priority": 0
+                  "right-pillar-off-priority": 0,
+                  "positive-edge-1": -1,
+                  "positive-edge-2": -1,
+                  "positive-edge-3": -1,
+                  "positive-edge-4": -1,
+                  "positive-edge-5": -1,
+                  "negative-edge-1": 1,
+                  "negative-edge-2": 1,
+                  "negative-edge-3": 1,
+                  "negative-edge-4": 1,
+                  "negative-edge-5": 1
                 }
               }
             }
@@ -604,7 +614,17 @@
                   "top-pillar-priority": 3,
                   "top-pillar-off-priority": 3,
                   "bottom-pillar-priority": 5,
-                  "bottom-pillar-off-priority": 5
+                  "bottom-pillar-off-priority": 5,
+                  "positive-edge-1": 6,
+                  "positive-edge-2": 5,
+                  "positive-edge-3": 4,
+                  "positive-edge-4": 3,
+                  "positive-edge-5": 2,
+                  "negative-edge-1": 6,
+                  "negative-edge-2": 5,
+                  "negative-edge-3": 4,
+                  "negative-edge-4": 3,
+                  "negative-edge-5": 2
                 }
               }
             }
@@ -2249,7 +2269,17 @@
                   "top-pillar-priority": 9,
                   "top-pillar-off-priority": 9,
                   "bottom-pillar-priority": 11,
-                  "bottom-pillar-off-priority": 11
+                  "bottom-pillar-off-priority": 11,
+                  "positive-edge-1": 12,
+                  "positive-edge-2": 11,
+                  "positive-edge-3": 10,
+                  "positive-edge-4": 9,
+                  "positive-edge-5": 8,
+                  "negative-edge-1": 12,
+                  "negative-edge-2": 11,
+                  "negative-edge-3": 10,
+                  "negative-edge-4": 9,
+                  "negative-edge-5": 8
                 }
               }
             }
@@ -2779,7 +2809,17 @@
                   "left-pillar-off-priority": 14,
                   "laser-priority": 14,
                   "right-pillar-priority": 14,
-                  "right-pillar-off-priority": 14
+                  "right-pillar-off-priority": 14,
+                  "positive-edge-1": 13,
+                  "positive-edge-2": 13,
+                  "positive-edge-3": 13,
+                  "positive-edge-4": 13,
+                  "positive-edge-5": 13,
+                  "negative-edge-1": 15,
+                  "negative-edge-2": 15,
+                  "negative-edge-3": 15,
+                  "negative-edge-4": 15,
+                  "negative-edge-5": 15
                 }
               }
             }
