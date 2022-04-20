@@ -10,7 +10,7 @@
 class Player : public cugl::physics2::CapsuleObstacle {
  public:
   /** Enum for the player's state (for animation). */
-  enum State { IDLE, MOVING, ATTACKING };
+  enum State { IDLE, MOVING, ATTACKING, DASHING };
 
  private:
   /** The scene graph node for the player (moving). */
@@ -56,6 +56,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** If the player is moving left (80), down (81), right (82), or up (83). */
   int _mv_direc;
 
+  /** The move direction for the last frame. */
+  cugl::Vec2 _last_move_dir;
+
  public:
   /** Countdown to change animation frame. */
   int _frame_count;
@@ -67,8 +70,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
-  /** Whether the player held attack last frame. */
-  bool _last_held_attack;
 
 #pragma mark Constructors
   /**
@@ -326,16 +327,25 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * Moves the player by the specified amount.
    *
    * @param forward Amount to move in the x and y direction
+   * @param speed The speed of movement.
    */
-  void move(cugl::Vec2 forward) { move(forward.x, forward.y); }
+  void move(cugl::Vec2 forward, float speed) {
+    move(forward.x, forward.y, speed);
+  }
 
   /**
    * Moves the player by the specified amount.
    *
    * @param forwardX Amount to move in the x direction.
    * @param forwardY Amount to move in the y direction.
+   * @param speed The speed of movement.
    */
-  void move(float forwardX, float forwardY);
+  void move(float forwardX, float forwardY, float speed);
+
+  /**
+   * @return Returns the last move direction given to the player.
+   */
+  cugl::Vec2 getLastMoveDir() const { return _last_move_dir; }
 
   /**
    * Updates the directino the player sprite is facing based on changes in x and

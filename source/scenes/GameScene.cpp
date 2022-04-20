@@ -16,7 +16,7 @@
 #include "../models/tiles/Wall.h"
 
 #define SCENE_HEIGHT 720
-#define CAMERA_SMOOTH_SPEED 2.0f
+#define CAMERA_SMOOTH_SPEED_FACTOR 85.0f
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -49,7 +49,6 @@ bool GameScene::init(
 
   _level_controller =
       LevelController::alloc(_assets, _world_node, _debug_node, level_gen);
-  _controllers.push_back(_level_controller->getHook());
 
   _map = level_gen->getMap();
   _map->setContentSize(dim);
@@ -90,7 +89,6 @@ bool GameScene::init(
   setBetrayer(is_betrayer);
 
   _terminal_controller = TerminalController::alloc(_assets);
-  _controllers.push_back(_terminal_controller);
 
   populate(dim);
 
@@ -159,6 +157,10 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
+  _controllers.push_back(_player_controller->getHook());
+  _controllers.push_back(_terminal_controller->getHook());
+  _controllers.push_back(_level_controller->getHook());
+
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
@@ -206,10 +208,6 @@ void GameScene::populate(cugl::Size dim) {
   _terminal_controller->setPlayerController(_player_controller);
   _level_controller->setPlayerController(_player_controller);
 
-  _sword = Sword::alloc(dim / 2.0f);
-  _world->addObstacle(_sword);
-  _sword->setEnabled(false);
-
   // Add physics enabled tiles to world node, debug node and box2d physics
   // world.
   std::shared_ptr<cugl::CustomScene2Loader> loader =
@@ -235,8 +233,6 @@ void GameScene::populate(cugl::Size dim) {
   // Debug code.
   _player_controller->getMyPlayer()->setDebugScene(_debug_node);
   _player_controller->getMyPlayer()->setDebugColor(cugl::Color4f::BLACK);
-  _sword->setDebugScene(_debug_node);
-  _sword->setDebugColor(cugl::Color4f::BLACK);
 
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
@@ -363,13 +359,6 @@ void GameScene::update(float timestep) {
   if (target_player->isActivatingTargetAction()) {
     sendBetrayalTargetInfo(target_player->getTarget());
   }
-
-  // Movement
-  _player_controller->update(
-      timestep, InputController::get<Movement>()->getMovement(),
-      InputController::get<Attack>()->isAttacking(),
-      InputController::get<Dash>()->isDashing(),
-      InputController::get<Attack>()->holdAttack(), _sword);
 
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
@@ -636,7 +625,7 @@ void GameScene::sendNetworkInfo() {
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int id, int room_id) {
+void GameScene::sendEnemyHitNetworkInfo(int id, int room_id, float amount) {
   std::shared_ptr<cugl::JsonValue> enemy_info = cugl::JsonValue::allocObject();
 
   std::shared_ptr<cugl::JsonValue> enemy_id =
@@ -648,6 +637,11 @@ void GameScene::sendEnemyHitNetworkInfo(int id, int room_id) {
       cugl::JsonValue::alloc(static_cast<long>(room_id));
   enemy_info->appendChild(enemy_room);
   enemy_room->setKey("enemy_room");
+
+  std::shared_ptr<cugl::JsonValue> damage_amount =
+      cugl::JsonValue::alloc(amount);
+  enemy_info->appendChild(damage_amount);
+  damage_amount->setKey("amount");
 
   _serializer.writeSint32(6);
   _serializer.writeJson(enemy_info);
@@ -800,13 +794,14 @@ void GameScene::processData(const Sint32& code,
 
     int enemy_id = enemy->getInt("enemy_id");
     int enemy_room = enemy->getInt("enemy_room");
+    float amount = enemy->getInt("amount");
 
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getRoom(enemy_room);
 
     for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
       if (enemy->getEnemyId() == enemy_id) {
-        enemy->takeDamage();
+        enemy->takeDamage(amount);
         return;
       }
     }
@@ -880,14 +875,36 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (!ob1 || !ob2) return;
 
-  if (fx1_name == "enemy_hitbox" && ob2 == _sword.get()) {
+  if (fx1_name == "enemy_hitbox" &&
+      ob2 == _player_controller->getSword().get()) {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage();
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId());
-  } else if (fx2_name == "enemy_hitbox" && ob1 == _sword.get()) {
+  } else if (fx2_name == "enemy_hitbox" &&
+             ob1 == _player_controller->getSword().get()) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId());
+  }
+
+  if (fx1_name == "enemy_hitbox" &&
+      ob2 == _player_controller->getMyPlayer().get()) {
+    Player::State player_state = _player_controller->getMyPlayer()->getState();
+    if (player_state == Player::State::DASHING) {
+      dynamic_cast<EnemyModel*>(ob1)->takeDamage(5.0f);
+      sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
+                              _player_controller->getMyPlayer()->getRoomId(),
+                              5.0f);
+    }
+  } else if (fx2_name == "enemy_hitbox" &&
+             ob1 == _player_controller->getMyPlayer().get()) {
+    Player::State player_state = _player_controller->getMyPlayer()->getState();
+    if (player_state == Player::State::DASHING) {
+      dynamic_cast<EnemyModel*>(ob2)->takeDamage(5.0f);
+      sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
+                              _player_controller->getMyPlayer()->getRoomId(),
+                              5.0f);
+    }
   }
 
   if (fx1_name == "enemy_damage" &&
@@ -920,9 +937,11 @@ void GameScene::beginContact(b2Contact* contact) {
                             _player_controller->getMyPlayer()->getRoomId());
   }
 
-  if (ob1->getName() == "projectile" && ob2 == _sword.get()) {
+  if (ob1->getName() == "projectile" &&
+      ob2 == _player_controller->getSword().get()) {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-  } else if (ob2->getName() == "projectile" && ob1 == _sword.get()) {
+  } else if (ob2->getName() == "projectile" &&
+             ob1 == _player_controller->getSword().get()) {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
   }
 
@@ -1011,8 +1030,13 @@ void GameScene::updateCamera(float timestep) {
       _player_controller->getMyPlayer()->getPosition();
 
   cugl::Vec2 smoothed_position;
-  cugl::Vec2::lerp(_world_node->getPosition(), desired_position,
-                   CAMERA_SMOOTH_SPEED * timestep, &smoothed_position);
+
+  float speed = timestep;
+  speed *= _player_controller->getMyPlayer()->getLinearVelocity().length();
+  speed /= CAMERA_SMOOTH_SPEED_FACTOR;
+
+  cugl::Vec2::lerp(_world_node->getPosition(), desired_position, speed,
+                   &smoothed_position);
 
   _world_node->setPosition(smoothed_position);
   _debug_node->setPosition(smoothed_position);
