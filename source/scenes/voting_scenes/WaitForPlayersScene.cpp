@@ -1,6 +1,6 @@
 #include "WaitForPlayersScene.h"
 
-#include "../../controllers/NetworkController.h"
+#include "../../network/NetworkController.h"
 
 bool WaitForPlayersScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {

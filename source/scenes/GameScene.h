@@ -6,7 +6,6 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
-#include "../controllers/NetworkController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
@@ -15,6 +14,7 @@
 #include "../controllers/enemies/TurtleController.h"
 #include "../generators/LevelGenerator.h"
 #include "../models/Player.h"
+#include "../network/NetworkController.h"
 
 class GameScene : public cugl::Scene2 {
   /** The asset manager for loading. */
@@ -193,7 +193,7 @@ class GameScene : public cugl::Scene2 {
    * @param room The room to update the enemies in.
    */
   void updateEnemies(float timestep, std::shared_ptr<RoomModel> room);
-  
+
   /**
    * Returns an unordered set of all the room ids players are in.
    */

@@ -311,11 +311,12 @@
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
-		D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientLobbyScene.h; sourceTree = "<group>"; };
-		D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientLobbyScene.cpp; sourceTree = "<group>"; };
 		D57B33DB28053A63002DEBBA /* NetworkCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
 		D57B3487280E5088002DEBBA /* TileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileHelper.h; sourceTree = "<group>"; };
 		D57B34AF280F7076002DEBBA /* CollisionFiltering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionFiltering.h; sourceTree = "<group>"; };
+		D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientLobbyScene.h; sourceTree = "<group>"; };
+		D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientLobbyScene.cpp; sourceTree = "<group>"; };
+		D57B36142811AAB8002DEBBA /* VotingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingInfo.h; sourceTree = "<group>"; };
 		D58B0FC827DC1BC500E65692 /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
 		D58B0FCC27DC1BC500E65692 /* LevelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelController.h; sourceTree = "<group>"; };
 		D58B0FCD27DC1BC500E65692 /* LevelController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelController.cpp; sourceTree = "<group>"; };
@@ -332,7 +333,6 @@
 		D5B8BE6427F4239400A4A836 /* VoteForLeaderScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoteForLeaderScene.h; sourceTree = "<group>"; };
 		D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkController.cpp; sourceTree = "<group>"; };
 		D5B8BE7B27F50ED300A4A836 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
-		D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VotingInfo.h; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
@@ -540,9 +540,6 @@
 			children = (
 				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
 				57FEE3E427F69C7800D7EF23 /* enemies */,
-				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
-				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
-				D5B8BE7C27F50ED300A4A836 /* VotingInfo.h */,
 				D578BFBF27F0A32600C7B05F /* TerminalController.cpp */,
 				D578BFC327F0A32600C7B05F /* TerminalController.h */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
@@ -612,6 +609,24 @@
 				D56DCD2A27CDAD7A002E8363 /* Room.cpp */,
 			);
 			path = level_gen;
+			sourceTree = "<group>";
+		};
+		D57B36122811AAB8002DEBBA /* network */ = {
+			isa = PBXGroup;
+			children = (
+				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
+				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
+				D57B36132811AAB8002DEBBA /* structs */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
+		D57B36132811AAB8002DEBBA /* structs */ = {
+			isa = PBXGroup;
+			children = (
+				D57B36142811AAB8002DEBBA /* VotingInfo.h */,
+			);
+			path = structs;
 			sourceTree = "<group>";
 		};
 		D598E69827C57D740039326B /* generators */ = {
@@ -743,6 +758,7 @@
 		EBBF18B11D749176008E2001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D57B36122811AAB8002DEBBA /* network */,
 				D52E672627BF305900F8E2B8 /* GameApp.h */,
 				D52E673327BF305A00F8E2B8 /* GameApp.cpp */,
 				D598E69827C57D740039326B /* generators */,
