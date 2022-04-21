@@ -5,7 +5,6 @@
 #include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
-#include "../controllers/VotingInfo.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -14,6 +13,7 @@
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
+#include "../network/structs/VotingInfo.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f

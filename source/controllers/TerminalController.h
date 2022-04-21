@@ -5,6 +5,7 @@
 
 #include "../models/Player.h"
 #include "../models/tiles/TerminalSensor.h"
+#include "../network/structs/VotingInfo.h"
 #include "../scenes/voting_scenes/ActivateTerminalScene.h"
 #include "../scenes/voting_scenes/VoteForLeaderScene.h"
 #include "../scenes/voting_scenes/VoteForTeamScene.h"
@@ -13,7 +14,6 @@
 #include "InputController.h"
 #include "LevelController.h"
 #include "PlayerController.h"
-#include "VotingInfo.h"
 
 class TerminalController : public Controller {
   /** If a terminal is currently being voted on. */

@@ -1,6 +1,6 @@
 #include "TerminalController.h"
 
-#include "NetworkController.h"
+#include "../network/NetworkController.h"
 
 bool TerminalController::init(
     const std::shared_ptr<cugl::AssetManager> &assets) {

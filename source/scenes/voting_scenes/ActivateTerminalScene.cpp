@@ -1,6 +1,6 @@
 #include "ActivateTerminalScene.h"
 
-#include "../../controllers/NetworkController.h"
+#include "../../network/NetworkController.h"
 
 bool ActivateTerminalScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {

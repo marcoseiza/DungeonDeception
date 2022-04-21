@@ -1,6 +1,6 @@
 #include "VoteForLeaderScene.h"
 
-#include "../../controllers/NetworkController.h"
+#include "../../network/NetworkController.h"
 
 bool VoteForLeaderScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {
