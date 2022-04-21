@@ -228,7 +228,8 @@
     <ClInclude Include="..\..\source\scenes\voting_scenes\VoteForLeaderScene.h" />
     <ClInclude Include="..\..\source\scenes\voting_scenes\ActivateTerminalScene.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
-    <ClInclude Include="..\..\source\controllers\NetworkController.h" />
+    <ClInclude Include="..\..\source\network\NetworkController.h" />
+    <ClInclude Include="..\..\source\network\structs\VotingInfo.h" />
     <ClInclude Include="..\..\source\controllers\actions\Action.h" />
     <ClInclude Include="..\..\source\controllers\actions\Attack.h" />
     <ClInclude Include="..\..\source\controllers\actions\Movement.h" />
@@ -279,7 +280,7 @@
     <ClCompile Include="..\..\source\scenes\voting_scenes\VoteForLeaderScene.cpp" />
     <ClCompile Include="..\..\source\scenes\voting_scenes\ActivateTerminalScene.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
-    <ClCompile Include="..\..\source\controllers\NetworkController.cpp" />
+    <ClCompile Include="..\..\source\network\NetworkController.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Movement.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />
