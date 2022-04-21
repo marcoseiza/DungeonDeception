@@ -912,6 +912,10 @@
       "file": "fonts/pixelmix.ttf",
       "size": 12
     },
+    "pixelmix_extra_extra_small": {
+      "file": "fonts/pixelmix.ttf",
+      "size": 8
+    },
     "pixelmix_bold": {
       "file": "fonts/pixelmix_bold.ttf",
       "size": 36
