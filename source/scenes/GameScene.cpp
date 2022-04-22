@@ -196,9 +196,8 @@ void GameScene::populate(cugl::Size dim) {
   auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan", _display_name);
   my_player->setBetrayer(_is_betrayer);
 
-  auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
-  my_player->setPlayerNode(player_node, pixelmix_font);
+  my_player->setPlayerNode(player_node);
   if (auto id = NetworkController::get()->getConnection()->getPlayerID()) {
     my_player->setPlayerId(*id);
   }

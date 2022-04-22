@@ -63,10 +63,11 @@ bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
 }
 
 void Player::setPlayerNode(
-    const std::shared_ptr<cugl::scene2::SpriteNode>& node,
-    std::shared_ptr<cugl::Font> name_font) {
+    const std::shared_ptr<cugl::scene2::SpriteNode>& node) {
   _player_node = node;
+}
 
+void Player::setNameNode(std::shared_ptr<cugl::Font> name_font) {
   _name_node = cugl::scene2::TextField::allocWithText(_display_name, name_font);
   _name_node->setForeground(cugl::Color4::WHITE);
   _name_node->setAnchor(.5, 0);
@@ -99,8 +100,11 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
-    _name_node->setPosition(_player_node->getWidth() / 2.0f,
-                            _player_node->getHeight() / 1.5f);
+
+    if (_name_node != nullptr) {
+      _name_node->setPosition(_player_node->getWidth() / 2.0f,
+                              _player_node->getHeight() / 1.45f);
+    }
   }
 }
 

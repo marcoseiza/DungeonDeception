@@ -142,7 +142,8 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
 
     auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
     auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
-    new_player->setPlayerNode(player_node, pixelmix_font);
+    new_player->setPlayerNode(player_node);
+    new_player->setNameNode(pixelmix_font);
     _world_node->addChild(player_node);
     _world->addObstacle(new_player);
 

@@ -314,14 +314,18 @@ class Player : public cugl::physics2::CapsuleObstacle {
 #pragma mark Graphics
 
   /**
-   * Sets the scene graph node representing this player and the name above the
-   * player.
+   * Sets the scene graph node representing this player.
    *
    * @param node      The scene graph node representing this player.
+   */
+  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode> &node);
+
+  /**
+   * Sets the scene graph node representing the name above the player.
+   *
    * @param name_font The font for the name above the player.
    */
-  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode> &node,
-                     std::shared_ptr<cugl::Font> name_font);
+  void setNameNode(std::shared_ptr<cugl::Font> name_font);
 
   /**
    * Gets the scene graph node representing this player's name.
