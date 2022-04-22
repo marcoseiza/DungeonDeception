@@ -23,7 +23,7 @@
 
 #pragma mark Init
 
-bool Player::init(const cugl::Vec2 pos, string name) {
+bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
   cugl::Vec2 pos_ = pos;
   cugl::Size size_ = cugl::Size(WIDTH, HEIGHT);
 
@@ -37,6 +37,8 @@ bool Player::init(const cugl::Vec2 pos, string name) {
 
   CapsuleObstacle::init(pos_, size_);
   setName(name);
+
+  _display_name = display_name;
 
   _player_node = nullptr;
   _current_state = IDLE;
@@ -58,6 +60,20 @@ bool Player::init(const cugl::Vec2 pos, string name) {
   _fixture.filter.maskBits = MASK_PLAYER;
 
   return true;
+}
+
+void Player::setPlayerNode(
+    const std::shared_ptr<cugl::scene2::SpriteNode>& node) {
+  _player_node = node;
+}
+
+void Player::setNameNode(std::shared_ptr<cugl::Font> name_font) {
+  _name_node = cugl::scene2::TextField::allocWithText(_display_name, name_font);
+  _name_node->setForeground(cugl::Color4::WHITE);
+  _name_node->setAnchor(.5, 0);
+  _name_node->setName("player_name");
+
+  _player_node->addChild(_name_node);
 }
 
 void Player::takeDamage() {
@@ -84,6 +100,11 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
+
+    if (_name_node != nullptr) {
+      _name_node->setPosition(_player_node->getWidth() / 2.0f,
+                              _player_node->getHeight() / 1.45f);
+    }
   }
 }
 

@@ -39,7 +39,7 @@ void VoteForLeaderScene::start(std::shared_ptr<VotingInfo> voting_info,
           butt->getChildByName("up")->getChildByName("label"));
 
       std::stringstream ss;
-      ss << "player " << player_id;
+      ss << _player_controller->getPlayer(player_id)->getDisplayName();
       if (_player_controller->getMyPlayer()->getPlayerId() == player_id) {
         ss << " (you)";
       }

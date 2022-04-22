@@ -91,6 +91,9 @@ class GameScene : public cugl::Scene2 {
   /** The last timestamp at which the timer was updated. */
   cugl::Timestamp _last_timestamp;
 
+  /** The display name of my player. */
+  std::string _display_name;
+
  public:
   GameScene() : cugl::Scene2() {}
 
@@ -107,15 +110,17 @@ class GameScene : public cugl::Scene2 {
   /**
    * Initializes the controller contents, and starts the game.
    *
-   * @param assets      The (loaded) assets for this game mode.
-   * @param level_gen   The generated level.
-   * @param is_betrayer True if the game is being played by a betrayer.
+   * @param assets        The (loaded) assets for this game mode.
+   * @param level_gen     The generated level.
+   * @param is_betrayer   True if the game is being played by a betrayer.
+   * @param display_name  Name the player input in lobby.
+
    *
    * @return true if the controller is initialized properly, false otherwise.
    */
   bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
-            bool is_betrayer);
+            bool is_betrayer, std::string display_name);
 
   /**
    * Sets whether debug mode is active.

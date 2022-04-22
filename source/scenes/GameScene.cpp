@@ -22,9 +22,11 @@
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
-    bool is_betrayer) {
+    bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
+
+  _display_name = display_name;
 
   // Initialize the scene to a locked width.
 
@@ -142,9 +144,7 @@ bool GameScene::init(
   corrupted_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
-  std::string name_msg = cugl::strtool::format(
-      "player %d", _player_controller->getMyPlayer()->getPlayerId());
-  name_text->setText(name_msg);
+  name_text->setText(_display_name);
   name_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
@@ -193,7 +193,7 @@ void GameScene::populate(cugl::Size dim) {
   // Initialize the player with texture and size, then add to world.
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
 
-  auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
+  auto my_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan", _display_name);
   my_player->setBetrayer(_is_betrayer);
 
   auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
@@ -395,9 +395,7 @@ void GameScene::update(float timestep) {
   timer_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
-  std::string name_msg = cugl::strtool::format(
-      "player %d", _player_controller->getMyPlayer()->getPlayerId());
-  name_text->setText(name_msg);
+  name_text->setText(_display_name);
   name_text->setForeground(cugl::Color4::BLACK);
 
   auto activated_text =
@@ -497,6 +495,13 @@ void GameScene::sendNetworkInfo() {
             cugl::JsonValue::alloc(static_cast<long>(player->getPlayerId()));
         player_info->appendChild(player_id);
         player_id->setKey("player_id");
+
+        // send host-stored player's set display name to all clients
+        std::shared_ptr<cugl::JsonValue> player_display_name =
+            cugl::JsonValue::alloc(
+                static_cast<std::string>(player->getDisplayName()));
+        player_info->appendChild(player_display_name);
+        player_display_name->setKey("player_display_name");
 
         std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
         std::shared_ptr<cugl::JsonValue> pos_x =
@@ -633,6 +638,12 @@ void GameScene::sendNetworkInfo() {
         static_cast<long>(_player_controller->getMyPlayer()->getPlayerId()));
     player_info->appendChild(player_id);
     player_id->setKey("player_id");
+
+    // send a player's set display name from itself to host
+    std::shared_ptr<cugl::JsonValue> player_display_name =
+        cugl::JsonValue::alloc(static_cast<std::string>(_display_name));
+    player_info->appendChild(player_display_name);
+    player_display_name->setKey("player_display_name");
 
     std::shared_ptr<cugl::JsonValue> room = cugl::JsonValue::alloc(
         static_cast<long>(_player_controller->getMyPlayer()->getRoomId()));

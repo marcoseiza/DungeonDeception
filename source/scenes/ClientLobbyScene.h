@@ -33,7 +33,7 @@ class ClientLobbyScene : public cugl::Scene2 {
   /** The game id label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _gameid;
   /** The player name label */
-  std::shared_ptr<cugl::scene2::Label> _name;
+  std::shared_ptr<cugl::scene2::TextField> _name;
 
   /** The serializer used to serialize complex data to send through the network.
    */
@@ -112,6 +112,12 @@ class ClientLobbyScene : public cugl::Scene2 {
    * @return The seed for the map
    */
   Uint64 getSeed() { return _seed; }
+
+  /**
+   * Returns the player name to be used in game.
+   * @return The player name
+   */
+  std::string getPlayerName() { return _name->getText(); }
 
   /**
    * The method called to update the scene.

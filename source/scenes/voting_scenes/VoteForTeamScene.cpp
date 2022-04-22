@@ -35,7 +35,7 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
         _assets->get<cugl::scene2::SceneNode>(leader_button_key + "_up_label"));
 
     std::stringstream ss;
-    ss << "player " << _team_leader_id;
+    ss << _player_controller->getPlayer(team_leader_id)->getDisplayName();
     if (_player_controller->getMyPlayer()->getPlayerId() == _team_leader_id) {
       ss << " (you)";
     }
@@ -116,7 +116,7 @@ void VoteForTeamScene::start(std::shared_ptr<VotingInfo> voting_info,
           butt->getChildByName("up")->getChildByName("label"));
 
       std::stringstream ss;
-      ss << "player " << player_id;
+      ss << _player_controller->getPlayer(player_id)->getDisplayName();
       if (_player_controller->getMyPlayer()->getPlayerId() == player_id) {
         ss << " (you)";
       }
