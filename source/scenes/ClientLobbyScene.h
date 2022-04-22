@@ -11,35 +11,6 @@
  *
  */
 class ClientLobbyScene : public PeerLobbyScene {
- protected:
-  /** The asset manager for this scene. */
-  std::shared_ptr<cugl::AssetManager> _assets;
-  /** The network connection (as made by this scene) */
-  std::shared_ptr<cugl::NetworkConnection> _network;
-
-  /** The number of players label */
-  std::shared_ptr<cugl::scene2::Label> _player;
-  /** The game id label (for updating) */
-  std::shared_ptr<cugl::scene2::Label> _gameid;
-  /** The player name label */
-  std::shared_ptr<cugl::scene2::TextField> _name;
-
-  /** The serializer used to serialize complex data to send through the network.
-   */
-  cugl::NetworkSerializer _serializer;
-  /** The deserializer used to deserialize complex data sent through the
-   * network. */
-  cugl::NetworkDeserializer _deserializer;
-
-  /** The current status */
-  PeerLobbyScene::Status _status;
-
-  /** The map seed. */
-  Uint64 _seed;
-
-  /** If the user is a betrayer (true) or cooperator (false). */
-  bool _is_betrayer;
-
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -88,14 +59,6 @@ class ClientLobbyScene : public PeerLobbyScene {
    * @param id the game id
    */
   virtual void setGameId(string id) { _gameid->setText(id); };
-
-  /**
-   * Returns the scene status. Any value other than WAIT will transition to
-   * a new scene.
-   *
-   * @return the scene status
-   */
-  Status getStatus() const { return _status; }
 
  private:
   /**
