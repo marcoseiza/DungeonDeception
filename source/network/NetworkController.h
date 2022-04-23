@@ -3,7 +3,7 @@
 
 #include <cugl/cugl.h>
 
-#include "controllers/NetworkCodes.h"
+#include "NetworkCodes.h"
 
 class NetworkController {
  public:
