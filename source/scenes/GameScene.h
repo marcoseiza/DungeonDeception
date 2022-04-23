@@ -26,6 +26,9 @@ class GameScene : public cugl::Scene2 {
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
 
+  /** The animated luminance bar */
+  std::shared_ptr<cugl::scene2::ProgressBar> _luminance_bar;
+
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 

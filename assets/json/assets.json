@@ -214,6 +214,31 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "luminance-bar": {
+      "file": "textures/luminance-bar.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "luminance-fill": {
+      "file": "textures/luminance-fill.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [ 0, 0, 1, 50 ],
+        "rightcap": [ 467, 0, 468, 50 ]
+      }
+    },
+    "luminance-outline": {
+      "file": "textures/luminance-outline.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "timer": {
       "file": "textures/timer.png",
       "minfilter": "nearest",
@@ -459,6 +484,48 @@
             "y_anchor": "top",
             "x_offset": 0.2,
             "y_offset": -0.13
+          }
+        }
+      }
+    },
+    "luminance": {
+      "type": "Node",
+      "format": {
+        "type": "Anchored"
+      },
+      "children": {
+        "bar": {
+          "type": "Progress",
+          "data": {
+            "anchor": [ 0.5, 0.5 ],
+            "background": "luminance-fill",
+            "foreground": "luminance-bar",
+            "left_cap": "luminance-fill_leftcap",
+            "right_cap": "luminance-fill_rightcap",
+            "scale": 0.4
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.2,
+            "y_offset": -0.20
+          }
+        },
+        "health-outline": {
+          "type": "Image",
+          "format": {
+            "type": "Anchored"
+          },
+          "data": {
+            "texture": "luminance-outline",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 0.402
+          },
+          "layout": {
+            "x_anchor": "left",
+            "y_anchor": "top",
+            "x_offset": 0.2,
+            "y_offset": -0.20
           }
         }
       }

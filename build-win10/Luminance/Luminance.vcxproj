@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\source\controllers\Controller.h" />
     <ClInclude Include="..\..\source\controllers\EnemyController.h" />
     <ClInclude Include="..\..\source\controllers\LevelController.h" />
+    <ClInclude Include="..\..\source\controllers\NetworkCodes.h" />
     <ClInclude Include="..\..\source\controllers\PlayerController.h" />
     <ClInclude Include="..\..\source\controllers\TerminalController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h" />
