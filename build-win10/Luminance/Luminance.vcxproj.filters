@@ -195,6 +195,9 @@
     <ClInclude Include="..\..\source\scenes\ClientLobbyScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\controllers\NetworkCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\GameApp.cpp">
