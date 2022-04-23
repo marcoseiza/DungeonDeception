@@ -47,6 +47,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _cta_timer = 0;
   _isKnockbacked = false;
   _stunned_timer = 0;
+  _goal_frame = 0;
 
   _attack_cooldown = 0;
 
@@ -176,7 +177,9 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     default: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 8);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
+      auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
+      node->setFrame(23); // Initial closed frame
       break;
     }
   }

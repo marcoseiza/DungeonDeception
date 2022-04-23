@@ -143,6 +143,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** The count for switching to the next frame. */
   int _frame_count;
+  
+  /** The goal frame for the tank enemy*/
+  int _goal_frame;
+  
+  /** Whether the tank needs to close/open. 0 for no, 1 to close, 2 to open. */
+  int _must_close_or_open;
 
 #pragma mark Constructors
   /**
