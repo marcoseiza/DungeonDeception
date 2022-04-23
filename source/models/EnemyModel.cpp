@@ -172,7 +172,7 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
       break;
     }
     default: {
@@ -328,13 +328,5 @@ void EnemyModel::knockback(int moveDir) {
   } else {
     _knockback_dir.x = 0;
     _knockback_dir.y = 1;
-  }
-}
-
-void EnemyModel::setFacingLeft(bool facing_left) {
-  // flip texture if direction has changed
-  if (_facing_left != facing_left) {
-    _facing_left = facing_left;
-    //    _enemy_node->flipHorizontal(_facing_left);
   }
 }

@@ -85,7 +85,7 @@ class TurtleController : public EnemyController {
   /**
    * Animate the turtle.
    */
-  void animate(std::shared_ptr<EnemyModel> enemy) override;
+  void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
 };
 
 #endif /* CONTROLLERS_ENEMIES_TURTLE_CONTROLLER_H_ */
