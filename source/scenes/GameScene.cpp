@@ -1103,11 +1103,14 @@ void GameScene::beginContact(b2Contact* contact) {
 
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob1));
+                                      dynamic_cast<TerminalSensor*>(ob1),
+                                      _player_controller->getMyPlayer());
+      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
+        sendTerminalAddPlayerInfo(
+            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
+            room->getNumPlayersRequired());
+      }
 
-      sendTerminalAddPlayerInfo(
-          room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-          room->getNumPlayersRequired());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1117,11 +1120,13 @@ void GameScene::beginContact(b2Contact* contact) {
 
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob2));
-
-      sendTerminalAddPlayerInfo(
-          room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-          room->getNumPlayersRequired());
+                                      dynamic_cast<TerminalSensor*>(ob2),
+                                      _player_controller->getMyPlayer());
+      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
+        sendTerminalAddPlayerInfo(
+            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
+            room->getNumPlayersRequired());
+      }
     }
   }
 }
