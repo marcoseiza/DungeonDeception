@@ -102,7 +102,7 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
@@ -153,7 +153,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
 }
 
 void GruntController::animateChase(std::shared_ptr<EnemyModel> enemy) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   
   int run_high_lim = 19;
   int run_low_lim = 10;

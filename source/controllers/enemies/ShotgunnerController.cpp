@@ -89,7 +89,7 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode()->getChildByTag(0).get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode()->getChildByTag(0));
   auto gun_node = enemy->getNode()->getChildByTag(1);
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
