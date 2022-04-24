@@ -14,6 +14,7 @@
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
 #include "../network/structs/VotingInfo.h"
+#include "../controllers/CollisionFiltering.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -1018,10 +1019,12 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (fx1_name == "enemy_damage" &&
-      ob2 == _player_controller->getMyPlayer().get()) {
+      ob2 == _player_controller->getMyPlayer().get() &&
+      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob2)->takeDamage();
   } else if (fx2_name == "enemy_damage" &&
-             ob1 == _player_controller->getMyPlayer().get()) {
+             ob1 == _player_controller->getMyPlayer().get() &&
+             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob1)->takeDamage();
   }
 
