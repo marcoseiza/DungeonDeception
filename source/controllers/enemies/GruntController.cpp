@@ -101,49 +101,47 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
-        int attack_high_lim = 29;
-        int attack_low_lim = 20;
-
         // Play the next animation frame.
         if (fc >= 3) {
           enemy->_frame_count = 0;
-          if (node->getFrame() >= attack_high_lim) {
-            node->setFrame(attack_low_lim);
-          } else {
-            node->setFrame(node->getFrame() + 1);
-          }
-        }
-        enemy->_frame_count++;
-        break;
-      } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
-        node->setFrame(20);
-        break;
-      }
-    }
-    case EnemyModel::State::CHASING: {
-      int run_high_lim = 19;
-      int run_low_lim = 10;
-
-      if (fc == 0) {
-        node->setFrame(run_low_lim);
-      }
-
-      // Play the next animation frame.
-      if (fc >= 4) {
-        enemy->_frame_count = 0;
-        if (node->getFrame() >= run_high_lim) {
-          node->setFrame(run_low_lim);
-        } else {
           node->setFrame(node->getFrame() + 1);
         }
+        enemy->_frame_count++;
+      } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+        // Depending on direction, set the frame.
+        float frame_angle = enemy->_attack_dir.getAngle();
+        if (frame_angle <= -M_PI/2) {
+          node->setFrame(60); // Bottom left
+        } else if (frame_angle <= 0) {
+          node->setFrame(40); // Bottom right
+        } else if (frame_angle <= M_PI/2) {
+          node->setFrame(30); // Top right
+        } else {
+          node->setFrame(50); // Top left
+        }
+        enemy->_frame_count = 0;
+      } else {
+        // Look at the direction of the player when circling
+        float direc_angle = abs(cugl::Vec2(p - enemy->getPosition()).getAngle());
+        enemy->setFacingLeft(direc_angle > M_PI/2);
+        animateChase(enemy);
       }
-      enemy->_frame_count++;
+      break;
+    }
+    case EnemyModel::State::CHASING: {
+      if (enemy->getVX() != 0) {
+        if (enemy->getVX() < 0 != enemy->getFacingLeft()) {
+          enemy->_frame_count = 0;
+          enemy->setFacingLeft(enemy->getVX() < 0);
+        }
+      }
+      animateChase(enemy);
       break;
     }
     default: {
@@ -152,4 +150,30 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
       break;
     }
   }
+}
+
+void GruntController::animateChase(std::shared_ptr<EnemyModel> enemy) {
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  
+  int run_high_lim = 19;
+  int run_low_lim = 10;
+  if (enemy->getFacingLeft()) {
+    run_high_lim = 29;
+    run_low_lim = 20;
+  }
+  
+  if (enemy->_frame_count == 0) {
+    node->setFrame(run_low_lim);
+  }
+
+  // Play the next animation frame.
+  if (enemy->_frame_count >= 4) {
+    enemy->_frame_count = 0;
+    if (node->getFrame() >= run_high_lim) {
+      node->setFrame(run_low_lim);
+    } else {
+      node->setFrame(node->getFrame() + 1);
+    }
+  }
+  enemy->_frame_count++;
 }

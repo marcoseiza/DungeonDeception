@@ -111,7 +111,7 @@ class EnemyController {
   void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
   
   /** Animate the enemy. */
-  virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
+  virtual void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
 
 #pragma mark Movement
  protected:

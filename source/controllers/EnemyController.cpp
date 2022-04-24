@@ -123,7 +123,7 @@ void EnemyController::update(bool is_host, float timestep, std::shared_ptr<Enemy
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
   
-  animate(enemy);
+  animate(enemy, p);
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy,

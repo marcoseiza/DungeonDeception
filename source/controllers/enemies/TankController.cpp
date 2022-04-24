@@ -93,4 +93,4 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}
+void TankController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
