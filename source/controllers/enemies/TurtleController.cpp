@@ -97,7 +97,7 @@ void TurtleController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   
   // If opening/closing, don't animate here
