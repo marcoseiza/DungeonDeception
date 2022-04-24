@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-               BuildableName = "Luminance (iOS).app"
-               BlueprintName = "Luminance (iOS)"
-               ReferencedContainer = "container:Luminance.xcodeproj">
+               BuildableName = "Dungeon Deduction.app"
+               BlueprintName = "Dungeon Deduction"
+               ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-            BuildableName = "Luminance (iOS).app"
-            BlueprintName = "Luminance (iOS)"
-            ReferencedContainer = "container:Luminance.xcodeproj">
+            BuildableName = "Dungeon Deduction.app"
+            BlueprintName = "Dungeon Deduction"
+            ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-            BuildableName = "Luminance (iOS).app"
-            BlueprintName = "Luminance (iOS)"
-            ReferencedContainer = "container:Luminance.xcodeproj">
+            BuildableName = "Dungeon Deduction.app"
+            BlueprintName = "Dungeon Deduction"
+            ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

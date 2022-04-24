@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EBBF18901D74904A008E2001"
-               BuildableName = "Luminance (Mac).app"
-               BlueprintName = "Luminance (Mac)"
-               ReferencedContainer = "container:Luminance.xcodeproj">
+               BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
+               BuildableName = "Dungeon Deduction (Sim).app"
+               BlueprintName = "Dungeon Deduction (Sim)"
+               ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -44,10 +44,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EBBF18901D74904A008E2001"
-            BuildableName = "Luminance (Mac).app"
-            BlueprintName = "Luminance (Mac)"
-            ReferencedContainer = "container:Luminance.xcodeproj">
+            BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
+            BuildableName = "Dungeon Deduction (Sim).app"
+            BlueprintName = "Dungeon Deduction (Sim)"
+            ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -61,10 +61,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EBBF18901D74904A008E2001"
-            BuildableName = "Luminance (Mac).app"
-            BlueprintName = "Luminance (Mac)"
-            ReferencedContainer = "container:Luminance.xcodeproj">
+            BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
+            BuildableName = "Dungeon Deduction (Sim).app"
+            BlueprintName = "Dungeon Deduction (Sim)"
+            ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -342,7 +342,7 @@
 		D5F3D6B227DD6E3B0071DD06 /* RoomModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomModel.cpp; sourceTree = "<group>"; };
 		D5F3D6B327DD6E3B0071DD06 /* RoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomModel.h; sourceTree = "<group>"; };
 		EB07CFB021EFF3EF000CB3A3 /* DeviceMargins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DeviceMargins.plist; sourceTree = "<group>"; };
-		EB22BF5E25D0E8BC002ACE41 /* Luminance (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Luminance (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B41D74952A002FE78B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
 		EB2BE9BE1D749908002FE78B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -353,14 +353,14 @@
 		EB2BE9CB1D749937002FE78B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		EB2BE9CD1D749953002FE78B /* ForceFeedback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ForceFeedback.framework; path = System/Library/Frameworks/ForceFeedback.framework; sourceTree = SDKROOT; };
 		EB2BE9CE1D749953002FE78B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		EB74548C1D74D75C002FBAE6 /* Luminance (iOS).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Luminance (iOS).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7454A61D74D846002FBAE6 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
 		EB7454A71D74D846002FBAE6 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		EB7454A81D74D846002FBAE6 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
 		EB7454A91D74D846002FBAE6 /* Portrait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Portrait.storyboard; sourceTree = "<group>"; };
 		EBB3D284201444B300E6A7CD /* CUGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CUGL.xcodeproj; path = "../cugl/build-apple/CUGL.xcodeproj"; sourceTree = "<group>"; };
 		EBB3D29B201444F100E6A7CD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		EBBF18911D74904A008E2001 /* Luminance (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Luminance (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBC147141E27F07C005494CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -734,9 +734,9 @@
 		EBBF18921D74904A008E2001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBBF18911D74904A008E2001 /* Luminance (Mac).app */,
-				EB74548C1D74D75C002FBAE6 /* Luminance (iOS).app */,
-				EB22BF5E25D0E8BC002ACE41 /* Luminance (Sim).app */,
+				EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */,
+				EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */,
+				EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -775,9 +775,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB22BF5D25D0E8BC002ACE41 /* Luminance (Sim) */ = {
+		EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Luminance (Sim)" */;
+			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */;
 			buildPhases = (
 				EB22BF5A25D0E8BC002ACE41 /* Sources */,
 				EB22BF5B25D0E8BC002ACE41 /* Frameworks */,
@@ -787,14 +787,14 @@
 			);
 			dependencies = (
 			);
-			name = "Luminance (Sim)";
+			name = "Dungeon Deduction (Sim)";
 			productName = "HelloWorld (Sim)";
-			productReference = EB22BF5E25D0E8BC002ACE41 /* Luminance (Sim).app */;
+			productReference = EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EB74548B1D74D75C002FBAE6 /* Luminance (iOS) */ = {
+		EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Luminance (iOS)" */;
+			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */;
 			buildPhases = (
 				EB7454881D74D75C002FBAE6 /* Sources */,
 				EB7454891D74D75C002FBAE6 /* Frameworks */,
@@ -804,14 +804,14 @@
 			);
 			dependencies = (
 			);
-			name = "Luminance (iOS)";
+			name = "Dungeon Deduction";
 			productName = "CUGL Demo (iOS)";
-			productReference = EB74548C1D74D75C002FBAE6 /* Luminance (iOS).app */;
+			productReference = EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EBBF18901D74904A008E2001 /* Luminance (Mac) */ = {
+		EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Luminance (Mac)" */;
+			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */;
 			buildPhases = (
 				EBBF188D1D74904A008E2001 /* Sources */,
 				EBBF188E1D74904A008E2001 /* Frameworks */,
@@ -821,9 +821,9 @@
 			);
 			dependencies = (
 			);
-			name = "Luminance (Mac)";
+			name = "Dungeon Deduction (Mac)";
 			productName = "CUGL Demo";
-			productReference = EBBF18911D74904A008E2001 /* Luminance (Mac).app */;
+			productReference = EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -837,20 +837,20 @@
 				TargetAttributes = {
 					EB22BF5D25D0E8BC002ACE41 = {
 						CreatedOnToolsVersion = 12.4;
-						DevelopmentTeam = 3CZ5TUZ2PQ;
+						DevelopmentTeam = 37AKFHT6H5;
 						ProvisioningStyle = Automatic;
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = LR67JRR3TA;
+						DevelopmentTeam = 37AKFHT6H5;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 3CZ5TUZ2PQ;
+						DevelopmentTeam = 37AKFHT6H5;
 					};
 				};
 			};
-			buildConfigurationList = EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Luminance" */;
+			buildConfigurationList = EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Dungeon Deduction" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -869,9 +869,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				EBBF18901D74904A008E2001 /* Luminance (Mac) */,
-				EB74548B1D74D75C002FBAE6 /* Luminance (iOS) */,
-				EB22BF5D25D0E8BC002ACE41 /* Luminance (Sim) */,
+				EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */,
+				EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */,
+				EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */,
 			);
 		};
 /* End PBXProject section */
@@ -1121,14 +1121,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				INFOPLIST_FILE = "$(SRCROOT)/../cugl/build-apple/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1148,13 +1148,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				INFOPLIST_FILE = "$(SRCROOT)/../cugl/build-apple/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1170,13 +1170,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LR67JRR3TA;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1192,13 +1192,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LR67JRR3TA;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1331,11 +1331,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1348,11 +1348,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3CZ5TUZ2PQ;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.Luminance;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1360,7 +1360,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Luminance (Sim)" */ = {
+		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB22BF7425D0E8BD002ACE41 /* Debug */,
@@ -1369,7 +1369,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Luminance (iOS)" */ = {
+		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB7454A11D74D75C002FBAE6 /* Debug */,
@@ -1378,7 +1378,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Luminance" */ = {
+		EBBF188C1D74904A008E2001 /* Build configuration list for PBXProject "Dungeon Deduction" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A01D74904A008E2001 /* Debug */,
@@ -1387,7 +1387,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Luminance (Mac)" */ = {
+		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A31D74904A008E2001 /* Debug */,
