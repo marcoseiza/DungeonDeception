@@ -121,8 +121,8 @@ class TerminalController : public Controller {
    * @param num_players_req The number of players required for this terminal.
    */
   void setActive(int terminal_room_id, int num_players_req,
-                 TerminalSensor* sensor) {
-    if (_active) return;
+                 TerminalSensor* sensor, std::shared_ptr<Player> player) {
+    if (_active || player->getLuminance() < 40) return;
 
     // If the voting room has already started.
     if (_voting_info.find(terminal_room_id) != _voting_info.end() &&
