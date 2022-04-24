@@ -40,6 +40,16 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     /** The turtle enemy type. */
     TURTLE
   };
+  
+  /** Enum for determining whether the tank enemy model needs to open or close (for animation). */
+  enum TurtleAnimationState {
+    /** The turtle is opening. */
+    OPEN,
+    /** The turtle is closing. */
+    CLOSE,
+    /** The turtle should stay in its current animation state. */
+    STAY
+  };
 
  private:
   /** The current state of the enemy. */
@@ -144,11 +154,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** The count for switching to the next frame. */
   int _frame_count;
   
-  /** The goal frame for the tank enemy*/
+  /** The goal frame for the turtle enemy*/
   int _goal_frame;
   
-  /** Whether the tank needs to close/open. 0 for no, 1 to close, 2 to open. */
-  int _must_close_or_open;
+  /** Whether the turtle needs to close/open. */
+  TurtleAnimationState _turtle_state;
 
 #pragma mark Constructors
   /**

@@ -62,18 +62,18 @@ void TurtleController::changeStateIfApplicable(
   if (distance <= TANK_RANGE) {
     if (enemy->getCurrentState() != EnemyModel::State::TANKING) {
       enemy->setCurrentState(EnemyModel::State::TANKING);
-      enemy->_must_close_or_open = 1;
+      enemy->_turtle_state = EnemyModel::TurtleAnimationState::CLOSE;
     }
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   } else if (distance <= ATTACK_RANGE) {
     if (enemy->getCurrentState() != EnemyModel::State::ATTACKING) {
       enemy->setCurrentState(EnemyModel::State::ATTACKING);
-      enemy->_must_close_or_open = 2;
+      enemy->_turtle_state = EnemyModel::TurtleAnimationState::OPEN;
     }
   } else {
     if (enemy->getCurrentState() != EnemyModel::State::IDLE) {
       enemy->setCurrentState(EnemyModel::State::IDLE);
-      enemy->_must_close_or_open = 1;
+      enemy->_turtle_state = EnemyModel::TurtleAnimationState::CLOSE;
     }
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   }
@@ -101,7 +101,7 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
   int fc = enemy->_frame_count;
   
   // If opening/closing, don't animate here
-  if (enemy->_must_close_or_open == 0) {
+  if (enemy->_turtle_state == EnemyModel::TurtleAnimationState::STAY) {
     switch (enemy->getCurrentState()) {
       case EnemyModel::State::ATTACKING: {
         if (enemy->getAttackCooldown() == ATTACK_FRAME_POS - 1) {
@@ -150,7 +150,7 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
         node->setFrame(CLOSED);
       }
     }
-  } else if (enemy->_must_close_or_open == 1) {
+  } else if (enemy->_turtle_state == EnemyModel::TurtleAnimationState::CLOSE) {
     animateClose(enemy);
   } else {
     animateOpen(enemy);
@@ -158,12 +158,12 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
 }
 
 void TurtleController::animateClose(std::shared_ptr<EnemyModel> enemy) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   
   if (fc >= 2) {
     if (node->getFrame() == CLOSED) {
-      enemy->_must_close_or_open = 0;
+      enemy->_turtle_state = EnemyModel::TurtleAnimationState::STAY;
     } else {
       if (node->getFrame() > ATTACK_RIGHT && node->getFrame() < ATTACK_HALF) {
         node->setFrame(node->getFrame() - 1);
@@ -184,15 +184,15 @@ void TurtleController::animateClose(std::shared_ptr<EnemyModel> enemy) {
 }
 
 void TurtleController::animateOpen(std::shared_ptr<EnemyModel> enemy) {
-  auto node = dynamic_cast<cugl::scene2::SpriteNode*>(enemy->getNode().get());
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   
   if (node->getFrame() > CLOSED || node->getFrame() < TURTLE_OPENED) {
-    enemy->_must_close_or_open = 0;
+    enemy->_turtle_state = EnemyModel::TurtleAnimationState::STAY;
   } else if (fc >= 2) {
     if (node->getFrame() == TURTLE_OPENED) {
       node->setFrame(ATTACK_RIGHT);
-      enemy->_must_close_or_open = 0;
+      enemy->_turtle_state = EnemyModel::TurtleAnimationState::STAY;
     } else {
       node->setFrame(node->getFrame() - 1);
     }
