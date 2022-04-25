@@ -86,6 +86,14 @@ class HostLobbyScene : public PeerLobbyScene {
    * Starts the game.
    */
   void startGame();
+
+  /**
+   * Determine the roles of all the players before the game starts.
+   * Afterwards, send number of betrayers and ids to all clients.
+   *
+   * Assignment algorithm assumes that the number of betrayers is [1, 2].
+   */
+  void determineAndSendRoles();
 };
 
 #endif /* SCENES_HOST_LOBBY_SCENE_H_ */
