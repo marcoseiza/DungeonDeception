@@ -71,7 +71,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 100 ]
+              "size": [ 370, 200 ]
             },
             "children": {
               "label": {
@@ -112,57 +112,6 @@
               "padding": [ 0, 0, 0, 5 ]
             }
           },
-          "players": {
-            "type": "Node",
-            "format": {
-              "type": "Float",
-              "orientation": "horizontal",
-              "x_alignment": "center",
-              "y_alignment": "middle"
-            },
-            "data": {
-              "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 100 ]
-            },
-            "children": {
-              "label": {
-                "type": "Widget",
-                "data": {
-                  "key": "labelbox",
-                  "variables": {
-                    "size": [ 170, 70 ],
-                    "text": "PLAYERS:",
-                    "halign": "center",
-                    "background": [ 239, 235, 227, 179 ]
-                  }
-                },
-                "layout": {
-                  "priority": 1,
-                  "padding": [ 0, 0, 25, 0 ]
-                }
-              },
-              "field": {
-                "type": "Widget",
-                "data": {
-                  "key": "labelbox",
-                  "variables": {
-                    "size": [ 170, 70 ],
-                    "text": "1",
-                    "halign": "center",
-                    "foreground": "#ffffff",
-                    "background": [ 70, 70, 70, 179 ]
-                  }
-                },
-                "layout": {
-                  "priority": 2
-                }
-              }
-            },
-            "layout": {
-              "priority": 2,
-              "padding": [ 0, 25, 0, 0 ]
-            }
-          },
           "start": {
             "type": "Widget",
             "data": {
@@ -176,7 +125,7 @@
             },
             "layout": {
               "priority": 3,
-              "padding": [ 0, 25, 0, 0 ]
+              "padding": [ 0, 25, 0, 25 ]
             }
           }
         },

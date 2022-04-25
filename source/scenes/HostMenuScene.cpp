@@ -39,8 +39,6 @@ bool HostMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       _assets->get<cugl::scene2::SceneNode>("host_back"));
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>("host_center_game_field_text"));
-  _player = std::dynamic_pointer_cast<cugl::scene2::Label>(
-      _assets->get<cugl::scene2::SceneNode>("host_center_players_field_text"));
   _status = Status::WAIT;
 
   // Program the buttons
@@ -128,7 +126,6 @@ bool HostMenuScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       _gameid->setText(_network->getRoomID());
-      _player->setText(std::to_string(_network->getNumPlayers()));
       if (_status != START) {
         _status = IDLE;
       }

@@ -51,12 +51,6 @@ class HostMenuScene : public PeerScene {
   virtual void setActive(bool value) override;
 
   /**
-   * Returns if the scene represents a host or betrayer
-   * @return The role of the player, true if betrayer, false otherwise.
-   */
-  bool isBetrayer() { return _is_betrayer; }
-
-  /**
    * The method called to update the scene.
    *
    * @param timestep  The amount of time (in seconds) since the last frame
