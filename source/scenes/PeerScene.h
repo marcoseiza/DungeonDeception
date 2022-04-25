@@ -16,12 +16,10 @@ class PeerScene : public cugl::Scene2 {
   enum Status {
     /** Host is waiting on a connection or Client has not yet entered a room */
     IDLE,
-    /** Client is connecting to the host */
+    /** Client is connecting to the host, or host is moving to lobby */
     JOIN,
     /** Client or Host is waiting to start game */
     WAIT,
-    /** Time to start the game */
-    START,
     /** Game was aborted; back to main menu */
     ABORT
   };

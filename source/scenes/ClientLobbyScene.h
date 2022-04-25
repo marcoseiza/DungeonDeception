@@ -11,6 +11,11 @@
  *
  */
 class ClientLobbyScene : public PeerLobbyScene {
+ protected:
+  /** The deserializer used to deserialize complex data sent through the
+   * network. */
+  cugl::NetworkDeserializer _deserializer;
+
  public:
 #pragma mark -
 #pragma mark Constructors

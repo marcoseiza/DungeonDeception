@@ -175,12 +175,10 @@ bool ClientMenuScene::checkConnection() {
       _status = JOIN;
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
-      if (_status != START) {
-        _status = WAIT;
-      }
+      _status = WAIT;
       break;
     case cugl::NetworkConnection::NetStatus::Reconnecting:
-      _status = WAIT;
+      _status = JOIN;
       break;
     case cugl::NetworkConnection::NetStatus::RoomNotFound:
       disconnect();

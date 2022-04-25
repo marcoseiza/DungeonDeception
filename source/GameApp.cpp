@@ -171,14 +171,13 @@ void GameApp::updateHostMenuScene(float timestep) {
       _menu.setActive(true);
       _scene = State::MENU;
       break;
-    case HostMenuScene::Status::START:
+    case HostMenuScene::Status::JOIN:
       _hostgame.setActive(false);
       _hostlobby.setActive(true, _hostgame.getConnection());
       _scene = State::HOST_LOBBY;
       break;
     case HostMenuScene::Status::WAIT:
     case HostMenuScene::Status::IDLE:
-    case HostMenuScene::Status::JOIN:
       // DO NOTHING
       break;
   }
@@ -201,7 +200,6 @@ void GameApp::updateClientMenuScene(float timestep) {
       break;
     case ClientMenuScene::Status::JOIN:
     case ClientMenuScene::Status::IDLE:
-    case ClientMenuScene::Status::START:
       // DO NOTHING
       break;
   }

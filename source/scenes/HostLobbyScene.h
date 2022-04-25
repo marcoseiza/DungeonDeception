@@ -12,6 +12,10 @@
  */
 class HostLobbyScene : public PeerLobbyScene {
  protected:
+  /** The serializer used to serialize complex data to send through the network.
+   */
+  cugl::NetworkSerializer _serializer;
+
   /** The button used the start the game */
   std::shared_ptr<cugl::scene2::Button> _startgame;
 

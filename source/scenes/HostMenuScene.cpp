@@ -126,7 +126,7 @@ bool HostMenuScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       _gameid->setText(_network->getRoomID());
-      if (_status != START) {
+      if (_status != JOIN) {
         _status = IDLE;
       }
       break;
@@ -153,4 +153,4 @@ void HostMenuScene::configureStartButton() {
   }
 }
 
-void HostMenuScene::moveToLobby() { _status = START; }
+void HostMenuScene::moveToLobby() { _status = JOIN; }

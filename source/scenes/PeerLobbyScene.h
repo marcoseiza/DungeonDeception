@@ -35,13 +35,6 @@ class PeerLobbyScene : public cugl::Scene2 {
   /** The player name label */
   std::shared_ptr<cugl::scene2::TextField> _name;
 
-  /** The serializer used to serialize complex data to send through the network.
-   */
-  cugl::NetworkSerializer _serializer;
-  /** The deserializer used to deserialize complex data sent through the
-   * network. */
-  cugl::NetworkDeserializer _deserializer;
-
   /** The current status */
   Status _status;
 

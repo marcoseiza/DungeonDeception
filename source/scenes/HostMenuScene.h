@@ -12,10 +12,6 @@
  * This class is an implementation of PeerScene.
  */
 class HostMenuScene : public PeerScene {
- protected:
-  /** If the user is a betrayer (true) or cooperator (false). */
-  bool _is_betrayer;
-
  public:
 #pragma mark -
 #pragma mark Constructors
