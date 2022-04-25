@@ -263,6 +263,7 @@
     "client": "widgets/client.json",
     "host": "widgets/host.json",
     "client-lobby-scene": "widgets/client-lobby-scene.json",
+    "host-lobby-scene": "widgets/host-lobby-scene.json",
     "menutitle": "widgets/menutitle.json",
     "keypad": "widgets/keypad.json",
     "keypad-button": "widgets/keypad-button.json"
@@ -286,6 +287,13 @@
       "type": "Widget",
       "data": {
         "key": "client-lobby-scene",
+        "variables": {}
+      }
+    },
+    "host-lobby-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "host-lobby-scene",
         "variables": {}
       }
     },
