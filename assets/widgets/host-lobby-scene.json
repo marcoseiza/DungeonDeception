@@ -161,12 +161,11 @@
         "data": {
           "key": "textbutton",
           "variables": {
-            "size": [ 170, 70 ],
+            "size": [ 120, 60 ],
             "text": "RUN",
             "halign": "center",
             "font": "pixelmix",
-            "valign": "middle",
-            "foreground": "#ffffff"
+            "valign": "middle"
           }
         },
         "layout": {
@@ -174,8 +173,8 @@
           "x_anchor": "center",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": -85,
-          "y_offset": 60
+          "x_offset": 0,
+          "y_offset": 100
         }
       },
       "players": {
@@ -230,7 +229,7 @@
           "y_anchor": "bottom",
           "absolute": true,
           "y_offset": 100,
-          "x_offset": -350
+          "x_offset": -400
         }
       }
     }
