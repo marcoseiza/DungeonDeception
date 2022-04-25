@@ -217,11 +217,13 @@
     <ClInclude Include="..\..\source\scenes\ClientLobbyScene.h" />
     <ClInclude Include="..\..\source\models\tiles\TileHelper.h" />
     <ClInclude Include="..\..\source\scenes\GameScene.h" />
+    <ClInclude Include="..\..\source\scenes\HostLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingLevelScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingScene.h" />
     <ClInclude Include="..\..\source\scenes\MenuScene.h" />
     <ClInclude Include="..\..\source\scenes\ClientMenuScene.h" />
     <ClInclude Include="..\..\source\scenes\HostMenuScene.h" />
+    <ClInclude Include="..\..\source\scenes\PeerLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\PeerScene.h" />
     <ClInclude Include="..\..\source\scenes\voting_scenes\WaitForPlayersScene.h" />
     <ClInclude Include="..\..\source\scenes\voting_scenes\VoteForTeamScene.h" />
@@ -269,6 +271,7 @@
     <ClCompile Include="..\..\source\models\tiles\TerminalSensor.cpp" />
     <ClCompile Include="..\..\source\scenes\ClientLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\GameScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingLevelScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\scenes\MenuScene.cpp" />

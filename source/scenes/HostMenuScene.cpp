@@ -157,7 +157,7 @@ void HostMenuScene::configureStartButton() {
 }
 
 void HostMenuScene::startGame() {
-  determineAndSendRoles();
+  // determineAndSendRoles();
 
   std::random_device my_random_device;
   _seed = my_random_device();

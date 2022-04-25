@@ -43,6 +43,7 @@ void GameApp::onShutdown() {
   _hostgame.dispose();
   _joingame.dispose();
   _joinlobby.dispose();
+  _hostlobby.dispose();
   _menu.dispose();
   _level_loading.dispose();
   _assets = nullptr;
@@ -67,6 +68,9 @@ void GameApp::update(float timestep) {
       break;
     case HOST:
       updateHostMenuScene(timestep);
+      break;
+    case HOST_LOBBY:
+      updateHostLobbyScene(timestep);
       break;
     case CLIENT:
       updateClientMenuScene(timestep);
@@ -94,6 +98,9 @@ void GameApp::draw() {
     case HOST:
       _hostgame.render(_batch);
       break;
+    case HOST_LOBBY:
+      _hostlobby.render(_batch);
+      break;
     case CLIENT:
       _joingame.render(_batch);
       break;
@@ -119,9 +126,11 @@ void GameApp::updateLoadingScene(float timestep) {
     _hostgame.init(_assets);
     _joingame.init(_assets);
     _joinlobby.init(_assets);
+    _hostlobby.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
     _joingame.setActive(false);
+    _hostlobby.setActive(false, nullptr);
     _joinlobby.setActive(false, nullptr);
     _gameplay.setActive(false);
     _scene = State::MENU;
@@ -164,13 +173,8 @@ void GameApp::updateHostMenuScene(float timestep) {
       break;
     case HostMenuScene::Status::START:
       _hostgame.setActive(false);
-      _level_loading.init(_assets, _hostgame.getSeed());
-      _level_loading.setActive(true);
-      _scene = State::LEVEL_LOADING;
-      // Transfer connection ownership
-      _level_loading.setConnection(_hostgame.getConnection());
-      _hostgame.disconnect();
-      _level_loading.setHost(true);
+      _hostlobby.setActive(true, _hostgame.getConnection());
+      _scene = State::HOST_LOBBY;
       break;
     case HostMenuScene::Status::WAIT:
     case HostMenuScene::Status::IDLE:
@@ -203,6 +207,30 @@ void GameApp::updateClientMenuScene(float timestep) {
   }
 }
 
+void GameApp::updateHostLobbyScene(float timestep) {
+  _hostlobby.update(timestep);
+  switch (_hostlobby.getStatus()) {
+    case ClientLobbyScene::Status::ABORT:
+      _hostlobby.setActive(false, nullptr);
+      _hostgame.setActive(true);
+      _scene = State::HOST;
+      break;
+    case ClientLobbyScene::Status::START:
+      _hostlobby.setActive(false, nullptr);
+      _level_loading.init(_assets, _hostlobby.getSeed());
+      _level_loading.setActive(true);
+      _scene = State::LEVEL_LOADING;
+      // Transfer connection ownership
+      _level_loading.setConnection(_hostgame.getConnection());
+      _hostgame.disconnect();
+      _level_loading.setHost(true);
+      break;
+    case ClientLobbyScene::Status::WAIT:
+      // DO NOTHING
+      break;
+  }
+}
+
 void GameApp::updateClientLobbyScene(float timestep) {
   _joinlobby.update(timestep);
   switch (_joinlobby.getStatus()) {
@@ -213,7 +241,6 @@ void GameApp::updateClientLobbyScene(float timestep) {
       break;
     case ClientLobbyScene::Status::START:
       _joinlobby.setActive(false, nullptr);
-      _joingame.setActive(false);
       _level_loading.init(_assets, _joinlobby.getSeed());
       _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
@@ -252,7 +279,7 @@ void GameApp::updateLevelLoadingScene(float timestep) {
 
   if (_level_loading.getIsHost()) {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _hostgame.isBetrayer(), "runner_0");
+                   _hostlobby.isBetrayer(), _hostlobby.getPlayerName());
   } else {
     _gameplay.init(_assets, _level_loading.getLevelGenerator(),
                    _joinlobby.isBetrayer(), _joinlobby.getPlayerName());

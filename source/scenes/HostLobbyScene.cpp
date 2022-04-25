@@ -1,4 +1,4 @@
-#include "ClientLobbyScene.h"
+#include "HostLobbyScene.h"
 
 #include <cugl/cugl.h>
 
@@ -12,9 +12,9 @@
 #define SCENE_HEIGHT 720
 
 #pragma mark -
-#pragma mark Client Methods
+#pragma mark Host Methods
 
-bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool HostLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   // Initialize the scene to a locked width
   cugl::Size dimen = cugl::Application::get()->getDisplaySize();
   dimen *= SCENE_HEIGHT / dimen.height;
@@ -29,18 +29,25 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   // Acquire the scene built by the asset loader and resize it the scene
   std::shared_ptr<cugl::scene2::SceneNode> scene =
-      _assets->get<cugl::scene2::SceneNode>("client-lobby-scene");
+      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene");
   scene->setContentSize(dimen);
   scene->doLayout();  // Repositions the HUD
 
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
-      _assets->get<cugl::scene2::SceneNode>("client-lobby-scene_game"));
+      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_game"));
   _player = std::dynamic_pointer_cast<cugl::scene2::Label>(
-      _assets->get<cugl::scene2::SceneNode>(
-          "client-lobby-scene_players_field"));
+      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_players_field"));
   _name = std::dynamic_pointer_cast<cugl::scene2::TextField>(
       _assets->get<cugl::scene2::SceneNode>(
-          "client-lobby-scene_center_name_field_text"));
+          "host-lobby-scene_center_name_field_text"));
+  _startgame = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_start"));
+
+  _startgame->addListener([this](const std::string& name, bool down) {
+    if (down) {
+      startGame();
+    }
+  });
 
   _status = Status::WAIT;
 
@@ -49,14 +56,14 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   return true;
 }
 
-void ClientLobbyScene::dispose() {
+void HostLobbyScene::dispose() {
   if (_active) {
     removeAllChildren();
     _active = false;
   }
 }
 
-void ClientLobbyScene::setActive(
+void HostLobbyScene::setActive(
     bool value, std::shared_ptr<cugl::NetworkConnection> network) {
   if (isActive() != value) {
     Scene2::setActive(value);
@@ -64,17 +71,39 @@ void ClientLobbyScene::setActive(
       _status = WAIT;
       _network = network;
       _name->activate();
+      _startgame->activate();
+
+      setGameId(_network->getRoomID());
 
       auto x = *(_network->getPlayerID());
       _name->setText("runner_" + to_string(x));
     } else {
       // TODO deactivate things as necessary
       _name->deactivate();
+      _startgame->deactivate();
+      _startgame->setDown(false);
     }
   }
 }
 
-void ClientLobbyScene::update(float timestep) {
+void HostLobbyScene::startGame() {
+  // determineAndSendRoles();
+
+  std::random_device my_random_device;
+  _seed = my_random_device();
+
+  // Send individual player information.
+  _serializer.writeSint32(255);
+  _serializer.writeUint64(_seed);
+  std::vector<uint8_t> msg = _serializer.serialize();
+  _serializer.reset();
+
+  _network->send(msg);
+
+  _status = START;
+}
+
+void HostLobbyScene::update(float timestep) {
   if (_network) {
     _network->receive(
         [this](const std::vector<uint8_t>& data) { processData(data); });
@@ -82,7 +111,7 @@ void ClientLobbyScene::update(float timestep) {
   }
 }
 
-void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
+void HostLobbyScene::processData(const std::vector<uint8_t>& data) {
   _deserializer.receive(data);
   Sint32 code = std::get<Sint32>(_deserializer.read());
 
@@ -112,7 +141,7 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
   }
 }
 
-bool ClientLobbyScene::checkConnection() {
+bool HostLobbyScene::checkConnection() {
   // TODO does this need to be updated
   switch (_network->getStatus()) {
     case cugl::NetworkConnection::NetStatus::Pending:

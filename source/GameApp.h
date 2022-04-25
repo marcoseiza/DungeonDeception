@@ -2,10 +2,10 @@
 #define GAMEAPP_H_
 #include <cugl/cugl.h>
 
-#include "scenes/GameScene.h"
-//#include "scenes/HostGameScene.h"
 #include "scenes/ClientLobbyScene.h"
 #include "scenes/ClientMenuScene.h"
+#include "scenes/GameScene.h"
+#include "scenes/HostLobbyScene.h"
 #include "scenes/HostMenuScene.h"
 #include "scenes/LoadingLevelScene.h"
 #include "scenes/LoadingScene.h"
@@ -26,6 +26,8 @@ class GameApp : public cugl::Application {
     MENU,
     /** The scene to host a game */
     HOST,
+    /** The scene for host to wait in a lobby */
+    HOST_LOBBY,
     /** The scene to join a game */
     CLIENT,
     /** The scene to wait in a lobby */
@@ -51,6 +53,8 @@ class GameApp : public cugl::Application {
 
   /** The scene to host a game */
   HostMenuScene _hostgame;
+  /** The scene for host to wait in a lobby */
+  HostLobbyScene _hostlobby;
   /** The scene to join a game */
   ClientMenuScene _joingame;
   /** The scene to wait in a lobby */
@@ -165,6 +169,16 @@ class GameApp : public cugl::Application {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   void updateClientMenuScene(float timestep);
+
+  /**
+   * Individualized update method for the host lobby.
+   *
+   * This method keeps the primary {@link #update} from being a mess of switch
+   * statements. It also handles the transition logic from the client scene.
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame
+   */
+  void updateHostLobbyScene(float timestep);
 
   /**
    * Individualized update method for the client lobby.
