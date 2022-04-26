@@ -243,7 +243,7 @@ void LevelGenerator::placeTerminalRooms(
     std::shared_ptr<Room> overlapping = roomMostOverlappingWith(room);
     if (overlapping != room) {
       auto it = std::find(_rooms.begin(), _rooms.end(), overlapping);
-      if (it != _rooms.end()) {
+      if (it != _rooms.end() && (*it)->_type != RoomType::SPAWN) {
         _map->removeChild(overlapping->_node);
         _rooms.erase(it);
       }
@@ -305,7 +305,9 @@ void LevelGenerator::markAndFillHallways() {
     calculateDelaunayTriangles(_circle_rooms[i], min_radius);
     calculateMinimumSpanningTree(_circle_rooms[i]);
     addEdgesBackAndRemoveUnecessary(_circle_rooms[i]);
+  }
 
+  for (int i = 0; i < _config._num_circles; i++) {
     if (i < _config._num_circles - 1) {
       connectLayers(_circle_rooms[i], _circle_rooms[i + 1],
                     _config._circle_num_out_edges[i]);
@@ -342,12 +344,11 @@ void LevelGenerator::calculateDelaunayTriangles(
 
       std::shared_ptr<Edge> edge_0_1 = std::make_shared<Edge>(node_0, node_1);
 
-      // if (min_r == 0.0f || !edge_0_1->doesIntersect(cugl::Vec2::ZERO, min_r))
-      // {
-      _map->addChild(edge_0_1->_node);
-      node_0->addEdge(edge_0_1);
-      node_1->addEdge(edge_0_1);
-      // }
+      if (min_r == 0.0f || !edge_0_1->doesIntersect(cugl::Vec2::ZERO, min_r)) {
+        _map->addChild(edge_0_1->_node);
+        node_0->addEdge(edge_0_1);
+        node_1->addEdge(edge_0_1);
+      }
     }
   }
 
