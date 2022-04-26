@@ -24,7 +24,7 @@ void LevelGenerator::init(LevelGeneratorConfig &config,
   _generator_step = [this]() { this->generateRooms(); };
   std::random_device my_random_device;
   unsigned seed = my_random_device();
-  _generator = std::default_random_engine(seed);
+  _generator = std::default_random_engine(static_cast<Uint32>(seed));
 }
 
 void LevelGenerator::init(LevelGeneratorConfig &config,
@@ -45,7 +45,7 @@ void LevelGenerator::init(LevelGeneratorConfig &config,
   circle->setColor(cugl::Color4(0, 0, 0, 20));
   _map->addChild(circle);
   _generator_step = [this]() { this->generateRooms(); };
-  _generator = std::default_random_engine(seed);
+  _generator = std::default_random_engine(static_cast<Uint32>(seed));
 }
 
 void LevelGenerator::dispose() {
