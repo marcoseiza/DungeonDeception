@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EBA7F636-33E8-46A4-9024-D8DDFC250C64}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Luminance</RootNamespace>
+    <RootNamespace>DungeonDeduction</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -122,7 +122,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);WIN32</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\wille\Documents\Advanced-Game-Dev\Luminance\source\scenes;C:\Users\wille\Documents\Advanced-Game-Dev\Luminance\source\controllers;$(SolutionDir)include\;$(SolutionDir)..\source\;$(SolutionDir)..\cugl\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\wille\Documents\Advanced-Game-Dev\DungeonDeduction\source\scenes;C:\Users\wille\Documents\Advanced-Game-Dev\DungeonDeduction\source\controllers;$(SolutionDir)include\;$(SolutionDir)..\source\;$(SolutionDir)..\cugl\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <DisableSpecificWarnings>4068;4018;4244;4305%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -297,7 +297,7 @@
     <ClCompile Include="..\..\source\generators\LevelGeneratorConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Luminance.rc" />
+    <ResourceCompile Include="DungeonDeduction.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon1.ico" />
