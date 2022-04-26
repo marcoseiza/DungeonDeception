@@ -5,6 +5,7 @@
 #include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
+#include "../controllers/CollisionFiltering.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -14,7 +15,6 @@
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
 #include "../network/structs/VotingInfo.h"
-#include "../controllers/CollisionFiltering.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -516,6 +516,12 @@ void GameScene::sendNetworkInfo() {
         player_info->appendChild(player_display_name);
         player_display_name->setKey("player_display_name");
 
+        // send host-stored betrayer bool to clients
+        std::shared_ptr<cugl::JsonValue> is_betrayer =
+            cugl::JsonValue::alloc(static_cast<bool>(player->isBetrayer()));
+        player_info->appendChild(is_betrayer);
+        is_betrayer->setKey("is_betrayer");
+
         std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
         std::shared_ptr<cugl::JsonValue> pos_x =
             cugl::JsonValue::alloc(player->getPosition().x);
@@ -657,6 +663,12 @@ void GameScene::sendNetworkInfo() {
         cugl::JsonValue::alloc(static_cast<std::string>(_display_name));
     player_info->appendChild(player_display_name);
     player_display_name->setKey("player_display_name");
+
+    // send if player is a betrayer from itself to host
+    std::shared_ptr<cugl::JsonValue> is_betrayer =
+        cugl::JsonValue::alloc(static_cast<bool>(_is_betrayer));
+    player_info->appendChild(is_betrayer);
+    is_betrayer->setKey("is_betrayer");
 
     std::shared_ptr<cugl::JsonValue> room = cugl::JsonValue::alloc(
         static_cast<long>(_player_controller->getMyPlayer()->getRoomId()));
@@ -1113,7 +1125,6 @@ void GameScene::beginContact(b2Contact* contact) {
             room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
             room->getNumPlayersRequired());
       }
-
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {

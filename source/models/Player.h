@@ -342,9 +342,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Sets the scene graph node representing the name above the player.
    *
-   * @param name_font The font for the name above the player.
+   * @param name_font         The font for the name above the player.
+   * @param display_betrayer  True if name should be shown in different color.
    */
-  void setNameNode(std::shared_ptr<cugl::Font> name_font);
+  void setNameNode(std::shared_ptr<cugl::Font> name_font,
+                   bool display_betrayer);
 
   /**
    * Gets the scene graph node representing this player's name.

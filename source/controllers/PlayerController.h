@@ -112,10 +112,11 @@ class PlayerController : public Controller {
    * @param pos_x         The updated player x position
    * @param pos_y         The updated player y position
    * @param display_name  The name of this player
+   * @param is_betrayer   True if player is a betrayer, false otherwise
    *
    */
   void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y,
-                         string display_name);
+                         string display_name, bool is_betrayer);
 
   /** Update the projectiles. */
   void updateSlashes(float timestep);
