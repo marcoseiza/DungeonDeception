@@ -78,7 +78,7 @@ void LevelGenerator::generateRooms() {
   _spawn_room->_node->setColor(_spawn_room->getRoomNodeColor());
   _rooms.push_back(_spawn_room);
 
-  for (int i = 0; i < _config._num_circles; i++) {
+  for (int i = 0; i < _config.getLayers().size(); i++) {
     _circle_rooms.push_back(std::vector<std::shared_ptr<Room>>{});
   }
 
@@ -88,7 +88,8 @@ void LevelGenerator::generateRooms() {
 
   float min_radius = _spawn_room->getRadius();
 
-  placeRegularRooms(_config.getNumRooms(), min_radius, _config._spawn_radius);
+  placeRegularRooms(_config.getNumRooms(), min_radius,
+                    _config.getSpawnRadius());
 
   _generator_step = [this]() {
     this->separateRooms([this]() { this->placeTerminals(); });
@@ -189,12 +190,12 @@ std::shared_ptr<Room> LevelGenerator::roomMostOverlappingWith(
 }
 
 void LevelGenerator::placeTerminals() {
-  float min_radius = _config._circle_radius[0] * 0.4f;
+  float min_radius = _config.getLayers()[0].radius * 0.4f;
 
-  for (int i = 0; i < _config._num_circles; i++) {
-    if (i > 0) min_radius = _config._circle_radius[i - 1];
-    placeTerminalRooms(_circle_rooms[i], _config._circle_num_terminals[i],
-                       min_radius, _config._circle_radius[i]);
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i > 0) min_radius = _config.getLayers()[i - 1].radius;
+    placeTerminalRooms(_circle_rooms[i], _config.getLayers()[i].num_terminals,
+                       min_radius, _config.getLayers()[i].radius);
   }
 
   _generator_step = [this]() {
@@ -255,16 +256,16 @@ void LevelGenerator::segregateLayers() {
   float min_radius = 0;
   float max_radius = 0;
 
-  for (int i = 0; i < _config._num_circles; i++) {
+  for (int i = 0; i < _config.getLayers().size(); i++) {
     if (i > 0) {
-      min_radius = _config._circle_radius[i - 1];
+      min_radius = _config.getLayers()[i - 1].radius;
     }
-    max_radius = _config._circle_radius[i];
+    max_radius = _config.getLayers()[i].radius;
 
     for (std::shared_ptr<Room> room : _rooms) {
       bool add = (room->_type == RoomType::STANDARD);
       add &= room->getMid().length() > min_radius;
-      if (i < _config._num_circles - 1) {
+      if (i < _config.getLayers().size() - 1) {
         add &= room->getMid().length() <= max_radius;
       }
 
@@ -272,16 +273,14 @@ void LevelGenerator::segregateLayers() {
     }
   }
 
-  // TODO: make this a config val.
-  float factor = 1.2f;
-
-  for (int i = 0; i < _config._num_circles; i++) {
+  for (int i = 0; i < _config.getLayers().size(); i++) {
     for (std::shared_ptr<Room> room : _circle_rooms[i]) {
-      cugl::Vec2 pos = room->getMid() * factor;
+      cugl::Vec2 pos = room->getMid() * _config.getExpansionFactorRooms();
 
       if (i > 0) {
         pos += room->getMid().getNormalization() *
-               _config.getSeparationBetweenLayers() * factor;
+               _config.getSeparationBetweenLayers() *
+               _config.getExpansionFactorRooms();
       }
 
       pos -= room->_node->getSize() / 2.0f;
@@ -297,9 +296,9 @@ void LevelGenerator::segregateLayers() {
 
 void LevelGenerator::markAndFillHallways() {
   float min_radius = 0.0f;
-  for (int i = 0; i < _config._num_circles; i++) {
+  for (int i = 0; i < _config.getLayers().size(); i++) {
     if (i > 0) {
-      min_radius = _config._circle_radius[i - 1];
+      min_radius = _config.getLayers()[i - 1].radius;
     }
 
     calculateDelaunayTriangles(_circle_rooms[i], min_radius);
@@ -307,10 +306,10 @@ void LevelGenerator::markAndFillHallways() {
     addEdgesBackAndRemoveUnecessary(_circle_rooms[i]);
   }
 
-  for (int i = 0; i < _config._num_circles; i++) {
-    if (i < _config._num_circles - 1) {
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i < _config.getLayers().size() - 1) {
       connectLayers(_circle_rooms[i], _circle_rooms[i + 1],
-                    _config._circle_num_out_edges[i]);
+                    _config.getLayers()[i].num_out_edges);
     }
   }
 
