@@ -88,12 +88,6 @@ class GameScene : public cugl::Scene2 {
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
 
-  /** The milliseconds remaining in the game before it ends. */
-  int _millis_remaining;
-
-  /** The last timestamp at which the timer was updated. */
-  cugl::Timestamp _last_timestamp;
-
   /** The display name of my player. */
   std::string _display_name;
 
@@ -154,37 +148,6 @@ class GameScene : public cugl::Scene2 {
    * @return true if at least half of the terminals have been activated.
    */
   bool checkBetrayerWin();
-
-  /**
-   * Checks how much time is remaining.
-   *
-   * @return milliseconds left in the game.
-   */
-  int getMillisRemaining() { return _millis_remaining; }
-
-  /**
-   * Set the number of milliseconds remaining.
-   *
-   * @param millis left in the game.
-   */
-  void setMillisRemaining(int millis) { _millis_remaining = millis; }
-
-  /**
-   * Updates the number of remaining milliseconds by comparing the last
-   * timestamp it was updated with the current timestamp.
-   *
-   * Note that only the host does this, as clients will just use host timer.
-   *
-   * Has the side effect of updating the last timestamp stored.
-   */
-  void updateMillisRemainingIfHost();
-
-  /**
-   * Returns a string representing the time remaining based on time remaining.
-   *
-   * @param the "minutes:seconds" remaining in the game.
-   */
-  std::string getTimerString();
 
   /**
    * The method called to update the game mode.
