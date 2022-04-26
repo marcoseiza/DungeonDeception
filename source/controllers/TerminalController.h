@@ -5,6 +5,7 @@
 
 #include "../models/Player.h"
 #include "../models/tiles/TerminalSensor.h"
+#include "../network/structs/VotingInfo.h"
 #include "../scenes/voting_scenes/ActivateTerminalScene.h"
 #include "../scenes/voting_scenes/VoteForLeaderScene.h"
 #include "../scenes/voting_scenes/VoteForTeamScene.h"
@@ -13,7 +14,6 @@
 #include "InputController.h"
 #include "LevelController.h"
 #include "PlayerController.h"
-#include "VotingInfo.h"
 
 class TerminalController : public Controller {
   /** If a terminal is currently being voted on. */
@@ -121,8 +121,8 @@ class TerminalController : public Controller {
    * @param num_players_req The number of players required for this terminal.
    */
   void setActive(int terminal_room_id, int num_players_req,
-                 TerminalSensor* sensor) {
-    if (_active) return;
+                 TerminalSensor* sensor, std::shared_ptr<Player> player) {
+    if (_active || player->getLuminance() < 40) return;
 
     // If the voting room has already started.
     if (_voting_info.find(terminal_room_id) != _voting_info.end() &&

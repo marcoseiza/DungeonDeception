@@ -46,6 +46,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Player health. */
   int _health;
 
+  /** Player luminance. */
+  int _luminance;
+
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
 
@@ -165,6 +168,22 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The current player health.
    */
   void setHealth(int value) { _health = value; }
+
+  /**
+   * Returns the current luminance of the player.
+   *
+   * @return the current luminance.
+   */
+  int getLuminance() const { return _luminance; }
+
+  /**
+   * Sets the current player's health.
+   *
+   * @param value The current player health.
+   */
+  void setLuminance(int value) {
+    if (_luminance < 100) _luminance = value;
+  }
 
   /**
    * Reduce health by value.

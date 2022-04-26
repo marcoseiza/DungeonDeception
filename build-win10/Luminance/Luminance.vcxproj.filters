@@ -51,7 +51,10 @@
     <ClInclude Include="..\..\source\controllers\InputController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\controllers\NetworkController.h">
+    <ClInclude Include="..\..\source\network\NetworkController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\network\structs\VotingInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\actions\Action.h">
@@ -198,6 +201,9 @@
     <ClInclude Include="..\..\source\scenes\PeerLobbyScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\controllers\NetworkCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\GameApp.cpp">
@@ -236,7 +242,7 @@
     <ClCompile Include="..\..\source\controllers\InputController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\controllers\NetworkController.cpp">
+    <ClCompile Include="..\..\source\network\NetworkController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp">

@@ -9,7 +9,7 @@
 int main(int argc, char *argv[]) {
   GameApp app;
 
-  app.setName("Luminance");
+  app.setName("Dungeon Deduction");
   app.setOrganization("(oops)");
 
   // Set the window properties (Only applies to OS X/Windows Desktop).

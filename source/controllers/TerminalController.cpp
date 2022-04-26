@@ -1,6 +1,6 @@
 #include "TerminalController.h"
 
-#include "NetworkController.h"
+#include "../network/NetworkController.h"
 
 bool TerminalController::init(
     const std::shared_ptr<cugl::AssetManager> &assets) {
@@ -202,6 +202,8 @@ void TerminalController::update(float timestep) {
         _activate_terminal_scene->dispose();
         done();
         _latest_terminal_room_id = _terminal_room_id;
+        _player_controller->getMyPlayer()->setLuminance(
+            _player_controller->getMyPlayer()->getLuminance() - 40);
       }
       break;
     default:

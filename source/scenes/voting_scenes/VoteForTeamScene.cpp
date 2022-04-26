@@ -1,6 +1,6 @@
 #include "VoteForTeamScene.h"
 
-#include "../../controllers/NetworkController.h"
+#include "../../network/NetworkController.h"
 
 bool VoteForTeamScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;

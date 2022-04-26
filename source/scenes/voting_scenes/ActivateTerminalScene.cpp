@@ -1,6 +1,6 @@
 #include "ActivateTerminalScene.h"
 
-#include "../../controllers/NetworkController.h"
+#include "../../network/NetworkController.h"
 
 bool ActivateTerminalScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {
@@ -124,7 +124,7 @@ void ActivateTerminalScene::buttonListener(const std::string& name, bool down) {
     int player_id = _player_controller->getMyPlayer()->getPlayerId();
     if (std::find(_voting_info->done.begin(), _voting_info->done.end(),
                   player_id) == _voting_info->done.end()) {
-      _voting_info->was_activated &= false;
+      _voting_info->was_activated &= _did_activate;
       _voting_info->done.push_back(player_id);
     }
   }

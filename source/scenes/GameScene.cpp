@@ -5,7 +5,6 @@
 #include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
-#include "../controllers/VotingInfo.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -14,6 +13,8 @@
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
+#include "../network/structs/VotingInfo.h"
+#include "../controllers/CollisionFiltering.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -109,12 +110,19 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
+
   auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
   health_layer->setContentSize(dim);
   health_layer->doLayout();
 
+  auto luminance_layer = assets->get<cugl::scene2::SceneNode>("luminance");
+  luminance_layer->setContentSize(dim);
+  luminance_layer->doLayout();
+
   _health_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("health_bar"));
+  _luminance_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
+      assets->get<cugl::scene2::SceneNode>("luminance_bar"));
 
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
@@ -166,6 +174,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
+  cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
@@ -187,6 +196,7 @@ void GameScene::dispose() {
   InputController::get()->dispose();
   _active = false;
   _health_bar->dispose();
+  _luminance_bar->dispose();
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -262,6 +272,9 @@ void GameScene::update(float timestep) {
   }
   _health_bar->setProgress(
       static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
+  _luminance_bar->setProgress(
+      static_cast<float>(_player_controller->getMyPlayer()->getLuminance()) /
+      100);
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
@@ -954,6 +967,12 @@ void GameScene::beginContact(b2Contact* contact) {
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
 
     dynamic_cast<EnemyModel*>(ob1)->takeDamage(damage);
+    dynamic_cast<EnemyModel*>(ob1)->knockback(
+        _player_controller->getSword()->getMoveDir());
+    if (!(type == EnemyModel::EnemyType::TURTLE)) {
+      _player_controller->getMyPlayer()->setLuminance(
+          _player_controller->getMyPlayer()->getLuminance() + 1);
+    }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getSword()->getMoveDir(),
@@ -967,6 +986,10 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage(damage);
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
+    if (!(type == EnemyModel::EnemyType::TURTLE)) {
+      _player_controller->getMyPlayer()->setLuminance(
+          _player_controller->getMyPlayer()->getLuminance() + 1);
+    }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getSword()->getMoveDir(),
@@ -996,10 +1019,12 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (fx1_name == "enemy_damage" &&
-      ob2 == _player_controller->getMyPlayer().get()) {
+      ob2 == _player_controller->getMyPlayer().get() &&
+      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob2)->takeDamage();
   } else if (fx2_name == "enemy_damage" &&
-             ob1 == _player_controller->getMyPlayer().get()) {
+             ob1 == _player_controller->getMyPlayer().get() &&
+             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob1)->takeDamage();
   }
 
@@ -1015,6 +1040,10 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage();
+    dynamic_cast<EnemyModel*>(ob1)->knockback(
+        _player_controller->getSword()->getMoveDir());
+    _player_controller->getMyPlayer()->setLuminance(
+        _player_controller->getMyPlayer()->getLuminance() + 1);
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
@@ -1022,6 +1051,10 @@ void GameScene::beginContact(b2Contact* contact) {
                             20);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
+    dynamic_cast<EnemyModel*>(ob2)->knockback(
+        _player_controller->getSword()->getMoveDir());
+    _player_controller->getMyPlayer()->setLuminance(
+        _player_controller->getMyPlayer()->getLuminance() + 1);
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
@@ -1073,11 +1106,14 @@ void GameScene::beginContact(b2Contact* contact) {
 
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob1));
+                                      dynamic_cast<TerminalSensor*>(ob1),
+                                      _player_controller->getMyPlayer());
+      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
+        sendTerminalAddPlayerInfo(
+            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
+            room->getNumPlayersRequired());
+      }
 
-      sendTerminalAddPlayerInfo(
-          room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-          room->getNumPlayersRequired());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1087,11 +1123,13 @@ void GameScene::beginContact(b2Contact* contact) {
 
       _terminal_controller->setActive(room->getKey(),
                                       room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob2));
-
-      sendTerminalAddPlayerInfo(
-          room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-          room->getNumPlayersRequired());
+                                      dynamic_cast<TerminalSensor*>(ob2),
+                                      _player_controller->getMyPlayer());
+      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
+        sendTerminalAddPlayerInfo(
+            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
+            room->getNumPlayersRequired());
+      }
     }
   }
 }

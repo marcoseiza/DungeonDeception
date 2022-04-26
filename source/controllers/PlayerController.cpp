@@ -1,7 +1,7 @@
 #include "PlayerController.h"
 
+#include "../network/NetworkController.h"
 #include "CollisionFiltering.h"
-#include "NetworkController.h"
 #include "actions/Attack.h"
 #include "actions/Dash.h"
 #include "actions/Movement.h"

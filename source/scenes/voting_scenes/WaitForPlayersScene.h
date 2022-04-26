@@ -4,8 +4,8 @@
 #include <cugl/cugl.h>
 
 #include "../../controllers/PlayerController.h"
-#include "../../controllers/VotingInfo.h"
 #include "../../models/Player.h"
+#include "../../network/structs/VotingInfo.h"
 
 class WaitForPlayersScene {
   // The voting info for this terminal.

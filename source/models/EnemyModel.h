@@ -40,6 +40,16 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     /** The turtle enemy type. */
     TURTLE
   };
+  
+  /** Enum for determining whether the tank enemy model needs to open or close (for animation). */
+  enum TurtleAnimationState {
+    /** The turtle is opening. */
+    OPEN,
+    /** The turtle is closing. */
+    CLOSE,
+    /** The turtle should stay in its current animation state. */
+    STAY
+  };
 
  private:
   /** The current state of the enemy. */
@@ -143,6 +153,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** The count for switching to the next frame. */
   int _frame_count;
+  
+  /** The goal frame for the turtle enemy*/
+  int _goal_frame;
+  
+  /** Whether the turtle needs to close/open. */
+  TurtleAnimationState _turtle_state;
 
 #pragma mark Constructors
   /**
@@ -212,6 +228,20 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param id The current enemy's id.
    */
   void setEnemyId(int id) { _id = id; }
+  
+  /**
+   * Returns whether the enemy is facing left.
+   *
+   * @return direction enemy facing.
+   */
+  bool getFacingLeft() { return _facing_left; }
+
+  /**
+   * Sets whether the enemy is facing left
+   *
+   * @param id Whether the enemy is facing left.
+   */
+  void setFacingLeft(bool left) { _facing_left = left; }
 
   /**
    * Returns the current health of the enemy.
@@ -413,13 +443,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param forwardY Amount to move in the y direction.
    */
   void move(float forwardX, float forwardY);
-
-  /**
-   * Changes the direction of the enemy.
-   *
-   * @param facing_left is true if character should face left, false otherwise.
-   */
-  void setFacingLeft(bool facing_left);
 
   /**
    * Knocks back the enemy.

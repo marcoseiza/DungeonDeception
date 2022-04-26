@@ -47,6 +47,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _cta_timer = 0;
   _isKnockbacked = false;
   _stunned_timer = 0;
+  _goal_frame = 0;
 
   _attack_cooldown = 0;
 
@@ -172,11 +173,13 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
       break;
     }
     default: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 8);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
+      auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
+      node->setFrame(23); // Initial closed frame
       break;
     }
   }
@@ -328,13 +331,5 @@ void EnemyModel::knockback(int moveDir) {
   } else {
     _knockback_dir.x = 0;
     _knockback_dir.y = 1;
-  }
-}
-
-void EnemyModel::setFacingLeft(bool facing_left) {
-  // flip texture if direction has changed
-  if (_facing_left != facing_left) {
-    _facing_left = facing_left;
-    //    _enemy_node->flipHorizontal(_facing_left);
   }
 }

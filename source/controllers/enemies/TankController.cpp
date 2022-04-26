@@ -4,7 +4,7 @@
 #define ATTACK_RANGE 75
 #define ATTACK_FRAMES 18
 #define STOP_ATTACK_FRAMES 50
-#define ATTACK_COOLDOWN 180
+#define ATTACK_COOLDOWN 120
 
 #define STATE_CHANGE_LIM 10
 
@@ -93,4 +93,4 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}
+void TankController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
