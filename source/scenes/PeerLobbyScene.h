@@ -34,6 +34,8 @@ class PeerLobbyScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Label> _gameid;
   /** The player name label */
   std::shared_ptr<cugl::scene2::TextField> _name;
+  /** The back button for the scene */
+  std::shared_ptr<cugl::scene2::Button> _backout;
 
   /** The current status */
   Status _status;

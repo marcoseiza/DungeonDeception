@@ -42,6 +42,16 @@ bool HostLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
           "host-lobby-scene_center_name_field_text"));
   _startgame = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_start"));
+  _backout = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("host_back"));
+
+  // Program the buttons
+  _backout->addListener([this](const std::string& name, bool down) {
+    if (down) {
+      disconnect();
+      _status = Status::ABORT;
+    }
+  });
 
   _startgame->addListener([this](const std::string& name, bool down) {
     if (down) {
@@ -72,6 +82,7 @@ void HostLobbyScene::setActive(
       _network = network;
       _name->activate();
       _startgame->activate();
+      _backout->activate();
 
       setGameId(_network->getRoomID());
 
@@ -82,6 +93,8 @@ void HostLobbyScene::setActive(
       _name->deactivate();
       _startgame->deactivate();
       _startgame->setDown(false);
+      _backout->deactivate();
+      _backout->setDown(false);
     }
   }
 }
