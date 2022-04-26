@@ -7,6 +7,16 @@ namespace level_gen {
  * A class that sets constants for level generation. Used by LevelGenerator.
  */
 class LevelGeneratorConfig {
+ public:
+  // TODO: make getters and setters.
+  std::vector<float> _circle_fractions;
+  std::vector<float> _circle_radius;
+  int _num_circles;
+  std::vector<int> _circle_num_terminals;
+  std::vector<int> _circle_num_out_edges;
+
+  float _spawn_radius;
+
  private:
   /** The radius of the level. */
   float _map_radius;
