@@ -170,16 +170,19 @@ void HostLobbyScene::determineAndSendRoles() {
   int num_betrayers = num_betrayers_per_num_players[num_players - 1];
 
   // assign betrayers randomly
-  srand(time(0));
+  std::uniform_int_distribution dist(0, num_players - 1);
+  std::uniform_int_distribution dist_2(0, num_players - 2);
+  std::random_device rd;
+  std::default_random_engine generator(rd());
 
   // pick number between 0 to numPlayers to represent player index
-  int first_betrayer_index = rand() % num_players;
+  int first_betrayer_index = dist(generator);
 
   // pick second betrayer as number between 0 to last player index - 1
   // if the same index is picked as first betrayer, assign last player
   int second_betrayer_index = -1;
   if (num_betrayers > 1) {
-    second_betrayer_index = rand() % (num_players - 1);
+    second_betrayer_index = dist_2(generator);
     if (second_betrayer_index == first_betrayer_index) {
       second_betrayer_index = num_players - 1;
     }
