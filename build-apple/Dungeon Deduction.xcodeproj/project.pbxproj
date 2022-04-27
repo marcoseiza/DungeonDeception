@@ -91,6 +91,9 @@
 		D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
 		D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
 		D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
+		D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
+		D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
+		D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D568D22927DB41B400CA2BA9 /* Hungarian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D568D22427DB41B400CA2BA9 /* Hungarian.cpp */; };
 		D568D22A27DB41B400CA2BA9 /* Hungarian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D568D22427DB41B400CA2BA9 /* Hungarian.cpp */; };
 		D568D22B27DB41B400CA2BA9 /* Hungarian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D568D22427DB41B400CA2BA9 /* Hungarian.cpp */; };
@@ -297,6 +300,9 @@
 		D52E673227BF305900F8E2B8 /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
 		D52E673327BF305A00F8E2B8 /* GameApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameApp.cpp; sourceTree = "<group>"; };
 		D52E674827BF354400F8E2B8 /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
+		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
+		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
+		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
 		D568D22427DB41B400CA2BA9 /* Hungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hungarian.cpp; sourceTree = "<group>"; };
 		D568D22827DB41B400CA2BA9 /* Hungarian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hungarian.h; sourceTree = "<group>"; };
 		D56B743627CA9DCE00710CC6 /* LevelGeneratorConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelGeneratorConfig.cpp; sourceTree = "<group>"; };
@@ -515,6 +521,9 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */,
+				D563777F2818F2B8001C4D45 /* HostLobbyScene.h */,
+				D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */,
 				D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */,
 				D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */,
 				D578BFC727F0A33400C7B05F /* voting_scenes */,
@@ -979,6 +988,7 @@
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
+				D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F227F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FD027DC1BC500E65692 /* LevelController.cpp in Sources */,
@@ -1030,6 +1040,7 @@
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
+				D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F127F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCF27DC1BC500E65692 /* LevelController.cpp in Sources */,
@@ -1081,6 +1092,7 @@
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,
+				D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F027F69C7800D7EF23 /* TankController.cpp in Sources */,
 				D58B0FCE27DC1BC500E65692 /* LevelController.cpp in Sources */,
