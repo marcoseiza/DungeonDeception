@@ -2,92 +2,94 @@
 
 #include "NetworkController.h"
 
-// Todo: Find a nicer way of getting duration
-// The problem is that getting the duration right after playing the sound is not
-// always safe. The device can take long to actually register the sound and
-// within that wait time, the code can crash.
-#define MUSIC_MAIN_DURATION 133.953491
-
 bool SoundController::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
-  _has_sent_music_start = false;
-  _all_players_in_game = false;
 
-  _network_listener_key = NetworkController::get()->addListener(
-      [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
-        this->processNetworkData(code, msg);
-      });
+  std::random_device rd;
+  _generator = std::default_random_engine(rd());
+
+  initMusic();
+  initPlayerSFX();
 
   return true;
 }
 
-/** Update the controller state. */
-void SoundController::update(float timestep) {
-  if (_all_players_in_game && NetworkController::get()->isHost()) {
-    if (!_has_sent_music_start) {  // Only send once.
-      using namespace std::chrono;
-      _has_sent_music_start = true;
-      auto info = cugl::JsonValue::allocObject();
-      auto now = system_clock::now();
-      // This music needs to start a little later due to network lag.
-      _music_start = now + milliseconds(200);
+void SoundController::update(float timestep) {}
 
-      auto start_time =
-          cugl::JsonValue::alloc((long)_music_start.time_since_epoch().count());
+void SoundController::dispose() { _assets = nullptr; }
 
-      info->appendChild(start_time);
-      start_time->setKey("start_time");
+void SoundController::initMusic() {
+  _music_state = MusicState::MAIN;
+  startMusic();
+}
 
-      NetworkController::get()->send(NC_HOST_MUSIC_START, info);
-    }
-  }
+void SoundController::startMusic() {
+  auto q = cugl::AudioEngine::get()->getMusicQueue();
+  if (q->getState() != cugl::AudioEngine::State::INACTIVE) return;
 
-  // Start the game music if not already started and we have received
-  // the start time.
+  _music_mixer = cugl::audio::AudioMixer::alloc(2);
 
-  if (_has_sent_music_start) {
-    auto q = cugl::AudioEngine::get()->getMusicQueue();
-    if (q->getState() == cugl::AudioEngine::State::INACTIVE) {
-      using namespace std::chrono;
+  _music_main = cugl::audio::AudioFader::alloc(
+      _assets->get<cugl::Sound>("music-main")->createNode());
+  _music_boss = cugl::audio::AudioFader::alloc(
+      _assets->get<cugl::Sound>("music-boss")->createNode());
 
-      system_clock::time_point now = system_clock::now();
-      long now_micros = now.time_since_epoch().count();
-      long start_micros = _music_start.time_since_epoch().count();
+  _music_main->setGain((_music_state == MusicState::MAIN) ? 1 : 0);
+  _music_boss->setGain((_music_state == MusicState::BOSS) ? 1 : 0);
 
-      if (now_micros > start_micros) {
-        q->play(_assets->get<cugl::Sound>("music-main"), true, 1.0f, 1.0f);
+  _music_mixer->attach(0, _music_main);
+  _music_mixer->attach(1, _music_boss);
 
-        float sec_diff = (float)(now_micros - start_micros) / 1000000.0f;
-        sec_diff = std::fmod(sec_diff, MUSIC_MAIN_DURATION);
-        CULog("%f, %ld", sec_diff, start_micros);
+  q->play(_music_mixer, true, 1.0f, 1.0f);
+}
 
-        q->setTimeElapsed(sec_diff);
-      }
-    }
+void SoundController::switchMusic() {
+  if (_music_main == nullptr || _music_boss == nullptr) return;
+
+  if (_music_state == MusicState::MAIN) {
+    _music_boss->setGain(1);
+    _music_boss->setPosition(_music_main->getPosition());
+    _music_boss->fadeIn(2 /* seconds */);
+    _music_main->fadeOut(4 /* seconds */, true);
+    _music_state = MusicState::BOSS;
+  } else if (_music_state == MusicState::BOSS) {
+    _music_main->setGain(1);
+    _music_main->setPosition(_music_boss->getPosition());
+    _music_main->fadeIn(2 /* seconds */);
+    _music_boss->fadeOut(4 /* seconds */, true);
+    _music_state = MusicState::MAIN;
   }
 }
 
-/** Dispose the controller and all its values. */
-void SoundController::dispose() {
-  NetworkController::get()->removeListener(_network_listener_key);
-  _has_sent_music_start = false;
-  _all_players_in_game = false;
-  _assets = nullptr;
+void SoundController::pauseMusic(float fade) {
+  auto q = cugl::AudioEngine::get()->getMusicQueue();
+  q->pause(fade);
 }
 
-void SoundController::processNetworkData(
-    const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
-  switch (code) {
-    case NC_HOST_MUSIC_START: {
-      auto data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+void SoundController::resumeMusic() {
+  auto q = cugl::AudioEngine::get()->getMusicQueue();
+  q->resume();
+}
 
-      long start_time = data->getLong("start_time");
+void SoundController::stopMusic() {
+  auto q = cugl::AudioEngine::get()->getMusicQueue();
+  q->clear();
+  _music_mixer = nullptr;
+  _music_main = nullptr;
+  _music_boss = nullptr;
+}
 
-      _music_start = std::chrono::system_clock::time_point(
-          std::chrono::microseconds{start_time});
-      _has_sent_music_start = true;
-    } break;
-    default:
-      break;
-  }
+void SoundController::initPlayerSFX() {
+  _player_swing.push_back(
+      SFX("player-attack-swing-1",
+          _assets->get<cugl::Sound>("player-attack-swing-1")));
+
+  _player_swing.push_back(
+      SFX("player-attack-swing-2",
+          _assets->get<cugl::Sound>("player-attack-swing-2")));
+}
+
+void SoundController::playSwing() {
+  auto sfx = pickRandom(_player_swing);
+  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, 1.0f, true);
 }

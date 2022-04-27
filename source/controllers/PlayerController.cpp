@@ -249,6 +249,8 @@ void PlayerController::attack() {
         }
         if (_player->_attack_frame_count == ATTACK_FRAMES) {
           _player->_frame_count = 0;
+          // Player player swing sound effect.
+          _sound_controller->playSwing();
 
           cugl::Vec2 attackDir;
           switch (_player->getMoveDir()) {

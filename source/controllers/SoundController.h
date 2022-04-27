@@ -7,18 +7,70 @@
 
 class SoundController : public Controller {
  private:
-  /** The key for the network data listener for disposal. */
-  Uint32 _network_listener_key;
-
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
-  /** The time stamp for when the music started. */
-  std::chrono::system_clock::time_point _music_start;
-  /** If the host has sent the music start time. */
-  bool _has_sent_music_start;
-  /** If all the players are in the game. */
-  bool _all_players_in_game;
+  /** A generator for random numbers. */
+  std::default_random_engine _generator;
+
+  /** A class to represent a sound effect. */
+  struct SFX {
+    /** A unique name for the sound effect. */
+    std::string name;
+    /** The sound node for the sound effect. */
+    std::shared_ptr<cugl::Sound> sound;
+    /** Create a new SFX with the given name and node. */
+    SFX(std::string name, const std::shared_ptr<cugl::Sound>& sound)
+        : name(name), sound(sound) {}
+  };
+
+  //
+  //
+  //
+#pragma mark MusicVariables
+  /** The mixer for music layering. */
+  std::shared_ptr<cugl::audio::AudioMixer> _music_mixer;
+  /** The fader for the main music. */
+  std::shared_ptr<cugl::audio::AudioFader> _music_main;
+  /** The fader for the boss music. */
+  std::shared_ptr<cugl::audio::AudioFader> _music_boss;
+  /** An enumeration for the music state. */
+  enum MusicState {
+    /** The main music is playing. */
+    MAIN,
+    /** The boss music is playing. */
+    BOSS
+  };
+  /** The music state. */
+  MusicState _music_state;
+#pragma mark -
+  //
+  //
+  //
+
+  //
+  //
+  //
+#pragma mark PlayerSFXVariables
+  /** A list of all the player swing sounds and their names. */
+  std::vector<SFX> _player_swing;
+  /** A list of all the possible grass footstep sounds. */
+  std::vector<SFX> _player_footsteps_grass;
+  /** A list of all the possible stone footstep sounds. */
+  std::vector<SFX> _player_footsteps_stone;
+  /** An enumeration for the footstep state. */
+  enum FootstepState {
+    /** The grass footsteps should be playing. */
+    GRASS,
+    /** The stone footsteps should be playing. */
+    STONE
+  };
+  /** The music state. */
+  FootstepState _footstep_state;
+#pragma mark -
+  //
+  //
+  //
 
  public:
   /** Construct a new controller. */
@@ -53,19 +105,67 @@ class SoundController : public Controller {
   void dispose() override;
 
   /**
-   * Process the network information and update the terminal controller data.
+   * Helper function to pick random entry in vector.
    *
-   * @param code The message code
-   * @param msg The deserialized message
+   * @tparam T The value inside the vector.
+   * @param vec The vector.
    */
-  void processNetworkData(const Sint32& code,
-                          const cugl::NetworkDeserializer::Message& msg);
+  template <typename T>
+  T pickRandom(const std::vector<T>& vec) {
+    CUAssertLog(vec.size() > 0, "Vector is empty.");
+    std::uniform_int_distribution<int> dist(0, vec.size() - 1);
+    int ii = dist(_generator);
+    return vec[ii];
+  }
+
+  //
+  //
+  //
+#pragma mark MusicMethods
+  /** Initialize all the music variables */
+  void initMusic();
+
+  /** Start the music in the current music state. */
+  void startMusic();
+
+  /** Switch what music is playing to the current music state (_music_state). */
+  void switchMusic();
 
   /**
-   * Set that all the players are present in the game. Used by controller to
-   * start synchronizing sound.
-   * */
-  void allPlayersPresent() { _all_players_in_game = true; }
+   * Pause the music.
+   * @param fade The amount of seconds the pause should fade out for.
+   */
+  void pauseMusic(float fade = 0);
+
+  /**
+   * Resume playing the music. Will fade in with the same value as was given in
+   * pauseMusic.
+   */
+  void resumeMusic();
+
+  /**
+   * Stop the music and reset all the values. startMusic should be called to
+   * resume the music again.
+   */
+  void stopMusic();
+#pragma mark -
+  //
+  //
+  //
+
+  //
+  //
+  //
+#pragma mark PlayerSFXMethods
+  /** Initialize all the music variables */
+  void initPlayerSFX();
+
+  /** Play a swing sound effect. */
+  void playSwing();
+#pragma mark -
+  //
+  //
+  //
 };
 
 #endif  // CONTROLLERS_SOUND_CONTROLLER_H_

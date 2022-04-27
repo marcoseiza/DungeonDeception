@@ -584,6 +584,24 @@
       "file": "sounds/music-main.ogg",
       "stream": true,
       "volume": 1.0
+    },
+    "music-boss": {
+      "type": "sample",
+      "file": "sounds/music-boss.ogg",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-swing-1": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-swing-2": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_2.wav",
+      "stream": true,
+      "volume": 1.0
     }
   }
 }

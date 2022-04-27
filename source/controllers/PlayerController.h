@@ -7,6 +7,7 @@
 #include "../models/Sword.h"
 #include "Controller.h"
 #include "InputController.h"
+#include "SoundController.h"
 
 /**
  * A class to handle enemy AI.
@@ -29,6 +30,8 @@ class PlayerController : public Controller {
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
+  /** A reference to the sound controller. */
+  std::shared_ptr<SoundController> _sound_controller;
 
  public:
 #pragma mark Constructors
@@ -62,6 +65,14 @@ class PlayerController : public Controller {
     _world_node = nullptr;
     _debug_node = nullptr;
     _world = nullptr;
+  }
+
+  /**
+   * Set the sound controller for sound effects.
+   * @param controller The sound controller.
+   */
+  void setSoundController(const std::shared_ptr<SoundController>& controller) {
+    _sound_controller = controller;
   }
 
 #pragma mark Static Constructors

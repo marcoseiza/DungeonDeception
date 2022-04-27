@@ -168,6 +168,7 @@ bool GameScene::init(
 
   _sound_controller = SoundController::alloc(_assets);
   _controllers.push_back(_sound_controller);
+  _player_controller->setSoundController(_sound_controller);
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
@@ -283,11 +284,6 @@ void GameScene::update(float timestep) {
   }
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
-
-  if (_players.size() ==
-      NetworkController::get()->getConnection()->getNumPlayers()) {
-    _sound_controller->allPlayersPresent();
-  }
 
   InputController::get()->update();
 
@@ -600,28 +596,6 @@ void GameScene::sendNetworkInfo() {
 
       _serializer.reset();
       NetworkController::get()->send(msg);
-    }
-
-    // ====== SEND MUSIC START INFORMATION ========
-    {
-      if (!_has_sent_music_start) {  // Only send once.
-        if ((int)_players.size() == (int)_network->getNumPlayers()) {
-          using namespace std::chrono;
-          _has_sent_music_start = true;
-          auto info = cugl::JsonValue::allocObject();
-          auto now = system_clock::now();
-          // This music needs to start a little later due to network lag.
-          _music_start = now + milliseconds(200);
-
-          auto start_time = cugl::JsonValue::alloc(
-              (long)_music_start.time_since_epoch().count());
-
-          info->appendChild(start_time);
-          start_time->setKey("start_time");
-
-          NetworkController::get()->send(NC_HOST_MUSIC_START, info);
-        }
-      }
     }
 
   } else {

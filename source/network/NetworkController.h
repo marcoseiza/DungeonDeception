@@ -204,9 +204,6 @@ class NetworkController {
     _network->sendOnlyToHost(msg);
   }
 
-  /** Get the cugl network connection. */
-  std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
-
   /**
    * Set if this network controller is a host controller.
    * @param val Is host.
