@@ -4,10 +4,10 @@
 
 #include "actions/Action.h"
 #include "actions/Attack.h"
-#include "actions/TargetPlayer.h"
 #include "actions/Dash.h"
 #include "actions/Movement.h"
 #include "actions/OpenMap.h"
+#include "actions/TargetPlayer.h"
 
 // static
 std::shared_ptr<InputController> InputController::_singleton = nullptr;
@@ -21,6 +21,8 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
 #else
   cugl::Mouse *input = cugl::Input::get<cugl::Mouse>();
 #endif
+
+  _pause = false;
 
   if (input) {
     // Create, initialize and register all basic actions.
@@ -37,7 +39,7 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
 
     _active = InputController::attachAction<TargetPlayer>(
         TargetPlayer::alloc(assets, bounds)->getHook());
-    
+
     _active = InputController::attachAction<Dash>(
         Dash::alloc(assets, bounds)->getHook());
   }
