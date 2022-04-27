@@ -287,9 +287,13 @@
 		D52E673227BF305900F8E2B8 /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
 		D52E673327BF305A00F8E2B8 /* GameApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameApp.cpp; sourceTree = "<group>"; };
 		D52E674827BF354400F8E2B8 /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
 		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
 		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
+=======
+		D56377AE2819DDA3001C4D45 /* NetworkCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
+>>>>>>> add xcode proj
 		D568D22427DB41B400CA2BA9 /* Hungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hungarian.cpp; sourceTree = "<group>"; };
 		D568D22827DB41B400CA2BA9 /* Hungarian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hungarian.h; sourceTree = "<group>"; };
 		D56B743627CA9DCE00710CC6 /* LevelGeneratorConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelGeneratorConfig.cpp; sourceTree = "<group>"; };
@@ -300,7 +304,6 @@
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
-		D57B33DB28053A63002DEBBA /* NetworkCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
 		D57B3460280DA437002DEBBA /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		D57B346A280E097B002DEBBA /* SoundController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
 		D57B346E280E097B002DEBBA /* SoundController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
@@ -589,18 +592,11 @@
 		D57B36122811AAB8002DEBBA /* network */ = {
 			isa = PBXGroup;
 			children = (
+				D56377AE2819DDA3001C4D45 /* NetworkCodes.h */,
 				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
 				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
-				D57B36132811AAB8002DEBBA /* structs */,
 			);
 			path = network;
-			sourceTree = "<group>";
-		};
-		D57B36132811AAB8002DEBBA /* structs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = structs;
 			sourceTree = "<group>";
 		};
 		D598E69827C57D740039326B /* generators */ = {
@@ -821,7 +817,7 @@
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = LR67JRR3TA;
+						DevelopmentTeam = 37AKFHT6H5;
 					};
 				};
 			};
