@@ -1,5 +1,5 @@
-#ifndef SCENES_CLIENT_LOBBY_SCENE_H_
-#define SCENES_CLIENT_LOBBY_SCENE_H_
+#ifndef SCENES_HOST_LOBBY_SCENE_H_
+#define SCENES_HOST_LOBBY_SCENE_H_
 #include <cugl/cugl.h>
 
 #include <vector>
@@ -7,27 +7,30 @@
 #include "PeerLobbyScene.h"
 
 /**
- * This class provides the interface for clients to wait for a game to start.
+ * This class provides the interface for hosts to wait for a game to start.
  *
  */
-class ClientLobbyScene : public PeerLobbyScene {
+class HostLobbyScene : public PeerLobbyScene {
  protected:
-  /** The deserializer used to deserialize complex data sent through the
-   * network. */
-  cugl::NetworkDeserializer _deserializer;
+  /** The serializer used to serialize complex data to send through the network.
+   */
+  cugl::NetworkSerializer _serializer;
+
+  /** The button used the start the game */
+  std::shared_ptr<cugl::scene2::Button> _startgame;
 
  public:
 #pragma mark -
 #pragma mark Constructors
   /**
-   * Creates a new client scene with the default values.
+   * Creates a new host scene with the default values.
    */
-  ClientLobbyScene() : PeerLobbyScene() {}
+  HostLobbyScene() : PeerLobbyScene() {}
 
   /**
    * Disposes of all (non-static) resources allocated to this mode.
    */
-  ~ClientLobbyScene() { dispose(); }
+  ~HostLobbyScene() { dispose(); }
 
   /**
    * Disposes of all (non-static) resources allocated to this mode.
@@ -82,6 +85,19 @@ class ClientLobbyScene : public PeerLobbyScene {
    * @param data  The data received
    */
   virtual void processData(const std::vector<uint8_t>& data) override;
+
+  /**
+   * Starts the game.
+   */
+  void startGame();
+
+  /**
+   * Determine the roles of all the players before the game starts.
+   * Afterwards, send number of betrayers and ids to all clients.
+   *
+   * Assignment algorithm assumes that the number of betrayers is [1, 2].
+   */
+  void determineAndSendRoles();
 };
 
-#endif /* SCENES_CLIENT_LOBBY_SCENE_H_ */
+#endif /* SCENES_HOST_LOBBY_SCENE_H_ */

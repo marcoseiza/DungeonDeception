@@ -203,8 +203,8 @@
       "wrapS": "clamp",
       "wrapT": "clamp",
       "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
+        "leftcap": [ 0, 0, 1, 50 ],
+        "rightcap": [ 467, 0, 468, 50 ]
       }
     },
     "health-outline": {
@@ -228,8 +228,8 @@
       "wrapS": "clamp",
       "wrapT": "clamp",
       "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
+        "leftcap": [ 0, 0, 1, 50 ],
+        "rightcap": [ 467, 0, 468, 50 ]
       }
     },
     "luminance-outline": {
@@ -286,6 +286,7 @@
     "client": "widgets/client.json",
     "host": "widgets/host.json",
     "client-lobby-scene": "widgets/client-lobby-scene.json",
+    "host-lobby-scene": "widgets/host-lobby-scene.json",
     "menutitle": "widgets/menutitle.json",
     "keypad": "widgets/keypad.json",
     "keypad-button": "widgets/keypad-button.json"
@@ -305,10 +306,31 @@
         "variables": {}
       }
     },
+    "client": {
+      "type": "Widget",
+      "data": {
+        "key": "client",
+        "variables": {}
+      }
+    },
     "client-lobby-scene": {
       "type": "Widget",
       "data": {
         "key": "client-lobby-scene",
+        "variables": {}
+      }
+    },
+    "host": {
+      "type": "Widget",
+      "data": {
+        "key": "host",
+        "variables": {}
+      }
+    },
+    "host-lobby-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "host-lobby-scene",
         "variables": {}
       }
     },
@@ -363,8 +385,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [0.5, 0.5],
-            "size": [500, 65]
+            "anchor": [ 0.5, 0.5 ],
+            "size": [ 500, 65 ]
           },
           "children": {
             "host": {
@@ -372,14 +394,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 175, 55 ],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 25, 0]
+                "padding": [ 0, 0, 25, 0 ]
               }
             },
             "join": {
@@ -387,20 +409,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 175, 55 ],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 0, 0]
+                "padding": [ 0, 0, 0, 0 ]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 50]
+            "padding": [ 0, 25, 0, 50 ]
           }
         },
         "instructions": {
@@ -408,7 +430,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [170, 45],
+              "size": [ 170, 45 ],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -416,7 +438,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 0]
+            "padding": [ 0, 25, 0, 0 ]
           }
         },
         "settings": {
@@ -424,7 +446,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [140, 45],
+              "size": [ 140, 45 ],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -432,7 +454,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 0]
+            "padding": [ 0, 25, 0, 0 ]
           }
         }
       }
@@ -446,7 +468,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "background": "health-fill",
             "foreground": "health-bar",
             "left_cap": "health-fill_leftcap",
@@ -467,7 +489,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "scale": 0.402
           },
           "layout": {
@@ -488,7 +510,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "background": "luminance-fill",
             "foreground": "luminance-bar",
             "left_cap": "luminance-fill_leftcap",
@@ -509,7 +531,7 @@
           },
           "data": {
             "texture": "luminance-outline",
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "scale": 0.402
           },
           "layout": {
@@ -517,433 +539,6 @@
             "y_anchor": "top",
             "x_offset": 0.2,
             "y_offset": -0.20
-          }
-        }
-      }
-    },
-    "host": {
-      "type": "Image",
-      "format": {
-        "type": "Anchored"
-      },
-      "data": {
-        "texture": "background"
-      },
-      "children": {
-        "back": {
-          "type": "Button",
-          "data": {
-            "upnode": "up",
-            "anchor": [0.0, 0.0],
-            "size": [20, 20]
-          },
-          "children": {
-            "up": {
-              "type": "Image",
-              "data": {
-                "texture": "left",
-                "scale": 4,
-                "color": "#222222"
-              }
-            }
-          },
-          "layout": {
-            "x_anchor": "left",
-            "y_anchor": "top",
-            "y_offset": -80,
-            "x_offset": 45,
-            "absolute": true
-          }
-        },
-        "center": {
-          "type": "Node",
-          "format": {
-            "type": "Float",
-            "orientation": "vertical",
-            "x_alignment": "center",
-            "y_alignment": "middle"
-          },
-          "data": {
-            "anchor": [0.5, 0.0],
-            "size": [1000, 670]
-          },
-          "children": {
-            "title": {
-              "type": "Widget",
-              "data": {
-                "key": "menutitle",
-                "variables": {
-                  "text": "HOST GAME"
-                },
-                "anchor": [0.5, 1.0]
-              },
-              "layout": {
-                "priority": 1,
-                "x_anchor": "top",
-                "y_anchor": "middle"
-              }
-            },
-            "game": {
-              "type": "Node",
-              "format": {
-                "type": "Float",
-                "orientation": "horizontal",
-                "x_alignment": "center",
-                "y_alignment": "middle"
-              },
-              "data": {
-                "anchor": [0.5, 0.5],
-                "size": [370, 100]
-              },
-              "children": {
-                "label": {
-                  "type": "Widget",
-                  "data": {
-                    "key": "labelbox",
-                    "variables": {
-                      "size": [170, 70],
-                      "text": "GAME ID:",
-                      "halign": "center",
-                      "background": [239, 235, 227, 179]
-                    }
-                  },
-                  "layout": {
-                    "priority": 1,
-                    "padding": [0, 0, 25, 0]
-                  }
-                },
-                "field": {
-                  "type": "Widget",
-                  "data": {
-                    "key": "labelbox",
-                    "variables": {
-                      "size": [170, 70],
-                      "text": "",
-                      "halign": "center",
-                      "foreground": "#ffffff",
-                      "background": [70, 70, 70, 179]
-                    }
-                  },
-                  "layout": {
-                    "priority": 2
-                  }
-                }
-              },
-              "layout": {
-                "priority": 1,
-                "padding": [0, 0, 0, 5]
-              }
-            },
-            "players": {
-              "type": "Node",
-              "format": {
-                "type": "Float",
-                "orientation": "horizontal",
-                "x_alignment": "center",
-                "y_alignment": "middle"
-              },
-              "data": {
-                "anchor": [0.5, 0.5],
-                "size": [370, 100]
-              },
-              "children": {
-                "label": {
-                  "type": "Widget",
-                  "data": {
-                    "key": "labelbox",
-                    "variables": {
-                      "size": [170, 70],
-                      "text": "PLAYERS:",
-                      "halign": "center",
-                      "background": [239, 235, 227, 179]
-                    }
-                  },
-                  "layout": {
-                    "priority": 1,
-                    "padding": [0, 0, 25, 0]
-                  }
-                },
-                "field": {
-                  "type": "Widget",
-                  "data": {
-                    "key": "labelbox",
-                    "variables": {
-                      "size": [170, 70],
-                      "text": "1",
-                      "halign": "center",
-                      "foreground": "#ffffff",
-                      "background": [70, 70, 70, 179]
-                    }
-                  },
-                  "layout": {
-                    "priority": 2
-                  }
-                }
-              },
-              "layout": {
-                "priority": 2,
-                "padding": [0, 25, 0, 0]
-              }
-            },
-            "start": {
-              "type": "Widget",
-              "data": {
-                "key": "textbutton",
-                "variables": {
-                  "size": [220, 75],
-                  "text": "START GAME",
-                  "font": "pixelmix",
-                  "color": "#efebe3"
-                }
-              },
-              "layout": {
-                "priority": 3,
-                "padding": [0, 25, 0, 0]
-              }
-            }
-          },
-          "layout": {
-            "x_anchor": "center",
-            "y_anchor": "bottom"
-          }
-        }
-      }
-    },
-    "client": {
-      "type": "Image",
-      "format": {
-        "type": "Anchored"
-      },
-      "data": {
-        "texture": "background"
-      },
-      "children": {
-        "back": {
-          "type": "Button",
-          "data": {
-            "upnode": "up",
-            "anchor": [0.0, 0.0],
-            "size": [20, 20]
-          },
-          "children": {
-            "up": {
-              "type": "Image",
-              "data": {
-                "texture": "left",
-                "scale": 4,
-                "color": "#222222"
-              }
-            }
-          },
-          "layout": {
-            "x_anchor": "left",
-            "y_anchor": "top",
-            "y_offset": -80,
-            "x_offset": 45,
-            "absolute": true
-          }
-        },
-        "center": {
-          "type": "Node",
-          "format": {
-            "type": "Float",
-            "orientation": "vertical",
-            "x_alignment": "center",
-            "y_alignment": "middle"
-          },
-          "data": {
-            "anchor": [0.5, 0.0],
-            "size": [1000, 700]
-          },
-          "children": {
-            "title": {
-              "type": "Widget",
-              "data": {
-                "key": "menutitle",
-                "variables": {
-                  "text": "JOIN GAME"
-                },
-                "anchor": [0.5, 1.0]
-              },
-              "layout": {
-                "x_anchor": "center",
-                "y_anchor": "top",
-                "padding": [0, 25, 0, 75]
-              }
-            },
-            "content": {
-              "type": "Node",
-              "format": {
-                "type": "Float",
-                "orientation": "horizontal",
-                "x_alignment": "center",
-                "y_alignment": "bottom"
-              },
-              "data": {
-                "anchor": [0.5, 0.0],
-                "size": [1000, 350]
-              },
-              "children": {
-                "keys": {
-                  "type": "Widget",
-                  "data": {
-                    "key": "keypad",
-                    "size": [500, 500]
-                  },
-                  "layout": {
-                    "priority": 1
-                  }
-                },
-                "info": {
-                  "type": "Node",
-                  "format": {
-                    "type": "Float",
-                    "orientation": "vertical",
-                    "x_alignment": "center",
-                    "y_alignment": "bottom"
-                  },
-                  "data": {
-                    "anchor": [0.5, 0.0],
-                    "size": [500, 500]
-                  },
-                  "children": {
-                    "game": {
-                      "type": "Node",
-                      "format": {
-                        "type": "Float",
-                        "orientation": "horizontal",
-                        "x_alignment": "center",
-                        "y_alignment": "bottom"
-                      },
-                      "data": {
-                        "anchor": [0.5, 0.5],
-                        "size": [370, 100]
-                      },
-                      "children": {
-                        "label": {
-                          "type": "Widget",
-                          "data": {
-                            "key": "labelbox",
-                            "variables": {
-                              "size": [170, 70],
-                              "text": "GAME ID:",
-                              "halign": "center",
-                              "background": [239, 235, 227, 179]
-                            }
-                          },
-                          "layout": {
-                            "priority": 1,
-                            "padding": [0, 0, 25, 0]
-                          }
-                        },
-                        "field": {
-                          "type": "Widget",
-                          "data": {
-                            "key": "labelbox",
-                            "variables": {
-                              "size": [170, 70],
-                              "text": "",
-                              "halign": "center",
-                              "foreground": "#ffffff",
-                              "background": [70, 70, 70, 179]
-                            }
-                          },
-                          "layout": {
-                            "priority": 2
-                          }
-                        }
-                      },
-                      "layout": {
-                        "priority": 1,
-                        "padding": [0, 0, 0, 0]
-                      }
-                    },
-                    "players": {
-                      "type": "Node",
-                      "format": {
-                        "type": "Float",
-                        "orientation": "horizontal",
-                        "x_alignment": "center",
-                        "y_alignment": "bottom"
-                      },
-                      "data": {
-                        "anchor": [0.5, 0.5],
-                        "size": [370, 100]
-                      },
-                      "children": {
-                        "label": {
-                          "type": "Widget",
-                          "data": {
-                            "key": "labelbox",
-                            "variables": {
-                              "size": [170, 70],
-                              "text": "PLAYERS:",
-                              "halign": "center",
-                              "background": [239, 235, 227, 179]
-                            }
-                          },
-                          "layout": {
-                            "priority": 1,
-                            "padding": [0, 0, 25, 0]
-                          }
-                        },
-                        "field": {
-                          "type": "Widget",
-                          "data": {
-                            "key": "labelbox",
-                            "variables": {
-                              "size": [170, 70],
-                              "text": "1",
-                              "halign": "center",
-                              "foreground": "#ffffff",
-                              "background": [70, 70, 70, 179]
-                            }
-                          },
-                          "layout": {
-                            "priority": 2
-                          }
-                        }
-                      },
-                      "layout": {
-                        "priority": 2,
-                        "padding": [0, 25, 0, 0]
-                      }
-                    },
-                    "start": {
-                      "type": "Widget",
-                      "data": {
-                        "key": "textbutton",
-                        "variables": {
-                          "size": [180, 75],
-                          "text": "JOIN",
-                          "font": "pixelmix",
-                          "color": "#efebe3"
-                        }
-                      },
-                      "layout": {
-                        "priority": 3,
-                        "padding": [0, 25, 0, 0]
-                      }
-                    }
-
-                  },
-                  "layout": {
-                    "x_anchor": "center",
-                    "y_anchor": "bottom",
-                    "padding": [0, 30, 0, 0]
-                  }
-                }
-              },
-              "layout": {
-                "x_anchor": "center",
-                "y_anchor": "bottom"
-              }
-            }
-          },
-          "layout": {
-            "x_anchor": "center",
-            "y_anchor": "bottom",
-            "padding": [0, 50, 0, 0]
           }
         }
       }

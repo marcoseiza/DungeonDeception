@@ -44,9 +44,6 @@ bool ClientMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>(
           "client_center_content_info_game_field_text"));
-  _player = std::dynamic_pointer_cast<cugl::scene2::Label>(
-      _assets->get<cugl::scene2::SceneNode>(
-          "client_center_content_info_players_field_text"));
 
   for (int i = 0; i <= 9; i++) {
     std::string key = "client_center_content_keys_" + to_string(i);
@@ -123,7 +120,6 @@ void ClientMenuScene::setActive(bool value) {
       }
 
       _network = nullptr;
-      _player->setText("1");
       configureStartButton();
       // Don't reset the room id
     } else {
@@ -179,13 +175,10 @@ bool ClientMenuScene::checkConnection() {
       _status = JOIN;
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
-      _player->setText(std::to_string(_network->getNumPlayers()));
-      if (_status != START) {
-        _status = WAIT;
-      }
+      _status = WAIT;
       break;
     case cugl::NetworkConnection::NetStatus::Reconnecting:
-      _status = WAIT;
+      _status = JOIN;
       break;
     case cugl::NetworkConnection::NetStatus::RoomNotFound:
       disconnect();

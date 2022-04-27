@@ -1,0 +1,139 @@
+{
+  "contents": {
+    "type": "Image",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "texture": "background"
+    },
+    "children": {
+      "back": {
+        "type": "Button",
+        "data": {
+          "upnode": "up",
+          "anchor": [ 0.0, 0.0 ],
+          "size": [ 20, 20 ]
+        },
+        "children": {
+          "up": {
+            "type": "Image",
+            "data": {
+              "texture": "left",
+              "scale": 4,
+              "color": "#222222"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "y_offset": -80,
+          "x_offset": 45,
+          "absolute": true
+        }
+      },
+      "center": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 670 ]
+        },
+        "children": {
+          "title": {
+            "type": "Widget",
+            "data": {
+              "key": "menutitle",
+              "variables": {
+                "text": "HOST GAME"
+              },
+              "anchor": [ 0.5, 1.0 ]
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "middle"
+            }
+          },
+          "game": {
+            "type": "Node",
+            "format": {
+              "type": "Float",
+              "orientation": "horizontal",
+              "x_alignment": "center",
+              "y_alignment": "middle"
+            },
+            "data": {
+              "anchor": [ 0.5, 0.5 ],
+              "size": [ 370, 200 ]
+            },
+            "children": {
+              "label": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "GAME ID:",
+                    "halign": "center",
+                    "background": [ 239, 235, 227, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 1,
+                  "padding": [ 0, 0, 25, 0 ]
+                }
+              },
+              "field": {
+                "type": "Widget",
+                "data": {
+                  "key": "labelbox",
+                  "variables": {
+                    "size": [ 170, 70 ],
+                    "text": "",
+                    "halign": "center",
+                    "foreground": "#ffffff",
+                    "background": [ 70, 70, 70, 179 ]
+                  }
+                },
+                "layout": {
+                  "priority": 2
+                }
+              }
+            },
+            "layout": {
+              "priority": 1,
+              "padding": [ 0, 0, 0, 5 ]
+            }
+          },
+          "start": {
+            "type": "Widget",
+            "data": {
+              "key": "textbutton",
+              "variables": {
+                "size": [ 220, 75 ],
+                "text": "START GAME",
+                "font": "pixelmix",
+                "color": "#efebe3"
+              }
+            },
+            "layout": {
+              "priority": 3,
+              "padding": [ 0, 25, 0, 25 ]
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom"
+        }
+      }
+    }
+  }
+}

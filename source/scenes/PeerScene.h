@@ -16,12 +16,10 @@ class PeerScene : public cugl::Scene2 {
   enum Status {
     /** Host is waiting on a connection or Client has not yet entered a room */
     IDLE,
-    /** Client is connecting to the host */
+    /** Client is connecting to the host, or host is moving to lobby */
     JOIN,
     /** Client or Host is waiting to start game */
     WAIT,
-    /** Time to start the game */
-    START,
     /** Game was aborted; back to main menu */
     ABORT
   };
@@ -36,8 +34,6 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _startgame;
   /** The back button for the menu scene */
   std::shared_ptr<cugl::scene2::Button> _backout;
-  /** The players label (for updating) */
-  std::shared_ptr<cugl::scene2::Label> _player;
   /** The game id label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _gameid;
 
@@ -46,17 +42,6 @@ class PeerScene : public cugl::Scene2 {
 
   /** The current status */
   Status _status;
-
-  /** The serializer used to serialize complex data to send through the network.
-   */
-  cugl::NetworkSerializer _serializer;
-
-  /** The deserializer used to deserialize complex data sent through the
-   * network. */
-  cugl::NetworkDeserializer _deserializer;
-
-  /** The map seed. */
-  Uint64 _seed;
 
  public:
 #pragma mark -
@@ -103,17 +88,6 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::NetworkConnection> getConnection() const {
     return _network;
   }
-
-  /**
-   * Sets the seed to be broadcast to all clients.
-   */
-  void setSeed(unsigned seed) { _seed = seed; }
-
-  /**
-   * Returns the seed to be broadcast to all clients.
-   * @return The seed for the map
-   */
-  Uint64 getSeed() { return _seed; }
 
   /**
    * Returns the scene status. Any value other than WAIT will transition to
