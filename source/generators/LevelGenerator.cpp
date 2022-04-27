@@ -24,7 +24,7 @@ void LevelGenerator::init(LevelGeneratorConfig &config,
   _generator_step = [this]() { this->generateRooms(); };
   std::random_device my_random_device;
   unsigned seed = my_random_device();
-  _generator = std::default_random_engine(seed);
+  _generator = std::default_random_engine(static_cast<Uint32>(seed));
 }
 
 void LevelGenerator::init(LevelGeneratorConfig &config,
@@ -35,8 +35,17 @@ void LevelGenerator::init(LevelGeneratorConfig &config,
 
   _config = config;
   _map = map;
+
+  cugl::PolyFactory poly_factory;
+  auto circle_poly =
+      poly_factory.makeCircle(cugl::Vec2::ZERO, _config.getMapRadius());
+  auto circle = cugl::scene2::PolygonNode::allocWithPoly(circle_poly);
+  circle->setAnchor(cugl::Vec2::ANCHOR_CENTER);
+  circle->setPosition(cugl::Vec2::ZERO);
+  circle->setColor(cugl::Color4(0, 0, 0, 20));
+  _map->addChild(circle);
   _generator_step = [this]() { this->generateRooms(); };
-  _generator = std::default_random_engine(seed);
+  _generator = std::default_random_engine(static_cast<Uint32>(seed));
 }
 
 void LevelGenerator::dispose() {
@@ -44,9 +53,9 @@ void LevelGenerator::dispose() {
   _active = false;
 
   _rooms.clear();
-  _inside_rooms.clear();
-  _middle_rooms.clear();
-  _outside_rooms.clear();
+
+  _circle_rooms.clear();
+
   _spawn_room = nullptr;
   _map = nullptr;
   _generator_step = nullptr;
@@ -68,13 +77,19 @@ void LevelGenerator::generateRooms() {
   _spawn_room->_node->setPosition(_spawn_room->_node->getContentSize() / -2.0f);
   _spawn_room->_node->setColor(_spawn_room->getRoomNodeColor());
   _rooms.push_back(_spawn_room);
-  _inside_rooms.push_back(_spawn_room);
+
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    _circle_rooms.push_back(std::vector<std::shared_ptr<Room>>{});
+  }
+
+  _circle_rooms[0].push_back(_spawn_room);
+
   _map->addChild(_spawn_room->_node);
 
   float min_radius = _spawn_room->getRadius();
 
   placeRegularRooms(_config.getNumRooms(), min_radius,
-                    _config.getMiddleCircleRadius());
+                    _config.getSpawnRadius());
 
   _generator_step = [this]() {
     this->separateRooms([this]() { this->placeTerminals(); });
@@ -83,7 +98,7 @@ void LevelGenerator::generateRooms() {
 
 void LevelGenerator::placeRegularRooms(int num_rooms, float min_radius,
                                        float max_radius) {
-  //  Distribution to define the size of normal rooms.
+  //  Distribution to define the positioning of rooms.
   std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
   for (float i = 0; i < num_rooms; i++) {
@@ -163,10 +178,11 @@ std::shared_ptr<Room> LevelGenerator::roomMostOverlappingWith(
 
   auto it = std::max_element(
       _rooms.begin(), _rooms.end(),
-      [room_rect](const std::shared_ptr<Room> &l,
-                  const std::shared_ptr<Room> &r) {
+      [room, room_rect](const std::shared_ptr<Room> &l,
+                        const std::shared_ptr<Room> &r) {
         cugl::Size l_size = l->getRect().intersect(room_rect).size;
         cugl::Size r_size = r->getRect().intersect(room_rect).size;
+        if (l == room || r == room) return false;
         return l_size.width * l_size.height < r_size.width * r_size.height;
       });
 
@@ -174,62 +190,33 @@ std::shared_ptr<Room> LevelGenerator::roomMostOverlappingWith(
 }
 
 void LevelGenerator::placeTerminals() {
-  float min_radius = _spawn_room->getRadius();
+  float min_radius = _config.getLayers()[0].radius * 0.4f;
 
-  std::vector<std::shared_ptr<Room>> inner_terminals =
-      placeTerminalRooms(_config.getNumTerminalRoomsInner(), min_radius,
-                         _config.getInnerCircleRadius());
-  std::vector<std::shared_ptr<Room>> middle_terminals = placeTerminalRooms(
-      _config.getNumTerminalRoomsMiddle(), _config.getInnerCircleRadius(),
-      _config.getMiddleCircleRadius());
-  std::vector<std::shared_ptr<Room>> outer_terminals = placeTerminalRooms(
-      _config.getNumTerminalRoomsOuter(), _config.getMiddleCircleRadius(),
-      _config.getMapRadius());
-
-  // Assign number of players required for activation.
-  std::uniform_int_distribution<int> inner_terminals_required_players(2, 3);
-  for (std::shared_ptr<Room> room : inner_terminals) {
-    room->_num_players_for_terminal =
-        inner_terminals_required_players(_generator);
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i > 0) min_radius = _config.getLayers()[i - 1].radius;
+    placeTerminalRooms(_circle_rooms[i], _config.getLayers()[i].num_terminals,
+                       min_radius, _config.getLayers()[i].radius);
   }
-  std::uniform_int_distribution<int> middle_terminals_required_players(2, 4);
-  for (std::shared_ptr<Room> room : middle_terminals) {
-    room->_num_players_for_terminal =
-        middle_terminals_required_players(_generator);
-  }
-  std::uniform_int_distribution<int> outer_terminals_required_players(3, 4);
-  for (std::shared_ptr<Room> room : outer_terminals) {
-    room->_num_players_for_terminal =
-        outer_terminals_required_players(_generator);
-  }
-
-  _inside_rooms.insert(_inside_rooms.end(), inner_terminals.begin(),
-                       inner_terminals.end());
-  _middle_rooms.insert(_middle_rooms.end(), middle_terminals.begin(),
-                       middle_terminals.end());
-  _outside_rooms.insert(_outside_rooms.end(), outer_terminals.begin(),
-                        outer_terminals.end());
 
   _generator_step = [this]() {
     this->separateRooms([this]() { this->segregateLayers(); });
   };
 }
 
-std::vector<std::shared_ptr<Room>> LevelGenerator::placeTerminalRooms(
-    int num_rooms, float min_radius, float max_radius) {
+void LevelGenerator::placeTerminalRooms(
+    std::vector<std::shared_ptr<Room>> &circle, int num_rooms, float min_radius,
+    float max_radius) {
   std::uniform_real_distribution<float> dis(0.0f, 1.0f);
 
   // Make sure the room is always inside of the spawn circle;
   float terminal_radius =
-      static_cast<cugl::Vec2>(default_rooms::kTerminal.size).length() / 2.0f;
+      ((cugl::Vec2)default_rooms::kTerminal.size).length() / 2.0f;
   min_radius += terminal_radius;
   max_radius -= terminal_radius;
 
   float r = dis(_generator) * (max_radius - min_radius) + min_radius;
   float min_angle = dis(_generator) * 2 * M_PI;
-  float max_angle = min_angle + M_PI / 2.0f;
-
-  std::vector<std::shared_ptr<Room>> terminals;
+  float max_angle = min_angle + 2 * M_3_PI_4 / num_rooms;
 
   for (float i = 0; i < num_rooms; i++) {
     std::shared_ptr<Room> room =
@@ -251,81 +238,55 @@ std::vector<std::shared_ptr<Room>> LevelGenerator::placeTerminalRooms(
     max_angle += 2 * M_PI / num_rooms;
 
     _rooms.push_back(room);
-    terminals.push_back(room);
+    circle.push_back(room);
     _map->addChild(room->_node);
 
     std::shared_ptr<Room> overlapping = roomMostOverlappingWith(room);
     if (overlapping != room) {
-      overlapping->_node->setColor(cugl::Color4(205, 14, 14, 127));
       auto it = std::find(_rooms.begin(), _rooms.end(), overlapping);
-      if (it != _rooms.end()) {
+      if (it != _rooms.end() && (*it)->_type != RoomType::SPAWN) {
         _map->removeChild(overlapping->_node);
-        *it = room;
+        _rooms.erase(it);
       }
     }
   }
-
-  return terminals;
 }
 
 void LevelGenerator::segregateLayers() {
-  std::vector<std::shared_ptr<Room>> inside_rooms;
-  std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(inside_rooms),
-               [this](const std::shared_ptr<Room> &room) {
-                 return room->_type == RoomType::STANDARD &&
-                        room->getMid().length() <=
-                            this->_config.getInnerCircleRadius();
-               });
+  float min_radius = 0;
+  float max_radius = 0;
 
-  std::vector<std::shared_ptr<Room>> middle_rooms;
-  std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(middle_rooms),
-               [this](const std::shared_ptr<Room> &room) {
-                 float r = room->getMid().length();
-                 return room->_type == RoomType::STANDARD &&
-                        r > this->_config.getInnerCircleRadius() &&
-                        r <= this->_config.getMiddleCircleRadius();
-               });
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i > 0) {
+      min_radius = _config.getLayers()[i - 1].radius;
+    }
+    max_radius = _config.getLayers()[i].radius;
 
-  std::vector<std::shared_ptr<Room>> outside_rooms;
-  std::copy_if(_rooms.begin(), _rooms.end(), std::back_inserter(outside_rooms),
-               [this](const std::shared_ptr<Room> &room) {
-                 return room->_type == RoomType::STANDARD &&
-                        room->getMid().length() >
-                            this->_config.getMiddleCircleRadius();
-               });
+    for (std::shared_ptr<Room> room : _rooms) {
+      bool add = (room->_type == RoomType::STANDARD);
+      add &= room->getMid().length() > min_radius;
+      if (i < _config.getLayers().size() - 1) {
+        add &= room->getMid().length() <= max_radius;
+      }
 
-  _inside_rooms.insert(_inside_rooms.end(), inside_rooms.begin(),
-                       inside_rooms.end());
-  _middle_rooms.insert(_middle_rooms.end(), middle_rooms.begin(),
-                       middle_rooms.end());
-  _outside_rooms.insert(_outside_rooms.end(), outside_rooms.begin(),
-                        outside_rooms.end());
-
-  float inner_circle_expansion_factor = 1.2f;
-
-  for (std::shared_ptr<Room> &room : _inside_rooms) {
-    cugl::Vec2 pos = room->getMid() * inner_circle_expansion_factor;
-    pos -= room->_node->getSize() / 2.0f;
-    room->_node->setPosition(roundf(pos.x), roundf(pos.y));
+      if (add) _circle_rooms[i].push_back(room);
+    }
   }
 
-  for (std::shared_ptr<Room> &room : _middle_rooms) {
-    cugl::Vec2 pos = room->getMid() * inner_circle_expansion_factor;
-    pos += room->getMid().getNormalization() *
-           _config.getSeparationBetweenLayers() * inner_circle_expansion_factor;
-    pos -= room->_node->getSize() / 2.0f;
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    for (std::shared_ptr<Room> room : _circle_rooms[i]) {
+      cugl::Vec2 pos = room->getMid() * _config.getExpansionFactorRooms();
 
-    room->_node->setPosition(roundf(pos.x), roundf(pos.y));
-  }
+      if (i > 0) {
+        pos += room->getMid().getNormalization() *
+               _config.getSeparationBetweenLayers() *
+               _config.getExpansionFactorRooms();
+      }
 
-  for (std::shared_ptr<Room> &room : _outside_rooms) {
-    cugl::Vec2 pos = room->getMid() * inner_circle_expansion_factor;
-    pos += room->getMid().getNormalization() *
-           _config.getSeparationBetweenLayers() * 2.0f *
-           inner_circle_expansion_factor;
-    pos -= room->_node->getSize() / 2.0f;
+      pos -= room->_node->getSize() / 2.0f;
 
-    room->_node->setPosition(roundf(pos.x), roundf(pos.y));
+      room->_node->setPosition(roundf(pos.x), roundf(pos.y));
+    }
   }
 
   _generator_step = [this]() {
@@ -334,20 +295,23 @@ void LevelGenerator::segregateLayers() {
 }
 
 void LevelGenerator::markAndFillHallways() {
-  calculateDelaunayTriangles(_inside_rooms, 0.0f);
-  calculateDelaunayTriangles(_middle_rooms, _config.getInnerCircleRadius());
-  calculateDelaunayTriangles(_outside_rooms, _config.getMiddleCircleRadius());
+  float min_radius = 0.0f;
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i > 0) {
+      min_radius = _config.getLayers()[i - 1].radius;
+    }
 
-  calculateMinimumSpanningTree(_inside_rooms);
-  calculateMinimumSpanningTree(_middle_rooms);
-  calculateMinimumSpanningTree(_outside_rooms);
+    calculateDelaunayTriangles(_circle_rooms[i], min_radius);
+    calculateMinimumSpanningTree(_circle_rooms[i]);
+    addEdgesBackAndRemoveUnecessary(_circle_rooms[i]);
+  }
 
-  addEdgesBackAndRemoveUnecessary(_inside_rooms);
-  addEdgesBackAndRemoveUnecessary(_middle_rooms);
-  addEdgesBackAndRemoveUnecessary(_outside_rooms);
-
-  connectLayers(_inside_rooms, _middle_rooms, 2);
-  connectLayers(_middle_rooms, _outside_rooms, 3);
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    if (i < _config.getLayers().size() - 1) {
+      connectLayers(_circle_rooms[i], _circle_rooms[i + 1],
+                    _config.getLayers()[i].num_out_edges);
+    }
+  }
 
   fillHallways();
 

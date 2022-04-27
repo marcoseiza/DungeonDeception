@@ -7,24 +7,47 @@ namespace level_gen {
  * A class that sets constants for level generation. Used by LevelGenerator.
  */
 class LevelGeneratorConfig {
+ public:
+  /** A structure to represent a layer or "ring" of rooms. */
+  struct Layer {
+    /** The fraction of the map radius it takes. */
+    float frac;
+    /** The outer radius of the layer. */
+    float radius;
+    /** The number of terminals in this layer. */
+    int num_terminals;
+    /** The */
+    int num_out_edges;
+    /**
+     * Create a new layer.
+     * @param frac The fraction of the map radius.
+     * @param radius The outer radius of the layer.
+     * @param num_terminals The number of terminals.
+     * @param num_out_edges The number of out edges from this layer to the next.
+     */
+    Layer(float frac, float radius, int num_terminals, int num_out_edges)
+        : frac(frac),
+          radius(radius),
+          num_terminals(num_terminals),
+          num_out_edges(num_out_edges) {}
+  };
+
  private:
+  /** The layers of rooms. */
+  std::vector<Layer> _layers;
+
   /** The radius of the level. */
   float _map_radius;
+
+  /** The radius to which rooms should initially spawn in. */
+  float _spawn_radius;
 
   /** The separation offset between layers. Used to differentiate clearly
    * between room rings. */
   float _separation_between_layers;
 
-  /** The radius of the inner circle of rooms. */
-  float _inner_circle_radius;
-  /** A fraction of the map radius that represents the inner circle of rooms. */
-  float _inner_circle_frac;
-
-  /** The radius of the middle circle of rooms. */
-  float _middle_circle_radius;
-  /** A fraction of the map radius that represents the middle circle
-   * of rooms. */
-  float _middle_circle_frac;
+  /** The expansion factor between rooms. */
+  float _expansion_factor_rooms;
 
   /** A max hallway length in grid units. for when we're defining what edges are
    * acceptable. */
@@ -40,18 +63,6 @@ class LevelGeneratorConfig {
   /** The total number of room in the level, including terminals. */
   float _num_rooms;
 
-  /** The number of terminal rooms in the level. */
-  float _num_terminal_rooms;
-
-  /** The number of terminal rooms in the inner circle of rooms. */
-  float _num_terminal_rooms_inner;
-
-  /** The number of terminal rooms in the middle circle of rooms. */
-  float _num_terminal_rooms_middle;
-
-  /** The number of terminal rooms in the outer circle of rooms. */
-  float _num_terminal_rooms_outer;
-
   /** The max number of edges to a room. (i.e. max number of doors per room). */
   int _max_num_of_edges;
 
@@ -62,16 +73,37 @@ class LevelGeneratorConfig {
   ~LevelGeneratorConfig() {}
 
   /**
+   * Add a layer to the level. Layers must be placed from inside out, this
+   * function finds the optimal spot to place the given layer.
+   * @param layer The layer to add.
+   */
+  void addLayer(const Layer& layer) {
+    auto compare = [=](Layer val, const Layer& cur) {
+      return val.frac < cur.frac;
+    };
+    auto it = std::upper_bound(_layers.begin(), _layers.end(), layer, compare);
+    _layers.insert(it, layer);
+  }
+  /** @return The layers of rooms in the game. */
+  std::vector<Layer> getLayers() const { return _layers; }
+
+  /**
    * Set the map radius in grid units.
    * @param radius The radius of the map in grid units.
    */
-  void setMapRadius(int radius) {
-    _map_radius = static_cast<float>(radius);
-    _inner_circle_radius = floor(_map_radius * _inner_circle_frac);
-    _middle_circle_radius = floor(_map_radius * _middle_circle_frac);
-  }
+  void setMapRadius(int radius) { _map_radius = static_cast<float>(radius); }
   /** @return The map radius in grid units. */
   float getMapRadius() const { return _map_radius; }
+
+  /**
+   * Set the spawn radius in grid units.
+   * @param radius The spawn radius in grid units.
+   */
+  void setSpawnRadius(int radius) {
+    _spawn_radius = static_cast<float>(radius);
+  }
+  /** @return The spawn radius in grid units. */
+  float getSpawnRadius() const { return _spawn_radius; }
 
   /**
    * Set separation between layers in grid units
@@ -86,30 +118,14 @@ class LevelGeneratorConfig {
   }
 
   /**
-   * Set what fraction of the map radius the inner circle takes up.
-   * @param frac The frac of the map radius that represents the radius.
+   * Set expansion factor between rooms
+   * @param factor The factor for multiplying positions for expansion.
    */
-  void setInnerCircleFrac(float frac) {
-    _inner_circle_frac = frac;
-    _inner_circle_radius = floor(_map_radius * frac);
+  void setExpansionFactorRooms(float factor) {
+    _expansion_factor_rooms = factor;
   }
-  /** @return The inner circle radius in grid units. */
-  float getInnerCircleRadius() const { return _inner_circle_radius; }
-  /** @return The inner circle frac in relation to the map radius. */
-  float getInnerCircleFrac() const { return _inner_circle_frac; }
-
-  /**
-   * Set what fraction of the map radius the middle circle takes up.
-   * @param frac The frac of the map radius that represents the radius.
-   */
-  void setMiddleCircleFrac(float frac) {
-    _middle_circle_frac = frac;
-    _middle_circle_radius = _map_radius * frac;
-  }
-  /** @return The middle circle radius in grid units. */
-  float getMiddleCircleRadius() const { return _middle_circle_radius; }
-  /** @return The middle circle frac in relation to the map radius. */
-  float getMiddleCircleFrac() const { return _middle_circle_frac; }
+  /** @return The expansion factor between rooms. */
+  float getExpansionFactorRooms() const { return _expansion_factor_rooms; }
 
   /**
    * Set max hallway length in grid units
@@ -147,38 +163,6 @@ class LevelGeneratorConfig {
   void setNumRooms(int num) { _num_rooms = static_cast<float>(num); }
   /** @return The number of rooms in the level. */
   float getNumRooms() const { return _num_rooms; }
-
-  /**
-   * Set the number of terminal rooms in the level. By default, it will split
-   * the number of rooms into three. It will give a floored number of terminals
-   * / 3.0f to the inner and middle circles and a ceilinged number of terminals
-   * to the outer circle. (e.g. 7 terminals -> 2 inside, 2 middle, 3 outside).
-   *
-   * @param num The number of terminal rooms.
-   */
-  void setNumTerminalRooms(int num) {
-    float num_f = static_cast<float>(num);
-    _num_terminal_rooms = num_f;
-
-    // Minimum of dividing by 3. (eg. 7 -> 2)
-    _num_terminal_rooms_inner = floor(num_f / 3);
-    _num_terminal_rooms_middle = floor(num_f / 3);
-
-    // Majority of dividing by 3. (eg. 7 -> 3)
-    _num_terminal_rooms_outer = ceil(num_f / 3);
-  }
-
-  /** @return The number of terminal rooms in the level. */
-  float getNumTerminalRooms() const { return _num_terminal_rooms; }
-
-  /** @return The number of rooms in the inner circle. */
-  float getNumTerminalRoomsInner() const { return _num_terminal_rooms_inner; }
-
-  /** @return The number of rooms in the middle circle. */
-  float getNumTerminalRoomsMiddle() const { return _num_terminal_rooms_middle; }
-
-  /** @return The number of rooms in the outer circle. */
-  float getNumTerminalRoomsOuter() const { return _num_terminal_rooms_outer; }
 
   /**
    * Set the max number of edges for a room. (i.e. max number of doors).

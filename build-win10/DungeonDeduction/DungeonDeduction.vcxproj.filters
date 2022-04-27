@@ -367,7 +367,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Luminance.rc">
+    <ResourceCompile Include="DungeonDeduction.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
