@@ -171,7 +171,6 @@ void HostLobbyScene::determineAndSendRoles() {
 
   // assign betrayers randomly
   std::uniform_int_distribution dist(0, num_players - 1);
-  std::uniform_int_distribution dist_2(0, num_players - 2);
   std::random_device rd;
   std::default_random_engine generator(rd());
 
@@ -182,6 +181,7 @@ void HostLobbyScene::determineAndSendRoles() {
   // if the same index is picked as first betrayer, assign last player
   int second_betrayer_index = -1;
   if (num_betrayers > 1) {
+    std::uniform_int_distribution dist_2(0, num_players - 2);
     second_betrayer_index = dist_2(generator);
     if (second_betrayer_index == first_betrayer_index) {
       second_betrayer_index = num_players - 1;
