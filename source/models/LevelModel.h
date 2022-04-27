@@ -12,6 +12,9 @@ class LevelModel {
    * between rooms when passing through a door. */
   std::unordered_map<int, std::shared_ptr<RoomModel>> _rooms;
 
+  /** A reference to the spawn room for the level. */
+  std::shared_ptr<RoomModel> _spawn_room;
+
   /** A reference to the palyer model. */
   std::shared_ptr<Player> _player;
 
@@ -71,6 +74,20 @@ class LevelModel {
    * @return The room the player is currently on.
    */
   std::shared_ptr<RoomModel> getCurrentRoom() const { return _current_room; }
+
+  /**
+   * Set the spawn room for the level.
+   * @param room The pointer to the room.
+   */
+  void setSpawnRoom(const std::shared_ptr<RoomModel>& room) {
+    _spawn_room = room;
+  }
+
+  /**
+   * Get the spawn room for the level.
+   * @return The spawn room for the level.
+   */
+  std::shared_ptr<RoomModel> getSpawnRoom() const { return _spawn_room; }
 
   /**
    * Get the room given a room key.
