@@ -201,7 +201,6 @@
     <ClInclude Include="..\..\source\controllers\LevelController.h" />
     <ClInclude Include="..\..\source\controllers\NetworkCodes.h" />
     <ClInclude Include="..\..\source\controllers\PlayerController.h" />
-    <ClInclude Include="..\..\source\controllers\TerminalController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\ShotgunnerController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\TankController.h" />
@@ -256,7 +255,6 @@
     <ClCompile Include="..\..\source\controllers\EnemyController.cpp" />
     <ClCompile Include="..\..\source\controllers\LevelController.cpp" />
     <ClCompile Include="..\..\source\controllers\PlayerController.cpp" />
-    <ClCompile Include="..\..\source\controllers\TerminalController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\GruntController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\ShotgunnerController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\TankController.cpp" />
