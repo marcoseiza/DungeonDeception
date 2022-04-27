@@ -7,7 +7,6 @@
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
 #include "../controllers/PlayerController.h"
-#include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
 #include "../controllers/enemies/ShotgunnerController.h"
 #include "../controllers/enemies/TankController.h"
@@ -52,9 +51,6 @@ class GameScene : public cugl::Scene2 {
 
   /** The level controller for the game*/
   std::shared_ptr<LevelController> _level_controller;
-
-  /** The terminal controller for voting in the game. */
-  std::shared_ptr<TerminalController> _terminal_controller;
 
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
@@ -292,16 +288,6 @@ class GameScene : public cugl::Scene2 {
    * @param dir The direction the enemy should be knockedback
    */
   void sendEnemyHitNetworkInfo(int id, int room_id, int dir, float amount = 20);
-
-  /**
-   * Broadcast a player being added to a terminal to the host.
-   *
-   * @param room_id
-   * @param player_id
-   * @param num_players_req
-   */
-  void sendTerminalAddPlayerInfo(int room_id, int player_id,
-                                 int num_players_req);
 
   /**
    * Broadcast a player being targeted by the betrayer target player ability.

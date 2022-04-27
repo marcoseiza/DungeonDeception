@@ -14,7 +14,6 @@
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
-#include "../network/structs/VotingInfo.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -92,16 +91,9 @@ bool GameScene::init(
 
   setBetrayer(is_betrayer);
 
-  _terminal_controller = TerminalController::alloc(_assets);
-
   populate(dim);
 
   _world_node->doLayout();
-
-  auto terminal_voting_layer =
-      assets->get<cugl::scene2::SceneNode>("terminal-voting-scene");
-  terminal_voting_layer->setContentSize(dim);
-  terminal_voting_layer->doLayout();
 
   auto background_layer = assets->get<cugl::scene2::SceneNode>("background");
   background_layer->setContentSize(dim);
@@ -162,7 +154,6 @@ bool GameScene::init(
   role_text->setText(role_msg);
 
   _controllers.push_back(_player_controller->getHook());
-  _controllers.push_back(_terminal_controller->getHook());
   _controllers.push_back(_level_controller->getHook());
 
   cugl::Scene2::addChild(background_layer);
@@ -171,7 +162,6 @@ bool GameScene::init(
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
-  cugl::Scene2::addChild(terminal_voting_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
@@ -209,7 +199,6 @@ void GameScene::populate(cugl::Size dim) {
   _player_controller = PlayerController::alloc(my_player, _assets, _world,
                                                _world_node, _debug_node);
   _player_controller->addPlayer(my_player);
-  _terminal_controller->setPlayerController(_player_controller);
   _level_controller->setPlayerController(_player_controller);
 
   // Add physics enabled tiles to world node, debug node and box2d physics
@@ -269,9 +258,9 @@ void GameScene::update(float timestep) {
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
-    auto latest_terminal_room = _level_controller->getLevelModel()->getRoom(
-        _terminal_controller->getLatestTerminalRoomId());
-    _level_controller->moveToCenterOfRoom(latest_terminal_room->getKey());
+    // TODO: Change this to new terminal system. #233
+    _level_controller->moveToCenterOfRoom(
+        _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
   if (checkCooperatorWin()) {
@@ -299,18 +288,7 @@ void GameScene::update(float timestep) {
   }
 
   {  // Update the number of terminals activated and corrupted.
-    _num_terminals_activated = 0;
-    _num_terminals_corrupted = 0;
-    for (auto it : _terminal_controller->getVotingInfo()) {
-      std::shared_ptr<VotingInfo>& info = it.second;
-      if (info->terminal_done) {
-        if (info->was_activated) {
-          _num_terminals_activated++;
-        } else {
-          _num_terminals_corrupted++;
-        }
-      }
-    }
+     // TODO: Update number of terminals with new terminal system. Issue #234.
   }
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
@@ -700,47 +678,6 @@ void GameScene::sendEnemyHitNetworkInfo(int id, int room_id, int dir,
   NetworkController::get()->sendOnlyToHost(msg);
 }
 
-void GameScene::sendTerminalAddPlayerInfo(int room_id, int player_id,
-                                          int num_players_req) {
-  std::shared_ptr<cugl::JsonValue> terminal_info =
-      cugl::JsonValue::allocObject();
-  {
-    std::shared_ptr<cugl::JsonValue> room_info =
-        cugl::JsonValue::alloc(static_cast<long>(room_id));
-    terminal_info->appendChild(room_info);
-    room_info->setKey("terminal_room_id");
-  }
-  {
-    std::shared_ptr<cugl::JsonValue> num_req_info =
-        cugl::JsonValue::alloc(static_cast<long>(num_players_req));
-    terminal_info->appendChild(num_req_info);
-    num_req_info->setKey("num_players_req");
-  }
-  {
-    std::shared_ptr<cugl::JsonValue> player_info =
-        cugl::JsonValue::alloc(static_cast<long>(player_id));
-    terminal_info->appendChild(player_info);
-    player_info->setKey("player_id");
-  }
-
-  _serializer.writeSint32(NC_CLIENT_PLAYER_ADDED);
-  _serializer.writeJson(terminal_info);
-
-  std::vector<uint8_t> msg = _serializer.serialize();
-
-  _serializer.reset();
-  NetworkController::get()->sendOnlyToHost(msg);
-  // Send this to host, as sendOnlyToHost doesn't send to host if it was called
-  // by the host.
-  if (_ishost) {
-    _deserializer.receive(msg);
-    std::get<Sint32>(_deserializer.read());
-    _terminal_controller->processNetworkData(NC_CLIENT_PLAYER_ADDED,
-                                             _deserializer.read());
-    _deserializer.reset();
-  }
-}
-
 void GameScene::sendBetrayalTargetInfo(int target_player_id) {
   std::shared_ptr<cugl::JsonValue> betrayal_info =
       cugl::JsonValue::allocObject();
@@ -1076,34 +1013,12 @@ void GameScene::beginContact(b2Contact* contact) {
   if (fx1_name == "terminal_range" &&
       ob2 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
-
-      _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob1),
-                                      _player_controller->getMyPlayer());
-      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
-        sendTerminalAddPlayerInfo(
-            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-            room->getNumPlayersRequired());
-      }
+      // TODO: Start deposit of Luminance by players. Issue #235
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
-
-      _terminal_controller->setActive(room->getKey(),
-                                      room->getNumPlayersRequired(),
-                                      dynamic_cast<TerminalSensor*>(ob2),
-                                      _player_controller->getMyPlayer());
-      if (_player_controller->getMyPlayer()->getLuminance() >= 40) {
-        sendTerminalAddPlayerInfo(
-            room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
-            room->getNumPlayersRequired());
-      }
+      // TODO: Start deposit of Luminance by players. Issue #235
     }
   }
 }

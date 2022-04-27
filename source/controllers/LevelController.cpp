@@ -51,7 +51,7 @@ void LevelController::update(float timestep) {
         enemy->getNode()->setPriority(current->getGridSize().height - row);
 
         for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
-          if (projectile->getNode() == nullptr) { // Not initialized yet
+          if (projectile->getNode() == nullptr) {  // Not initialized yet
             continue;
           }
           float rel_projectile_y = projectile->getBody()->GetPosition().y -
@@ -128,11 +128,11 @@ void LevelController::moveToCenterOfRoom(int destination_room_id) {
       }
     }
   }
-  
+
   if (_room_on_chopping_block != nullptr)
     _room_on_chopping_block->setVisible(false);
   _room_on_chopping_block = current;
-  
+
   _level_model->setCurrentRoom(destination_room_id);
   std::shared_ptr<RoomModel> new_current =
       _level_model->getCurrentRoom();  // New current level.
@@ -140,7 +140,8 @@ void LevelController::moveToCenterOfRoom(int destination_room_id) {
   new_current->setVisible(true);
 
   _player_controller->getMyPlayer()->setPosPromise(
-      new_current->getNode()->getPosition() + new_current->getGridSize().width / 2 * (TILE_SIZE * TILE_SCALE));
+      new_current->getNode()->getPosition() +
+      new_current->getGridSize().width / 2 * (TILE_SIZE * TILE_SCALE));
 }
 
 void LevelController::populate() {
@@ -167,6 +168,7 @@ void LevelController::populate() {
     // Make spawn the starting point.
     if (room->_type == RoomType::SPAWN) {
       _level_model->setCurrentRoom(room->_key);
+      _level_model->setSpawnRoom(room_model);
       room_node->setVisible(true);
     }
 
@@ -308,7 +310,6 @@ void LevelController::instantiateEnemies(
     enemy->setRoomPos(room_model->getNode()->getPosition());
     room_model->getNode()->addChild(enemy->getNode());
     _world->addObstacle(enemy);
-//    if (room->_type != RoomType::SPAWN) enemy->setEnabled(false);
 
     enemy->setDebugScene(_debug_node);
     enemy->setDebugColor(cugl::Color4(cugl::Color4::BLACK));

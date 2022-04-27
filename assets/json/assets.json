@@ -203,8 +203,8 @@
       "wrapS": "clamp",
       "wrapT": "clamp",
       "atlas": {
-        "leftcap": [ 0, 0, 1, 50 ],
-        "rightcap": [ 467, 0, 468, 50 ]
+        "leftcap": [0, 0, 1, 50],
+        "rightcap": [467, 0, 468, 50]
       }
     },
     "health-outline": {
@@ -228,8 +228,8 @@
       "wrapS": "clamp",
       "wrapT": "clamp",
       "atlas": {
-        "leftcap": [ 0, 0, 1, 50 ],
-        "rightcap": [ 467, 0, 468, 50 ]
+        "leftcap": [0, 0, 1, 50],
+        "rightcap": [467, 0, 468, 50]
       }
     },
     "luminance-outline": {
@@ -275,8 +275,6 @@
     "background": "widgets/background.json",
     "ui-scene": "widgets/ui-scene.json",
     "betrayer-icons": "widgets/betrayer-icons.json",
-    "terminal-voting-scene": "widgets/terminal-voting-scene.json",
-    "terminal-voting-button": "widgets/terminal-voting-button.json",
     "win-scene": "widgets/win-scene.json",
     "world-scene": "widgets/world-scene.json",
     "wall-top": "widgets/wall-top.json",
@@ -394,8 +392,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [ 0.5, 0.5 ],
-            "size": [ 500, 65 ]
+            "anchor": [0.5, 0.5],
+            "size": [500, 65]
           },
           "children": {
             "host": {
@@ -403,14 +401,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 175, 55 ],
+                  "size": [175, 55],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 25, 0 ]
+                "padding": [0, 0, 25, 0]
               }
             },
             "join": {
@@ -418,20 +416,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 175, 55 ],
+                  "size": [175, 55],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 0, 0 ]
+                "padding": [0, 0, 0, 0]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 25, 0, 50 ]
+            "padding": [0, 25, 0, 50]
           }
         },
         "instructions": {
@@ -439,7 +437,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 170, 45 ],
+              "size": [170, 45],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -447,7 +445,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 25, 0, 0 ]
+            "padding": [0, 25, 0, 0]
           }
         },
         "settings": {
@@ -455,7 +453,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 140, 45 ],
+              "size": [140, 45],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -463,7 +461,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 25, 0, 0 ]
+            "padding": [0, 25, 0, 0]
           }
         }
       }
@@ -477,7 +475,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "background": "health-fill",
             "foreground": "health-bar",
             "left_cap": "health-fill_leftcap",
@@ -498,7 +496,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "scale": 0.402
           },
           "layout": {
@@ -519,7 +517,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "background": "luminance-fill",
             "foreground": "luminance-bar",
             "left_cap": "luminance-fill_leftcap",
@@ -540,7 +538,7 @@
           },
           "data": {
             "texture": "luminance-outline",
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "scale": 0.402
           },
           "layout": {
