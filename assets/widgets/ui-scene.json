@@ -14,7 +14,7 @@
         },
         "data": {
           "texture": "joystick-base",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.5
         },
         "layout": {
@@ -26,7 +26,7 @@
         "type": "Image",
         "data": {
           "texture": "joystick",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.7
         },
         "layout": {
@@ -41,7 +41,7 @@
         },
         "data": {
           "texture": "joystick-base",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.60
         },
         "layout": {
@@ -53,7 +53,7 @@
         "type": "Button",
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.6
         },
         "layout": {
@@ -74,10 +74,10 @@
       "name": {
         "type": "Label",
         "data": {
-          "anchor": [0, 0],
+          "anchor": [ 0, 0 ],
           "font": "pixelmix_extra_small",
           "text": "judy",
-          "padding": [20, 20, 35, 20],
+          "padding": [ 20, 20, 35, 20 ],
           "halign": "left",
           "valign": "top"
         },
@@ -96,7 +96,7 @@
         },
         "data": {
           "texture": "player-cropped",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.8
         },
         "layout": {
@@ -109,10 +109,10 @@
       "role": {
         "type": "Label",
         "data": {
-          "anchor": [0, 0],
+          "anchor": [ 0, 0 ],
           "font": "pixelmix_extra_small",
           "text": "(C)",
-          "padding": [20, 20, 20, 20],
+          "padding": [ 20, 20, 20, 20 ],
           "halign": "left",
           "valign": "top"
         },
@@ -131,7 +131,7 @@
         },
         "data": {
           "texture": "activated",
-          "anchor": [0.5, 0.25],
+          "anchor": [ 0.5, 0.25 ],
           "scale": 0.8
         },
         "layout": {
@@ -144,10 +144,10 @@
       "activated_num": {
         "type": "Label",
         "data": {
-          "anchor": [0.5, 0.25],
+          "anchor": [ 0.5, 0.25 ],
           "font": "pixelmix_extra_small",
           "text": "0",
-          "padding": [20, 20, 20, 20],
+          "padding": [ 20, 20, 20, 20 ],
           "halign": "left",
           "valign": "top"
         },
@@ -166,7 +166,7 @@
         },
         "data": {
           "texture": "corrupted",
-          "anchor": [0.5, 0.25],
+          "anchor": [ 0.5, 0.25 ],
           "scale": 0.8
         },
         "layout": {
@@ -179,10 +179,10 @@
       "corrupted_num": {
         "type": "Label",
         "data": {
-          "anchor": [0.5, 0.25],
+          "anchor": [ 0.5, 0.25 ],
           "font": "pixelmix_extra_small",
           "text": "0",
-          "padding": [20, 20, 20, 20],
+          "padding": [ 20, 20, 20, 20 ],
           "halign": "left",
           "valign": "top"
         },
@@ -194,41 +194,6 @@
           "y_offset": -0.14
         }
       },
-      "timer_img": {
-        "type": "Image",
-        "format": {
-          "type": "Anchored"
-        },
-        "data": {
-          "texture": "timer",
-          "anchor": [0.5, 0.25],
-          "scale": 0.6
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.56,
-          "y_offset": -0.12
-        }
-      },
-      "timer": {
-        "type": "Label",
-        "data": {
-          "anchor": [-0.5, 0],
-          "font": "pixelmix_extra_small",
-          "text": "15:00",
-          "padding": [20, 20, 20, 20],
-          "halign": "left",
-          "valign": "top"
-        },
-        "layout": {
-          "priority": 1,
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.51,
-          "y_offset": -0.17
-        }
-      },
       "map": {
         "type": "Button",
         "format": {
@@ -236,7 +201,7 @@
         },
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 1
         },
         "layout": {
@@ -250,7 +215,7 @@
             "type": "Image",
             "data": {
               "texture": "map",
-              "anchor": [0.5, 0.5],
+              "anchor": [ 0.5, 0.5 ],
               "scale": 0.8
             }
           }
@@ -263,7 +228,7 @@
         },
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 1
         },
         "layout": {
@@ -277,7 +242,7 @@
             "type": "Image",
             "data": {
               "texture": "settings",
-              "anchor": [0.5, 0.5],
+              "anchor": [ 0.5, 0.5 ],
               "scale": 0.65
             }
           }
@@ -290,7 +255,7 @@
         },
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 1
         },
         "layout": {
@@ -304,7 +269,7 @@
             "type": "Image",
             "data": {
               "texture": "dash",
-              "anchor": [0.5, 0.5],
+              "anchor": [ 0.5, 0.5 ],
               "scale": 1
             }
           }
@@ -317,7 +282,7 @@
         },
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 1
         },
         "layout": {
@@ -331,7 +296,7 @@
             "type": "Image",
             "data": {
               "texture": "target-player",
-              "anchor": [0.5, 0.5],
+              "anchor": [ 0.5, 0.5 ],
               "scale": 1
             }
           }
@@ -341,7 +306,7 @@
         "type": "Button",
         "data": {
           "upnode": "up",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 1
         },
         "layout": {

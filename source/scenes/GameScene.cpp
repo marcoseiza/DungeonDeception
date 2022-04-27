@@ -5,6 +5,7 @@
 #include <box2d/b2_world.h>
 #include <cugl/cugl.h>
 
+#include "../controllers/CollisionFiltering.h"
 #include "../controllers/actions/Attack.h"
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
@@ -14,7 +15,6 @@
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
 #include "../network/structs/VotingInfo.h"
-#include "../controllers/CollisionFiltering.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -136,11 +136,6 @@ bool GameScene::init(
   auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
   enrage_button->setVisible(is_betrayer);
 
-  auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
-  std::string timer_msg = getTimerString();
-  timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::BLACK);
-
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
 
@@ -183,10 +178,6 @@ bool GameScene::init(
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
-
-  setMillisRemaining(900000);
-  // Start the timer.
-  _last_timestamp.mark();
 
   return true;
 }
@@ -395,17 +386,11 @@ void GameScene::update(float timestep) {
   }
 
   updateCamera(timestep);
-  updateMillisRemainingIfHost();
 
   _world->update(timestep);
 
   // ===== POST-UPDATE =======
   auto ui_layer = _assets->get<cugl::scene2::SceneNode>("ui-scene");
-
-  auto timer_text = ui_layer->getChildByName<cugl::scene2::Label>("timer");
-  std::string timer_msg = getTimerString();
-  timer_text->setText(timer_msg);
-  timer_text->setForeground(cugl::Color4::BLACK);
 
   auto name_text = ui_layer->getChildByName<cugl::scene2::Label>("name");
   name_text->setText(_display_name);
@@ -624,23 +609,6 @@ void GameScene::sendNetworkInfo() {
       _serializer.reset();
       NetworkController::get()->send(msg);
     }
-
-    {
-      // Send all timer info.
-      std::shared_ptr<cugl::JsonValue> timer_info =
-          cugl::JsonValue::allocObject();
-      std::shared_ptr<cugl::JsonValue> millis_remaining =
-          cugl::JsonValue::alloc(static_cast<long>(getMillisRemaining()));
-      timer_info->appendChild(millis_remaining);
-      millis_remaining->setKey("millis_remaining");
-
-      _serializer.writeSint32(3);
-      _serializer.writeJson(timer_info);
-      std::vector<uint8_t> msg = _serializer.serialize();
-      _serializer.reset();
-      NetworkController::get()->send(msg);
-    }
-
   } else {
     // Send just the current player information.
 
@@ -840,12 +808,7 @@ void GameScene::sendDisablePlayerInfo(int target_player_id) {
  */
 void GameScene::processData(const Sint32& code,
                             const cugl::NetworkDeserializer::Message& msg) {
-  if (code == 3) {  // Timer info update
-    std::shared_ptr<cugl::JsonValue> timer_info =
-        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-    int millis_remaining = timer_info->getInt("millis_remaining");
-    setMillisRemaining(millis_remaining);
-  } else if (code == 5) {  // Singular enemy update from the host
+  if (code == 5) {  // Singular enemy update from the host
     std::shared_ptr<cugl::JsonValue> enemy =
         std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
@@ -1113,7 +1076,6 @@ void GameScene::beginContact(b2Contact* contact) {
             room->getKey(), _player_controller->getMyPlayer()->getPlayerId(),
             room->getNumPlayersRequired());
       }
-
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1189,35 +1151,4 @@ void GameScene::updateCamera(float timestep) {
 
   _world_node->setPosition(smoothed_position);
   _debug_node->setPosition(smoothed_position);
-}
-
-void GameScene::updateMillisRemainingIfHost() {
-  if (_ishost) {
-    cugl::Timestamp stamp = cugl::Timestamp();
-    int milli_difference =
-        cugl::Timestamp::ellapsedMillis(_last_timestamp, stamp);
-    _millis_remaining -= milli_difference;
-    _last_timestamp = stamp;
-  }
-
-  // TODO if milliseconds reaches 0 - need to activate betrayer win condition
-  // (for host or for everyone?)
-}
-
-std::string GameScene::getTimerString() {
-  int total_seconds = getMillisRemaining() / 1000;
-  int minutes = total_seconds / 60;
-  int seconds = total_seconds % 60;
-
-  // append leading 0s if numbers are below 10
-  std::string minute_string = cugl::strtool::format("%d:", minutes);
-  if (minutes < 10) {
-    minute_string = "0" + minute_string;
-  }
-  std::string second_string = cugl::strtool::format("%d", seconds);
-  if (seconds < 10) {
-    second_string = "0" + second_string;
-  }
-
-  return minute_string + second_string;
 }
