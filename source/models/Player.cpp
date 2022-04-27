@@ -68,9 +68,14 @@ void Player::setPlayerNode(
   _player_node = node;
 }
 
-void Player::setNameNode(std::shared_ptr<cugl::Font> name_font) {
+void Player::setNameNode(std::shared_ptr<cugl::Font> name_font,
+                         bool display_betrayer) {
   _name_node = cugl::scene2::TextField::allocWithText(_display_name, name_font);
   _name_node->setForeground(cugl::Color4::WHITE);
+  if (display_betrayer) {
+    _name_node->setForeground(cugl::Color4::RED);
+    _name_node->setDropShadow(.75, -.75);
+  }
   _name_node->setAnchor(.5, 0);
   _name_node->setName("player_name");
 

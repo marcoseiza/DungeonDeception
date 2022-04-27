@@ -501,6 +501,12 @@ void GameScene::sendNetworkInfo() {
         player_info->appendChild(player_display_name);
         player_display_name->setKey("player_display_name");
 
+        // send host-stored betrayer bool to clients
+        std::shared_ptr<cugl::JsonValue> is_betrayer =
+            cugl::JsonValue::alloc(static_cast<bool>(player->isBetrayer()));
+        player_info->appendChild(is_betrayer);
+        is_betrayer->setKey("is_betrayer");
+
         std::shared_ptr<cugl::JsonValue> pos = cugl::JsonValue::allocArray();
         std::shared_ptr<cugl::JsonValue> pos_x =
             cugl::JsonValue::alloc(player->getPosition().x);
@@ -625,6 +631,12 @@ void GameScene::sendNetworkInfo() {
         cugl::JsonValue::alloc(static_cast<std::string>(_display_name));
     player_info->appendChild(player_display_name);
     player_display_name->setKey("player_display_name");
+
+    // send if player is a betrayer from itself to host
+    std::shared_ptr<cugl::JsonValue> is_betrayer =
+        cugl::JsonValue::alloc(static_cast<bool>(_is_betrayer));
+    player_info->appendChild(is_betrayer);
+    is_betrayer->setKey("is_betrayer");
 
     std::shared_ptr<cugl::JsonValue> room = cugl::JsonValue::alloc(
         static_cast<long>(_player_controller->getMyPlayer()->getRoomId()));

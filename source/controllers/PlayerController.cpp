@@ -95,27 +95,30 @@ void PlayerController::processData(
           std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
       for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
         int player_id = player->getInt("player_id");
+        bool is_betrayer = player->getBool("is_betrayer");
         string player_display_name = player->getString("player_display_name");
         int room_id = player->getInt("room");
         std::shared_ptr<cugl::JsonValue> player_position =
             player->get("position");
         float pos_x = player_position->get(0)->asFloat();
         float pos_y = player_position->get(1)->asFloat();
-        processPlayerInfo(player_id, room_id, pos_x, pos_y,
-                          player_display_name);
+        processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
+                          is_betrayer);
       }
     } break;
     case NC_CLIENT_ONE_PLAYER_INFO: {
       std::shared_ptr<cugl::JsonValue> player =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
       int player_id = player->getInt("player_id");
+      bool is_betrayer = player->getBool("is_betrayer");
       string player_display_name = player->getString("player_display_name");
       int room_id = player->getInt("room");
       std::shared_ptr<cugl::JsonValue> player_position =
           player->get("position");
       float pos_x = player_position->get(0)->asFloat();
       float pos_y = player_position->get(1)->asFloat();
-      processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name);
+      processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
+                        is_betrayer);
     } break;
     default:
       break;
@@ -124,7 +127,8 @@ void PlayerController::processData(
 
 void PlayerController::processPlayerInfo(int player_id, int room_id,
                                          float pos_x, float pos_y,
-                                         string player_display_name) {
+                                         string player_display_name,
+                                         bool is_betrayer) {
   if (player_id == _player->getPlayerId()) return;
 
   if (getPlayer(player_id) == nullptr) {
@@ -142,8 +146,11 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
 
     auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
     auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
+    // display different color if curr player and other player both betrayers.
+    bool display_betrayer = is_betrayer && _player->isBetrayer();
+    new_player->setBetrayer(is_betrayer);
     new_player->setPlayerNode(player_node);
-    new_player->setNameNode(pixelmix_font);
+    new_player->setNameNode(pixelmix_font, display_betrayer);
     _world_node->addChild(player_node);
     _world->addObstacle(new_player);
 
