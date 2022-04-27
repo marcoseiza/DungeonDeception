@@ -165,7 +165,7 @@ bool HostLobbyScene::checkConnection() {
 void HostLobbyScene::determineAndSendRoles() {
   // determine number of betrayers for number of connected players
   // TODO make this a constant somewhere
-  int num_betrayers_per_num_players[8] = {1, 1, 1, 1, 1, 2, 2, 2};
+  int num_betrayers_per_num_players[8] = {1, 1, 1, 1, 2, 2, 2, 2};
   int num_players = _network->getNumPlayers();
   int num_betrayers = num_betrayers_per_num_players[num_players - 1];
 
