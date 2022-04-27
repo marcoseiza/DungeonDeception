@@ -28,6 +28,9 @@ class LevelGenerator {
   /** A list of all rooms in the outside ring of the level. */
   std::vector<std::shared_ptr<Room>> _outside_rooms;
 
+  /** A list of rooms per circle in the map. */
+  std::vector<std::vector<std::shared_ptr<Room>>> _circle_rooms;
+
   /** A reference to the spawn room of the level. */
   std::shared_ptr<Room> _spawn_room;
 
@@ -152,9 +155,8 @@ class LevelGenerator {
    * @param max_radius The maximum radius for spawning terminals in grid units.
    * @return The list of terminal rooms placed.
    */
-  std::vector<std::shared_ptr<Room>> placeTerminalRooms(int num_rooms,
-                                                        float min_radius,
-                                                        float max_radius);
+  void placeTerminalRooms(std::vector<std::shared_ptr<Room>> &rooms,
+                          int num_rooms, float min_radius, float max_radius);
 
   /**
    * Find if any of the rooms in the level are overlapping.
