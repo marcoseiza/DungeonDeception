@@ -52,8 +52,23 @@ class SoundController : public Controller {
   //
   //
 #pragma mark PlayerSFXVariables
-  /** A list of all the player swing sounds and their names. */
+  /** A list of all the player swing SFX. */
   std::vector<SFX> _player_swing;
+  /** A list of all the player hit SFX. */
+  std::vector<SFX> _player_hit;
+  /** A list of all the possible grass footstep sounds. */
+  std::vector<SFX> _player_footsteps_grass;
+  /** A list of all the possible stone footstep sounds. */
+  std::vector<SFX> _player_footsteps_stone;
+  /** An enumeration for the footstep state. */
+  enum FootstepState {
+    /** The grass footsteps should be playing. */
+    GRASS,
+    /** The stone footsteps should be playing. */
+    STONE
+  };
+  /** The music state. */
+  FootstepState _footstep_state;
 #pragma mark -
   //
   //
@@ -148,7 +163,10 @@ class SoundController : public Controller {
   void initPlayerSFX();
 
   /** Play a swing sound effect. */
-  void playSwing();
+  void playPlayerSwing();
+
+  /** Play a swing sound effect. */
+  void playPlayerHit();
 #pragma mark -
   //
   //

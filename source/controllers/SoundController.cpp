@@ -87,9 +87,17 @@ void SoundController::initPlayerSFX() {
   _player_swing.push_back(
       SFX("player-attack-swing-2",
           _assets->get<cugl::Sound>("player-attack-swing-2")));
+
+  _player_hit.push_back(SFX("player-attack-hit-1",
+                            _assets->get<cugl::Sound>("player-attack-hit-1")));
 }
 
-void SoundController::playSwing() {
+void SoundController::playPlayerSwing() {
   auto sfx = pickRandom(_player_swing);
+  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, 1.0f, true);
+}
+
+void SoundController::playPlayerHit() {
+  auto sfx = pickRandom(_player_hit);
   cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, 1.0f, true);
 }

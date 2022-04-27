@@ -602,6 +602,12 @@
       "file": "sounds/player/attack/sfx_swing_2.wav",
       "stream": true,
       "volume": 1.0
+    },
+    "player-attack-hit-1": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_hit.wav",
+      "stream": true,
+      "volume": 1.0
     }
   }
 }

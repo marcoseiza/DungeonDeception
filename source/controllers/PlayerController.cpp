@@ -14,7 +14,8 @@
 #define HOLD_ATTACK_COUNT 1000 /* milliseconds */
 #define ATTACK_FRAMES 25
 #define ATTACK_STOP_MOVEMENT 10
-#define HURT_FRAMES 10
+// Sync with Player.cpp
+#define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
 #define SLASH_FRAMES 7
@@ -68,6 +69,8 @@ void PlayerController::update(float timestep) {
 
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
+  } else if (_player->_hurt_frames == HURT_FRAMES) {
+    _sound_controller->playPlayerHit();
   }
   _player->_hurt_frames--;
 
@@ -249,8 +252,8 @@ void PlayerController::attack() {
         }
         if (_player->_attack_frame_count == ATTACK_FRAMES) {
           _player->_frame_count = 0;
-          // Player player swing sound effect.
-          _sound_controller->playSwing();
+          // Play player swing sound effect.
+          _sound_controller->playPlayerSwing();
 
           cugl::Vec2 attackDir;
           switch (_player->getMoveDir()) {
