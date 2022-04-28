@@ -589,7 +589,7 @@
       "type": "sample",
       "file": "sounds/music-boss.ogg",
       "stream": true,
-      "volume": 0.4
+      "volume": 0.5
     },
     "player-attack-swing-1": {
       "type": "sample",
@@ -662,6 +662,18 @@
       "file": "sounds/player/footsteps/sfx_footstep_stone_4.wav",
       "stream": true,
       "volume": 1.0
+    },
+    "enemy-shotgunner-small-gunshot": {
+      "type": "sample",
+      "file": "sounds/enemy/shotgunner/sfx_small_gunshot.wav",
+      "stream": true,
+      "volume": 0.8
+    },
+    "enemy-shotgunner-large-gunshot": {
+      "type": "sample",
+      "file": "sounds/enemy/shotgunner/sfx_shotgun_gunshot.wav",
+      "stream": true,
+      "volume": 0.6
     }
   }
 }

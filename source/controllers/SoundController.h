@@ -91,6 +91,19 @@ class SoundController : public Controller {
   //
   //
 
+  //
+  //
+  //
+#pragma mark EnemySFXVariables
+  /** The enemy small gun SFX. */
+  SFX _enemy_small_gunshot;
+  /** The enemy small gun SFX. */
+  SFX _enemy_large_gunshot;
+#pragma mark -
+  //
+  //
+  //
+
  public:
   /** Construct a new controller. */
   SoundController() {}
@@ -176,7 +189,7 @@ class SoundController : public Controller {
   //
   //
 #pragma mark PlayerSFXMethods
-  /** Initialize all the music variables */
+  /** Initialize all the player SFX variables */
   void initPlayerSFX();
 
   /** Play a swing sound effect. */
@@ -190,6 +203,23 @@ class SoundController : public Controller {
 
   /** Play player footstep. */
   void playPlayerFootstep(const FootstepType& type);
+#pragma mark -
+  //
+  //
+  //
+
+  //
+  //
+  //
+#pragma mark EnemySFXMethods
+  /** Initialize all the enemy SFX variables */
+  void initEnemySFX();
+
+  /** Play a small gunshot sound effect. */
+  void playEnemySmallGunshot();
+
+  /** Play a large gunshot sound effect. */
+  void playEnemyLargeGunshot();
 #pragma mark -
   //
   //

@@ -33,6 +33,7 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->addBullet(enemy->_attack_dir);
+      _sound_controller->playEnemySmallGunshot();
     }
     if (enemy->getAttackCooldown() <= 0) {
       std::uniform_int_distribution<int> dist(0.0f, 50.0f);
@@ -42,7 +43,7 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
-    diff.scale(0.6 * enemy->getSpeed()); // Make speed slower when strafing
+    diff.scale(0.6 * enemy->getSpeed());  // Make speed slower when strafing
     enemy->move(diff.x, diff.y);
   }
 }
@@ -88,28 +89,37 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode()->getChildByTag(0));
+void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy,
+                                   cugl::Vec2 p) {
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(
+      enemy->getNode()->getChildByTag(0));
   auto gun_node = enemy->getNode()->getChildByTag(1);
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES - 5) {
-        float angle_inc = cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() / 15;
+        float angle_inc =
+            cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() /
+            15;
         gun_node->setAngle(angle_inc * enemy->getAttackCooldown());
         if (enemy->getAttackCooldown() == 0) {
           gun_node->setAngle(0);
           gun_node->setVisible(false);
         }
         break;
-      } else if (enemy->getAttackCooldown() >= ATTACK_FRAMES + 5 && enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+      } else if (enemy->getAttackCooldown() >= ATTACK_FRAMES + 5 &&
+                 enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
         // Here, move up to the desired position
         node->setFrame(1);
         gun_node->setVisible(true);
-        float angle_inc = cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() / 15;
-        gun_node->setAngle(angle_inc * (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
+        float angle_inc =
+            cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() /
+            15;
+        gun_node->setAngle(angle_inc *
+                           (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
         break;
-      } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 && enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
+      } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 &&
+                 enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
         break;
       }
     }

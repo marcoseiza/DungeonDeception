@@ -10,6 +10,7 @@ bool SoundController::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   initMusic();
   initPlayerSFX();
+  initEnemySFX();
 
   return true;
 }
@@ -140,4 +141,25 @@ void SoundController::playPlayerFootstep(const FootstepType& type) {
   }
 
   cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
+}
+
+void SoundController::initEnemySFX() {
+  _enemy_small_gunshot =
+      SFX("enemy-shotgunner-small-gunshot",
+          _assets->get<cugl::Sound>("enemy-shotgunner-small-gunshot"));
+  _enemy_large_gunshot =
+      SFX("enemy-shotgunner-large-gunshot",
+          _assets->get<cugl::Sound>("enemy-shotgunner-large-gunshot"));
+}
+
+void SoundController::playEnemySmallGunshot() {
+  cugl::AudioEngine::get()->play(_enemy_small_gunshot.name,
+                                 _enemy_small_gunshot.sound, false,
+                                 _enemy_small_gunshot.volume, true);
+}
+
+void SoundController::playEnemyLargeGunshot() {
+  cugl::AudioEngine::get()->play(_enemy_large_gunshot.name,
+                                 _enemy_large_gunshot.sound, false,
+                                 _enemy_large_gunshot.volume, true);
 }

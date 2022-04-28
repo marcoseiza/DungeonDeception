@@ -42,9 +42,11 @@ void TurtleController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     if (abs(p1.x - e.x) > abs(p1.y - e.y)) {
       int add = (p1.x - e.x > 0) ? 1 : -1;
       enemy->addBullet(cugl::Vec2(e.x + add, e.y));
+      _sound_controller->playEnemyLargeGunshot();
     } else {
       int add = (p1.y - e.y > 0) ? 1 : -1;
       enemy->addBullet(cugl::Vec2(e.x, e.y + add));
+      _sound_controller->playEnemyLargeGunshot();
     }
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   } else if (enemy->getAttackCooldown() == ATTACK_FRAME_POS) {
@@ -96,10 +98,12 @@ void TurtleController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+void TurtleController::animate(std::shared_ptr<EnemyModel> enemy,
+                               cugl::Vec2 p) {
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  
+
   // If opening/closing, don't animate here
   if (enemy->_turtle_state == EnemyModel::TurtleAnimationState::STAY) {
     switch (enemy->getCurrentState()) {
@@ -109,18 +113,18 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
           cugl::Vec2 p1 = enemy->_attack_dir;
           if (abs(p1.x - e.x) > abs(p1.y - e.y)) {
             if (p1.x - e.x > 0) {
-              enemy->_goal_frame = ATTACK_RIGHT; // Face right
-              if (node->getFrame() >= ATTACK_HALF) { // Move the other way
+              enemy->_goal_frame = ATTACK_RIGHT;      // Face right
+              if (node->getFrame() >= ATTACK_HALF) {  // Move the other way
                 enemy->_goal_frame = ATTACK_UP_LIM;
               }
             } else {
-              enemy->_goal_frame = ATTACK_LEFT; // Face left
+              enemy->_goal_frame = ATTACK_LEFT;  // Face left
             }
           } else {
             if (p1.y - e.y > 0) {
-              enemy->_goal_frame = ATTACK_UP; // Face up
+              enemy->_goal_frame = ATTACK_UP;  // Face up
             } else {
-              enemy->_goal_frame = ATTACK_DOWN; // Face down
+              enemy->_goal_frame = ATTACK_DOWN;  // Face down
             }
           }
           if (node->getFrame() == 0 || node->getFrame() == 1) {
@@ -128,7 +132,8 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
           }
         } else if (enemy->getAttackCooldown() < ATTACK_FRAME_POS) {
           if (fc >= 2 && enemy->_goal_frame != node->getFrame()) {
-            if (node->getFrame() == ATTACK_RIGHT && enemy->_goal_frame >= ATTACK_HALF) {
+            if (node->getFrame() == ATTACK_RIGHT &&
+                enemy->_goal_frame >= ATTACK_HALF) {
               node->setFrame(ATTACK_UP_LIM - 1);
             } else if (enemy->_goal_frame < node->getFrame()) {
               node->setFrame(node->getFrame() - 1);
@@ -158,9 +163,10 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) 
 }
 
 void TurtleController::animateClose(std::shared_ptr<EnemyModel> enemy) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  
+
   if (fc >= 2) {
     if (node->getFrame() == CLOSED) {
       enemy->_turtle_state = EnemyModel::TurtleAnimationState::STAY;
@@ -184,9 +190,10 @@ void TurtleController::animateClose(std::shared_ptr<EnemyModel> enemy) {
 }
 
 void TurtleController::animateOpen(std::shared_ptr<EnemyModel> enemy) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  
+
   if (node->getFrame() > CLOSED || node->getFrame() < TURTLE_OPENED) {
     enemy->_turtle_state = EnemyModel::TurtleAnimationState::STAY;
   } else if (fc >= 2) {
