@@ -11,6 +11,8 @@
 #define WIDTH_TURTLE 40.0f
 #define HEIGHT_TURTLE 35.0f
 
+#define DAMAGE_COUNT 10
+
 #define HEIGHT_SHRINK 0.3f
 
 #pragma mark Init
@@ -84,8 +86,10 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 void EnemyModel::takeDamage(float amount) {
   reduceHealth(amount);
   _enemy_node->setColor(cugl::Color4::RED);
-  _damage_count = 10;
+  _damage_count = DAMAGE_COUNT;
 }
+
+bool EnemyModel::isHit() const { return _damage_count == DAMAGE_COUNT - 1; }
 
 void EnemyModel::addBullet(const cugl::Vec2 p) {
   _did_fire_bullet = true;
@@ -179,7 +183,7 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
     default: {
       _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
       auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
-      node->setFrame(23); // Initial closed frame
+      node->setFrame(23);  // Initial closed frame
       break;
     }
   }
@@ -280,7 +284,7 @@ void EnemyModel::update(float delta) {
     _enemy_node->setPosition(getPosition() + _offset_from_center - _room_pos);
   }
 
-  if (_damage_count <= 0) {
+  if (_damage_count < 0) {
     _enemy_node->setColor(cugl::Color4::WHITE);
     _damage_count = 0;
   } else {

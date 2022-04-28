@@ -14,7 +14,8 @@
 #define HOLD_ATTACK_COUNT 1000 /* milliseconds */
 #define ATTACK_FRAMES 25
 #define ATTACK_STOP_MOVEMENT 10
-#define HURT_FRAMES 10
+// Sync with Player.cpp
+#define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
 #define SLASH_FRAMES 7
@@ -22,6 +23,9 @@
 #define HEALTH 100
 
 #define MIN_POS_CHANGE 0.005
+
+// The number of ticks between footstep sounds.
+#define FOOTSTEP_SOUND_BUFFER 15
 
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
@@ -42,6 +46,7 @@ bool PlayerController::init(
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
+  _footstep_buffer_counter = -1;
 
   _sword = Sword::alloc(cugl::Vec2::ZERO);
   _world->addObstacle(_sword);
@@ -65,6 +70,25 @@ void PlayerController::update(float timestep) {
   move(timestep);
   attack();
   updateSlashes(timestep);
+
+  if (_player->getState() == Player::State::MOVING) {
+    if (_footstep_buffer_counter == -1) {
+      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
+    } else if (_footstep_buffer_counter == 0) {
+      _sound_controller->playPlayerFootstep(
+          SoundController::FootstepType::GRASS);
+      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
+    }
+
+    _footstep_buffer_counter--;
+
+  } else {
+    _footstep_buffer_counter = -1;
+  }
+
+  if (_player->isHit()) {
+    _sound_controller->playPlayerHit();
+  }
 
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
@@ -249,6 +273,8 @@ void PlayerController::attack() {
         }
         if (_player->_attack_frame_count == ATTACK_FRAMES) {
           _player->_frame_count = 0;
+          // Play player swing sound effect.
+          _sound_controller->playPlayerSwing();
 
           cugl::Vec2 attackDir;
           switch (_player->getMoveDir()) {
@@ -267,6 +293,7 @@ void PlayerController::attack() {
           }
 
           if (_player->_can_make_slash) {
+            _sound_controller->playPlayerEnergyWave();
             _player->makeSlash(attackDir, _sword->getPosition());
             _player->_can_make_slash = false;
             _player->getPlayerNode()->setColor(cugl::Color4::WHITE);

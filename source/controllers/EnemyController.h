@@ -7,6 +7,7 @@
 #include "../models/EnemyModel.h"
 #include "../models/Player.h"
 #include "RayCastController.h"
+#include "SoundController.h"
 
 /**
  * A class to handle enemy AI.
@@ -21,6 +22,8 @@ class EnemyController {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
   /** A reference to the box2d world for adding projectiles */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
+  /** A reference to the sound controller. */
+  std::shared_ptr<SoundController> _sound_controller;
 
   /** Cache set for vertices to update the polys. */
   std::vector<cugl::Vec2> _vertices_cache;
@@ -66,6 +69,14 @@ class EnemyController {
    */
   void dispose() { _projectile_texture = nullptr; }
 
+  /**
+   * Set the sound controller for sound effects.
+   * @param controller The sound controller.
+   */
+  void setSoundController(const std::shared_ptr<SoundController>& controller) {
+    _sound_controller = controller;
+  }
+
 #pragma mark Static Constructors
   /**
    * Returns a new enemy controller.
@@ -108,8 +119,9 @@ class EnemyController {
   void updateProjectiles(float timestep, std::shared_ptr<EnemyModel> enemy);
 
   /** Figure out the weights for the enemy. */
-  void findWeights(std::shared_ptr<EnemyModel> enemy, std::shared_ptr<Player> player);
-  
+  void findWeights(std::shared_ptr<EnemyModel> enemy,
+                   std::shared_ptr<Player> player);
+
   /** Animate the enemy. */
   virtual void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
 

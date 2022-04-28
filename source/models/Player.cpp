@@ -90,6 +90,8 @@ void Player::takeDamage() {
   }
 }
 
+bool Player::isHit() const { return _hurt_frames == HURT_FRAMES; }
+
 void Player::dies() {
   _isDead = true;
   _player_node->setColor(cugl::Color4::RED);

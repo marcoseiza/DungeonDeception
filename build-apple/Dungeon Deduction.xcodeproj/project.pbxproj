@@ -103,6 +103,12 @@
 		D57971F227D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */; };
 		D57971F327D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */; };
 		D57971F427D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */; };
+		D57B3464280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B3465280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B3466280DA437002DEBBA /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = D57B3460280DA437002DEBBA /* sounds */; };
+		D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
+		D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
+		D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B346E280E097B002DEBBA /* SoundController.cpp */; };
 		D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
 		D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
 		D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D57B34D5280FBEC5002DEBBA /* ClientLobbyScene.cpp */; };
@@ -284,6 +290,7 @@
 		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
 		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
 		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
+		D56377AE2819DDA3001C4D45 /* NetworkCodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkCodes.h; sourceTree = "<group>"; };
 		D568D22427DB41B400CA2BA9 /* Hungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hungarian.cpp; sourceTree = "<group>"; };
 		D568D22827DB41B400CA2BA9 /* Hungarian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hungarian.h; sourceTree = "<group>"; };
 		D56B743627CA9DCE00710CC6 /* LevelGeneratorConfig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelGeneratorConfig.cpp; sourceTree = "<group>"; };
@@ -294,6 +301,9 @@
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
 		D57971F827D02C79008FCC5E /* CustomScene2Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScene2Loader.h; sourceTree = "<group>"; };
+		D57B3460280DA437002DEBBA /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		D57B346A280E097B002DEBBA /* SoundController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
+		D57B346E280E097B002DEBBA /* SoundController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		D57B3487280E5088002DEBBA /* TileHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileHelper.h; sourceTree = "<group>"; };
 		D57B34AF280F7076002DEBBA /* CollisionFiltering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollisionFiltering.h; sourceTree = "<group>"; };
 		D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientLobbyScene.h; sourceTree = "<group>"; };
@@ -520,6 +530,8 @@
 			isa = PBXGroup;
 			children = (
 				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
+				D57B346E280E097B002DEBBA /* SoundController.cpp */,
+				D57B346A280E097B002DEBBA /* SoundController.h */,
 				57FEE3E427F69C7800D7EF23 /* enemies */,
 				57CEFE4127DE5E6100EF2B90 /* EnemyController.cpp */,
 				57CEFE4227DE5E6100EF2B90 /* EnemyController.h */,
@@ -577,18 +589,11 @@
 		D57B36122811AAB8002DEBBA /* network */ = {
 			isa = PBXGroup;
 			children = (
+				D56377AE2819DDA3001C4D45 /* NetworkCodes.h */,
 				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
 				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
-				D57B36132811AAB8002DEBBA /* structs */,
 			);
 			path = network;
-			sourceTree = "<group>";
-		};
-		D57B36132811AAB8002DEBBA /* structs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = structs;
 			sourceTree = "<group>";
 		};
 		D598E69827C57D740039326B /* generators */ = {
@@ -618,6 +623,7 @@
 		EB2BE9B71D749870002FE78B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D57B3460280DA437002DEBBA /* sounds */,
 				D5A1467827E38A57002B3FFD /* tiles */,
 				D58B972027DC7EBD0071D1FC /* rooms */,
 				572894E827D189E200F9BBA5 /* fonts */,
@@ -804,7 +810,7 @@
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 37AKFHT6H5;
+						DevelopmentTeam = LR67JRR3TA;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -872,6 +878,7 @@
 				EB22BF9B25D0EA5C002ACE41 /* DeviceMargins.plist in Resources */,
 				EB22BF9625D0EA50002ACE41 /* json in Resources */,
 				EB22BF9725D0EA51002ACE41 /* textures in Resources */,
+				D57B3466280DA437002DEBBA /* sounds in Resources */,
 				EB22BF9025D0EA49002ACE41 /* iOS.xcassets in Resources */,
 				D521FB1127C43BA500D14172 /* widgets in Resources */,
 				EB22BF9125D0EA49002ACE41 /* Landscape.storyboard in Resources */,
@@ -889,6 +896,7 @@
 				EB7454D01D750623002FBAE6 /* textures in Resources */,
 				EB7454AB1D74D846002FBAE6 /* iOS.xcassets in Resources */,
 				EB7454AC1D74D846002FBAE6 /* Landscape.storyboard in Resources */,
+				D57B3465280DA437002DEBBA /* sounds in Resources */,
 				EBFE7C051E19B496001007C2 /* json in Resources */,
 				D521FB1027C43BA500D14172 /* widgets in Resources */,
 				EB7454AD1D74D846002FBAE6 /* Portrait.storyboard in Resources */,
@@ -903,6 +911,7 @@
 			files = (
 				EBFE7C091E19B4AC001007C2 /* json in Resources */,
 				572894E927D189E200F9BBA5 /* fonts in Resources */,
+				D57B3464280DA437002DEBBA /* sounds in Resources */,
 				EB2BE9BB1D7498D2002FE78B /* textures in Resources */,
 				D5A1467927E38A58002B3FFD /* tiles in Resources */,
 				D58B972427DC7EBD0071D1FC /* rooms in Resources */,
@@ -927,6 +936,7 @@
 				57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
@@ -974,6 +984,7 @@
 				57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
@@ -1021,6 +1032,7 @@
 				57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
+				D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
@@ -1120,13 +1132,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = LR67JRR3TA;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeductionx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1142,13 +1154,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 37AKFHT6H5;
+				DEVELOPMENT_TEAM = LR67JRR3TA;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeductionx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

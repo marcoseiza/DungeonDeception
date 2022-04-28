@@ -128,6 +128,12 @@ class Player : public cugl::physics2::CapsuleObstacle {
 #pragma mark Properties
 
   /**
+   * Returns if the player has been hit.
+   * @return if player has been hit.
+   */
+  bool isHit() const;
+
+  /**
    * Returns the current state of the player.
    *
    * @return the current state.

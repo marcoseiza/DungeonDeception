@@ -577,5 +577,121 @@
       "file": "fonts/RetroGame.ttf",
       "size": 16
     }
+  },
+  "sounds": {
+    "music-main": {
+      "type": "sample",
+      "file": "sounds/music-main.ogg",
+      "stream": true,
+      "volume": 0.4
+    },
+    "music-boss": {
+      "type": "sample",
+      "file": "sounds/music-boss.ogg",
+      "stream": true,
+      "volume": 0.5
+    },
+    "player-attack-swing-1": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-swing-2": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_2.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-hit": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_hit.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-energy-wave": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_energy_wave.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-1": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-2": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_2.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-3": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_3.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-4": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_4.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-1": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-2": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_2.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-3": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_3.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-4": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_4.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "enemy-shotgunner-small-gunshot": {
+      "type": "sample",
+      "file": "sounds/enemy/shotgunner/sfx_small_gunshot.wav",
+      "stream": true,
+      "volume": 0.8
+    },
+    "enemy-shotgunner-large-gunshot": {
+      "type": "sample",
+      "file": "sounds/enemy/shotgunner/sfx_shotgun_gunshot.wav",
+      "stream": true,
+      "volume": 0.6
+    },
+    "enemy-hit": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_hit.wav",
+      "stream": true,
+      "volume": 0.5
+    },
+    "enemy-swing-1": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_1.wav",
+      "stream": true,
+      "volume": 0.7
+    },
+    "enemy-swing-2": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_2.wav",
+      "stream": true,
+      "volume": 0.7
+    }
   }
 }

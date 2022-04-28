@@ -11,10 +11,12 @@
 
 #pragma mark GruntController
 
-void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
+                                   cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->setSensor(true);
+      _sound_controller->playEnemySwing();
     }
     if (enemy->getAttackCooldown() <= 0) {
       std::uniform_int_distribution<int> dist(0.0f, 50.0f);
@@ -102,7 +104,8 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::ATTACKING: {
@@ -116,20 +119,21 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
       } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
         // Depending on direction, set the frame.
         float frame_angle = enemy->_attack_dir.getAngle();
-        if (frame_angle <= -M_PI/2) {
-          node->setFrame(60); // Bottom left
+        if (frame_angle <= -M_PI / 2) {
+          node->setFrame(60);  // Bottom left
         } else if (frame_angle <= 0) {
-          node->setFrame(40); // Bottom right
-        } else if (frame_angle <= M_PI/2) {
-          node->setFrame(30); // Top right
+          node->setFrame(40);  // Bottom right
+        } else if (frame_angle <= M_PI / 2) {
+          node->setFrame(30);  // Top right
         } else {
-          node->setFrame(50); // Top left
+          node->setFrame(50);  // Top left
         }
         enemy->_frame_count = 0;
       } else {
         // Look at the direction of the player when circling
-        float direc_angle = abs(cugl::Vec2(p - enemy->getPosition()).getAngle());
-        enemy->setFacingLeft(direc_angle > M_PI/2);
+        float direc_angle =
+            abs(cugl::Vec2(p - enemy->getPosition()).getAngle());
+        enemy->setFacingLeft(direc_angle > M_PI / 2);
         animateChase(enemy);
       }
       break;
@@ -153,15 +157,16 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
 }
 
 void GruntController::animateChase(std::shared_ptr<EnemyModel> enemy) {
-  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
-  
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+
   int run_high_lim = 19;
   int run_low_lim = 10;
   if (enemy->getFacingLeft()) {
     run_high_lim = 29;
     run_low_lim = 20;
   }
-  
+
   if (enemy->_frame_count == 0) {
     node->setFrame(run_low_lim);
   }

@@ -166,6 +166,14 @@ bool GameScene::init(
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
 
+  _sound_controller = SoundController::alloc(_assets);
+  _controllers.push_back(_sound_controller);
+  _player_controller->setSoundController(_sound_controller);
+  _grunt_controller->setSoundController(_sound_controller);
+  _shotgunner_controller->setSoundController(_sound_controller);
+  _tank_controller->setSoundController(_sound_controller);
+  _turtle_controller->setSoundController(_sound_controller);
+
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
 
@@ -593,6 +601,7 @@ void GameScene::sendNetworkInfo() {
       _serializer.reset();
       NetworkController::get()->send(msg);
     }
+
   } else {
     // Send just the current player information.
 
