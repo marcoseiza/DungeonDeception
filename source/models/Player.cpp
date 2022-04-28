@@ -97,13 +97,6 @@ void Player::dies() {
   _hurt_frames = DEAD_FRAMES;
 }
 
-void Player::setCorruptedLuminance(int value) {
-  _corrupted_luminance = value;
-  if (value > _luminance) {
-    _corrupted_luminance = _luminance;
-  }
-}
-
 #pragma mark Animation & Drawing
 
 void Player::update(float delta) {

@@ -198,11 +198,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Sets the current player's luminance.
    *
-   * MAX amount of corrupted luminance is amount of current luminance.
-   *
    * @param value The current player luminance.
    */
-  void setCorruptedLuminance(int value);
+  void setCorruptedLuminance(int value) {
+    if (_corrupted_luminance <= 100) _corrupted_luminance = value;
+  }
 
   /**
    * Reduce health by value.
