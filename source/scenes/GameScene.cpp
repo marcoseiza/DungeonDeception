@@ -11,6 +11,7 @@
 #include "../controllers/actions/Movement.h"
 #include "../controllers/actions/OpenMap.h"
 #include "../controllers/actions/TargetPlayer.h"
+#include "../controllers/actions/Corrupt.h"
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
@@ -372,6 +373,22 @@ void GameScene::update(float timestep) {
 
   if (target_player->isActivatingTargetAction()) {
     sendBetrayalTargetInfo(target_player->getTarget());
+  }
+  
+  // Betrayer corrupt ability.
+  if (_player_controller->getMyPlayer()->isBetrayer()) {
+    int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
+    if (!_player_controller->getMyPlayer()->getDead()) {
+      if (time_held_down >= 2000) { // 2000 milliseconds to hold down the corrupt button
+        // Send to the host to corrupt half a bar of luminance from everyone in the room.
+        for (auto p : _player_controller->getPlayerList()) {
+          if (p->getRoomId() == _player_controller->getMyPlayer()->getRoomId() && !p->isBetrayer()) {
+            sendBetrayalCorruptInfo(p->getPlayerId());
+          }
+        }
+        InputController::get<Corrupt>()->resetTimeDown();
+      }
+    }
   }
 
   std::shared_ptr<RoomModel> current_room =
@@ -745,12 +762,6 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
   std::shared_ptr<cugl::JsonValue> betrayal_info =
       cugl::JsonValue::allocObject();
 
-  std::shared_ptr<cugl::JsonValue> betraying_player_info =
-      cugl::JsonValue::alloc((
-          static_cast<long>(_player_controller->getMyPlayer()->getPlayerId())));
-  betrayal_info->appendChild(betraying_player_info);
-  betraying_player_info->setKey("betraying_player_id");
-
   std::shared_ptr<cugl::JsonValue> target_player_info =
       cugl::JsonValue::alloc(static_cast<long>(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -799,6 +810,33 @@ void GameScene::sendDisablePlayerInfo(int target_player_id) {
     _deserializer.receive(msg);
     std::get<Sint32>(_deserializer.read());
     processData(13, _deserializer.read());
+    _deserializer.reset();
+  }
+}
+
+void GameScene::sendBetrayalCorruptInfo(int corrupt_player_id) {
+  std::shared_ptr<cugl::JsonValue> betrayal_info =
+      cugl::JsonValue::allocObject();
+
+  std::shared_ptr<cugl::JsonValue> corrupt_player_info =
+      cugl::JsonValue::alloc(static_cast<long>(corrupt_player_id));
+  betrayal_info->appendChild(corrupt_player_info);
+  corrupt_player_info->setKey("corrupt_player_id");
+
+  _serializer.writeSint32(14);
+  _serializer.writeJson(betrayal_info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
+  
+  // Send this to host, as sendOnlyToHost doesn't send to host if it was called
+  // by the host.
+  if (_ishost) {
+    _deserializer.receive(msg);
+    std::get<Sint32>(_deserializer.read());
+    processData(14, _deserializer.read());
     _deserializer.reset();
   }
 }
@@ -875,6 +913,13 @@ void GameScene::processData(const Sint32& code,
       _player_controller->getMyPlayer()->reduceHealth(35);
       _player_controller->getMyPlayer()->takeDamage();
     }
+  } else if (code == 14 && _ishost) {
+    std::shared_ptr<cugl::JsonValue> corrupt_data =
+        std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+    int player_id = corrupt_data->getInt("corrupt_player_id");
+    auto corrupt_player = _player_controller->getPlayer(player_id);
+    corrupt_player->setCorruptedLuminance(corrupt_player->getCorruptedLuminance() + 10);
   }
 
   _deserializer.reset();

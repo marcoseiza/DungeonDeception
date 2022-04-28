@@ -48,6 +48,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Player luminance. */
   int _luminance;
+  
+  /** Amount of player luminance that has been corrupted. */
+  int _corrupted_luminance;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -177,13 +180,29 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int getLuminance() const { return _luminance; }
 
   /**
-   * Sets the current player's health.
+   * Sets the current player's luminance.
    *
-   * @param value The current player health.
+   * @param value The current player luminance.
    */
   void setLuminance(int value) {
     if (_luminance < 100) _luminance = value;
   }
+  
+  /**
+   * Returns the current corrupted luminance of the player.
+   *
+   * @return the current luminance.
+   */
+  int getCorruptedLuminance() const { return _corrupted_luminance; }
+
+  /**
+   * Sets the current player's luminance.
+   *
+   * MAX amount of corrupted luminance is amount of current luminance.
+   *
+   * @param value The current player luminance.
+   */
+  void setCorruptedLuminance(int value);
 
   /**
    * Reduce health by value.

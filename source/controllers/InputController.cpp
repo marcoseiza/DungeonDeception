@@ -6,6 +6,7 @@
 #include "actions/Attack.h"
 #include "actions/TargetPlayer.h"
 #include "actions/Dash.h"
+#include "actions/Corrupt.h"
 #include "actions/Movement.h"
 #include "actions/OpenMap.h"
 
@@ -40,6 +41,9 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
     
     _active = InputController::attachAction<Dash>(
         Dash::alloc(assets, bounds)->getHook());
+    
+    _active = InputController::attachAction<Corrupt>(
+        Corrupt::alloc(assets, bounds)->getHook());
   }
   return _active;
 }

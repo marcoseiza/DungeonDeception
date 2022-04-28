@@ -16,6 +16,9 @@
 		5737DA7927C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
 		5737DA7A27C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
 		5737DA7B27C5E62E00D1692A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5737DA7727C5E62E00D1692A /* Player.cpp */; };
+		579187912819AFEF0043E657 /* Corrupt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579187902819AFEF0043E657 /* Corrupt.cpp */; };
+		579187922819AFEF0043E657 /* Corrupt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579187902819AFEF0043E657 /* Corrupt.cpp */; };
+		579187932819AFEF0043E657 /* Corrupt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579187902819AFEF0043E657 /* Corrupt.cpp */; };
 		57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
 		57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
 		57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */; };
@@ -245,6 +248,8 @@
 		572894D227D1684500F9BBA5 /* Sword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sword.h; sourceTree = "<group>"; };
 		572894E827D189E200F9BBA5 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		5737DA7727C5E62E00D1692A /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
+		5791878C2819AFE00043E657 /* Corrupt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Corrupt.h; sourceTree = "<group>"; };
+		579187902819AFEF0043E657 /* Corrupt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Corrupt.cpp; sourceTree = "<group>"; };
 		57A1E54D27E3BF0A009EF19A /* PlayerController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
 		57A1E55527E3BF2C009EF19A /* PlayerController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
 		57CEFE3A27DDA80900EF2B90 /* Projectile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Projectile.cpp; sourceTree = "<group>"; };
@@ -572,6 +577,8 @@
 				CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */,
 				CAB1A84A27F23CCD000B9F20 /* Dash.h */,
 				CAB1A84B27F23CD3000B9F20 /* Dash.cpp */,
+				5791878C2819AFE00043E657 /* Corrupt.h */,
+				579187902819AFEF0043E657 /* Corrupt.cpp */,
 			);
 			path = actions;
 			sourceTree = "<group>";
@@ -960,6 +967,7 @@
 				D598E69D27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F427D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8D27CFEF2C0000426E /* Wall.cpp in Sources */,
+				579187932819AFEF0043E657 /* Corrupt.cpp in Sources */,
 				CA958FD127F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7B27C5E62E00D1692A /* Player.cpp in Sources */,
 				57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
@@ -1011,6 +1019,7 @@
 				D598E69C27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F327D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8C27CFEF2C0000426E /* Wall.cpp in Sources */,
+				579187922819AFEF0043E657 /* Corrupt.cpp in Sources */,
 				CA958FD027F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7A27C5E62E00D1692A /* Player.cpp in Sources */,
 				57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
@@ -1062,6 +1071,7 @@
 				D598E69B27C57E3C0039326B /* LevelGenerator.cpp in Sources */,
 				D57971F227D026E4008FCC5E /* CustomScene2Loader.cpp in Sources */,
 				D5073C8B27CFEF2C0000426E /* Wall.cpp in Sources */,
+				579187912819AFEF0043E657 /* Corrupt.cpp in Sources */,
 				CA958FCF27F68E4500359E0D /* TargetPlayer.cpp in Sources */,
 				5737DA7927C5E62E00D1692A /* Player.cpp in Sources */,
 				57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */,
