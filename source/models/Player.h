@@ -201,7 +201,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The current player luminance.
    */
   void setCorruptedLuminance(int value) {
-    if (_corrupted_luminance <= 100) _corrupted_luminance = value;
+    if (value <= 100) _corrupted_luminance = value;
   }
 
   /**

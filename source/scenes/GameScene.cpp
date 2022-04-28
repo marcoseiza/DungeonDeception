@@ -390,6 +390,14 @@ void GameScene::update(float timestep) {
       }
     }
   }
+  
+  if (_ishost) {
+    for (auto p : _player_controller->getPlayerList()) {
+      if (!p->isBetrayer()) {
+        CULog("%d", p->getCorruptedLuminance());
+      }
+    }
+  }
 
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
