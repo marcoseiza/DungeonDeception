@@ -29,13 +29,22 @@ void SoundController::startMusic() {
 
   _music_mixer = cugl::audio::AudioMixer::alloc(2);
 
-  _music_main = cugl::audio::AudioFader::alloc(
-      _assets->get<cugl::Sound>("music-main")->createNode());
-  _music_boss = cugl::audio::AudioFader::alloc(
-      _assets->get<cugl::Sound>("music-boss")->createNode());
+  auto music_main_sound = _assets->get<cugl::Sound>("music-main");
+  auto music_boss_sound = _assets->get<cugl::Sound>("music-boss");
 
-  _music_main->setGain((_music_state == MusicState::MAIN) ? 1 : 0);
-  _music_boss->setGain((_music_state == MusicState::BOSS) ? 1 : 0);
+  _music_main_vol = music_main_sound->getVolume();
+  _music_boss_vol = music_boss_sound->getVolume();
+
+  _music_main = cugl::audio::AudioFader::alloc(music_main_sound->createNode());
+  _music_boss = cugl::audio::AudioFader::alloc(music_boss_sound->createNode());
+
+  if (_music_state == MusicState::MAIN) {
+    _music_main->setGain(_music_main_vol);
+    _music_boss->setGain(0);
+  } else if (_music_state == MusicState::BOSS) {
+    _music_boss->setGain(_music_boss_vol);
+    _music_main->setGain(0);
+  }
 
   _music_mixer->attach(0, _music_main);
   _music_mixer->attach(1, _music_boss);
@@ -47,14 +56,14 @@ void SoundController::switchMusic() {
   if (_music_main == nullptr || _music_boss == nullptr) return;
 
   if (_music_state == MusicState::MAIN) {
-    _music_boss->setGain(1);
-    _music_boss->setPosition(_music_main->getPosition());
+    _music_boss->setGain(_music_boss_vol);
+    _music_boss->setPosition((Uint32)_music_main->getPosition());
     _music_boss->fadeIn(2 /* seconds */);
     _music_main->fadeOut(4 /* seconds */, true);
     _music_state = MusicState::BOSS;
   } else if (_music_state == MusicState::BOSS) {
-    _music_main->setGain(1);
-    _music_main->setPosition(_music_boss->getPosition());
+    _music_main->setGain(_music_main_vol);
+    _music_main->setPosition((Uint32)_music_boss->getPosition());
     _music_main->fadeIn(2 /* seconds */);
     _music_boss->fadeOut(4 /* seconds */, true);
     _music_state = MusicState::MAIN;
@@ -80,24 +89,55 @@ void SoundController::stopMusic() {
 }
 
 void SoundController::initPlayerSFX() {
-  _player_swing.push_back(
-      SFX("player-attack-swing-1",
-          _assets->get<cugl::Sound>("player-attack-swing-1")));
+  for (int i = 1; i <= 2; i++) {
+    std::string name = "player-attack-swing-" + std::to_string(i);
+    _player_swing.push_back(SFX(name, _assets->get<cugl::Sound>(name)));
+  }
 
-  _player_swing.push_back(
-      SFX("player-attack-swing-2",
-          _assets->get<cugl::Sound>("player-attack-swing-2")));
+  _player_hit =
+      SFX("player-attack-hit", _assets->get<cugl::Sound>("player-attack-hit"));
 
-  _player_hit.push_back(SFX("player-attack-hit-1",
-                            _assets->get<cugl::Sound>("player-attack-hit-1")));
+  _player_energy_wave =
+      SFX("player-attack-energy-wave",
+          _assets->get<cugl::Sound>("player-attack-energy-wave"));
+
+  for (int i = 1; i <= 4; i++) {  // 4 grass footsteps
+    std::string name = "player-footsteps-grass-" + std::to_string(i);
+    _player_footsteps_grass.push_back(
+        SFX(name, _assets->get<cugl::Sound>(name)));
+  }
+
+  for (int i = 1; i <= 4; i++) {  // 4 stone footsteps
+    std::string name = "player-footsteps-stone-" + std::to_string(i);
+    _player_footsteps_stone.push_back(
+        SFX(name, _assets->get<cugl::Sound>(name)));
+  }
 }
 
 void SoundController::playPlayerSwing() {
   auto sfx = pickRandom(_player_swing);
-  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, 1.0f, true);
+
+  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
 }
 
 void SoundController::playPlayerHit() {
-  auto sfx = pickRandom(_player_hit);
-  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, 1.0f, true);
+  cugl::AudioEngine::get()->play(_player_hit.name, _player_hit.sound, false,
+                                 _player_hit.volume, true);
+}
+
+void SoundController::playPlayerEnergyWave() {
+  cugl::AudioEngine::get()->play(_player_energy_wave.name,
+                                 _player_energy_wave.sound, false,
+                                 _player_energy_wave.volume, true);
+}
+
+void SoundController::playPlayerFootstep(const FootstepType& type) {
+  SFX sfx;
+  if (type == FootstepType::GRASS) {
+    sfx = pickRandom(_player_footsteps_grass);
+  } else if (type == FootstepType::STONE) {
+    sfx = pickRandom(_player_footsteps_stone);
+  }
+
+  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
 }

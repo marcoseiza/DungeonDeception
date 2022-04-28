@@ -583,13 +583,13 @@
       "type": "sample",
       "file": "sounds/music-main.ogg",
       "stream": true,
-      "volume": 1.0
+      "volume": 0.4
     },
     "music-boss": {
       "type": "sample",
       "file": "sounds/music-boss.ogg",
       "stream": true,
-      "volume": 1.0
+      "volume": 0.4
     },
     "player-attack-swing-1": {
       "type": "sample",
@@ -603,9 +603,63 @@
       "stream": true,
       "volume": 1.0
     },
-    "player-attack-hit-1": {
+    "player-attack-hit": {
       "type": "sample",
       "file": "sounds/player/attack/sfx_hit.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-energy-wave": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_energy_wave.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-1": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-2": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_2.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-3": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_3.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-grass-4": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_grass_4.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-1": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_1.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-2": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_2.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-3": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_3.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-footsteps-stone-4": {
+      "type": "sample",
+      "file": "sounds/player/footsteps/sfx_footstep_stone_4.wav",
       "stream": true,
       "volume": 1.0
     }

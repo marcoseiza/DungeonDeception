@@ -19,21 +19,23 @@ class SoundController : public Controller {
     std::string name;
     /** The sound node for the sound effect. */
     std::shared_ptr<cugl::Sound> sound;
+    /** The initial volume to play the sound effect at. */
+    float volume;
+
+    /** Create an empty SFX. */
+    SFX() : name(""), sound(nullptr) {}
     /** Create a new SFX with the given name and node. */
     SFX(std::string name, const std::shared_ptr<cugl::Sound>& sound)
-        : name(name), sound(sound) {}
+        : name(name), sound(sound) {
+      volume = sound->getVolume();
+    }
   };
 
   //
   //
   //
 #pragma mark MusicVariables
-  /** The mixer for music layering. */
-  std::shared_ptr<cugl::audio::AudioMixer> _music_mixer;
-  /** The fader for the main music. */
-  std::shared_ptr<cugl::audio::AudioFader> _music_main;
-  /** The fader for the boss music. */
-  std::shared_ptr<cugl::audio::AudioFader> _music_boss;
+ public:
   /** An enumeration for the music state. */
   enum MusicState {
     /** The main music is playing. */
@@ -41,6 +43,18 @@ class SoundController : public Controller {
     /** The boss music is playing. */
     BOSS
   };
+
+ private:
+  /** The mixer for music layering. */
+  std::shared_ptr<cugl::audio::AudioMixer> _music_mixer;
+  /** The fader for the main music. */
+  std::shared_ptr<cugl::audio::AudioFader> _music_main;
+  /** The volume for the main music. */
+  float _music_main_vol;
+  /** The fader for the boss music. */
+  std::shared_ptr<cugl::audio::AudioFader> _music_boss;
+  /** The volume for the boss music. */
+  float _music_boss_vol;
   /** The music state. */
   MusicState _music_state;
 #pragma mark -
@@ -52,23 +66,26 @@ class SoundController : public Controller {
   //
   //
 #pragma mark PlayerSFXVariables
-  /** A list of all the player swing SFX. */
-  std::vector<SFX> _player_swing;
-  /** A list of all the player hit SFX. */
-  std::vector<SFX> _player_hit;
-  /** A list of all the possible grass footstep sounds. */
-  std::vector<SFX> _player_footsteps_grass;
-  /** A list of all the possible stone footstep sounds. */
-  std::vector<SFX> _player_footsteps_stone;
-  /** An enumeration for the footstep state. */
-  enum FootstepState {
+ public:
+  /** An enumeration for the footstep type. */
+  enum FootstepType {
     /** The grass footsteps should be playing. */
     GRASS,
     /** The stone footsteps should be playing. */
     STONE
   };
-  /** The music state. */
-  FootstepState _footstep_state;
+
+ private:
+  /** A list of all the player swing SFX. */
+  std::vector<SFX> _player_swing;
+  /** The player hit SFX. */
+  SFX _player_hit;
+  /** The player energy wave SFX. */
+  SFX _player_energy_wave;
+  /** A list of all the possible grass footstep sounds. */
+  std::vector<SFX> _player_footsteps_grass;
+  /** A list of all the possible stone footstep sounds. */
+  std::vector<SFX> _player_footsteps_stone;
 #pragma mark -
   //
   //
@@ -115,7 +132,7 @@ class SoundController : public Controller {
   template <typename T>
   T pickRandom(const std::vector<T>& vec) {
     CUAssertLog(vec.size() > 0, "Vector is empty.");
-    std::uniform_int_distribution<int> dist(0, vec.size() - 1);
+    std::uniform_int_distribution<int> dist(0, (int)vec.size() - 1);
     int ii = dist(_generator);
     return vec[ii];
   }
@@ -165,8 +182,14 @@ class SoundController : public Controller {
   /** Play a swing sound effect. */
   void playPlayerSwing();
 
+  /** Play a energy wave sound effect. */
+  void playPlayerEnergyWave();
+
   /** Play a swing sound effect. */
   void playPlayerHit();
+
+  /** Play player footstep. */
+  void playPlayerFootstep(const FootstepType& type);
 #pragma mark -
   //
   //

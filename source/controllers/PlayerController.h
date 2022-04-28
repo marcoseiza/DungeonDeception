@@ -32,6 +32,8 @@ class PlayerController : public Controller {
   std::shared_ptr<cugl::AssetManager> _assets;
   /** A reference to the sound controller. */
   std::shared_ptr<SoundController> _sound_controller;
+  /** A counter for buffer between footstep sounds. */
+  int _footstep_buffer_counter;
 
  public:
 #pragma mark Constructors
