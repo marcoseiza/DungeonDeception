@@ -48,6 +48,7 @@ bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
+  _corrupt_count = 0;
   _isDead = false;
   _is_respawning = false;
   _mv_direc = IDLE_LEFT;
@@ -95,6 +96,13 @@ void Player::dies() {
   _isDead = true;
   _player_node->setColor(cugl::Color4::RED);
   _hurt_frames = DEAD_FRAMES;
+}
+
+void Player::setCorrupted() {
+  if (_is_betrayer) {
+    _corrupt_count = 10;
+    _player_node->setColor(cugl::Color4::ORANGE);
+  }
 }
 
 #pragma mark Animation & Drawing

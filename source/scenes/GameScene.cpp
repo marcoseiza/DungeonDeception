@@ -384,6 +384,7 @@ void GameScene::update(float timestep) {
         for (auto p : _player_controller->getPlayerList()) {
           if (p->getRoomId() == _player_controller->getMyPlayer()->getRoomId() && !p->isBetrayer()) {
             sendBetrayalCorruptInfo(p->getPlayerId());
+            _player_controller->getMyPlayer()->setCorrupted();
           }
         }
         InputController::get<Corrupt>()->resetTimeDown();

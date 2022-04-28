@@ -85,6 +85,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
+  /** Countdown for betrayer corrupt feedback. */
+  int _corrupt_count;
 
 #pragma mark Constructors
   /**
@@ -204,6 +206,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
     if (value <= 100) _corrupted_luminance = value;
   }
 
+  /** Sets the frames for player to turn orange to indicate corrupting. */
+  void setCorrupted();
+  
   /**
    * Reduce health by value.
    *

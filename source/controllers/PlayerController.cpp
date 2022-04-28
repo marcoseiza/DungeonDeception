@@ -75,6 +75,11 @@ void PlayerController::update(float timestep) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_hurt_frames--;
+  
+  if (_player->_corrupt_count == 0) {
+    _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
+  }
+  _player->_corrupt_count--;
 
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
