@@ -86,10 +86,12 @@ void PlayerController::update(float timestep) {
     _footstep_buffer_counter = -1;
   }
 
+  if (_player->isHit()) {
+    _sound_controller->playPlayerHit();
+  }
+
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
-  } else if (_player->_hurt_frames == HURT_FRAMES) {
-    _sound_controller->playPlayerHit();
   }
   _player->_hurt_frames--;
 

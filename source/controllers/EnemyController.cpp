@@ -41,7 +41,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
-  diff.scale(0.6 * enemy->getSpeed()); // Make speed slower when strafing
+  diff.scale(0.6 * enemy->getSpeed());  // Make speed slower when strafing
   enemy->move(diff.x, diff.y);
 }
 
@@ -56,7 +56,7 @@ void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
 
 void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
   enemy->move(10, 10);
- }
+}
 
 bool EnemyController::init(
     std::shared_ptr<cugl::AssetManager> assets,
@@ -73,7 +73,8 @@ bool EnemyController::init(
   return true;
 }
 
-void EnemyController::update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
+void EnemyController::update(bool is_host, float timestep,
+                             std::shared_ptr<EnemyModel> enemy,
                              std::vector<std::shared_ptr<Player>> _players,
                              int room_id) {
   if (!is_host) {
@@ -82,7 +83,7 @@ void EnemyController::update(bool is_host, float timestep, std::shared_ptr<Enemy
     enemy->update(timestep);
     return;
   }
-  
+
   float min_distance = std::numeric_limits<float>::max();
   std::shared_ptr<Player> min_player = _players[0];
 
@@ -119,10 +120,14 @@ void EnemyController::update(bool is_host, float timestep, std::shared_ptr<Enemy
     enemy->reduceAttackCooldown(1);
   }
 
+  if (enemy->isHit()) {
+    _sound_controller->playEnemyHit();
+  }
+
   // Update enemy & projectiles
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
-  
+
   animate(enemy, p);
 }
 

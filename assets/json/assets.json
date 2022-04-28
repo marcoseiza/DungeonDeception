@@ -674,6 +674,24 @@
       "file": "sounds/enemy/shotgunner/sfx_shotgun_gunshot.wav",
       "stream": true,
       "volume": 0.6
+    },
+    "enemy-hit": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_hit.wav",
+      "stream": true,
+      "volume": 0.5
+    },
+    "enemy-swing-1": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_1.wav",
+      "stream": true,
+      "volume": 0.7
+    },
+    "enemy-swing-2": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_swing_2.wav",
+      "stream": true,
+      "volume": 0.7
     }
   }
 }

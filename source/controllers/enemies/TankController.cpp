@@ -27,6 +27,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       enemy->setSensor(true);
+      _sound_controller->playEnemySwing();
     }
     if (enemy->getAttackCooldown() <= 0) {
       std::uniform_int_distribution<int> dist(0.0f, 50.0f);

@@ -99,6 +99,10 @@ class SoundController : public Controller {
   SFX _enemy_small_gunshot;
   /** The enemy small gun SFX. */
   SFX _enemy_large_gunshot;
+  /** The enemy hit SFX. */
+  SFX _enemy_hit;
+  /** A list of enemy swing SFX. */
+  std::vector<SFX> _enemy_swing;
 #pragma mark -
   //
   //
@@ -198,7 +202,7 @@ class SoundController : public Controller {
   /** Play a energy wave sound effect. */
   void playPlayerEnergyWave();
 
-  /** Play a swing sound effect. */
+  /** Play a player hit sound effect. */
   void playPlayerHit();
 
   /** Play player footstep. */
@@ -220,6 +224,12 @@ class SoundController : public Controller {
 
   /** Play a large gunshot sound effect. */
   void playEnemyLargeGunshot();
+
+  /** Play a enemy swing sound effect. */
+  void playEnemySwing();
+
+  /** Play a enemy hit sound effect. */
+  void playEnemyHit();
 #pragma mark -
   //
   //

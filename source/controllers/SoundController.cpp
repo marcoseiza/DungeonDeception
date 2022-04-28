@@ -117,7 +117,6 @@ void SoundController::initPlayerSFX() {
 
 void SoundController::playPlayerSwing() {
   auto sfx = pickRandom(_player_swing);
-
   cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
 }
 
@@ -139,7 +138,6 @@ void SoundController::playPlayerFootstep(const FootstepType& type) {
   } else if (type == FootstepType::STONE) {
     sfx = pickRandom(_player_footsteps_stone);
   }
-
   cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
 }
 
@@ -147,9 +145,17 @@ void SoundController::initEnemySFX() {
   _enemy_small_gunshot =
       SFX("enemy-shotgunner-small-gunshot",
           _assets->get<cugl::Sound>("enemy-shotgunner-small-gunshot"));
+
   _enemy_large_gunshot =
       SFX("enemy-shotgunner-large-gunshot",
           _assets->get<cugl::Sound>("enemy-shotgunner-large-gunshot"));
+
+  _enemy_hit = SFX("enemy-hit", _assets->get<cugl::Sound>("enemy-hit"));
+
+  for (int i = 1; i <= 2; i++) {  // 2 enemy swing effects
+    std::string name = "enemy-swing-" + std::to_string(i);
+    _enemy_swing.push_back(SFX(name, _assets->get<cugl::Sound>(name)));
+  }
 }
 
 void SoundController::playEnemySmallGunshot() {
@@ -162,4 +168,14 @@ void SoundController::playEnemyLargeGunshot() {
   cugl::AudioEngine::get()->play(_enemy_large_gunshot.name,
                                  _enemy_large_gunshot.sound, false,
                                  _enemy_large_gunshot.volume, true);
+}
+
+void SoundController::playEnemySwing() {
+  auto sfx = pickRandom(_enemy_swing);
+  cugl::AudioEngine::get()->play(sfx.name, sfx.sound, false, sfx.volume, true);
+}
+
+void SoundController::playEnemyHit() {
+  cugl::AudioEngine::get()->play(_enemy_hit.name, _enemy_hit.sound, false,
+                                 _enemy_hit.volume, true);
 }
