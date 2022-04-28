@@ -467,7 +467,8 @@ void AudioScheduler::trim(Sint32 size) {
 bool AudioScheduler::isPlaying() {
     // Most compilers do not appear to support an atomic operation here
     // But the failure mode is acceptable.
-    return _current != nullptr;
+    Uint32 size = _qsize.load(std::memory_order_acquire);
+    return _current != nullptr || size > 0;
 }
 
 /**
