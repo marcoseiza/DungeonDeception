@@ -52,12 +52,6 @@ class NetworkController {
   }
 
   /**
-   * @return The cugl network connection for functionality not supported in the
-   * network controller.
-   */
-  std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
-
-  /**
    * Initialize the NetworkController and all the actions.
    *
    * @param network A reference to the game network.
@@ -203,6 +197,9 @@ class NetworkController {
     _serializer.reset();
     _network->sendOnlyToHost(msg);
   }
+
+  /** Get the cugl network connection. */
+  std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
 
   /**
    * Set if this network controller is a host controller.
