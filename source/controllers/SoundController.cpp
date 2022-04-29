@@ -1,7 +1,5 @@
 #include "SoundController.h"
 
-#include "NetworkController.h"
-
 bool SoundController::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
 
