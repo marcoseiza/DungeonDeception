@@ -275,6 +275,7 @@
     "background": "widgets/background.json",
     "ui-scene": "widgets/ui-scene.json",
     "betrayer-icons": "widgets/betrayer-icons.json",
+    "terminal-deposit-scene": "widgets/terminal-deposit-scene.json",
     "win-scene": "widgets/win-scene.json",
     "world-scene": "widgets/world-scene.json",
     "wall-top": "widgets/wall-top.json",
@@ -331,6 +332,13 @@
       "type": "Widget",
       "data": {
         "key": "host-lobby-scene",
+        "variables": {}
+      }
+    },
+    "terminal-deposit-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "terminal-deposit-scene",
         "variables": {}
       }
     },

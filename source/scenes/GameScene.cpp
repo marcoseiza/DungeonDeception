@@ -1068,7 +1068,7 @@ void GameScene::beginContact(b2Contact* contact) {
   if (fx1_name == "terminal_range" &&
       ob2 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
-      // TODO: Start deposit of Luminance by players. Issue #235
+      
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {

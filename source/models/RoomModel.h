@@ -31,13 +31,27 @@ class RoomModel {
 
   /** The number of players required for activation. */
   int _num_players_required;
+  
+  /** The amount of energy to activate the room, if it is a terminal room.*/
+  int _energy_to_activate;
+  
+  /** The amount of corrupted energy to activate the room for betrayers, if it is a terminal room. */
+  int _corrupted_energy_to_activate;
+  
+  /** The current energy count. */
+  int _current_energy;
+  
+  /** The current corrupted energy count. */
+  int _current_corrupted_energy;
 
  public:
   /**
    * Construct an empty RoomModel, please never use this. Instead use alloc().
    */
   RoomModel()
-      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD) {}
+      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD),
+        _energy_to_activate(0), _corrupted_energy_to_activate(0),
+        _current_energy(0), _current_corrupted_energy(0) {}
   /** Destroy this RoomModel and all it's internal data. */
   ~RoomModel() { dispose(); }
 
