@@ -48,6 +48,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Player luminance. */
   int _luminance;
+  
+  /** Amount of player luminance that has been corrupted. */
+  int _corrupted_luminance;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -82,6 +85,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int _hold_attack;
   /** Whether the player can make a sword slash. */
   bool _can_make_slash;
+  /** Countdown for betrayer corrupt feedback. */
+  int _corrupt_count;
 
 #pragma mark Constructors
   /**
@@ -183,14 +188,33 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int getLuminance() const { return _luminance; }
 
   /**
-   * Sets the current player's health.
+   * Sets the current player's luminance.
    *
-   * @param value The current player health.
+   * @param value The current player luminance.
    */
   void setLuminance(int value) {
     if (_luminance < 100) _luminance = value;
   }
+  
+  /**
+   * Returns the current corrupted luminance of the player.
+   *
+   * @return the current luminance.
+   */
+  int getCorruptedLuminance() const { return _corrupted_luminance; }
 
+  /**
+   * Sets the current player's luminance.
+   *
+   * @param value The current player luminance.
+   */
+  void setCorruptedLuminance(int value) {
+    if (value <= 100) _corrupted_luminance = value;
+  }
+
+  /** Sets the frames for player to turn orange to indicate corrupting. */
+  void setCorrupted();
+  
   /**
    * Reduce health by value.
    *

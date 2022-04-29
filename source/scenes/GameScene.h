@@ -304,6 +304,15 @@ class GameScene : public cugl::Scene2 {
    * @param target_player_id The player being targeted.
    */
   void sendDisablePlayerInfo(int target_player_id);
+  
+  
+  /**
+   *
+   * Send to host a player being corrupted by the betrayer corrupt player ability.
+   *
+   * @param corrupt_player_id The player being corrupted.
+   */
+  void sendBetrayalCorruptInfo(int corrupt_player_id);
 
   /**
    * Updates the position of the player with the corresponding player_id in

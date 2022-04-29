@@ -4,6 +4,7 @@
 #include "CollisionFiltering.h"
 #include "actions/Attack.h"
 #include "actions/Dash.h"
+#include "actions/Corrupt.h"
 #include "actions/Movement.h"
 
 #define MIN_DISTANCE 300
@@ -66,9 +67,13 @@ void PlayerController::update(float timestep) {
   for (auto it : _players) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
-
-  move(timestep);
-  attack();
+  
+  if (_player->isBetrayer() && InputController::get<Corrupt>()->holdCorrupt()) {
+    _player->move(cugl::Vec2(0, 0), 0.0f);
+  } else {
+    move(timestep);
+    attack();
+  }
   updateSlashes(timestep);
 
   if (_player->getState() == Player::State::MOVING) {
@@ -94,6 +99,11 @@ void PlayerController::update(float timestep) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_hurt_frames--;
+  
+  if (_player->_corrupt_count == 0) {
+    _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
+  }
+  _player->_corrupt_count--;
 
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
