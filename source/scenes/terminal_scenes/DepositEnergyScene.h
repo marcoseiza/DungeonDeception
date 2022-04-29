@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 
 #include "../../controllers/PlayerController.h"
+#include "../../controllers/LevelController.h"
 #include "../../models/Player.h"
 
 class DepositEnergyScene {
@@ -43,6 +44,9 @@ class DepositEnergyScene {
 
   /** A reference to the player controller. */
   std::shared_ptr<PlayerController> _player_controller;
+  
+  /** A reference to the level controller. */
+  std::shared_ptr<LevelController> _level_controller;
 
  public:
   DepositEnergyScene()
@@ -111,6 +115,11 @@ class DepositEnergyScene {
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
+  }
+  
+  void setLevelController(
+      const std::shared_ptr<LevelController>& level_controller) {
+    _level_controller = level_controller;
   }
 
   void depositButtonListener(const std::string& name, bool down);

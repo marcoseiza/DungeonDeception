@@ -120,6 +120,7 @@ class TerminalController : public Controller {
   void setLevelController(
       const std::shared_ptr<LevelController>& level_controller) {
     _level_controller = level_controller;
+    _deposit_energy_scene->setLevelController(level_controller);
   }
 
  private:
