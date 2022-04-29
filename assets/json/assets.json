@@ -288,6 +288,7 @@
   "widgets": {
     "background": "widgets/background.json",
     "runner-scene": "widgets/runner-scene.json",
+    "betrayer-scene": "widgets/betrayer-scene.json",
     "ui-scene": "widgets/ui-scene.json",
     "betrayer-icons": "widgets/betrayer-icons.json",
     "terminal-deposit-scene": "widgets/terminal-deposit-scene.json",
@@ -319,6 +320,13 @@
       "type": "Widget",
       "data": {
         "key": "runner-scene",
+        "variables": {}
+      }
+    },
+    "betrayer-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "betrayer-scene",
         "variables": {}
       }
     },

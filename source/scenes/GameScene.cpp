@@ -111,6 +111,10 @@ bool GameScene::init(
   runner_layer->setContentSize(dim);
   runner_layer->doLayout();
 
+  auto betrayer_layer = assets->get<cugl::scene2::SceneNode>("betrayer-scene");
+  betrayer_layer->setContentSize(dim);
+  betrayer_layer->doLayout();
+
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
@@ -177,6 +181,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(runner_layer);
+  cugl::Scene2::addChild(betrayer_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);

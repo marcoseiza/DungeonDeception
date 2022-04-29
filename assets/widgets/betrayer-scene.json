@@ -1,0 +1,30 @@
+{
+  "variables": {},
+  "contents": {
+    "comments": "This is the root node for the runner scene",
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "background": {
+        "type": "Image",
+        "format": {
+          "type": "Anchored",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "center"
+        },
+        "data": {
+          "texture": "betrayer-screen",
+          "anchor": [ 0.5, 0.5 ],
+          "scale": 0.8
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        }
+      }
+    }
+  }
+}
