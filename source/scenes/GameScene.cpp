@@ -107,13 +107,13 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
-  auto runner_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
-  runner_layer->setContentSize(dim);
-  runner_layer->doLayout();
-
-  auto betrayer_layer = assets->get<cugl::scene2::SceneNode>("betrayer-scene");
-  betrayer_layer->setContentSize(dim);
-  betrayer_layer->doLayout();
+  // assign role screen depending on player role
+  auto role_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
+  if (is_betrayer) {
+    role_layer = assets->get<cugl::scene2::SceneNode>("betrayer-scene");
+  }
+  role_layer->setContentSize(dim);
+  role_layer->doLayout();
 
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
@@ -180,8 +180,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
-  cugl::Scene2::addChild(runner_layer);
-  cugl::Scene2::addChild(betrayer_layer);
+  cugl::Scene2::addChild(role_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
