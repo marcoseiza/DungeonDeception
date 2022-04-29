@@ -94,6 +94,9 @@
 		D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
 		D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
 		D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D52E673327BF305A00F8E2B8 /* GameApp.cpp */; };
+		D53FDE29281C5D14007723CB /* TrailController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailController.cpp */; };
+		D53FDE2A281C5D14007723CB /* TrailController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailController.cpp */; };
+		D53FDE2B281C5D14007723CB /* TrailController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailController.cpp */; };
 		D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
@@ -302,6 +305,8 @@
 		D52E673227BF305900F8E2B8 /* Action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
 		D52E673327BF305A00F8E2B8 /* GameApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameApp.cpp; sourceTree = "<group>"; };
 		D52E674827BF354400F8E2B8 /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
+		D53FDE24281C5D13007723CB /* TrailController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrailController.cpp; sourceTree = "<group>"; };
+		D53FDE28281C5D13007723CB /* TrailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailController.h; sourceTree = "<group>"; };
 		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
 		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
 		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
@@ -554,6 +559,8 @@
 		D52E672C27BF305900F8E2B8 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D53FDE24281C5D13007723CB /* TrailController.cpp */,
+				D53FDE28281C5D13007723CB /* TrailController.h */,
 				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
 				D57B346E280E097B002DEBBA /* SoundController.cpp */,
 				D57B346A280E097B002DEBBA /* SoundController.h */,
@@ -968,6 +975,7 @@
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */,
 				CA6B42B7281BE08D0029B796 /* TerminalController.cpp in Sources */,
+				D53FDE2B281C5D14007723CB /* TrailController.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
@@ -1019,6 +1027,7 @@
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */,
 				CA6B42B6281BE08D0029B796 /* TerminalController.cpp in Sources */,
+				D53FDE2A281C5D14007723CB /* TrailController.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
@@ -1070,6 +1079,7 @@
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */,
 				CA6B42B5281BE08D0029B796 /* TerminalController.cpp in Sources */,
+				D53FDE29281C5D14007723CB /* TrailController.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,

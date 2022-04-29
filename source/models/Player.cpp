@@ -8,6 +8,7 @@
 #define IDLE_UP 83
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
+#define ATTACK_SETUP_LIM_GAP 7
 #define ATTACK_FRAMES 25
 #define HEALTH 100
 
@@ -81,6 +82,9 @@ void Player::setNameNode(std::shared_ptr<cugl::Font> name_font,
   _name_node->setAnchor(.5, 0);
   _name_node->setName("player_name");
 
+  _name_node->setPosition(_player_node->getWidth() / 2.0f,
+                          _player_node->getHeight() / 1.45f);
+
   _player_node->addChild(_name_node);
 }
 
@@ -117,11 +121,6 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
-
-    if (_name_node != nullptr) {
-      _name_node->setPosition(_player_node->getWidth() / 2.0f,
-                              _player_node->getHeight() / 1.45f);
-    }
   }
 }
 
