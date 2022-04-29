@@ -281,15 +281,12 @@ void PlayerController::move(float timestep) {
 }
 
 void PlayerController::attack() {
-  bool did_attack = InputController::get<Attack>()->isAttacking();
-  int time_held_down = InputController::get<Attack>()->timeHeldDown();
-
   if (!_player->getDead()) {
-    if (time_held_down >= HOLD_ATTACK_COUNT) {
+    if (InputController::get<Attack>()->chargeOver()) {
       _player->getPlayerNode()->setColor(cugl::Color4::BLUE);
       _player->_can_make_slash = true;
     } else {
-      if (did_attack) {
+      if (InputController::get<Attack>()->isAttacking()) {
         if (_player->_hurt_frames <= 0) {
           _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
         }
