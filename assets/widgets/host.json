@@ -8,31 +8,6 @@
       "texture": "background"
     },
     "children": {
-      "back": {
-        "type": "Button",
-        "data": {
-          "upnode": "up",
-          "anchor": [ 0.0, 0.0 ],
-          "size": [ 20, 20 ]
-        },
-        "children": {
-          "up": {
-            "type": "Image",
-            "data": {
-              "texture": "left",
-              "scale": 4,
-              "color": "#222222"
-            }
-          }
-        },
-        "layout": {
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "y_offset": -80,
-          "x_offset": 45,
-          "absolute": true
-        }
-      },
       "center": {
         "type": "Node",
         "format": {
@@ -43,7 +18,7 @@
         },
         "data": {
           "anchor": [ 0.5, 0.0 ],
-          "size": [ 1000, 670 ]
+          "size": [ 1000, 825 ]
         },
         "children": {
           "title": {
@@ -71,7 +46,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 200 ]
+              "size": [ 370, 250 ]
             },
             "children": {
               "label": {
@@ -109,7 +84,7 @@
             },
             "layout": {
               "priority": 1,
-              "padding": [ 0, 0, 0, 5 ]
+              "padding": [ 0, 0, 0, 55 ]
             }
           },
           "start": {
@@ -125,13 +100,38 @@
             },
             "layout": {
               "priority": 3,
-              "padding": [ 0, 25, 0, 25 ]
+              "padding": [ 0, 25, 0, 0 ]
             }
           }
         },
         "layout": {
           "x_anchor": "center",
           "y_anchor": "bottom"
+        }
+      },
+      "back": {
+        "type": "Button",
+        "data": {
+          "upnode": "up",
+          "anchor": [ 0.0, 0.0 ],
+          "size": [ 20, 20 ]
+        },
+        "children": {
+          "up": {
+            "type": "Image",
+            "data": {
+              "texture": "left",
+              "scale": 4,
+              "color": "#222222"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "y_offset": -115,
+          "x_offset": 45,
+          "absolute": true
         }
       }
     }
