@@ -10,6 +10,9 @@ bool DepositEnergyScene::init(
       "terminal-deposit-scene_deposit-background_deposit-energy");
   _node->setVisible(false);
   
+  _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(_node->getChildByName("energy-bar")->getChildByName("bar"));
+  _corrupted_energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(_node->getChildByName("corrupted-energy-bar")->getChildByName("bar"));
+  
   _terminal_room_id = -1;
   _initialized = true;
   return true;
@@ -72,40 +75,37 @@ void DepositEnergyScene::update() {
 //    _corrupt_butt->setVisible(_is_betrayer);
 //    _activate_butt->setVisible(true);
 //  }
+
+  _energy_bar->setProgress(
+      static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
+  _corrupted_energy_bar->setProgress(
+      static_cast<float>(_player_controller->getMyPlayer()->getLuminance()) /
+      100);
+
 }
 
 void DepositEnergyScene::depositButtonListener(const std::string& name, bool down) {
   if (!down) return;
   
-  auto player = _player_controller->getMyPlayer();
-  int corrupted_luminance = player->getCorruptedLuminance();
-  int luminance = player->getLuminance();
-  int energy_to_deposit = _player_controller->getMyPlayer()->getLuminance();
-
   auto info = cugl::JsonValue::allocObject();
+  
+  auto terminal_room_id_info =
+      cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
+  info->appendChild(terminal_room_id_info);
+  terminal_room_id_info->setKey("terminal_room_id");
+  
+  int player_id = _player_controller->getMyPlayer()->getPlayerId();
+  auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
+  info->appendChild(player_id_info);
+  player_id_info->setKey("player_id");
 
-//  {
-//    auto terminal_room_id_info =
-//        cugl::JsonValue::alloc(static_cast<long>(_terminal_room_id));
-//    info->appendChild(terminal_room_id_info);
-//    terminal_room_id_info->setKey("terminal_room_id");
-//  }
-//
-//  {
-//    int player_id = _player_controller->getMyPlayer()->getPlayerId();
-//    auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
-//    info->appendChild(player_id_info);
-//    player_id_info->setKey("player_id");
-//  }
-//
-//  {
-//    auto did_activate_info = cugl::JsonValue::alloc(_did_activate);
-//    info->appendChild(did_activate_info);
-//    did_activate_info->setKey("did_activate");
-//  }
-//
-//  NetworkController::get()->sendOnlyToHost(NC_CLIENT_DONE_ACTIVATE_TERMINAL,
-//                                           info);
+  NetworkController::get()->sendOnlyToHost(NC_DEPOSIT_ENERGY, info);
+  
+//  auto player = _player_controller->getMyPlayer();
+//  int corrupted_luminance = player->getCorruptedLuminance();
+//  int luminance = player->getLuminance();
+//  int energy_to_deposit = _player_controller->getMyPlayer()->getLuminance();
+
 }
 
 void DepositEnergyScene::doneButtonListener(const std::string& name,

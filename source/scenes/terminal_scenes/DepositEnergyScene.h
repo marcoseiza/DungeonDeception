@@ -28,6 +28,12 @@ class DepositEnergyScene {
 
   /** A reference to the node for this scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
+  
+  /** A reference to the energy bar for this scene. */
+  std::shared_ptr<cugl::scene2::ProgressBar> _energy_bar;
+  
+  /** A reference to the corrupted energy bar for this scene. */
+  std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
 
   /** The deposit energy button */
   std::shared_ptr<cugl::scene2::Button> _deposit_butt;
@@ -95,6 +101,9 @@ class DepositEnergyScene {
 
   /** Set whether the scene is done. */
   void setDone(bool val) { _done = val; }
+  
+  /** If the player exited the scene. */
+  bool didExit() { return _exit; }
 
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {

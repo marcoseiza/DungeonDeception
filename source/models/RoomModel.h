@@ -39,10 +39,10 @@ class RoomModel {
   int _corrupted_energy_to_activate;
   
   /** The current energy count. */
-  int _current_energy;
+  int _energy;
   
   /** The current corrupted energy count. */
-  int _current_corrupted_energy;
+  int _corrupted_energy;
 
  public:
   /**
@@ -50,8 +50,8 @@ class RoomModel {
    */
   RoomModel()
       : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD),
-        _energy_to_activate(0), _corrupted_energy_to_activate(0),
-        _current_energy(0), _current_corrupted_energy(0) {}
+        _energy_to_activate(100), _corrupted_energy_to_activate(100),
+        _energy(0), _corrupted_energy(0) {}
   /** Destroy this RoomModel and all it's internal data. */
   ~RoomModel() { dispose(); }
 
@@ -199,6 +199,15 @@ class RoomModel {
    * @return The number of players required.
    */
   int getNumPlayersRequired() { return _num_players_required; }
+  
+  int getEnergy() { return _energy; }
+  void setEnergy(int energy) { _energy = energy; }
+  int getCorruptedEnergy() { return _corrupted_energy; }
+  void setCorruptedEnergy(int corrupted_energy) { _corrupted_energy = corrupted_energy; }
+  int getEnergyToActivate() { return _energy_to_activate; }
+  void setEnergyToActivate(int energy_to_activate ) { _energy_to_activate = energy_to_activate; }
+  int getCorruptedEnergyToActivate() { return _corrupted_energy_to_activate; }
+  void setCorruptedEnergyToActivate(int corrupted_energy_to_activate ) { _corrupted_energy_to_activate = corrupted_energy_to_activate; }
 };
 
 #endif  // MODELS_ROOM_MODEL_H_

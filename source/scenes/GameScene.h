@@ -6,6 +6,7 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
+#include "../controllers/TerminalController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/SoundController.h"
 #include "../controllers/enemies/GruntController.h"
@@ -53,6 +54,9 @@ class GameScene : public cugl::Scene2 {
 
   /** The level controller for the game*/
   std::shared_ptr<LevelController> _level_controller;
+  /** The terminal controller for voting in the game. */
+  std::shared_ptr<TerminalController> _terminal_controller;
+
 
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;

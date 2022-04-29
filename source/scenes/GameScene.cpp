@@ -91,10 +91,17 @@ bool GameScene::init(
       TurtleController::alloc(_assets, _world, _world_node, _debug_node);
 
   setBetrayer(is_betrayer);
+  
+  _terminal_controller = TerminalController::alloc(_assets);
 
   populate(dim);
 
   _world_node->doLayout();
+  
+  auto terminal_deposit_layer =
+        assets->get<cugl::scene2::SceneNode>("terminal-deposit-scene");
+  terminal_deposit_layer->setContentSize(dim);
+  terminal_deposit_layer->doLayout();
 
   auto background_layer = assets->get<cugl::scene2::SceneNode>("background");
   background_layer->setContentSize(dim);
@@ -155,6 +162,7 @@ bool GameScene::init(
   role_text->setText(role_msg);
 
   _controllers.push_back(_player_controller->getHook());
+  _controllers.push_back(_terminal_controller->getHook());
   _controllers.push_back(_level_controller->getHook());
 
   cugl::Scene2::addChild(background_layer);
@@ -163,6 +171,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
+  cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
@@ -208,6 +217,7 @@ void GameScene::populate(cugl::Size dim) {
   _player_controller = PlayerController::alloc(my_player, _assets, _world,
                                                _world_node, _debug_node);
   _player_controller->addPlayer(my_player);
+  _terminal_controller->setPlayerController(_player_controller);
   _level_controller->setPlayerController(_player_controller);
 
   // Add physics enabled tiles to world node, debug node and box2d physics
@@ -1068,12 +1078,22 @@ void GameScene::beginContact(b2Contact* contact) {
   if (fx1_name == "terminal_range" &&
       ob2 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
-      
+      std::shared_ptr<RoomModel> room =
+          _level_controller->getLevelModel()->getCurrentRoom();
+
+      _terminal_controller->setActive(room->getKey(),
+                                      dynamic_cast<TerminalSensor*>(ob1),
+                                      _player_controller->getMyPlayer());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
-      // TODO: Start deposit of Luminance by players. Issue #235
+      std::shared_ptr<RoomModel> room =
+          _level_controller->getLevelModel()->getCurrentRoom();
+
+      _terminal_controller->setActive(room->getKey(),
+                                      dynamic_cast<TerminalSensor*>(ob2),
+                                      _player_controller->getMyPlayer());
     }
   }
 }
