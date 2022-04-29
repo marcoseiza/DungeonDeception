@@ -36,6 +36,9 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the debug root of the scene graph */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
+  /** Reference to the role screen scene graph */
+  std::shared_ptr<cugl::scene2::SceneNode> _role_layer;
+
   /** The Box2d world */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
 
@@ -92,6 +95,9 @@ class GameScene : public cugl::Scene2 {
 
   /** The display name of my player. */
   std::string _display_name;
+
+  /** The time the game started. */
+  cugl::Timestamp _time_started;
 
  public:
   GameScene() : cugl::Scene2() {}
@@ -308,11 +314,11 @@ class GameScene : public cugl::Scene2 {
    * @param target_player_id The player being targeted.
    */
   void sendDisablePlayerInfo(int target_player_id);
-  
-  
+
   /**
    *
-   * Send to host a player being corrupted by the betrayer corrupt player ability.
+   * Send to host a player being corrupted by the betrayer corrupt player
+   * ability.
    *
    * @param corrupt_player_id The player being corrupted.
    */
