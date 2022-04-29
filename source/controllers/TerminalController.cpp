@@ -93,7 +93,7 @@ void TerminalController::processNetworkData(
       success_info->appendChild(updated_corrupt_energy_info);
       updated_corrupt_energy_info->setKey("corrupt_energy");
 
-      NetworkController::get()->send(NC_DEPOSIT_ENERGY_SUCCESS, info);
+      NetworkController::get()->sendAndProcess(NC_DEPOSIT_ENERGY_SUCCESS, info);
       break;
   }
 }
