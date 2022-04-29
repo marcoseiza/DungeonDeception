@@ -63,9 +63,9 @@ void TerminalController::processNetworkData(
       
       // Whether there the player has enough corrupted energy to activate the terminal.
       // If so, the corrupted energy will always take priority. Can be changed in the future!
-      bool will_reach_max_corruption = terminal_room->getCorruptedEnergyToActivate() - terminal_room->getCorruptedEnergy() >= corrupted_energy;
+      bool will_reach_max_corruption = terminal_room->getCorruptedEnergyToActivate() - terminal_room->getCorruptedEnergy() <= corrupted_energy;
       
-      bool will_reach_max_energy = terminal_room->getEnergyToActivate() - terminal_room->getEnergy() >= energy;
+      bool will_reach_max_energy = terminal_room->getEnergyToActivate() - terminal_room->getEnergy() <= energy;
       
       if (will_reach_max_corruption) {
         // Use up all corrupted energy and no regular energy.
@@ -76,6 +76,9 @@ void TerminalController::processNetworkData(
         player->setCorruptedLuminance(0);
         terminal_room->setEnergy(terminal_room->getEnergyToActivate());
         player->setLuminance(energy - (terminal_room->getEnergyToActivate() - terminal_room->getEnergy()));
+      } else {
+        terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergy() + corrupted_energy);
+        terminal_room->setEnergy(terminal_room->getEnergy() + energy);
       }
       
       // Send the success message to all clients
