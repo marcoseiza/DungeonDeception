@@ -73,42 +73,11 @@ void DepositEnergyScene::depositButtonListener(const std::string& name, bool dow
   player_id_info->setKey("player_id");
 
   NetworkController::get()->sendOnlyToHostOrProcess(NC_DEPOSIT_ENERGY, info);
-  
-//  auto player = _player_controller->getMyPlayer();
-//  int corrupted_luminance = player->getCorruptedLuminance();
-//  int luminance = player->getLuminance();
-//  int energy_to_deposit = _player_controller->getMyPlayer()->getLuminance();
-
 }
 
 void DepositEnergyScene::doneButtonListener(const std::string& name,
                                               bool down) {
   if (!down) return;
-
-  // Uncomment to add networking
-//  std::shared_ptr<cugl::JsonValue> info = cugl::JsonValue::allocObject();
-//  int player_id = _player_controller->getMyPlayer()->getPlayerId();
-//
-//  {
-//    std::shared_ptr<cugl::JsonValue> room_info = cugl::JsonValue::alloc(
-//        static_cast<long>(_voting_info->terminal_room_id));
-//    info->appendChild(room_info);
-//    room_info->setKey("terminal_room_id");
-//  }
-//  {
-//    std::shared_ptr<cugl::JsonValue> player_info =
-//        cugl::JsonValue::alloc(static_cast<long>(player_id));
-//    info->appendChild(player_info);
-//    player_info->setKey("player_id");
-//  }
-//
-//  NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_REMOVED, info);
-//
-//  if (NetworkController::get()->isHost()) {
-//    std::vector<int>& players = _voting_info->players;
-//    players.erase(std::remove(players.begin(), players.end(), player_id),
-//                  players.end());
-//  }
 
   _exit = true;
 }
