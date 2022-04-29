@@ -26,12 +26,12 @@ class TerminalController : public Controller {
 
   /** Player Controller */
   std::shared_ptr<PlayerController> _player_controller;
-  
+
   /** Level Controller */
   std::shared_ptr<LevelController> _level_controller;
 
   TerminalSensor* _terminal_sensor;
-  
+
   /** The terminal room this controller is handling. */
   int _terminal_room_id;
 
@@ -41,8 +41,7 @@ class TerminalController : public Controller {
   bool _terminal_was_activated;
 
  public:
-  TerminalController()
-      : _active(false) {}
+  TerminalController() : _active(false) {}
   ~TerminalController() { dispose(); }
 
   /**
@@ -82,9 +81,9 @@ class TerminalController : public Controller {
    *
    * @param terminal_room_id The room this controller will handle.
    */
-  void setActive(int terminal_room_id,
-                 TerminalSensor* sensor, std::shared_ptr<Player> player) {
-    if (_active || player->getLuminance() == 0) return;
+  void setActive(int terminal_room_id, TerminalSensor* sensor,
+                 std::shared_ptr<Player> player) {
+    if (_active) return;
 
     // If the voting room has already started.
     _deposit_energy_scene->setDone(false);
@@ -116,7 +115,7 @@ class TerminalController : public Controller {
     _player_controller = player_controller;
     _deposit_energy_scene->setPlayerController(_player_controller);
   }
-  
+
   void setLevelController(
       const std::shared_ptr<LevelController>& level_controller) {
     _level_controller = level_controller;
