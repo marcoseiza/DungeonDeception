@@ -201,6 +201,7 @@
     <ClInclude Include="..\..\source\controllers\LevelController.h" />
     <ClInclude Include="..\..\source\controllers\NetworkCodes.h" />
     <ClInclude Include="..\..\source\controllers\PlayerController.h" />
+    <ClInclude Include="..\..\source\controllers\SoundController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\ShotgunnerController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\TankController.h" />
@@ -217,13 +218,12 @@
     <ClInclude Include="..\..\source\scenes\ClientLobbyScene.h" />
     <ClInclude Include="..\..\source\models\tiles\TileHelper.h" />
     <ClInclude Include="..\..\source\scenes\GameScene.h" />
-    <ClInclude Include="..\..\source\scenes\HostLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingLevelScene.h" />
     <ClInclude Include="..\..\source\scenes\LoadingScene.h" />
     <ClInclude Include="..\..\source\scenes\MenuScene.h" />
     <ClInclude Include="..\..\source\scenes\ClientMenuScene.h" />
     <ClInclude Include="..\..\source\scenes\HostMenuScene.h" />
-    <ClInclude Include="..\..\source\scenes\PeerLobbyScene.h" />
+    <ClInclude Include="..\..\source\scenes\HostLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\PeerScene.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
     <ClInclude Include="..\..\source\network\NetworkController.h" />
@@ -234,6 +234,7 @@
     <ClInclude Include="..\..\source\controllers\actions\Dash.h" />
     <ClInclude Include="..\..\source\controllers\actions\OpenMap.h" />
     <ClInclude Include="..\..\source\controllers\actions\TargetPlayer.h" />
+    <ClInclude Include="..\..\source\controllers\actions\Corrupt.h" />
     <ClInclude Include="..\..\source\models\Player.h" />
     <ClInclude Include="..\..\source\models\Sword.h" />
     <ClInclude Include="..\..\source\models\tiles\BasicTile.h" />
@@ -251,6 +252,7 @@
     <ClCompile Include="..\..\source\controllers\EnemyController.cpp" />
     <ClCompile Include="..\..\source\controllers\LevelController.cpp" />
     <ClCompile Include="..\..\source\controllers\PlayerController.cpp" />
+    <ClCompile Include="..\..\source\controllers\SoundController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\GruntController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\ShotgunnerController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\TankController.cpp" />
@@ -267,12 +269,12 @@
     <ClCompile Include="..\..\source\models\tiles\TerminalSensor.cpp" />
     <ClCompile Include="..\..\source\scenes\ClientLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\GameScene.cpp" />
-    <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingLevelScene.cpp" />
     <ClCompile Include="..\..\source\scenes\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\scenes\MenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\ClientMenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\HostMenuScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
     <ClCompile Include="..\..\source\network\NetworkController.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
@@ -280,6 +282,7 @@
     <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\OpenMap.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\TargetPlayer.cpp" />
+    <ClCompile Include="..\..\source\controllers\actions\Corrupt.cpp" />
     <ClCompile Include="..\..\source\models\Player.cpp" />
     <ClCompile Include="..\..\source\models\Sword.cpp" />
     <ClCompile Include="..\..\source\models\tiles\BasicTile.cpp" />
