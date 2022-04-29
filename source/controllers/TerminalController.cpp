@@ -34,7 +34,7 @@ void TerminalController::update(float timestep) {
   if (_deposit_energy_scene->isDone() || _deposit_energy_scene->didExit()) {
     _deposit_energy_scene->dispose();
     done();
-    // potentially deactivate terminal sensor
+    _terminal_sensor->deactivate();
   }
 }
 
