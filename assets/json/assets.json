@@ -168,6 +168,20 @@
       "wrapS": "repeat",
       "wrapT": "repeat"
     },
+    "runner-screen": {
+      "file": "textures/ui/runner_screen.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-screen": {
+      "file": "textures/ui/betrayer_screen.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "terminal-voting-background": {
       "file": "textures/ui/terminal_screen.png",
       "minfilter": "nearest",
@@ -273,6 +287,7 @@
   },
   "widgets": {
     "background": "widgets/background.json",
+    "runner-scene": "widgets/runner-scene.json",
     "ui-scene": "widgets/ui-scene.json",
     "betrayer-icons": "widgets/betrayer-icons.json",
     "terminal-deposit-scene": "widgets/terminal-deposit-scene.json",
@@ -297,6 +312,13 @@
       "type": "Widget",
       "data": {
         "key": "background",
+        "variables": {}
+      }
+    },
+    "runner-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "runner-scene",
         "variables": {}
       }
     },

@@ -107,6 +107,10 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  auto runner_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
+  runner_layer->setContentSize(dim);
+  runner_layer->doLayout();
+
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
@@ -172,6 +176,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
+  cugl::Scene2::addChild(runner_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
