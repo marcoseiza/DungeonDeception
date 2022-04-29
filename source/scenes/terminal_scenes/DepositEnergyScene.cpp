@@ -22,6 +22,8 @@ void DepositEnergyScene::start(int terminal_room_id) {
   if (!_initialized || _active) return;
   _active = true;
   _node->setVisible(true);
+  
+  _terminal_room_id = terminal_room_id;
 
   _deposit_butt = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _node->getChildByName("deposit-button-wrapper")
@@ -99,7 +101,7 @@ void DepositEnergyScene::depositButtonListener(const std::string& name, bool dow
   info->appendChild(player_id_info);
   player_id_info->setKey("player_id");
 
-  NetworkController::get()->sendOnlyToHost(NC_DEPOSIT_ENERGY, info);
+  NetworkController::get()->sendOnlyToHostOrProcess(NC_DEPOSIT_ENERGY, info);
   
 //  auto player = _player_controller->getMyPlayer();
 //  int corrupted_luminance = player->getCorruptedLuminance();

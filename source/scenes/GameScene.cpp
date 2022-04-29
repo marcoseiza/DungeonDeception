@@ -218,6 +218,7 @@ void GameScene::populate(cugl::Size dim) {
                                                _world_node, _debug_node);
   _player_controller->addPlayer(my_player);
   _terminal_controller->setPlayerController(_player_controller);
+  _terminal_controller->setLevelController(_level_controller);
   _level_controller->setPlayerController(_player_controller);
 
   // Add physics enabled tiles to world node, debug node and box2d physics

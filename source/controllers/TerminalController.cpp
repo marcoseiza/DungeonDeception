@@ -82,16 +82,16 @@ void TerminalController::processNetworkData(
       auto success_info = cugl::JsonValue::allocObject();
       
       auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
-      info->appendChild(player_id_info);
+      success_info->appendChild(player_id_info);
       player_id_info->setKey("player_id");
       
       auto updated_energy_info = cugl::JsonValue::alloc(static_cast<long>(player->getLuminance()));
-      info->appendChild(updated_energy_info);
-      player_id_info->setKey("energy");
+      success_info->appendChild(updated_energy_info);
+      updated_energy_info->setKey("energy");
       
       auto updated_corrupt_energy_info = cugl::JsonValue::alloc(static_cast<long>(player->getCorruptedLuminance()));
-      info->appendChild(updated_corrupt_energy_info);
-      player_id_info->setKey("corrupt_energy");
+      success_info->appendChild(updated_corrupt_energy_info);
+      updated_corrupt_energy_info->setKey("corrupt_energy");
 
       NetworkController::get()->send(NC_DEPOSIT_ENERGY_SUCCESS, info);
       break;
