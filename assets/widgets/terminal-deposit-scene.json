@@ -1,0 +1,192 @@
+{
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "deposit-background": {
+        "type": "Image",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "texture": "terminal-voting-background",
+          "anchor": [0.5, 0.5],
+          "scale": 0.3
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "deposit-energy": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "anchor": [0.5, 0.5]
+            },
+            "layout": {
+              "x_anchor": "fill",
+              "y_anchor": "fill"
+            },
+            "children": {
+              "title": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix_title",
+                  "text": "Deposit Energy?",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 1.5
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.22
+                }
+              },
+              "energy-bar": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": 0,
+                  "y_offset": 0.05
+                },
+                "children": {
+                  "bar": {
+                    "type": "Progress",
+                    "data": {
+                      "anchor": [ 0.5, 0.5 ],
+                      "background": "luminance-fill",
+                      "foreground": "luminance-bar",
+                      "left_cap": "luminance-fill_leftcap",
+                      "right_cap": "luminance-fill_rightcap",
+                      "scale": 1.5
+                    }
+                  },
+                  "bar-outline": {
+                    "type": "Image",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "texture": "luminance-outline",
+                      "anchor": [ 0.5, 0.5 ],
+                      "scale": 1.5
+                    }
+                  }
+                }
+              },
+              "corrupted-energy-bar": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": 0,
+                  "y_offset": -0.05
+                },
+                "children": {
+                  "bar": {
+                    "type": "Progress",
+                    "data": {
+                      "anchor": [ 0.5, 0.5 ],
+                      "background": "luminance-fill",
+                      "foreground": "luminance-bar",
+                      "left_cap": "luminance-fill_leftcap",
+                      "right_cap": "luminance-fill_rightcap",
+                      "scale": 1.5
+                    }
+                  },
+                  "bar-outline": {
+                    "type": "Image",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "texture": "luminance-outline",
+                      "anchor": [ 0.5, 0.5 ],
+                      "scale": 1.5
+                    }
+                  }
+                }
+              },
+              "deposit-button-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [300, 100]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": -0.2,
+                  "y_offset": -0.2
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "DEPOSIT",
+                        "size": [300, 100],
+                        "color": "#4C7953",
+                        "font": "pixelmix",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              },
+              "done-button-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [300, 100]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": 0.2,
+                  "y_offset": -0.2
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "DONE",
+                        "size": [300, 100],
+                        "color": "#A65454",
+                        "font": "pixelmix",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -156,6 +156,17 @@ class NetworkController {
     _serializer.reset();
     _network->send(msg);
   }
+  
+  /**
+   * Sends the json info to all other uses. Then calls all the listeners and processes the data directly.
+   */
+  void sendAndProcess(const Sint32 &code,
+                               const std::shared_ptr<cugl::JsonValue> &info) {
+    for (auto it : _listeners) {
+      (it.second)(code, info);
+    }
+    send(code, info);
+  }
 
   /**
    * Sends a byte array to the host only.
@@ -196,6 +207,20 @@ class NetworkController {
     std::vector<uint8_t> msg = _serializer.serialize();
     _serializer.reset();
     _network->sendOnlyToHost(msg);
+  }
+  
+  /**
+   * Sends the json info to the host only. If the user is the host, instead it will call all the listeners and process the data directly.
+   */
+  void sendOnlyToHostOrProcess(const Sint32 &code,
+                               const std::shared_ptr<cugl::JsonValue> &info) {
+    if (isHost()) {
+      for (auto it : _listeners) {
+        (it.second)(code, info);
+      }
+    } else {
+      sendOnlyToHost(code, info);
+    }
   }
 
   /** Get the cugl network connection. */

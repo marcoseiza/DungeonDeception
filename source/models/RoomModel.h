@@ -31,13 +31,27 @@ class RoomModel {
 
   /** The number of players required for activation. */
   int _num_players_required;
+  
+  /** The amount of energy to activate the room, if it is a terminal room.*/
+  int _energy_to_activate;
+  
+  /** The amount of corrupted energy to activate the room for betrayers, if it is a terminal room. */
+  int _corrupted_energy_to_activate;
+  
+  /** The current energy count. */
+  int _energy;
+  
+  /** The current corrupted energy count. */
+  int _corrupted_energy;
 
  public:
   /**
    * Construct an empty RoomModel, please never use this. Instead use alloc().
    */
   RoomModel()
-      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD) {}
+      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD),
+        _energy_to_activate(100), _corrupted_energy_to_activate(100),
+        _energy(0), _corrupted_energy(0) {}
   /** Destroy this RoomModel and all it's internal data. */
   ~RoomModel() { dispose(); }
 
@@ -185,6 +199,15 @@ class RoomModel {
    * @return The number of players required.
    */
   int getNumPlayersRequired() { return _num_players_required; }
+  
+  int getEnergy() { return _energy; }
+  void setEnergy(int energy) { _energy = energy; }
+  int getCorruptedEnergy() { return _corrupted_energy; }
+  void setCorruptedEnergy(int corrupted_energy) { _corrupted_energy = corrupted_energy; }
+  int getEnergyToActivate() { return _energy_to_activate; }
+  void setEnergyToActivate(int energy_to_activate ) { _energy_to_activate = energy_to_activate; }
+  int getCorruptedEnergyToActivate() { return _corrupted_energy_to_activate; }
+  void setCorruptedEnergyToActivate(int corrupted_energy_to_activate ) { _corrupted_energy_to_activate = corrupted_energy_to_activate; }
 };
 
 #endif  // MODELS_ROOM_MODEL_H_

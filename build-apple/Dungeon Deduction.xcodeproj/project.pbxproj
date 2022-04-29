@@ -43,12 +43,18 @@
 		57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
 		57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
 		57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
+		CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
+		CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
+		CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
 		CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
+		CA6B42B5281BE08D0029B796 /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA6B42B4281BE08D0029B796 /* TerminalController.cpp */; };
+		CA6B42B6281BE08D0029B796 /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA6B42B4281BE08D0029B796 /* TerminalController.cpp */; };
+		CA6B42B7281BE08D0029B796 /* TerminalController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA6B42B4281BE08D0029B796 /* TerminalController.cpp */; };
 		CA958FCF27F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
 		CA958FD027F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
 		CA958FD127F68E4500359E0D /* TargetPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */; };
@@ -261,10 +267,14 @@
 		57FEE3EA27F69C7800D7EF23 /* ShotgunnerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotgunnerController.h; sourceTree = "<group>"; };
 		57FEE3EB27F69C7800D7EF23 /* GruntController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GruntController.h; sourceTree = "<group>"; };
 		57FEE3EC27F69C7800D7EF23 /* TurtleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleController.h; sourceTree = "<group>"; };
+		CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DepositEnergyScene.cpp; sourceTree = "<group>"; };
+		CA2DE0B9281BC772009C7117 /* DepositEnergyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositEnergyScene.h; sourceTree = "<group>"; };
 		CA53F11727ED96E800F2699C /* OpenMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenMap.cpp; sourceTree = "<group>"; };
 		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		CA5F188A27DBC1B70077AEBB /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
+		CA6B42B4281BE08D0029B796 /* TerminalController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerminalController.cpp; sourceTree = "<group>"; };
+		CA6B42B8281BE09C0029B796 /* TerminalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalController.h; sourceTree = "<group>"; };
 		CA958FCA27F68E3900359E0D /* TargetPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TargetPlayer.h; sourceTree = "<group>"; };
 		CA958FCE27F68E4500359E0D /* TargetPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TargetPlayer.cpp; sourceTree = "<group>"; };
 		CAAF4CE827DCA79600024986 /* ClientMenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientMenuScene.cpp; sourceTree = "<group>"; };
@@ -488,6 +498,15 @@
 			path = enemies;
 			sourceTree = "<group>";
 		};
+		CA2DE0AB281BC461009C7117 /* terminal_scenes */ = {
+			isa = PBXGroup;
+			children = (
+				CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */,
+				CA2DE0B9281BC772009C7117 /* DepositEnergyScene.h */,
+			);
+			path = terminal_scenes;
+			sourceTree = "<group>";
+		};
 		D5073C8527CFEF2C0000426E /* tiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -509,6 +528,7 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				CA2DE0AB281BC461009C7117 /* terminal_scenes */,
 				D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */,
 				D563777F2818F2B8001C4D45 /* HostLobbyScene.h */,
 				D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */,
@@ -543,6 +563,8 @@
 				D58B0FC827DC1BC500E65692 /* Controller.h */,
 				D58B0FCD27DC1BC500E65692 /* LevelController.cpp */,
 				D58B0FCC27DC1BC500E65692 /* LevelController.h */,
+				CA6B42B4281BE08D0029B796 /* TerminalController.cpp */,
+				CA6B42B8281BE09C0029B796 /* TerminalController.h */,
 				D52E672D27BF305900F8E2B8 /* InputController.cpp */,
 				D52E672E27BF305900F8E2B8 /* InputController.h */,
 				D52E672F27BF305900F8E2B8 /* actions */,
@@ -945,6 +967,7 @@
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */,
+				CA6B42B7281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E55027E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6DE27DEFA330071DD06 /* LevelModel.cpp in Sources */,
@@ -953,6 +976,7 @@
 				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
+				CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -994,6 +1018,7 @@
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */,
+				CA6B42B6281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				D5F3D6DD27DEFA320071DD06 /* LevelModel.cpp in Sources */,
 				57A1E54F27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
@@ -1002,6 +1027,7 @@
 				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
+				CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1043,6 +1069,7 @@
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */,
+				CA6B42B5281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
 				57A1E54E27E3BF0A009EF19A /* PlayerController.cpp in Sources */,
 				D5F3D6B427DD6E3B0071DD06 /* LevelModel.cpp in Sources */,
@@ -1051,6 +1078,7 @@
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
+				CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,

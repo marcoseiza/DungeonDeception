@@ -154,6 +154,18 @@ void PlayerController::processData(
       processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
                         is_betrayer);
     } break;
+    case NC_DEPOSIT_ENERGY_SUCCESS: {
+      // Process the incoming informaiton
+      std::shared_ptr<cugl::JsonValue> info =
+          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+      int player_id = info->getInt("player_id");
+      if (player_id == _player->getPlayerId()) {
+        int new_energy_value = info->getInt("energy");
+        int new_corrupted_energy_value = info->getInt("corrupt_energy");
+        _player->setLuminance(new_energy_value);
+        _player->setCorruptedLuminance(new_corrupted_energy_value);
+      }
+    }  break;
     default:
       break;
   }
