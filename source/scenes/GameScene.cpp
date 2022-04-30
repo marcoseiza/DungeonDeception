@@ -861,14 +861,6 @@ void GameScene::processData(const Sint32& code,
       }
     } break;
 
-    case NC_BETRAYAL_TARGET_INFO: {
-      if (NetworkController::get()->isHost()) {
-        auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-        int player_id = target_data->getInt("target_player_id");
-        sendDisablePlayerInfo(player_id);
-      }
-    } break;
-
     case NC_SEND_DISABLE_PLAYER_INFO: {
       auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
