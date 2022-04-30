@@ -108,9 +108,43 @@ void TerminalController::processNetworkData(
         }
       }
 
-      sendDepositEnergySuccess();
-      sendTerminalEnergyUpdate();
+      // Send the success message to all clients
+      auto success_info = cugl::JsonValue::allocObject();
 
+      auto player_id_info = cugl::JsonValue::alloc((long)(player_id));
+      success_info->appendChild(player_id_info);
+      player_id_info->setKey("player_id");
+
+      auto updated_energy_info =
+          cugl::JsonValue::alloc((long)(player->getLuminance()));
+      success_info->appendChild(updated_energy_info);
+      updated_energy_info->setKey("energy");
+
+      auto updated_corrupt_energy_info =
+          cugl::JsonValue::alloc((long)(player->getCorruptedLuminance()));
+      success_info->appendChild(updated_corrupt_energy_info);
+      updated_corrupt_energy_info->setKey("corrupt_energy");
+
+      NetworkController::get()->sendAndProcess(NC_DEPOSIT_ENERGY_SUCCESS, info);
+
+      auto terminal_update_info = cugl::JsonValue::allocObject();
+
+      auto terminal_id_info = cugl::JsonValue::alloc((long)(terminal_room_id));
+      terminal_update_info->appendChild(terminal_id_info);
+      terminal_id_info->setKey("terminal_room_id");
+
+      auto updated_terminal_energy =
+          cugl::JsonValue::alloc((long)(terminal_room->getEnergy()));
+      terminal_update_info->appendChild(updated_terminal_energy);
+      updated_terminal_energy->setKey("energy");
+
+      auto updated_terminal_corrupted_energy =
+          cugl::JsonValue::alloc((long)(terminal_room->getCorruptedEnergy()));
+      terminal_update_info->appendChild(updated_terminal_corrupted_energy);
+      updated_terminal_corrupted_energy->setKey("corrupt_energy");
+
+      NetworkController::get()->sendAndProcess(NC_TERMINAL_ENERGY_UPDATE,
+                                               terminal_update_info);
     } break;
 
     case NC_TERMINAL_ENERGY_UPDATE: {
@@ -125,46 +159,4 @@ void TerminalController::processNetworkData(
       terminal_room->setCorruptedEnergy(corrupted_energy);
     } break;
   }
-}
-
-void TerminalController::sendDepositEnergySuccess() {
-  // Send the success message to all clients
-  auto success_info = cugl::JsonValue::allocObject();
-
-  auto player_id_info = cugl::JsonValue::alloc((long)(player_id));
-  success_info->appendChild(player_id_info);
-  player_id_info->setKey("player_id");
-
-  auto updated_energy_info =
-      cugl::JsonValue::alloc((long)(player->getLuminance()));
-  success_info->appendChild(updated_energy_info);
-  updated_energy_info->setKey("energy");
-
-  auto updated_corrupt_energy_info =
-      cugl::JsonValue::alloc((long)(player->getCorruptedLuminance()));
-  success_info->appendChild(updated_corrupt_energy_info);
-  updated_corrupt_energy_info->setKey("corrupt_energy");
-
-  NetworkController::get()->sendAndProcess(NC_DEPOSIT_ENERGY_SUCCESS, info);
-}
-
-void TerminalController::sendTerminalEnergyUpdate() {
-  auto terminal_update_info = cugl::JsonValue::allocObject();
-
-  auto terminal_id_info = cugl::JsonValue::alloc((long)(terminal_room_id));
-  terminal_update_info->appendChild(terminal_id_info);
-  terminal_id_info->setKey("terminal_room_id");
-
-  auto updated_terminal_energy =
-      cugl::JsonValue::alloc((long)(terminal_room->getEnergy()));
-  terminal_update_info->appendChild(updated_terminal_energy);
-  updated_terminal_energy->setKey("energy");
-
-  auto updated_terminal_corrupted_energy =
-      cugl::JsonValue::alloc((long)(terminal_room->getCorruptedEnergy()));
-  terminal_update_info->appendChild(updated_terminal_corrupted_energy);
-  updated_terminal_corrupted_energy->setKey("corrupt_energy");
-
-  NetworkController::get()->sendAndProcess(NC_TERMINAL_ENERGY_UPDATE,
-                                           terminal_update_info);
 }
