@@ -279,6 +279,16 @@ class GameScene : public cugl::Scene2 {
   void sendNetworkInfo();
 
   /**
+   * Broadcasts the relevant network information if a host.
+   */
+  void sendNetworkInfoHost();
+
+  /**
+   * Broadcasts the relevant network information if a client.
+   */
+  void sendNetworkInfoClient();
+
+  /**
    * Broadcasts enemy being hit to the host.
    *
    * @param id the enemy that was hit
