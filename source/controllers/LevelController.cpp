@@ -66,6 +66,19 @@ void LevelController::update(float timestep) {
   }
 }
 
+std::shared_ptr<EnemyModel> LevelController::getEnemy(int enemy_id) {
+  for (auto it : _level_model->getRooms()) {
+    std::shared_ptr<RoomModel> room = it.second;
+
+    for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
+      if (enemy->getEnemyId() == enemy_id) {
+        return enemy;
+      }
+    }
+  }
+  return nullptr;
+}
+
 void LevelController::dispose() {
   _level_gen->dispose();
   _next_enemy_id = 0;

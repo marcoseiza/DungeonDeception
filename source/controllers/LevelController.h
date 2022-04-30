@@ -114,18 +114,13 @@ class LevelController : public Controller {
     _player_controller = player_controller;
   }
 
-  std::shared_ptr<EnemyModel> getEnemy(int enemy_id) {
-    for (auto it : _level_model->getRooms()) {
-      std::shared_ptr<RoomModel> room = it.second;
-
-      for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-        if (enemy->getEnemyId() == enemy_id) {
-          return enemy;
-        }
-      }
-    }
-    return nullptr;
-  }
+  /**
+   * Get an enemy by id.
+   *
+   * @param enemy_id The enemy id.
+   * @return The enemy found, or nullptr if it does not exist.
+   */
+  std::shared_ptr<EnemyModel> getEnemy(int enemy_id);
 
  private:
   /** Populate the level. */

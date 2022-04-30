@@ -110,6 +110,16 @@ class TerminalController : public Controller {
   void processNetworkData(const Sint32& code,
                           const cugl::NetworkDeserializer::Message& msg);
 
+  /**
+   * Send and process an energy success message.
+   */
+  void sendDepositEnergySuccess();
+
+  /**
+   * Send and process a terminal energy update message.
+   */
+  void sendTerminalEnergyUpdate();
+
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
