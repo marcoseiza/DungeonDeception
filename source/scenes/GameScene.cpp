@@ -221,6 +221,7 @@ void GameScene::populate(cugl::Size dim) {
     auto player = _player_controller->makePlayer(*id);
     _player_controller->setMyPlayer(player);
     player->setDisplayName(_display_name);
+    player->setBetrayer(_is_betrayer);
   }
 
   _terminal_controller->setPlayerController(_player_controller);
