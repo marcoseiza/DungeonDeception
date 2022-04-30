@@ -21,6 +21,7 @@ bool LevelController::init(
   _world_node = world_node;
   _debug_node = debug_node;
   _level_gen = level_gen;
+  _next_enemy_id = 0;
   populate();
   return true;
 }
@@ -65,7 +66,10 @@ void LevelController::update(float timestep) {
   }
 }
 
-void LevelController::dispose() { _level_gen->dispose(); }
+void LevelController::dispose() {
+  _level_gen->dispose();
+  _next_enemy_id = 0;
+}
 
 void LevelController::changeRoom(std::string &door_sensor_name) {
   std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
@@ -297,12 +301,13 @@ void LevelController::instantiateEnemies(
   for (std::shared_ptr<cugl::scene2::SceneNode> enemy_node :
        room_model->getNode()->getChildByName("enemies")->getChildren()) {
     enemy_node = enemy_node->getChildByName("enemy");
+
     std::string enemy_type = enemy_node->getType();
     auto enemy_texture = _assets->get<cugl::Texture>(enemy_type);
-    std::shared_ptr<EnemyModel> enemy = EnemyModel::alloc(
-        enemy_node->getWorldPosition(), enemy_node->getName(), enemy_type);
-    enemy->setEnemyId(next_enemy_id);
-    next_enemy_id = next_enemy_id + 1;
+    auto enemy = EnemyModel::alloc(enemy_node->getWorldPosition(),
+                                   enemy_node->getName(), enemy_type);
+
+    enemy->setEnemyId(_next_enemy_id++);
     enemies.push_back(enemy);
 
     enemy->setNode(enemy_texture, _debug_node);

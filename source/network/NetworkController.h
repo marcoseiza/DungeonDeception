@@ -17,6 +17,9 @@ class NetworkController {
                              const cugl::NetworkDeserializer::Message &msg)>
       Listener;
 
+  /** A vector of std::shared_ptr<JsonValue> */
+  typedef std::vector<std::shared_ptr<cugl::JsonValue>> InfoVector;
+
  protected:
   /* Single instance of NetworkController. */
   static std::shared_ptr<NetworkController> _singleton;
@@ -72,6 +75,11 @@ class NetworkController {
   bool dispose();
 
   /**
+   * @return If the connection (network) is set.
+   */
+  bool isConnectionSet() { return _network != nullptr; }
+
+  /**
    * Disconnects this scene from the network controller.
    *
    * Technically, this method does not actually disconnect the network
@@ -97,11 +105,7 @@ class NetworkController {
    * @param listener The listener to add.
    * @return The key for the listener.
    */
-  Uint32 addListener(Listener listener) {
-    CUAssertLog(_next_key < (Uint32)-1, "No more available listener slots");
-    _listeners[_next_key++] = listener;
-    return _next_key;
-  }
+  Uint32 addListener(Listener listener);
 
   /**
    * Remove a listener given the listener's key.
@@ -109,13 +113,7 @@ class NetworkController {
    * @param key The key for the listener.
    * @return If the listener was successfully removed.
    */
-  bool removeListener(Uint32 key) {
-    if (_listeners.find(key) == _listeners.end()) {
-      return false;
-    }
-    _listeners.erase(key);
-    return true;
-  }
+  bool removeListener(Uint32 key);
 
   /**
    * Sends a byte array to all other players.
@@ -146,22 +144,25 @@ class NetworkController {
    * @param code The message code for parsing during receive.
    * @param info The json value info to be sent.
    */
-  void send(const Sint32 &code, const std::shared_ptr<cugl::JsonValue> &info) {
-    if (_network == nullptr) return;
-    _serializer.writeSint32(code);
-    _serializer.writeJson(info);
+  void send(const Sint32 &code, const std::shared_ptr<cugl::JsonValue> &info);
 
-    std::vector<uint8_t> msg = _serializer.serialize();
-
-    _serializer.reset();
-    _network->send(msg);
-  }
-  
   /**
-   * Sends the json info to all other uses. Then calls all the listeners and processes the data directly.
+   * Sends json info to all other players
+   *
+   * Within a few frames, other players should receive this via a call to
+   * {@link #receive}.
+   *
+   * @param code The message code for parsing during receive.
+   * @param info The json value info to be sent.
+   */
+  void send(const Sint32 &code, InfoVector &info);
+
+  /**
+   * Sends the json info to all other uses. Then calls all the listeners and
+   * processes the data directly.
    */
   void sendAndProcess(const Sint32 &code,
-                               const std::shared_ptr<cugl::JsonValue> &info) {
+                      const std::shared_ptr<cugl::JsonValue> &info) {
     for (auto it : _listeners) {
       (it.second)(code, info);
     }
@@ -199,32 +200,46 @@ class NetworkController {
    * @param info The json value info to be sent.
    */
   void sendOnlyToHost(const Sint32 &code,
-                      const std::shared_ptr<cugl::JsonValue> &info) {
-    if (_network == nullptr) return;
-    _serializer.writeSint32(code);
-    _serializer.writeJson(info);
+                      const std::shared_ptr<cugl::JsonValue> &info);
 
-    std::vector<uint8_t> msg = _serializer.serialize();
-    _serializer.reset();
-    _network->sendOnlyToHost(msg);
-  }
-  
   /**
-   * Sends the json info to the host only. If the user is the host, instead it will call all the listeners and process the data directly.
+   * Sends json info to host only
+   *
+   * Within a few frames, the host should receive this via a call to
+   * {@link #receive}.
+   *
+   * @param code The message code for parsing during receive.
+   * @param info The json value info to be sent.
+   */
+  void sendOnlyToHost(const Sint32 &code, InfoVector &info);
+
+  /**
+   * Sends the json info to the host only. If the user is the host, instead it
+   * will call all the listeners and process the data directly.
    */
   void sendOnlyToHostOrProcess(const Sint32 &code,
                                const std::shared_ptr<cugl::JsonValue> &info) {
-    if (isHost()) {
+    // If host, this function is a no-op.
+    sendOnlyToHost(code, info);
+
+    if (_is_host) {
       for (auto it : _listeners) {
         (it.second)(code, info);
       }
-    } else {
-      sendOnlyToHost(code, info);
     }
   }
 
   /** Get the cugl network connection. */
   std::shared_ptr<cugl::NetworkConnection> getConnection() { return _network; }
+
+  /**
+   * Vectors are sometimes above the packet limit of 1384 bytes. Therefore, we
+   * split it up into sections that are below the limit.
+   *
+   * @param info The vector json value to be split.
+   * @return A vector of vectors of json values.
+   */
+  std::vector<InfoVector> splitVector(InfoVector &info);
 
   /**
    * Set if this network controller is a host controller.
