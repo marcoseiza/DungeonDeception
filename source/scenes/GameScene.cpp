@@ -454,7 +454,7 @@ void GameScene::update(float timestep) {
 
   // hide role screen after a number of seconds
   cugl::Timestamp time;
-  if ((Uint32)time.ellapsedMillis(_time_started) > 7000) {
+  if ((Uint32)time.ellapsedMillis(_time_started) > 5000) {
     _role_layer->setVisible(false);
     InputController::get()->resume();
   }
