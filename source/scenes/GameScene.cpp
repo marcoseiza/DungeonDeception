@@ -107,6 +107,14 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  // assign role screen depending on player role
+  _role_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
+  if (is_betrayer) {
+    _role_layer = assets->get<cugl::scene2::SceneNode>("betrayer-scene");
+  }
+  _role_layer->setContentSize(dim);
+  _role_layer->doLayout();
+
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
@@ -172,6 +180,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(luminance_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
+  cugl::Scene2::addChild(_role_layer);
   cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
@@ -186,6 +195,10 @@ bool GameScene::init(
 
   InputController::get()->init(_assets, cugl::Scene2::getBounds());
   InputController::get<TargetPlayer>()->setActive(is_betrayer);
+
+  InputController::get()->pause();
+
+  _time_started.mark();
 
   return true;
 }
@@ -437,6 +450,13 @@ void GameScene::update(float timestep) {
   } else {
     role_msg = "(C)";
     role_text->setForeground(cugl::Color4::BLACK);
+  }
+
+  // hide role screen after a number of seconds
+  cugl::Timestamp time;
+  if ((Uint32)time.ellapsedMillis(_time_started) > 5000) {
+    _role_layer->setVisible(false);
+    InputController::get()->resume();
   }
 
   // POST-UPDATE
