@@ -114,22 +114,25 @@
         "data": {
           "upnode": "up",
           "anchor": [ 0.0, 0.0 ],
-          "size": [ 20, 20 ]
+          "size": [ 60, 60 ]
+        },
+        "format": {
+          "type": "Anchored"
         },
         "children": {
           "up": {
             "type": "Image",
             "data": {
               "texture": "left",
-              "scale": 4,
-              "color": "#222222"
+              "color": "#222222",
+              "scale": 4
             }
           }
         },
         "layout": {
           "x_anchor": "left",
           "y_anchor": "top",
-          "y_offset": -115,
+          "y_offset": -135,
           "x_offset": 45,
           "absolute": true
         }
