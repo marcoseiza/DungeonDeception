@@ -42,6 +42,7 @@ bool PlayerController::init(
   addTrailManager(player);
 
   _assets = assets;
+
   _slash_texture = _assets->get<cugl::Texture>("energy-slash");
   _world = world;
   _world_node = world_node;
@@ -192,6 +193,27 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
     new_player->setNameNode(pixelmix_font, display_betrayer);
     _world_node->addChild(player_node);
     _world->addObstacle(new_player);
+
+    bool display_energy_bar = _player->isBetrayer();
+    auto energy_fill = _assets->get<cugl::Texture>("energy-fill-small");
+    auto energy_bar = _assets->get<cugl::Texture>("energy-bar-small");
+    auto energy_outline = _assets->get<cugl::Texture>("energy-outline-small");
+
+    auto regular_bar =
+        cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+    regular_bar->addChild(
+        cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
+    regular_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+
+    auto corrupted_bar =
+        cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+    corrupted_bar->setForegroundColor(cugl::Color4("#df7126"));
+
+    if (display_energy_bar) {
+      // It's important that these be placed in this specific order.
+      new_player->setCorruptedEnergyBar(corrupted_bar);
+      new_player->setEnergyBar(regular_bar);
+    }
 
     new_player->setDebugScene(_debug_node);
     new_player->setDebugColor(cugl::Color4(cugl::Color4::BLACK));

@@ -246,6 +246,27 @@
         "rightcap": [467, 0, 468, 50]
       }
     },
+    "energy-outline-small": {
+      "file": "textures/ui/energy-outline-small.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "energy-bar-small": {
+      "file": "textures/ui/energy-bar-small.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "energy-fill-small": {
+      "file": "textures/ui/energy-fill-small.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "luminance-outline": {
       "file": "textures/luminance-outline.png",
       "minfilter": "nearest",

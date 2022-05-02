@@ -19,6 +19,12 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the player name (moving). */
   std::shared_ptr<cugl::scene2::Label> _name_node;
 
+  /** The energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _energy_bar;
+
+  /** The corrupted energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -48,7 +54,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Player luminance. */
   int _luminance;
-  
+
   /** Amount of player luminance that has been corrupted. */
   int _corrupted_luminance;
 
@@ -194,8 +200,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setLuminance(int value) {
     if (_luminance < 100) _luminance = value;
+    if (_energy_bar) _energy_bar->setProgress(_luminance / 100.0f);
   }
-  
+
   /**
    * Returns the current corrupted luminance of the player.
    *
@@ -210,11 +217,14 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setCorruptedLuminance(int value) {
     if (value <= 100) _corrupted_luminance = value;
+    if (_energy_bar) {
+      _energy_bar->setProgress(_luminance / 100.0f);
+    }
   }
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
   void setCorrupted();
-  
+
   /**
    * Reduce health by value.
    *
@@ -391,6 +401,19 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setNameNode(std::shared_ptr<cugl::Font> name_font,
                    bool display_betrayer);
+
+  /**
+   * Sets the scene graph node representing the floating energy bar.
+   * @param node The scene graph node representing the energy bar.
+   */
+  void setEnergyBar(const std::shared_ptr<cugl::scene2::ProgressBar> &bar);
+
+  /**
+   * Sets the scene graph node representing the floating corrupted energy bar.
+   * @param node The scene graph node representing the corrupted energy bar.
+   */
+  void setCorruptedEnergyBar(
+      const std::shared_ptr<cugl::scene2::ProgressBar> &bar);
 
   /**
    * Gets the scene graph node representing this player's name.
