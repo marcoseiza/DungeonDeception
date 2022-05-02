@@ -25,6 +25,14 @@ struct EnemyInfo : public Serializable {
   cugl::Vec2 target;
 
   /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<EnemyInfo> alloc() {
+    return std::make_shared<EnemyInfo>();
+  }
+
+  /**
    * This method serializes the class into the given serializer.
    *
    * Override this method when creating a new serializable structs and write all
@@ -71,6 +79,14 @@ struct EnemyOtherInfo : public Serializable {
   int enemy_id;
   /** The amount of health the enemy has. */
   int health;
+
+  /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<EnemyOtherInfo> alloc() {
+    return std::make_shared<EnemyOtherInfo>();
+  }
 
   /**
    * This method serializes the class into the given serializer.
@@ -121,6 +137,14 @@ struct EnemyHitInfo : public Serializable {
   int amount;
   /** The direction of the hit, for knockback. */
   int direction;
+
+  /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<EnemyHitInfo> alloc() {
+    return std::make_shared<EnemyHitInfo>();
+  }
 
   /**
    * This method serializes the class into the given serializer.

@@ -54,25 +54,19 @@ CustomNetworkDeserializer::CustomNetworkDeserializer() {
   _pos = 0;
 
   // Register EnemyInfo struct in the factory for deserialization.
-  _factory[EnemyInfo::Key] = []() { return std::make_shared<EnemyInfo>(); };
+  _factory[EnemyInfo::Key] = []() { return EnemyInfo::alloc(); };
 
   // Register EnemyOtherInfo struct in the factory for deserialization.
-  _factory[EnemyOtherInfo::Key] = []() {
-    return std::make_shared<EnemyOtherInfo>();
-  };
+  _factory[EnemyOtherInfo::Key] = []() { return EnemyOtherInfo::alloc(); };
 
   // Register EnemyHitInfo struct in the factory for deserialization.
-  _factory[EnemyHitInfo::Key] = []() {
-    return std::make_shared<EnemyHitInfo>();
-  };
+  _factory[EnemyHitInfo::Key] = []() { return EnemyHitInfo::alloc(); };
 
   // Register PlayerInfo struct in the factory for deserialization.
-  _factory[PlayerInfo::Key] = []() { return std::make_shared<PlayerInfo>(); };
+  _factory[PlayerInfo::Key] = []() { return PlayerInfo::alloc(); };
 
   // Register BasicPlayerInfo struct in the factory for deserialization.
-  _factory[BasicPlayerInfo::Key] = []() {
-    return std::make_shared<BasicPlayerInfo>();
-  };
+  _factory[BasicPlayerInfo::Key] = []() { return BasicPlayerInfo::alloc(); };
 }
 
 /**

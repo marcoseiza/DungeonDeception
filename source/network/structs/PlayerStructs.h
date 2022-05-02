@@ -23,6 +23,14 @@ struct PlayerInfo : public Serializable {
   int room_id;
 
   /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<PlayerInfo> alloc() {
+    return std::make_shared<PlayerInfo>();
+  }
+
+  /**
    * This method serializes the class into the given serializer.
    *
    * Override this method when creating a new serializable structs and write all
@@ -71,6 +79,14 @@ struct BasicPlayerInfo : public Serializable {
   std::string name;
   /** If the player is a betrayer. */
   bool betrayer;
+
+  /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<BasicPlayerInfo> alloc() {
+    return std::make_shared<BasicPlayerInfo>();
+  }
 
   /**
    * This method serializes the class into the given serializer.

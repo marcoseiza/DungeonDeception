@@ -537,7 +537,7 @@ void GameScene::sendNetworkInfoHost() {
     for (auto it : _player_controller->getPlayers()) {
       std::shared_ptr<Player> player = it.second;
 
-      auto info = std::make_shared<cugl::PlayerInfo>();
+      auto info = cugl::PlayerInfo::alloc();
 
       info->player_id = player->getPlayerId();
       info->room_id = player->getRoomId();
@@ -567,7 +567,7 @@ void GameScene::sendNetworkInfoHost() {
       for (auto it : _player_controller->getPlayers()) {
         std::shared_ptr<Player> player = it.second;
 
-        auto info = std::make_shared<cugl::BasicPlayerInfo>();
+        auto info = cugl::BasicPlayerInfo::alloc();
         info->player_id = player->getPlayerId();
         info->name = player->getDisplayName();
         info->betrayer = player->isBetrayer();
@@ -587,7 +587,7 @@ void GameScene::sendNetworkInfoHost() {
     {
       std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
       for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-        auto info = std::make_shared<cugl::EnemyInfo>();
+        auto info = cugl::EnemyInfo::alloc();
 
         info->enemy_id = enemy->getEnemyId();
         info->pos = enemy->getPosition();
@@ -616,7 +616,7 @@ void GameScene::sendNetworkInfoHost() {
         std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
 
         for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-          auto info = std::make_shared<cugl::EnemyOtherInfo>();
+          auto info = cugl::EnemyOtherInfo::alloc();
 
           info->enemy_id = enemy->getEnemyId();
           info->health = enemy->getHealth();
@@ -627,7 +627,7 @@ void GameScene::sendNetworkInfoHost() {
         // Go through all the enemies that have died between these other info
         // update calls (200ms), and then clear the cache.
         for (int enemy_id : _dead_enemy_cache) {
-          auto info = std::make_shared<cugl::EnemyOtherInfo>();
+          auto info = cugl::EnemyOtherInfo::alloc();
           info->enemy_id = enemy_id;
           info->health = -1;
           enemy_info.push_back(info);
@@ -648,7 +648,7 @@ void GameScene::sendNetworkInfoClient() {
   if (NetworkController::get()->isHost()) return;
 
   {
-    auto info = std::make_shared<cugl::PlayerInfo>();
+    auto info = cugl::PlayerInfo::alloc();
 
     info->player_id = _player_controller->getMyPlayer()->getPlayerId();
     info->room_id = _player_controller->getMyPlayer()->getRoomId();
@@ -662,7 +662,7 @@ void GameScene::sendNetworkInfoClient() {
   if (!_player_controller->getMyPlayer()->hasBasicInfoSentToHost()) {
     _player_controller->getMyPlayer()->setBasicInfoSentToHost(true);
 
-    auto info = std::make_shared<cugl::BasicPlayerInfo>();
+    auto info = cugl::BasicPlayerInfo::alloc();
 
     info->player_id = _player_controller->getMyPlayer()->getPlayerId();
     info->name = _display_name;
@@ -674,7 +674,7 @@ void GameScene::sendNetworkInfoClient() {
 }
 
 void GameScene::sendEnemyHitNetworkInfo(int id, int dir, float amount) {
-  auto info = std::make_shared<cugl::EnemyHitInfo>();
+  auto info = cugl::EnemyHitInfo::alloc();
   info->enemy_id = id;
   info->amount = amount;
   info->direction = dir;
