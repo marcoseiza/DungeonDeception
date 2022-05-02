@@ -92,6 +92,9 @@ class GameScene : public cugl::Scene2 {
   /** The display name of my player. */
   std::string _display_name;
 
+  /** The time the game started. */
+  cugl::Timestamp _time_started;
+
   /** Timestamp so unimportant enemy info isn't sent. */
   cugl::Timestamp _time_of_last_enemy_other_info_update;
   /** A list of enemy IDs to die. */
