@@ -350,6 +350,23 @@ public:
     virtual void setColor(Color4 color) override;
 
     /**
+     * Sets the down color for when the button is pressed.
+     *
+     * This color will be multiplied with the parent (this node on top) if
+     * hasRelativeColor() is true.
+     *
+     * The default color is grey.
+     *
+     * @param color the color tinting this node when down.
+     */
+    virtual void setDownColor(Color4 color);
+
+    /**
+     * Resets the down color to the default down color.
+     */
+    virtual void resetDownColor();
+
+    /**
      * Returns the region responding to mouse clicks.
      *
      * The pushable region is the area of this node that responds to mouse

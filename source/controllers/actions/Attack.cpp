@@ -3,9 +3,9 @@
 #define JOYSTICK_RADIUS 30.0f
 #define JOYSTICK_DIFF_MIN 15.0f
 
-#define TIME_TO_WAIT_FOR_CHARGE 200
-#define CHARGE_ANIM_LIMIT 20
-#define CHARGE_ANIM_SPEED 3
+#define TIME_TO_WAIT_FOR_CHARGE 200 /* ms */
+#define CHARGE_ANIM_LIMIT 21
+#define CHARGE_ANIM_LENGTH 700 /* ms */
 
 Attack::Attack()
     : _anim_buffer(0),
@@ -27,7 +27,7 @@ bool Attack::init(const std::shared_ptr<cugl::AssetManager> &assets,
   _right_screen_bounds.origin.x += _right_screen_bounds.size.width;
 
   _button_node = cugl::scene2::SpriteNode::alloc(
-      assets->get<cugl::Texture>("attack"), 4, 6, 21);
+      assets->get<cugl::Texture>("attack"), 4, 6, CHARGE_ANIM_LIMIT);
   _button_node->setFrame(0);
   _button = cugl::scene2::Button::alloc(_button_node);
 
@@ -103,13 +103,20 @@ bool Attack::update() {
   if (!_show_joystick_base && _butt_down) {
     cugl::Timestamp time;
     Uint64 millis = time.ellapsedMillis(_time_down_start);
-
     int frame = _button_node->getFrame();
-    if (_anim_buffer % CHARGE_ANIM_SPEED == 0 && frame < CHARGE_ANIM_LIMIT &&
-        millis > TIME_TO_WAIT_FOR_CHARGE) {
-      _anim_buffer = 0;
-      _button_node->setFrame(frame + 1);
-    } else if (frame == CHARGE_ANIM_LIMIT) {
+
+    // Wait a bit before charing, so that it doesn't charge on quick tap.
+    if (millis <= TIME_TO_WAIT_FOR_CHARGE) {
+      millis = 0;
+    } else {
+      // Reset millis so that animation starts at frame 0
+      millis -= TIME_TO_WAIT_FOR_CHARGE;
+    }
+
+    if (frame < CHARGE_ANIM_LIMIT - 1) {
+      float diff = std::min(1.0f, millis * 1.0f / CHARGE_ANIM_LENGTH);
+      _button_node->setFrame((CHARGE_ANIM_LIMIT - 1) * diff);
+    } else if (frame == CHARGE_ANIM_LIMIT - 1) {
       _charge_over = true;
     }
     _anim_buffer++;

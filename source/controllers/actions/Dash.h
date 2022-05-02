@@ -17,6 +17,11 @@ class Dash : public Action {
  protected:
   /* Reference to map button for registering listeners to press event. */
   std::shared_ptr<cugl::scene2::Button> _button;
+  /* Reference to button node for animation. */
+  std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
+
+  /** The animation buffer for the charge animation. */
+  int _anim_buffer;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -32,8 +37,10 @@ class Dash : public Action {
 
   /** The duration of the dash cooldown. */
   int _dash_cooldown;
-  /** The counter for the dash cooldown. */
-  int _dash_cooldown_counter;
+  /** If the button should display the cooldown. */
+  bool _start_cooldown;
+  /** Time since the start of the cooldown. */
+  cugl::Timestamp _time_cooldown_start;
 
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
