@@ -107,8 +107,9 @@ class TerminalController : public Controller {
    * @param code The message code
    * @param msg The deserialized message
    */
-  void processNetworkData(const Sint32& code,
-                          const cugl::NetworkDeserializer::Message& msg);
+  void processNetworkData(
+      const Sint32& code,
+      const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {

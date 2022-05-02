@@ -256,7 +256,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
-
   /**
    * Gets the current attack cooldown of the enemy.
    *

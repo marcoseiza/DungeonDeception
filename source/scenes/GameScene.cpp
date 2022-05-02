@@ -15,6 +15,9 @@
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Wall.h"
+#include "../network/NetworkController.h"
+#include "../network/structs/EnemyStructs.h"
+#include "../network/structs/PlayerStructs.h"
 
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
@@ -29,6 +32,7 @@ bool GameScene::init(
 
   _display_name = display_name;
   _has_sent_player_basic_info = false;
+  _dead_enemy_cache.clear();
 
   // Initialize the scene to a locked width.
 
@@ -211,6 +215,7 @@ void GameScene::dispose() {
   _health_bar->dispose();
   _luminance_bar->dispose();
   _has_sent_player_basic_info = false;
+  _dead_enemy_cache.clear();
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -460,7 +465,9 @@ void GameScene::update(float timestep) {
   auto it = enemies.begin();
   while (it != enemies.end()) {
     auto enemy = *it;
+
     if (enemy->getHealth() <= 0) {
+      _dead_enemy_cache.push_back(enemy->getEnemyId());
       enemy->deleteAllProjectiles(_world, _world_node);
       enemy->deactivatePhysics(*_world->getWorld());
       current_room->getNode()->removeChild(enemy->getNode());
@@ -526,34 +533,24 @@ void GameScene::sendNetworkInfoHost() {
   if (!NetworkController::get()->isHost()) return;
 
   {
-    std::vector<std::shared_ptr<cugl::JsonValue>> player_positions;
+    std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
     for (auto it : _player_controller->getPlayers()) {
       std::shared_ptr<Player> player = it.second;
 
-      auto player_info = cugl::JsonValue::allocObject();
+      auto info = std::make_shared<cugl::PlayerInfo>();
 
-      auto player_id = cugl::JsonValue::alloc((long)(player->getPlayerId()));
-      player_info->appendChild(player_id);
-      player_id->setKey("player_id");
+      info->player_id = player->getPlayerId();
+      info->room_id = player->getRoomId();
+      info->pos = player->getPosition();
 
-      auto pos = cugl::JsonValue::allocArray();
-      pos->appendChild(cugl::JsonValue::alloc(player->getPosition().x));
-      pos->appendChild(cugl::JsonValue::alloc(player->getPosition().y));
-      player_info->appendChild(pos);
-      pos->setKey("position");
-
-      auto room = cugl::JsonValue::alloc((long)(player->getRoomId()));
-      player_info->appendChild(room);
-      room->setKey("room");
-
-      player_positions.push_back(player_info);
+      all_player_info.push_back(info);
     }
 
-    NetworkController::get()->send(NC_HOST_ALL_PLAYER_INFO, player_positions);
+    NetworkController::get()->send(NC_HOST_ALL_PLAYER_INFO, all_player_info);
   }
 
   {
-    std::vector<std::shared_ptr<cugl::JsonValue>> player_basic_info;
+    std::vector<std::shared_ptr<cugl::Serializable>> player_basic_info;
 
     bool all_players_present =
         _player_controller->getPlayers().size() ==
@@ -566,27 +563,16 @@ void GameScene::sendNetworkInfoHost() {
 
     if (all_player_info && !_has_sent_player_basic_info) {
       _has_sent_player_basic_info = true;
+
       for (auto it : _player_controller->getPlayers()) {
         std::shared_ptr<Player> player = it.second;
 
-        auto player_info = cugl::JsonValue::allocObject();
+        auto info = std::make_shared<cugl::BasicPlayerInfo>();
+        info->player_id = player->getPlayerId();
+        info->name = player->getDisplayName();
+        info->betrayer = player->isBetrayer();
 
-        auto player_id = cugl::JsonValue::alloc((long)(player->getPlayerId()));
-        player_info->appendChild(player_id);
-        player_id->setKey("player_id");
-
-        // send host-stored player's set display name to all clients
-        auto player_display_name =
-            cugl::JsonValue::alloc(player->getDisplayName());
-        player_info->appendChild(player_display_name);
-        player_display_name->setKey("player_display_name");
-
-        // send host-stored betrayer bool to clients
-        auto is_betrayer = cugl::JsonValue::alloc(player->isBetrayer());
-        player_info->appendChild(is_betrayer);
-        is_betrayer->setKey("is_betrayer");
-
-        player_basic_info.push_back(player_info);
+        player_basic_info.push_back(info);
       }
 
       NetworkController::get()->send(NC_HOST_PLAYER_BASIC_INFO,
@@ -599,62 +585,56 @@ void GameScene::sendNetworkInfoHost() {
     // get enemy info only for the rooms that players are in
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     {
-      std::vector<std::shared_ptr<cugl::JsonValue>> enemy_info;
+      std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
       for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-        auto info = cugl::JsonValue::allocObject();
+        auto info = std::make_shared<cugl::EnemyInfo>();
 
-        auto enemy_id =
-            cugl::JsonValue::alloc(static_cast<long>(enemy->getEnemyId()));
-        info->appendChild(enemy_id);
-        enemy_id->setKey("enemy_id");
-
-        auto pos = cugl::JsonValue::allocArray();
-        pos->appendChild(cugl::JsonValue::alloc(enemy->getPosition().x));
-        pos->appendChild(cugl::JsonValue::alloc(enemy->getPosition().y));
-        info->appendChild(pos);
-        pos->setKey("position");
+        info->enemy_id = enemy->getEnemyId();
+        info->pos = enemy->getPosition();
+        info->has_target = enemy->didFireBullet();
+        if (info->has_target) {
+          info->target = enemy->getFiredBulletDirection();
+          // Make sure bullet is only fired once
+          enemy->clearBulletFiredState();
+        }
         // Serialize one enemy at a time to avoid reaching packet limit
         enemy_info.push_back(info);
       }
-      NetworkController::get()->send(NC_HOST_ALL_ENEMY_POSITION_UPDATE,
-                                     enemy_info);
+      if (enemy_info.size() > 0) {
+        NetworkController::get()->send(NC_HOST_ALL_ENEMY_POSITION_UPDATE,
+                                       enemy_info);
+      }
     }
 
     {
       cugl::Timestamp time;
       Uint64 millis =
-          time.ellapsedMillis(_time_since_last_enemy_other_info_update);
+          time.ellapsedMillis(_time_of_last_enemy_other_info_update);
 
       if (millis > 200) {
-        _time_since_last_enemy_other_info_update.mark();
-        std::vector<std::shared_ptr<cugl::JsonValue>> enemy_info;
+        _time_of_last_enemy_other_info_update.mark();
+
+        std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
+
         for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-          auto info = cugl::JsonValue::allocObject();
+          auto info = std::make_shared<cugl::EnemyOtherInfo>();
 
-          auto enemy_id = cugl::JsonValue::alloc((long)(enemy->getEnemyId()));
-          info->appendChild(enemy_id);
-          enemy_id->setKey("enemy_id");
+          info->enemy_id = enemy->getEnemyId();
+          info->health = enemy->getHealth();
 
-          if (enemy->didFireBullet()) {
-            auto target_pos = cugl::JsonValue::allocArray();
-            cugl::Vec2 dir = enemy->getFiredBulletDirection();
-            target_pos->appendChild(cugl::JsonValue::alloc(dir.x));
-            target_pos->appendChild(cugl::JsonValue::alloc(dir.y));
-            info->appendChild(target_pos);
-            target_pos->setKey("target_pos");
-          }
-
-          // Make sure bullet is only fired once
-          enemy->clearBulletFiredState();
-
-          auto enemy_health =
-              cugl::JsonValue::alloc((long)(enemy->getHealth()));
-          info->appendChild(enemy_health);
-          enemy_health->setKey("enemy_health");
-
-          // Serialize one enemy at a time to avoid reaching packet limit
           enemy_info.push_back(info);
         }
+
+        // Go through all the enemies that have died between these other info
+        // update calls (200ms), and then clear the cache.
+        for (int enemy_id : _dead_enemy_cache) {
+          auto info = std::make_shared<cugl::EnemyOtherInfo>();
+          info->enemy_id = enemy_id;
+          info->health = -1;
+          enemy_info.push_back(info);
+        }
+        _dead_enemy_cache.clear();
+
         NetworkController::get()->send(NC_HOST_ALL_ENEMY_OTHER_INFO_UPDATE,
                                        enemy_info);
       }
@@ -669,75 +649,37 @@ void GameScene::sendNetworkInfoClient() {
   if (NetworkController::get()->isHost()) return;
 
   {
-    auto player_info = cugl::JsonValue::allocObject();
-    auto player_id = cugl::JsonValue::alloc(
-        static_cast<long>(_player_controller->getMyPlayer()->getPlayerId()));
-    player_info->appendChild(player_id);
-    player_id->setKey("player_id");
+    auto info = std::make_shared<cugl::PlayerInfo>();
 
-    auto room = cugl::JsonValue::alloc(
-        static_cast<long>(_player_controller->getMyPlayer()->getRoomId()));
-    player_info->appendChild(room);
-    room->setKey("room");
-
-    auto pos = cugl::JsonValue::allocArray();
-    cugl::Vec2 player_pos = _player_controller->getMyPlayer()->getPosition();
-    pos->appendChild(cugl::JsonValue::alloc(player_pos.x));
-    pos->appendChild(cugl::JsonValue::alloc(player_pos.y));
-    player_info->appendChild(pos);
-    pos->setKey("position");
+    info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+    info->room_id = _player_controller->getMyPlayer()->getRoomId();
+    info->pos = _player_controller->getMyPlayer()->getPosition();
 
     // Send individual player information.
-    NetworkController::get()->sendOnlyToHost(NC_CLIENT_ONE_PLAYER_INFO,
-                                             player_info);
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_ONE_PLAYER_INFO, info);
   }
 
   // Send basic info only once.
   if (!_player_controller->getMyPlayer()->hasBasicInfoSentToHost()) {
     _player_controller->getMyPlayer()->setBasicInfoSentToHost(true);
 
-    auto player_info = cugl::JsonValue::allocObject();
+    auto info = std::make_shared<cugl::BasicPlayerInfo>();
 
-    auto player_id = cugl::JsonValue::alloc(
-        static_cast<long>(_player_controller->getMyPlayer()->getPlayerId()));
-    player_info->appendChild(player_id);
-    player_id->setKey("player_id");
-
-    // send a player's set display name from itself to host
-    auto player_display_name =
-        cugl::JsonValue::alloc(static_cast<std::string>(_display_name));
-    player_info->appendChild(player_display_name);
-    player_display_name->setKey("player_display_name");
-
-    // send if player is a betrayer from itself to host
-    auto is_betrayer = cugl::JsonValue::alloc(static_cast<bool>(_is_betrayer));
-    player_info->appendChild(is_betrayer);
-    is_betrayer->setKey("is_betrayer");
+    info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+    info->name = _display_name;
+    info->betrayer = _is_betrayer;
 
     // Send individual player information.
-    NetworkController::get()->sendOnlyToHost(NC_CLIENT_BASIC_PLAYER_INFO,
-                                             player_info);
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_BASIC_PLAYER_INFO, info);
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int id, int room_id, int dir,
-                                        float amount) {
-  std::shared_ptr<cugl::JsonValue> enemy_info = cugl::JsonValue::allocObject();
-
-  auto enemy_id = cugl::JsonValue::alloc(static_cast<long>(id));
-  enemy_info->appendChild(enemy_id);
-  enemy_id->setKey("enemy_id");
-
-  auto damage_amount = cugl::JsonValue::alloc(amount);
-  enemy_info->appendChild(damage_amount);
-  damage_amount->setKey("amount");
-
-  auto direction = cugl::JsonValue::alloc(static_cast<long>(dir));
-  enemy_info->appendChild(direction);
-  direction->setKey("direction");
-
-  NetworkController::get()->sendOnlyToHost(NC_CLIENT_ENEMY_HIT_INFO,
-                                           enemy_info);
+void GameScene::sendEnemyHitNetworkInfo(int id, int dir, float amount) {
+  auto info = std::make_shared<cugl::EnemyHitInfo>();
+  info->enemy_id = id;
+  info->amount = amount;
+  info->direction = dir;
+  NetworkController::get()->sendOnlyToHost(NC_CLIENT_ENEMY_HIT_INFO, info);
 }
 
 void GameScene::sendBetrayalTargetInfo(int target_player_id) {
@@ -792,65 +734,51 @@ void GameScene::sendBetrayalCorruptInfo(int corrupt_player_id) {
  *
  * @param data  The data received
  */
-void GameScene::processData(const Sint32& code,
-                            const cugl::NetworkDeserializer::Message& msg) {
+void GameScene::processData(
+    const Sint32& code,
+    const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
   switch (code) {
     case NC_HOST_ALL_ENEMY_POSITION_UPDATE: {
-      auto all_enemy_info =
-          std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
+      auto all_enemy =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
-      for (std::shared_ptr<cugl::JsonValue>& enemy_info : all_enemy_info) {
-        int enemy_id = enemy_info->getInt("enemy_id");
-
-        std::vector<float> pos = enemy_info->get("position")->asFloatArray();
-
+      for (std::shared_ptr<cugl::Serializable>& info_ : all_enemy) {
+        auto info = std::dynamic_pointer_cast<cugl::EnemyInfo>(info_);
         std::shared_ptr<EnemyModel> enemy =
-            _level_controller->getEnemy(enemy_id);
+            _level_controller->getEnemy(info->enemy_id);
 
         if (enemy != nullptr) {
-          enemy->setPosition(pos[0], pos[1]);
+          enemy->setPosition(info->pos);
+          if (info->has_target) enemy->addBullet(info->target);
         }
       }
 
     } break;
 
     case NC_HOST_ALL_ENEMY_OTHER_INFO_UPDATE: {
-      auto all_enemy_info =
-          std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
+      auto all_enemy =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
-      for (std::shared_ptr<cugl::JsonValue>& enemy_info : all_enemy_info) {
-        int enemy_health = enemy_info->getInt("enemy_health");
+      for (std::shared_ptr<cugl::Serializable>& info_ : all_enemy) {
+        auto info = std::dynamic_pointer_cast<cugl::EnemyOtherInfo>(info_);
 
-        bool did_shoot = enemy_info->has("target_pos");
-        cugl::Vec2 dir;
-
-        if (did_shoot) {
-          std::vector<float> pos =
-              enemy_info->get("target_pos")->asFloatArray();
-          dir.set(pos[0], pos[1]);
-        }
-
-        int enemy_id = enemy_info->getInt("enemy_id");
         std::shared_ptr<EnemyModel> enemy =
-            _level_controller->getEnemy(enemy_id);
-
+            _level_controller->getEnemy(info->enemy_id);
         if (enemy != nullptr) {
-          enemy->setHealth(enemy_health);
-          if (did_shoot) enemy->addBullet(dir);
+          enemy->setHealth(info->health);
         }
       }
     } break;
 
     case NC_CLIENT_ENEMY_HIT_INFO: {
-      auto enemy_info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-      int enemy_id = enemy_info->getInt("enemy_id");
-      float amount = enemy_info->getInt("amount");
-      int direction = enemy_info->getInt("direction");
+      auto info = std::dynamic_pointer_cast<cugl::EnemyHitInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
 
-      std::shared_ptr<EnemyModel> enemy = _level_controller->getEnemy(enemy_id);
+      std::shared_ptr<EnemyModel> enemy =
+          _level_controller->getEnemy(info->enemy_id);
       if (enemy != nullptr) {
-        enemy->takeDamage(amount);
-        enemy->knockback(direction);
+        enemy->takeDamage(info->amount);
+        enemy->knockback(info->direction);
       }
     } break;
 
@@ -925,7 +853,6 @@ void GameScene::beginContact(b2Contact* contact) {
           _player_controller->getMyPlayer()->getLuminance() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getSword()->getMoveDir(),
                             damage);
   } else if (fx2_name == "enemy_hitbox" &&
@@ -942,7 +869,6 @@ void GameScene::beginContact(b2Contact* contact) {
           _player_controller->getMyPlayer()->getLuminance() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getSword()->getMoveDir(),
                             damage);
   }
@@ -953,7 +879,6 @@ void GameScene::beginContact(b2Contact* contact) {
     if (player_state == Player::State::DASHING) {
       dynamic_cast<EnemyModel*>(ob1)->takeDamage(5.0f);
       sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                              _player_controller->getMyPlayer()->getRoomId(),
                               _player_controller->getMyPlayer()->getMoveDir(),
                               5.0f);
     }
@@ -963,7 +888,6 @@ void GameScene::beginContact(b2Contact* contact) {
     if (player_state == Player::State::DASHING) {
       dynamic_cast<EnemyModel*>(ob2)->takeDamage(5.0f);
       sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                              _player_controller->getMyPlayer()->getRoomId(),
                               _player_controller->getMyPlayer()->getMoveDir(),
                               5.0f);
     }
@@ -997,7 +921,6 @@ void GameScene::beginContact(b2Contact* contact) {
         _player_controller->getMyPlayer()->getLuminance() + 1);
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
@@ -1008,7 +931,6 @@ void GameScene::beginContact(b2Contact* contact) {
         _player_controller->getMyPlayer()->getLuminance() + 1);
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getRoomId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
   }

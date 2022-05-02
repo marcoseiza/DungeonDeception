@@ -93,7 +93,9 @@ class GameScene : public cugl::Scene2 {
   std::string _display_name;
 
   /** Timestamp so unimportant enemy info isn't sent. */
-  cugl::Timestamp _time_since_last_enemy_other_info_update;
+  cugl::Timestamp _time_of_last_enemy_other_info_update;
+  /** A list of enemy IDs to die. */
+  std::vector<int> _dead_enemy_cache;
 
   /** If the has sent play basic_info to all clients. */
   bool _has_sent_player_basic_info;
@@ -228,7 +230,8 @@ class GameScene : public cugl::Scene2 {
   void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
     NetworkController::get()->init(network);
     NetworkController::get()->addListener(
-        [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+        [=](const Sint32& code,
+            const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
           this->processData(code, msg);
         });
   }
@@ -271,7 +274,7 @@ class GameScene : public cugl::Scene2 {
    * @param msg The deserialized message
    */
   void processData(const Sint32& code,
-                   const cugl::NetworkDeserializer::Message& msg);
+                   const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
   /**
    * Broadcasts the relevant network information to all clients and/or the host.
@@ -292,11 +295,10 @@ class GameScene : public cugl::Scene2 {
    * Broadcasts enemy being hit to the host.
    *
    * @param id the enemy that was hit
-   * @param room_id the room the enemy is in
    * @param amount the amount of damage taken
    * @param dir The direction the enemy should be knockedback
    */
-  void sendEnemyHitNetworkInfo(int id, int room_id, int dir, float amount = 20);
+  void sendEnemyHitNetworkInfo(int id, int dir, float amount = 20);
 
   /**
    * Broadcast a player being targeted by the betrayer target player ability.

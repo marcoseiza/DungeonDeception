@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
 #include "../network/NetworkController.h"
+#include "../network/structs/PlayerStructs.h"
 #include "CollisionFiltering.h"
 #include "actions/Attack.h"
 #include "actions/Corrupt.h"
@@ -50,7 +51,8 @@ bool PlayerController::init(
   _sword->setDebugColor(cugl::Color4f::BLACK);
 
   NetworkController::get()->addListener(
-      [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+      [=](const Sint32& code,
+          const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
         this->processData(code, msg);
       });
 
@@ -132,50 +134,36 @@ std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
 }
 
 void PlayerController::processData(
-    const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+    const Sint32& code,
+    const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
   switch (code) {
     case NC_HOST_ALL_PLAYER_INFO: {
-      auto player_positions =
-          std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
+      auto all_info =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
-      for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
-        int player_id = player->getInt("player_id");
-        int room_id = player->getInt("room");
-        std::vector<float> pos = player->get("position")->asFloatArray();
-        processPlayerInfo(player_id, room_id, pos[0], pos[1]);
+      for (std::shared_ptr<cugl::Serializable> info_ : all_info) {
+        auto info = std::dynamic_pointer_cast<cugl::PlayerInfo>(info_);
+        processPlayerInfo(info->player_id, info->room_id, info->pos);
       }
     } break;
     case NC_HOST_PLAYER_BASIC_INFO: {
-      auto player_basic_info =
-          std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
+      auto all_info =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
-      for (std::shared_ptr<cugl::JsonValue> player : player_basic_info) {
-        int player_id = player->getInt("player_id");
-        if (player_id != _player->getPlayerId()) {
-          std::string name = player->getString("player_display_name");
-          bool is_betrayer = player->getBool("is_betrayer");
-
-          processBasicPlayerInfo(player_id, name, is_betrayer);
-        }
+      for (std::shared_ptr<cugl::Serializable> info_ : all_info) {
+        auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(info_);
+        processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
       }
     } break;
     case NC_CLIENT_ONE_PLAYER_INFO: {
-      auto player = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-
-      int player_id = player->getInt("player_id");
-      int room_id = player->getInt("room");
-      std::vector<float> pos = player->get("position")->asFloatArray();
-
-      processPlayerInfo(player_id, room_id, pos[0], pos[1]);
+      auto info = std::dynamic_pointer_cast<cugl::PlayerInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      processPlayerInfo(info->player_id, info->room_id, info->pos);
     } break;
     case NC_CLIENT_BASIC_PLAYER_INFO: {
-      auto player = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-
-      int player_id = player->getInt("player_id");
-      std::string name = player->getString("player_display_name");
-      bool is_betrayer = player->getBool("is_betrayer");
-
-      processBasicPlayerInfo(player_id, name, is_betrayer);
+      auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
     } break;
     case NC_DEPOSIT_ENERGY_SUCCESS: {
       // Process the incoming informaiton
@@ -195,24 +183,24 @@ void PlayerController::processData(
 }
 
 void PlayerController::processPlayerInfo(int player_id, int room_id,
-                                         float pos_x, float pos_y) {
+                                         cugl::Vec2& pos) {
   if (player_id == _player->getPlayerId()) return;
 
   auto player = getPlayerOrMakePlayer(player_id);
 
-  cugl::Vec2 old_position = player->getPosition();
+  cugl::Vec2 old_pos = player->getPosition();
 
   // Movement must exceed this value to be animated
-  if (abs(pos_x - old_position.x) > MIN_POS_CHANGE ||
-      abs(pos_y - old_position.y) > MIN_POS_CHANGE) {
+  if (abs(pos.x - old_pos.x) > MIN_POS_CHANGE ||
+      abs(pos.y - old_pos.y) > MIN_POS_CHANGE) {
     player->setState(Player::MOVING);
   } else {
     player->setState(Player::IDLE);
   }
 
   player->setRoomId(room_id);
-  player->setNetworkPos(cugl::Vec2(pos_x, pos_y));
-  player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
+  player->setNetworkPos(pos);
+  player->updateDirection(pos - old_pos);
   player->animate();
 }
 

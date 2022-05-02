@@ -5,6 +5,7 @@
 #include "../models/Player.h"
 #include "../models/Projectile.h"
 #include "../models/Sword.h"
+#include "../network/CustomNetworkSerializer.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "SoundController.h"
@@ -115,7 +116,7 @@ class PlayerController : public Controller {
    * @param msg The deserialized message
    */
   void processData(const Sint32& code,
-                   const cugl::NetworkDeserializer::Message& msg);
+                   const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
   /**
    * Process the position of the player with the corresponding player_id in the
@@ -123,11 +124,10 @@ class PlayerController : public Controller {
    *
    * @param player_id     The player ids
    * @param room_id       The room the player is currently in.
-   * @param pos_x         The updated player x position
-   * @param pos_y         The updated player y position
+   * @param pos           The updated player position
    *
    */
-  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
+  void processPlayerInfo(int player_id, int room_id, cugl::Vec2& pos);
 
   /**
    * Process the basic player info that is only sent once, like display name and

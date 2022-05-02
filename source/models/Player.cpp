@@ -166,33 +166,33 @@ void Player::animate() {
   }
 }
 
-void Player::move(float forwardX, float forwardY, float speed) {
-  _last_move_dir.set(forwardX, forwardY);
+void Player::move(const cugl::Vec2& forward, float speed) {
+  _last_move_dir.set(forward.x, forward.y);
 
-  setVX(speed * forwardX);
-  setVY(speed * forwardY);
-  if (forwardX == 0) setVX(0);
-  if (forwardY == 0) setVY(0);
+  setVX(speed * forward.x);
+  setVY(speed * forward.y);
+  if (forward.x == 0) setVX(0);
+  if (forward.y == 0) setVY(0);
 
   // Set the correct frame for idle
-  updateDirection(forwardX, forwardY);
+  updateDirection(forward);
 }
 
-void Player::updateDirection(float x_diff, float y_diff) {
+void Player::updateDirection(const cugl::Vec2& diff) {
   int new_direc = _mv_direc;
-  bool sufficiently_equal = (std::abs(std::abs(x_diff) - std::abs(y_diff)) <=
+  bool sufficiently_equal = (std::abs(std::abs(diff.x) - std::abs(diff.y)) <=
                              MIN_DIFF_FOR_DIR_CHANGE);
 
-  if (std::abs(x_diff) >= std::abs(y_diff) || sufficiently_equal) {
-    if (x_diff < 0) {
+  if (std::abs(diff.x) >= std::abs(diff.y) || sufficiently_equal) {
+    if (diff.x < 0) {
       new_direc = IDLE_LEFT;
-    } else if (x_diff > 0) {
+    } else if (diff.x > 0) {
       new_direc = IDLE_RIGHT;
     }
-  } else if (std::abs(x_diff) < std::abs(y_diff)) {
-    if (y_diff < 0) {
+  } else if (std::abs(diff.x) < std::abs(diff.y)) {
+    if (diff.y < 0) {
       new_direc = IDLE_DOWN;
-    } else if (y_diff > 0) {
+    } else if (diff.y > 0) {
       new_direc = IDLE_UP;
     }
   }

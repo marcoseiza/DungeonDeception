@@ -459,18 +459,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param forward Amount to move in the x and y direction
    * @param speed The speed of movement.
    */
-  void move(cugl::Vec2 forward, float speed) {
-    move(forward.x, forward.y, speed);
-  }
-
-  /**
-   * Moves the player by the specified amount.
-   *
-   * @param forwardX Amount to move in the x direction.
-   * @param forwardY Amount to move in the y direction.
-   * @param speed The speed of movement.
-   */
-  void move(float forwardX, float forwardY, float speed);
+  void move(const cugl::Vec2& forward, float speed);
 
   /**
    * @return Returns the last move direction given to the player.
@@ -481,10 +470,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * Updates the directino the player sprite is facing based on changes in x and
    * y.
    *
-   * @param x_diff The change in x.
-   * @param y_diff The change in y.
+   * @param diff The change in position
    */
-  void updateDirection(float x_diff, float y_diff);
+  void updateDirection(const cugl::Vec2& diff);
 
   /**
    * Make a sword slash projectile.

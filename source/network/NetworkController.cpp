@@ -16,7 +16,7 @@ void NetworkController::update() {
   _network->receive([this](const std::vector<uint8_t> &data) {
     _deserializer.receive(data);
     Sint32 code = std::get<Sint32>(_deserializer.read());
-    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    cugl::CustomNetworkDeserializer::CustomMessage msg = _deserializer.read();
     for (auto it : _listeners) {
       (it.second)(code, msg);
     }
@@ -76,7 +76,7 @@ void NetworkController::send(const Sint32 &code,
 }
 
 void NetworkController::send(const Sint32 &code, InfoVector &info) {
-  if (_network == nullptr) return;
+  if (_network == nullptr || info.size() == 0) return;
   _serializer.writeSint32(code);
   _serializer.writeJsonVector(info);
 
@@ -87,7 +87,48 @@ void NetworkController::send(const Sint32 &code, InfoVector &info) {
       _serializer.reset();
       _serializer.writeSint32(code);
       _serializer.writeJsonVector(sub_info);
-      _network->sendOnlyToHost(msg);
+      _network->send(_serializer.serialize());
+    }
+    return;
+  }
+
+  _serializer.reset();
+  _network->send(msg);
+}
+
+void NetworkController::send(const Sint32 &code,
+                             const std::shared_ptr<cugl::Serializable> &info) {
+  if (_network == nullptr) return;
+  _serializer.reset();
+  _serializer.writeSint32(code);
+  _serializer.writeSerializable(info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->send(msg);
+}
+
+void NetworkController::send(
+    const Sint32 &code,
+    std::vector<std::shared_ptr<cugl::Serializable>> &info) {
+  if (_network == nullptr || info.size() == 0) return;
+  _serializer.reset();
+
+  _serializer.writeSint32(code);
+  _serializer.writeSerializableVector(info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  if (msg.size() > _network->getMaxPacketSize()) {
+    std::vector<std::vector<std::shared_ptr<cugl::Serializable>>> split_info =
+        splitVector(info);
+    for (std::vector<std::shared_ptr<cugl::Serializable>> sub_info :
+         split_info) {
+      _serializer.reset();
+      _serializer.writeSint32(code);
+      _serializer.writeSerializableVector(sub_info);
+      _network->send(_serializer.serialize());
     }
     return;
   }
@@ -108,7 +149,7 @@ void NetworkController::sendOnlyToHost(
 }
 
 void NetworkController::sendOnlyToHost(const Sint32 &code, InfoVector &info) {
-  if (_network == nullptr) return;
+  if (_network == nullptr || info.size() == 0) return;
   _serializer.writeSint32(code);
   _serializer.writeJsonVector(info);
 
@@ -119,10 +160,51 @@ void NetworkController::sendOnlyToHost(const Sint32 &code, InfoVector &info) {
       _serializer.reset();
       _serializer.writeSint32(code);
       _serializer.writeJsonVector(sub_info);
-      _network->sendOnlyToHost(msg);
+      _network->sendOnlyToHost(_serializer.serialize());
     }
     return;
   }
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
+}
+
+void NetworkController::sendOnlyToHost(
+    const Sint32 &code, const std::shared_ptr<cugl::Serializable> &info) {
+  if (_network == nullptr) return;
+  _serializer.reset();
+  _serializer.writeSint32(code);
+  _serializer.writeSerializable(info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
+}
+
+void NetworkController::sendOnlyToHost(
+    const Sint32 &code,
+    std::vector<std::shared_ptr<cugl::Serializable>> &info) {
+  if (_network == nullptr || info.size() == 0) return;
+  _serializer.reset();
+
+  _serializer.writeSint32(code);
+  _serializer.writeSerializableVector(info);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  if (msg.size() > _network->getMaxPacketSize()) {
+    std::vector<std::vector<std::shared_ptr<cugl::Serializable>>> split_info =
+        splitVector(info);
+    for (std::vector<std::shared_ptr<cugl::Serializable>> sub_info :
+         split_info) {
+      _serializer.reset();
+      _serializer.writeSint32(code);
+      _serializer.writeSerializableVector(sub_info);
+      _network->sendOnlyToHost(_serializer.serialize());
+    }
+    return;
+  }
+
   _serializer.reset();
   _network->sendOnlyToHost(msg);
 }
@@ -142,6 +224,38 @@ std::vector<NetworkController::InfoVector> NetworkController::splitVector(
   _serializer.reset();
 
   std::vector<InfoVector> split_info;
+  int ii = 0;                // Current index in given info.
+  int jj = 0;                // Current index in split_info.
+  std::size_t cur_size = 0;  // The size of the current index.
+  while (ii < info.size()) {
+    cur_size += size_one;
+    if (cur_size > _network->getMaxPacketSize()) {  // Reset to next entry.
+      cur_size = size_one;
+      jj++;
+    }
+    split_info[jj].push_back(info[ii++]);
+  }
+
+  return split_info;
+}
+
+std::vector<std::vector<std::shared_ptr<cugl::Serializable>>>
+NetworkController::splitVector(
+    std::vector<std::shared_ptr<cugl::Serializable>> &info) {
+  CUAssertLog(info.size() > 1, "Vector of size %d, cannot be split up.",
+              (int)info.size());
+
+  _serializer.reset();
+
+  // First approximate the size of one entry in the vector.
+  _serializer.writeSerializable(info[0]);
+  std::size_t size_one = _serializer.serialize().size();
+  // Add a small value to approx for the code.
+  size_one += sizeof(Sint32) / info.size();
+  size_one += sizeof(Uint64);  // Add the vector size.
+  _serializer.reset();
+
+  std::vector<std::vector<std::shared_ptr<cugl::Serializable>>> split_info;
   int ii = 0;                // Current index in given info.
   int jj = 0;                // Current index in split_info.
   std::size_t cur_size = 0;  // The size of the current index.
