@@ -202,6 +202,8 @@
     <ClInclude Include="..\..\source\controllers\NetworkCodes.h" />
     <ClInclude Include="..\..\source\controllers\PlayerController.h" />
     <ClInclude Include="..\..\source\controllers\SoundController.h" />
+    <ClInclude Include="..\..\source\controllers\TerminalController.h" />
+    <ClInclude Include="..\..\source\controllers\TrailManager.h" />
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\ShotgunnerController.h" />
     <ClInclude Include="..\..\source\controllers\enemies\TankController.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="..\..\source\scenes\HostMenuScene.h" />
     <ClInclude Include="..\..\source\scenes\HostLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\PeerScene.h" />
+    <ClInclude Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
     <ClInclude Include="..\..\source\network\NetworkController.h" />
     <ClInclude Include="..\..\source\network\structs\VotingInfo.h" />
@@ -253,6 +256,8 @@
     <ClCompile Include="..\..\source\controllers\LevelController.cpp" />
     <ClCompile Include="..\..\source\controllers\PlayerController.cpp" />
     <ClCompile Include="..\..\source\controllers\SoundController.cpp" />
+    <ClCompile Include="..\..\source\controllers\TerminalController.cpp" />
+    <ClCompile Include="..\..\source\controllers\TrailManager.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\GruntController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\ShotgunnerController.cpp" />
     <ClCompile Include="..\..\source\controllers\enemies\TankController.cpp" />
@@ -275,6 +280,7 @@
     <ClCompile Include="..\..\source\scenes\ClientMenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\HostMenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
     <ClCompile Include="..\..\source\network\NetworkController.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
