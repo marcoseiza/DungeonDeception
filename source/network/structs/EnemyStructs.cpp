@@ -5,7 +5,7 @@ namespace cugl {
 #pragma mark -
 #pragma mark EnemyInfo
 
-const Uint32 EnemyInfo::Key = NC_HOST_ALL_ENEMY_POSITION_UPDATE;
+const Uint32 EnemyInfo::Key = NC_HOST_ALL_ENEMY_INFO;
 
 void EnemyInfo::serialize(cugl::NetworkSerializer* serializer) {
   serializer->writeUint32(enemy_id);
@@ -35,7 +35,7 @@ void EnemyInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
 #pragma mark -
 #pragma mark EnemyOtherInfo
 
-const Uint32 EnemyOtherInfo::Key = NC_HOST_ALL_ENEMY_OTHER_INFO_UPDATE;
+const Uint32 EnemyOtherInfo::Key = NC_HOST_ALL_ENEMY_OTHER_INFO;
 
 void EnemyOtherInfo::serialize(cugl::NetworkSerializer* serializer) {
   serializer->writeUint32(enemy_id);

@@ -26,7 +26,7 @@ void PlayerInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
 #pragma mark -
 #pragma mark BasicPlayerInfo
 
-const Uint32 BasicPlayerInfo::Key = NC_HOST_PLAYER_BASIC_INFO;
+const Uint32 BasicPlayerInfo::Key = NC_HOST_ALL_PLAYER_BASIC_INFO;
 
 void BasicPlayerInfo::serialize(cugl::NetworkSerializer* serializer) {
   serializer->writeUint32(player_id);

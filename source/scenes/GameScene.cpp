@@ -575,7 +575,7 @@ void GameScene::sendNetworkInfoHost() {
         player_basic_info.push_back(info);
       }
 
-      NetworkController::get()->send(NC_HOST_PLAYER_BASIC_INFO,
+      NetworkController::get()->send(NC_HOST_ALL_PLAYER_BASIC_INFO,
                                      player_basic_info);
     }
   }
@@ -601,8 +601,7 @@ void GameScene::sendNetworkInfoHost() {
         enemy_info.push_back(info);
       }
       if (enemy_info.size() > 0) {
-        NetworkController::get()->send(NC_HOST_ALL_ENEMY_POSITION_UPDATE,
-                                       enemy_info);
+        NetworkController::get()->send(NC_HOST_ALL_ENEMY_INFO, enemy_info);
       }
     }
 
@@ -635,7 +634,7 @@ void GameScene::sendNetworkInfoHost() {
         }
         _dead_enemy_cache.clear();
 
-        NetworkController::get()->send(NC_HOST_ALL_ENEMY_OTHER_INFO_UPDATE,
+        NetworkController::get()->send(NC_HOST_ALL_ENEMY_OTHER_INFO,
                                        enemy_info);
       }
     }
@@ -670,7 +669,7 @@ void GameScene::sendNetworkInfoClient() {
     info->betrayer = _is_betrayer;
 
     // Send individual player information.
-    NetworkController::get()->sendOnlyToHost(NC_CLIENT_BASIC_PLAYER_INFO, info);
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_BASIC_INFO, info);
   }
 }
 
@@ -738,7 +737,7 @@ void GameScene::processData(
     const Sint32& code,
     const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
   switch (code) {
-    case NC_HOST_ALL_ENEMY_POSITION_UPDATE: {
+    case NC_HOST_ALL_ENEMY_INFO: {
       auto all_enemy =
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
@@ -755,7 +754,7 @@ void GameScene::processData(
 
     } break;
 
-    case NC_HOST_ALL_ENEMY_OTHER_INFO_UPDATE: {
+    case NC_HOST_ALL_ENEMY_OTHER_INFO: {
       auto all_enemy =
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 

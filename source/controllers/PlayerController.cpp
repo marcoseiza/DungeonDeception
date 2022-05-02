@@ -146,7 +146,7 @@ void PlayerController::processData(
         processPlayerInfo(info->player_id, info->room_id, info->pos);
       }
     } break;
-    case NC_HOST_PLAYER_BASIC_INFO: {
+    case NC_HOST_ALL_PLAYER_BASIC_INFO: {
       auto all_info =
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
@@ -160,7 +160,7 @@ void PlayerController::processData(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
       processPlayerInfo(info->player_id, info->room_id, info->pos);
     } break;
-    case NC_CLIENT_BASIC_PLAYER_INFO: {
+    case NC_CLIENT_PLAYER_BASIC_INFO: {
       auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
       processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
