@@ -26,7 +26,7 @@
 #define MIN_POS_CHANGE 0.005
 
 // The number of ticks between footstep sounds.
-#define FOOTSTEP_SOUND_BUFFER 15
+#define FOOTSTEP_SOUND_BUFFER 20
 
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
@@ -42,6 +42,8 @@ bool PlayerController::init(
     const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
     const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
   _player = player;
+  addTrailManager(player);
+
   _assets = assets;
   _slash_texture = _assets->get<cugl::Texture>("energy-slash");
   _world = world;
@@ -75,6 +77,15 @@ void PlayerController::update(float timestep) {
     attack();
   }
   updateSlashes(timestep);
+
+  for (auto it : _players) {
+    if (it.second->getState() == Player::State::DASHING) {
+      _trail_managers[it.first]->start();
+    } else {
+      _trail_managers[it.first]->stop();
+    }
+    _trail_managers[it.first]->update();
+  }
 
   if (_player->getState() == Player::State::MOVING) {
     if (_footstep_buffer_counter == -1) {
