@@ -3,8 +3,8 @@
 #include "../network/NetworkController.h"
 #include "CollisionFiltering.h"
 #include "actions/Attack.h"
-#include "actions/Dash.h"
 #include "actions/Corrupt.h"
+#include "actions/Dash.h"
 #include "actions/Movement.h"
 
 #define MIN_DISTANCE 300
@@ -26,7 +26,7 @@
 #define MIN_POS_CHANGE 0.005
 
 // The number of ticks between footstep sounds.
-#define FOOTSTEP_SOUND_BUFFER 20
+#define FOOTSTEP_SOUND_BUFFER 25
 
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
@@ -69,7 +69,7 @@ void PlayerController::update(float timestep) {
   for (auto it : _players) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
-  
+
   if (_player->isBetrayer() && InputController::get<Corrupt>()->holdCorrupt()) {
     _player->move(cugl::Vec2(0, 0), 0.0f);
   } else {
@@ -79,38 +79,24 @@ void PlayerController::update(float timestep) {
   updateSlashes(timestep);
 
   for (auto it : _players) {
-    if (it.second->getState() == Player::State::DASHING) {
-      _trail_managers[it.first]->start();
-    } else {
-      _trail_managers[it.first]->stop();
-    }
+    _trail_managers[it.first]->run(it.second->getState() ==
+                                   Player::State::DASHING);
     _trail_managers[it.first]->update();
-  }
 
-  if (_player->getState() == Player::State::MOVING) {
-    if (_footstep_buffer_counter == -1) {
-      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
-    } else if (_footstep_buffer_counter == 0) {
+    if (it.second->getState() == Player::State::MOVING &&
+        it.second->isSteppingOnFloor()) {
       _sound_controller->playPlayerFootstep(
           SoundController::FootstepType::GRASS);
-      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
     }
 
-    _footstep_buffer_counter--;
-
-  } else {
-    _footstep_buffer_counter = -1;
-  }
-
-  if (_player->isHit()) {
-    _sound_controller->playPlayerHit();
+    if (it.second->isHit()) _sound_controller->playPlayerHit();
   }
 
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_hurt_frames--;
-  
+
   if (_player->_corrupt_count == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
@@ -176,7 +162,7 @@ void PlayerController::processData(
         _player->setLuminance(new_energy_value);
         _player->setCorruptedLuminance(new_corrupted_energy_value);
       }
-    }  break;
+    } break;
     default:
       break;
   }

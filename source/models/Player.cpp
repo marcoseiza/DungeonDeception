@@ -128,18 +128,15 @@ void Player::animate() {
   switch (_current_state) {
     case DASHING:
     case MOVING: {
-      int run_high_lim = getRunHighLim();
-      int run_low_lim = run_high_lim - RUN_LIM_GAP;
-
       if (_frame_count == 0) {
-        _player_node->setFrame(run_low_lim);
+        _player_node->setFrame(getRunLowLim());
       }
 
       // Play the next animation frame.
       if (_frame_count >= 5) {
         _frame_count = 0;
-        if (_player_node->getFrame() >= run_high_lim) {
-          _player_node->setFrame(run_low_lim);
+        if (_player_node->getFrame() >= getRunHighLim()) {
+          _player_node->setFrame(getRunLowLim());
         } else {
           _player_node->setFrame(_player_node->getFrame() + 1);
         }
@@ -241,6 +238,13 @@ int Player::getRunHighLim() {
     return 79;  // Value for the up run high limit
   }
   return 49;  // Value for the down run high limit
+}
+
+int Player::getRunLowLim() { return getRunHighLim() - RUN_LIM_GAP; }
+
+bool Player::isSteppingOnFloor() {
+  int relative_frame = _player_node->getFrame() - getRunLowLim();
+  return (relative_frame == 1 || relative_frame == 6) && _frame_count == 1;
 }
 
 int Player::getAttackHighLim() {
