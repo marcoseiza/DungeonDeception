@@ -20,7 +20,7 @@
 #define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 
-#define MIN_DIFF_FOR_DIR_CHANGE 0.05
+#define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
 #pragma mark Init
 

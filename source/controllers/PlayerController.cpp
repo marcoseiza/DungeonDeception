@@ -24,7 +24,7 @@
 
 #define HEALTH 100
 
-#define MIN_POS_CHANGE 0.005
+#define MIN_POS_CHANGE 0.5f
 
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
@@ -188,19 +188,20 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
 
   auto player = getPlayerOrMakePlayer(player_id);
 
-  cugl::Vec2 old_pos = player->getPosition();
+  cugl::Vec2 old_pos = player->getNetworkPosCache()[0];
+  cugl::Vec2 diff = pos - old_pos;
 
   // Movement must exceed this value to be animated
-  if (abs(pos.x - old_pos.x) > MIN_POS_CHANGE ||
-      abs(pos.y - old_pos.y) > MIN_POS_CHANGE) {
+  if (abs(diff.x) > MIN_POS_CHANGE || abs(diff.y) > MIN_POS_CHANGE) {
     player->setState(Player::MOVING);
   } else {
     player->setState(Player::IDLE);
+    pos = old_pos;
   }
 
-  player->setRoomId(room_id);
   player->setNetworkPos(pos);
-  player->updateDirection(pos - old_pos);
+  player->setRoomId(room_id);
+  player->updateDirection(diff);
   player->animate();
 }
 
