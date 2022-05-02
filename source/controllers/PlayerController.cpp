@@ -213,6 +213,8 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
     regular_bar->addChild(
         cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
     regular_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+    // Orange for other betrayers.
+    if (is_betrayer) regular_bar->setForegroundColor(cugl::Color4("#df7126"));
 
     auto corrupted_bar =
         cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
