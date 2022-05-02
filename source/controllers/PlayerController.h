@@ -36,8 +36,6 @@ class PlayerController : public Controller {
   std::shared_ptr<cugl::AssetManager> _assets;
   /** A reference to the sound controller. */
   std::shared_ptr<SoundController> _sound_controller;
-  /** A counter for buffer between footstep sounds. */
-  int _footstep_buffer_counter;
 
  public:
 #pragma mark Constructors
@@ -174,16 +172,12 @@ class PlayerController : public Controller {
   std::shared_ptr<Sword> getSword() { return _sword; }
 
  private:
-  void addTrailManager(const std::shared_ptr<Player>& player) {
-    TrailManager::Config config;
-    config.max_length = 5;
-    config.freq = 4;
-    config.max_opacity = 220;
-    config.min_opacity = 140;
-    config.color = cugl::Color4::WHITE;
-    _trail_managers[player->getPlayerId()] =
-        TrailManager::alloc(player->getPlayerNode(), config);
-  }
+  /**
+   * Internal method to add a trail manager for the given player.
+   *
+   * @param player The given player to add a trail manager for.
+   */
+  void addTrailManager(const std::shared_ptr<Player>& player);
 };
 
 #endif /* CONTROLLERS_PLAYER_CONTROLLER_H_ */

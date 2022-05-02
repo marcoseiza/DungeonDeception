@@ -41,7 +41,7 @@ void TrailManager::update() {
         (_config.max_opacity - _config.min_opacity) * t + _config.min_opacity;
 
     cugl::Color4 color = _config.color;
-    color.a = opacity;
+    color.a *= opacity;
 
     _trail_nodes_pool[i]->setColor(color);
   }

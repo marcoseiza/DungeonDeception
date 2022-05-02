@@ -25,9 +25,6 @@
 
 #define MIN_POS_CHANGE 0.005
 
-// The number of ticks between footstep sounds.
-#define FOOTSTEP_SOUND_BUFFER 25
-
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
 
@@ -49,7 +46,6 @@ bool PlayerController::init(
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
-  _footstep_buffer_counter = -1;
 
   _sword = Sword::alloc(cugl::Vec2::ZERO);
   _world->addObstacle(_sword);
@@ -371,4 +367,15 @@ void PlayerController::updateSlashes(float timestep) {
     }
     ++it;
   }
+}
+
+void PlayerController::addTrailManager(const std::shared_ptr<Player>& player) {
+  TrailManager::Config config;
+  config.max_length = 5;
+  config.freq = 4;
+  config.max_opacity = 220;
+  config.min_opacity = 140;
+  config.color = cugl::Color4(200, 200, 255, 255);
+  _trail_managers[player->getPlayerId()] =
+      TrailManager::alloc(player->getPlayerNode(), config);
 }
