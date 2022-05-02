@@ -106,8 +106,6 @@ void PlayerController::update(float timestep) {
   }
   _player->_corrupt_count--;
   
-  
-  
   if (_player->_blocked_corrupt_count == 0) {
     _player->setCanCorrupt(true);
     InputController::get<Corrupt>()->setActive(true);

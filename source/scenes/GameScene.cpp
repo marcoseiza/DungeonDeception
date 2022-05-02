@@ -328,61 +328,64 @@ void GameScene::update(float timestep) {
     _map->setVisible(!_map->isVisible());
   }
 
-  auto target_player = InputController::get<TargetPlayer>();
-  if (target_player->didChangeTarget()) {
-    int current_room_id = _player_controller->getMyPlayer()->getRoomId();
-    bool found_player = false;
-    bool others_in_room = false;
-    int first_found_player = -1;
-    for (auto it : _player_controller->getPlayers()) {
-      std::shared_ptr<Player> player = it.second;
-      if (player->getRoomId() == current_room_id &&
-          player->getPlayerId() !=
-              _player_controller->getMyPlayer()->getPlayerId()) {
-        others_in_room = true;
-        if (first_found_player == -1) {
-          first_found_player = player->getPlayerId();
+  // Cooperator block ability.
+  if (!_player_controller->getMyPlayer()->isBetrayer()) {
+    auto target_player = InputController::get<TargetPlayer>();
+    if (target_player->didChangeTarget()) {
+      int current_room_id = _player_controller->getMyPlayer()->getRoomId();
+      bool found_player = false;
+      bool others_in_room = false;
+      int first_found_player = -1;
+      for (auto it : _player_controller->getPlayers()) {
+        std::shared_ptr<Player> player = it.second;
+        if (player->getRoomId() == current_room_id &&
+            player->getPlayerId() !=
+                _player_controller->getMyPlayer()->getPlayerId()) {
+          others_in_room = true;
+          if (first_found_player == -1) {
+            first_found_player = player->getPlayerId();
+          }
+          if (target_player->getTarget() == -1 ||
+              !target_player->hasSeenPlayerId(player->getPlayerId())) {
+            // Sets the target to a fresh player
+            target_player->setTarget(player->getPlayerId());
+            auto target_icon_node =
+                _world_node->getChildByName<cugl::scene2::SceneNode>(
+                    "target-icon");
+            target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+            target_icon_node->setVisible(true);
+            found_player = true;
+            break;
+          }
         }
-        if (target_player->getTarget() == -1 ||
-            !target_player->hasSeenPlayerId(player->getPlayerId())) {
-          // Sets the target to a fresh player
-          target_player->setTarget(player->getPlayerId());
-          auto target_icon_node =
-              _world_node->getChildByName<cugl::scene2::SceneNode>(
-                  "target-icon");
+      }
+      // Cycled through all players and they have all already been visited, go
+      // back to the first
+      if (!found_player && others_in_room && first_found_player != -1) {
+        target_player->clearDirtyPlayers();
+        target_player->setTarget(first_found_player);
+      }
+    }
+
+    auto target_icon_node =
+        _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
+    if (target_player->getTarget() != -1) {
+      for (auto it : _player_controller->getPlayers()) {
+        std::shared_ptr<Player> player = it.second;
+        if (player->getRoomId() ==
+                _player_controller->getMyPlayer()->getRoomId() &&
+            player->getPlayerId() == target_player->getTarget()) {
           target_icon_node->setPosition(player->getPlayerNode()->getPosition());
           target_icon_node->setVisible(true);
-          found_player = true;
-          break;
         }
       }
+    } else {
+      target_icon_node->setVisible(false);
     }
-    // Cycled through all players and they have all already been visited, go
-    // back to the first
-    if (!found_player && others_in_room && first_found_player != -1) {
-      target_player->clearDirtyPlayers();
-      target_player->setTarget(first_found_player);
-    }
-  }
 
-  auto target_icon_node =
-      _world_node->getChildByName<cugl::scene2::SceneNode>("target-icon");
-  if (target_player->getTarget() != -1) {
-    for (auto it : _player_controller->getPlayers()) {
-      std::shared_ptr<Player> player = it.second;
-      if (player->getRoomId() ==
-              _player_controller->getMyPlayer()->getRoomId() &&
-          player->getPlayerId() == target_player->getTarget()) {
-        target_icon_node->setPosition(player->getPlayerNode()->getPosition());
-        target_icon_node->setVisible(true);
-      }
+    if (target_player->isActivatingTargetAction()) {
+      sendBetrayalTargetInfo(target_player->getTarget());
     }
-  } else {
-    target_icon_node->setVisible(false);
-  }
-
-  if (target_player->isActivatingTargetAction()) {
-    sendBetrayalTargetInfo(target_player->getTarget());
   }
 
   // Betrayer corrupt ability.
@@ -406,10 +409,6 @@ void GameScene::update(float timestep) {
     }
   }
   
-  if (!_player_controller->getMyPlayer()->canCorrupt()) {
-    CULog("%d", _player_controller->getMyPlayer()->_blocked_corrupt_count);
-  }
-
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());

@@ -45,5 +45,11 @@ bool Corrupt::dispose() {
 }
 
 void Corrupt::setActive(bool value) {
-  (value) ? _button->activate() : _button->deactivate();
+  if (value) {
+    _button->activate();
+    _button->setColor(cugl::Color4::WHITE);
+  } else {
+    _button->deactivate();
+    _button->setColor(cugl::Color4::GRAY);
+  }
 }

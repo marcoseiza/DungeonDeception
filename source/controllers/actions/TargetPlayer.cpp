@@ -42,11 +42,8 @@ bool TargetPlayer::update() {
   // Increment counter if target player button was just released or target player frames
   // are still occuring
   
-  if (_target_cooldown_counter == 0) {
-    setActive(true);
-  }
-  
   if (_target_cooldown_counter <= 0) {
+    setActive(true);
     if (isActivatingTargetAction()) {
       _is_activating_action = false;
       _target_player_counter = 0;
