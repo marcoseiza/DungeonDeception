@@ -427,6 +427,18 @@ void NetworkSerializer::writeJsonVector(std::vector<std::shared_ptr<JsonValue>> 
 }
 
 /**
+ * Write a vector of uint8_t vales.
+ *
+ * Vector will be appended to the in class data.
+ * 
+ * @param v The vector to write
+ */
+void NetworkSerializer::writeData(std::vector<uint8_t> v) {
+    _data.insert(_data.end(), v.begin(), v.end());
+}
+
+
+/**
  * Returns a byte vector of all written values suitable for network transit.
  *
  * This method should be called after the appropriate write methods have been

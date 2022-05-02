@@ -270,6 +270,14 @@ void NetworkConnection::setReliability(PacketReliability reliability) {
     }
 }
 
+/**
+  * All packets have a maximum size that can be sent over the network.
+  * This method returns the maximum size that cugl allows.
+  *
+  * @return The maximum packet size.
+  */
+unsigned int NetworkConnection::getMaxPacketSize() { return MAX_PACKET; }
+
 #pragma mark -
 #pragma mark Connection Handshake
 /**

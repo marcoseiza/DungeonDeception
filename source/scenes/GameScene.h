@@ -21,9 +21,6 @@ class GameScene : public cugl::Scene2 {
   /** The asset manager for loading. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
-  /** The network connection (as made by this scene). */
-  std::shared_ptr<cugl::NetworkConnection> _network;
-
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
 
@@ -97,6 +94,14 @@ class GameScene : public cugl::Scene2 {
 
   /** The time the game started. */
   cugl::Timestamp _time_started;
+
+  /** Timestamp so unimportant enemy info isn't sent. */
+  cugl::Timestamp _time_of_last_enemy_other_info_update;
+  /** A list of enemy IDs to die. */
+  std::vector<int> _dead_enemy_cache;
+
+  /** If the has sent play basic_info to all clients. */
+  bool _has_sent_player_basic_info;
 
  public:
   GameScene() : cugl::Scene2() {}
@@ -226,10 +231,10 @@ class GameScene : public cugl::Scene2 {
    * @return the network connection (as made by this scene)
    */
   void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
-    _network = network;
-    NetworkController::get()->init(_network);
+    NetworkController::get()->init(network);
     NetworkController::get()->addListener(
-        [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+        [=](const Sint32& code,
+            const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
           this->processData(code, msg);
         });
   }
@@ -261,17 +266,6 @@ class GameScene : public cugl::Scene2 {
   void setBetrayer(bool betrayer) { _is_betrayer = betrayer; }
 
   /**
-   * Checks that the network connection is still active.
-   *
-   * Even if you are not sending messages all that often, you need to be calling
-   * this method regularly. This method is used to determine the current state
-   * of the scene.
-   *
-   * @return true if the network connection is still active.
-   */
-  bool checkConnection();
-
-  /**
    * Processes data sent over the network.
    *
    * Once connection is established, all data sent over the network consistes of
@@ -283,7 +277,7 @@ class GameScene : public cugl::Scene2 {
    * @param msg The deserialized message
    */
   void processData(const Sint32& code,
-                   const cugl::NetworkDeserializer::Message& msg);
+                   const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
   /**
    * Broadcasts the relevant network information to all clients and/or the host.
@@ -291,14 +285,23 @@ class GameScene : public cugl::Scene2 {
   void sendNetworkInfo();
 
   /**
+   * Broadcasts the relevant network information if a host.
+   */
+  void sendNetworkInfoHost();
+
+  /**
+   * Broadcasts the relevant network information if a client.
+   */
+  void sendNetworkInfoClient();
+
+  /**
    * Broadcasts enemy being hit to the host.
    *
    * @param id the enemy that was hit
-   * @param room_id the room the enemy is in
    * @param amount the amount of damage taken
    * @param dir The direction the enemy should be knockedback
    */
-  void sendEnemyHitNetworkInfo(int id, int room_id, int dir, float amount = 20);
+  void sendEnemyHitNetworkInfo(int id, int dir, float amount = 20);
 
   /**
    * Broadcast a player being targeted by the betrayer target player ability.
@@ -335,23 +338,6 @@ class GameScene : public cugl::Scene2 {
   void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
-   * Updates the health and position of the enemy with the corresponding
-   * enemy_id in the room with id enemy_room;
-   *
-   * @param enemy_id      The enemy id.
-   * @param enemy_room    The room id the enemy is in.
-   * @param enemy_health  The updated enemy health.
-   * @param pos_x         The updated enemy x position.
-   * @param pos_y         The updated enemy y position.
-   * @param did_shoot   Whether the enemy shot.
-   * @param bullet_dir_x  The last shot bullet's x direction
-   * @param bullet_dir_y  The last shot bullet's y direction
-   */
-  void updateEnemyInfo(int enemy_id, int enemy_room, int enemy_health,
-                       float pos_x, float pos_y, bool did_shoot,
-                       float bullet_dir_x, float bullet_dir_y);
-
-  /**
    * Returns true if the player quits the game.
    *
    * @return true if the player quits the game.
@@ -365,7 +351,7 @@ class GameScene : public cugl::Scene2 {
    * controller. Since the network controller is a smart pointer, it is only
    * fully disconnected when ALL scenes have been disconnected.
    */
-  void disconnect() { _network = nullptr; }
+  void disconnect() { NetworkController::get()->disconnect(); }
 };
 
 #endif /* SCENES_GAME_SCENE_H_ */

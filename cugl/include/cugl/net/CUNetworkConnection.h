@@ -603,6 +603,14 @@ public:
      */
     void setDebug(bool value) { _debug = value; }
 
+    /**
+     * All packets have a maximum size that can be sent over the network.
+     * This method returns the maximum size that cugl allows.
+     * 
+     * @return The maximum packet size.
+     */
+    unsigned int getMaxPacketSize();
+
 #pragma mark Communication Internals
 private:
     /**

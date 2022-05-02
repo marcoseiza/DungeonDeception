@@ -13,7 +13,8 @@ bool TerminalController::init(
   _deposit_energy_scene = DepositEnergyScene::alloc(_assets);
 
   NetworkController::get()->addListener(
-      [=](const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
+      [=](const Sint32 &code,
+          const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
         this->processNetworkData(code, msg);
       });
 
@@ -45,7 +46,8 @@ void TerminalController::sendNetworkData() {
 }
 
 void TerminalController::processNetworkData(
-    const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
+    const Sint32 &code,
+    const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
   switch (code) {
     case NC_DEPOSIT_ENERGY: {
       // Process the incoming informaiton
@@ -111,8 +113,7 @@ void TerminalController::processNetworkData(
       // Send the success message to all clients
       auto success_info = cugl::JsonValue::allocObject();
 
-      auto player_id_info =
-          cugl::JsonValue::alloc(static_cast<long>(player_id));
+      auto player_id_info = cugl::JsonValue::alloc((long)(player_id));
       success_info->appendChild(player_id_info);
       player_id_info->setKey("player_id");
 

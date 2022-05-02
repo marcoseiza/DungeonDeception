@@ -4,6 +4,7 @@
 #include <cugl/cugl.h>
 
 #include "../generators/LevelGenerator.h"
+#include "../models/EnemyModel.h"
 #include "../models/LevelModel.h"
 #include "Controller.h"
 #include "PlayerController.h"
@@ -30,12 +31,13 @@ class LevelController : public Controller {
   /** The room to be removed after moving from neighboring tile. */
   std::shared_ptr<RoomModel> _room_on_chopping_block;
   /** The id of the next enemy to add, increasing each time. */
-  int next_enemy_id = 0;
+  int _next_enemy_id;
 
  public:
   /** Construct a new Level Controller */
   LevelController()
-      : _assets(nullptr),
+      : _next_enemy_id(0),
+        _assets(nullptr),
         _world_node(nullptr),
         _debug_node(nullptr),
         _world(nullptr),
@@ -82,7 +84,7 @@ class LevelController : public Controller {
    * @param door_sensor_name The name of the door sensor that was hit.
    */
   void changeRoom(std::string &door_sensor_name);
-  
+
   /** Change room and move to the center.
    * @param destination_room_id The room destination id
    */
@@ -111,6 +113,14 @@ class LevelController : public Controller {
       const std::shared_ptr<PlayerController> &player_controller) {
     _player_controller = player_controller;
   }
+
+  /**
+   * Get an enemy by id.
+   *
+   * @param enemy_id The enemy id.
+   * @return The enemy found, or nullptr if it does not exist.
+   */
+  std::shared_ptr<EnemyModel> getEnemy(int enemy_id);
 
  private:
   /** Populate the level. */
