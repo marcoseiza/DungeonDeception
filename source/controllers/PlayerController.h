@@ -8,6 +8,7 @@
 #include "Controller.h"
 #include "InputController.h"
 #include "SoundController.h"
+#include "TrailManager.h"
 
 /**
  * A class to handle enemy AI.
@@ -18,8 +19,11 @@ class PlayerController : public Controller {
   std::shared_ptr<Sword> _sword;
   /** Reference to the player this controls. */
   std::shared_ptr<Player> _player;
+
   /** A list of all the players in the game. */
   std::unordered_map<int, std::shared_ptr<Player>> _players;
+  std::unordered_map<int, std::shared_ptr<TrailManager>> _trail_managers;
+
   /** The slash texture. */
   std::shared_ptr<cugl::Texture> _slash_texture;
   /** A reference to the world node. */
@@ -32,8 +36,6 @@ class PlayerController : public Controller {
   std::shared_ptr<cugl::AssetManager> _assets;
   /** A reference to the sound controller. */
   std::shared_ptr<SoundController> _sound_controller;
-  /** A counter for buffer between footstep sounds. */
-  int _footstep_buffer_counter;
 
  public:
 #pragma mark Constructors
@@ -144,6 +146,7 @@ class PlayerController : public Controller {
   void addPlayer(const std::shared_ptr<Player>& player) {
     if (_players.find(player->getPlayerId()) == _players.end()) {
       _players[player->getPlayerId()] = player;
+      addTrailManager(player);
     }
   }
 
@@ -167,6 +170,14 @@ class PlayerController : public Controller {
   }
 
   std::shared_ptr<Sword> getSword() { return _sword; }
+
+ private:
+  /**
+   * Internal method to add a trail manager for the given player.
+   *
+   * @param player The given player to add a trail manager for.
+   */
+  void addTrailManager(const std::shared_ptr<Player>& player);
 };
 
 #endif /* CONTROLLERS_PLAYER_CONTROLLER_H_ */

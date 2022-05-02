@@ -19,6 +19,13 @@ class Attack : public Action {
   std::shared_ptr<cugl::scene2::PolygonNode> _attack_base;
   /* Reference to attack button for registering listeners to press event. */
   std::shared_ptr<cugl::scene2::Button> _button;
+  /* Reference to button node for animation. */
+  std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
+
+  /** The animation buffer for the charge animation. */
+  int _anim_buffer;
+  /** Charge animation is done. */
+  bool _charge_over;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -91,7 +98,10 @@ class Attack : public Action {
   }
 
   /** Pause all input. */
-  virtual void pause() override { _button->deactivate(); }
+  virtual void pause() override {
+    _button->deactivate();
+    _charge_over = false;
+  }
 
   /** Resume all input. */
   virtual void resume() override { _button->activate(); }
@@ -120,13 +130,10 @@ class Attack : public Action {
   bool holdAttack() const { return _prev_down && _curr_down; }
 
   /**
-   * @return The time the player held down the button.
+   * @return If the player has held the attack button long enough for energy
+   * wave.
    */
-  int timeHeldDown() const {
-    if (!_butt_down) return 0;
-    cugl::Timestamp time;
-    return (Uint32)time.ellapsedMillis(_time_down_start);
-  }
+  bool chargeOver() const { return _charge_over; }
 
   /**
    * Toggels activation on attack button. When deactivated, the button

@@ -500,6 +500,33 @@ void Button::setColor(Color4 color) {
 }
 
 /**
+ * Sets the down color for when the button is pressed.
+ *
+ * This color will be multiplied with the parent (this node on top) if
+ * hasRelativeColor() is true.
+ *
+ * The default color is grey.
+ *
+ * @param color the color tinting this node when down.
+ */
+void Button::setDownColor(Color4 color) { 
+    _downcolor = color; 
+    if (_down) {
+        _tintColor = color;
+    }
+}
+
+/**
+ * Resets the down color to the default down color.
+ */
+void Button::resetDownColor() { 
+    _downcolor = Color4::GRAY; 
+    if (_down) {
+        _tintColor = Color4::GRAY;
+    }
+}
+
+/**
  * Sets the region responding to mouse clicks.
  *
  * The pushable region is the area of this node that responds to mouse
