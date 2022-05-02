@@ -52,11 +52,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Player health. */
   int _health;
 
-  /** Player luminance. */
-  int _luminance;
+  /** Player energy. */
+  int _energy;
 
-  /** Amount of player luminance that has been corrupted. */
-  int _corrupted_luminance;
+  /** Amount of player energy that has been corrupted. */
+  int _corrupted_energy;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -187,38 +187,56 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void setHealth(int value) { _health = value; }
 
   /**
-   * Returns the current luminance of the player.
+   * Returns the current energy of the player.
    *
-   * @return the current luminance.
+   * @return the current energy.
    */
-  int getLuminance() const { return _luminance; }
+  int getEnergy() const { return _energy; }
 
   /**
-   * Sets the current player's luminance.
+   * Sets the current player's energy.
    *
-   * @param value The current player luminance.
+   * @param value The current player energy.
    */
-  void setLuminance(int value) {
-    if (_luminance < 100) _luminance = value;
-    if (_energy_bar) _energy_bar->setProgress(_luminance / 100.0f);
+  void setEnergy(int value) {
+    if (_energy < 100) _energy = value;
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
   }
 
   /**
-   * Returns the current corrupted luminance of the player.
+   * Returns the current corrupted energy of the player.
    *
-   * @return the current luminance.
+   * @return the current energy.
    */
-  int getCorruptedLuminance() const { return _corrupted_luminance; }
+  int getCorruptedEnergy() const { return _corrupted_energy; }
 
   /**
-   * Sets the current player's luminance.
+   * Turns regular energy into corrupted energy.
    *
-   * @param value The current player luminance.
+   * @param value The amount of energy to be corrupted.
    */
-  void setCorruptedLuminance(int value) {
-    if (value <= 100) _corrupted_luminance = value;
-    if (_energy_bar) {
-      _energy_bar->setProgress(_luminance / 100.0f);
+  void turnEnergyCorrupted(int value) {
+    _corrupted_energy += std::min(value, _energy);
+
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
+  }
+
+  /**
+   * Manually set the corruption value.
+   * @param value The value that is corrupted.
+   */
+  void setCorruptedEnergy(int value) {
+    if (value <= 100) {
+      _corrupted_energy = value;
+    }
+    if (_energy_bar && _corrupted_energy_bar) {
+      _corrupted_energy_bar->setProgress((_energy) / 100.0f);
     }
   }
 

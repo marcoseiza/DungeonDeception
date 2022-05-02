@@ -6,9 +6,9 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
-#include "../controllers/TerminalController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/SoundController.h"
+#include "../controllers/TerminalController.h"
 #include "../controllers/enemies/GruntController.h"
 #include "../controllers/enemies/ShotgunnerController.h"
 #include "../controllers/enemies/TankController.h"
@@ -27,8 +27,8 @@ class GameScene : public cugl::Scene2 {
   /** The animated health bar */
   std::shared_ptr<cugl::scene2::ProgressBar> _health_bar;
 
-  /** The animated luminance bar */
-  std::shared_ptr<cugl::scene2::ProgressBar> _luminance_bar;
+  /** The animated energy bar */
+  std::shared_ptr<cugl::scene2::ProgressBar> _energy_bar;
 
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
@@ -59,7 +59,6 @@ class GameScene : public cugl::Scene2 {
   std::shared_ptr<LevelController> _level_controller;
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
-
 
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;

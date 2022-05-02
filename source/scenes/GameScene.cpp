@@ -123,14 +123,14 @@ bool GameScene::init(
   health_layer->setContentSize(dim);
   health_layer->doLayout();
 
-  auto luminance_layer = assets->get<cugl::scene2::SceneNode>("luminance");
-  luminance_layer->setContentSize(dim);
-  luminance_layer->doLayout();
+  auto energy_layer = assets->get<cugl::scene2::SceneNode>("energy");
+  energy_layer->setContentSize(dim);
+  energy_layer->doLayout();
 
   _health_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("health_bar"));
-  _luminance_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
-      assets->get<cugl::scene2::SceneNode>("luminance_bar"));
+  _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
+      assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
@@ -177,7 +177,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
-  cugl::Scene2::addChild(luminance_layer);
+  cugl::Scene2::addChild(energy_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
@@ -208,7 +208,7 @@ void GameScene::dispose() {
   InputController::get()->dispose();
   _active = false;
   _health_bar->dispose();
-  _luminance_bar->dispose();
+  _energy_bar->dispose();
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -285,9 +285,8 @@ void GameScene::update(float timestep) {
   }
   _health_bar->setProgress(
       static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
-  _luminance_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getLuminance()) /
-      100);
+  _energy_bar->setProgress(
+      static_cast<float>(_player_controller->getMyPlayer()->getEnergy()) / 100);
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
@@ -391,7 +390,7 @@ void GameScene::update(float timestep) {
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >=
           2000) {  // 2000 milliseconds to hold down the corrupt button
-        // Send to the host to corrupt half a bar of luminance from everyone in
+        // Send to the host to corrupt half a bar of energy from everyone in
         // the room.
         for (auto p : _player_controller->getPlayerList()) {
           if (p->getRoomId() ==
@@ -532,6 +531,15 @@ void GameScene::sendNetworkInfo() {
         player_info->appendChild(player_id);
         player_id->setKey("player_id");
 
+        auto energy_val = cugl::JsonValue::alloc((long)(player->getEnergy()));
+        player_info->appendChild(energy_val);
+        energy_val->setKey("energy");
+
+        auto corrupted_energy_val =
+            cugl::JsonValue::alloc((long)(player->getCorruptedEnergy()));
+        player_info->appendChild(corrupted_energy_val);
+        corrupted_energy_val->setKey("corrupted");
+
         // send host-stored player's set display name to all clients
         std::shared_ptr<cugl::JsonValue> player_display_name =
             cugl::JsonValue::alloc(
@@ -648,6 +656,16 @@ void GameScene::sendNetworkInfo() {
         static_cast<long>(_player_controller->getMyPlayer()->getPlayerId()));
     player_info->appendChild(player_id);
     player_id->setKey("player_id");
+
+    auto energy_val = cugl::JsonValue::alloc(
+        (long)(_player_controller->getMyPlayer()->getEnergy()));
+    player_info->appendChild(energy_val);
+    energy_val->setKey("energy");
+
+    auto corrupted_energy_val = cugl::JsonValue::alloc(
+        (long)(_player_controller->getMyPlayer()->getCorruptedEnergy()));
+    player_info->appendChild(corrupted_energy_val);
+    corrupted_energy_val->setKey("corrupted");
 
     // send a player's set display name from itself to host
     std::shared_ptr<cugl::JsonValue> player_display_name =
@@ -884,8 +902,7 @@ void GameScene::processData(const Sint32& code,
 
     int player_id = corrupt_data->getInt("corrupt_player_id");
     auto corrupt_player = _player_controller->getPlayer(player_id);
-    corrupt_player->setCorruptedLuminance(
-        corrupt_player->getCorruptedLuminance() + 10);
+    corrupt_player->turnEnergyCorrupted(10);
   }
 
   _deserializer.reset();
@@ -956,8 +973,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob1)->knockback(
         _player_controller->getSword()->getMoveDir());
     if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setLuminance(
-          _player_controller->getMyPlayer()->getLuminance() + 1);
+      _player_controller->getMyPlayer()->setEnergy(
+          _player_controller->getMyPlayer()->getEnergy() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
@@ -973,8 +990,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
     if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setLuminance(
-          _player_controller->getMyPlayer()->getLuminance() + 1);
+      _player_controller->getMyPlayer()->setEnergy(
+          _player_controller->getMyPlayer()->getEnergy() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
@@ -1028,8 +1045,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage();
     dynamic_cast<EnemyModel*>(ob1)->knockback(
         _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setLuminance(
-        _player_controller->getMyPlayer()->getLuminance() + 1);
+    _player_controller->getMyPlayer()->setEnergy(
+        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),
@@ -1039,8 +1056,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setLuminance(
-        _player_controller->getMyPlayer()->getLuminance() + 1);
+    _player_controller->getMyPlayer()->setEnergy(
+        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getRoomId(),

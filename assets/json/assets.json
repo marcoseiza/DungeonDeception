@@ -228,15 +228,15 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "luminance-bar": {
-      "file": "textures/luminance-bar.png",
+    "energy-bar": {
+      "file": "textures/ui/energy-bar.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "luminance-fill": {
-      "file": "textures/luminance-fill.png",
+    "energy-fill": {
+      "file": "textures/ui/energy-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -245,6 +245,13 @@
         "leftcap": [0, 0, 1, 50],
         "rightcap": [467, 0, 468, 50]
       }
+    },
+    "energy-outline": {
+      "file": "textures/ui/energy-outline.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     },
     "energy-outline-small": {
       "file": "textures/ui/energy-outline-small.png",
@@ -262,13 +269,6 @@
     },
     "energy-fill-small": {
       "file": "textures/ui/energy-fill-small.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "luminance-outline": {
-      "file": "textures/luminance-outline.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -560,7 +560,7 @@
         }
       }
     },
-    "luminance": {
+    "energy": {
       "type": "Node",
       "format": {
         "type": "Anchored"
@@ -570,10 +570,10 @@
           "type": "Progress",
           "data": {
             "anchor": [0.5, 0.5],
-            "background": "luminance-fill",
-            "foreground": "luminance-bar",
-            "left_cap": "luminance-fill_leftcap",
-            "right_cap": "luminance-fill_rightcap",
+            "background": "energy-fill",
+            "foreground": "energy-bar",
+            "left_cap": "energy-fill_leftcap",
+            "right_cap": "energy-fill_rightcap",
             "scale": 0.4
           },
           "layout": {
@@ -589,7 +589,7 @@
             "type": "Anchored"
           },
           "data": {
-            "texture": "luminance-outline",
+            "texture": "energy-outline",
             "anchor": [0.5, 0.5],
             "scale": 0.402
           },

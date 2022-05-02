@@ -123,6 +123,10 @@ void PlayerController::processData(
           std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
       for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
         int player_id = player->getInt("player_id");
+
+        int energy = player->getInt("energy");
+        int corrupted = player->getInt("corrupted");
+
         bool is_betrayer = player->getBool("is_betrayer");
         string player_display_name = player->getString("player_display_name");
         int room_id = player->getInt("room");
@@ -131,13 +135,17 @@ void PlayerController::processData(
         float pos_x = player_position->get(0)->asFloat();
         float pos_y = player_position->get(1)->asFloat();
         processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
-                          is_betrayer);
+                          is_betrayer, energy, corrupted);
       }
     } break;
     case NC_CLIENT_ONE_PLAYER_INFO: {
       std::shared_ptr<cugl::JsonValue> player =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
       int player_id = player->getInt("player_id");
+
+      int energy = player->getInt("energy");
+      int corrupted = player->getInt("corrupted");
+
       bool is_betrayer = player->getBool("is_betrayer");
       string player_display_name = player->getString("player_display_name");
       int room_id = player->getInt("room");
@@ -146,7 +154,7 @@ void PlayerController::processData(
       float pos_x = player_position->get(0)->asFloat();
       float pos_y = player_position->get(1)->asFloat();
       processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
-                        is_betrayer);
+                        is_betrayer, energy, corrupted);
     } break;
     case NC_DEPOSIT_ENERGY_SUCCESS: {
       // Process the incoming informaiton
@@ -156,8 +164,8 @@ void PlayerController::processData(
       if (player_id == _player->getPlayerId()) {
         int new_energy_value = info->getInt("energy");
         int new_corrupted_energy_value = info->getInt("corrupt_energy");
-        _player->setLuminance(new_energy_value);
-        _player->setCorruptedLuminance(new_corrupted_energy_value);
+        _player->setEnergy(new_energy_value);
+        _player->setCorruptedEnergy(new_corrupted_energy_value);
       }
     } break;
     default:
@@ -168,7 +176,8 @@ void PlayerController::processData(
 void PlayerController::processPlayerInfo(int player_id, int room_id,
                                          float pos_x, float pos_y,
                                          string player_display_name,
-                                         bool is_betrayer) {
+                                         bool is_betrayer, int energy,
+                                         int corrupted) {
   if (player_id == _player->getPlayerId()) return;
 
   if (getPlayer(player_id) == nullptr) {
@@ -223,6 +232,9 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
 
   if (player) {
     cugl::Vec2 old_position = player->getPosition();
+
+    player->setEnergy(energy);
+    player->setCorruptedEnergy(corrupted);
 
     // Movement must exceed this value to be animated
     if (abs(pos_x - old_position.x) > MIN_POS_CHANGE ||
