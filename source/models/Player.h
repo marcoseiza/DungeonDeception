@@ -309,6 +309,20 @@ class Player : public cugl::physics2::CapsuleObstacle {
   int getRunHighLim();
 
   /**
+   * Internal method for getting the correct run low limit.
+   *
+   * @return the run low limit
+   */
+  int getRunLowLim();
+
+  /**
+   * Check if the player is stepping on the floor using animation frames.
+   *
+   * @return If the player is stepping on the floor.
+   */
+  bool isSteppingOnFloor();
+
+  /**
    * Internal method for getting the correct attack high limit.
    *
    * @return the attack high limit

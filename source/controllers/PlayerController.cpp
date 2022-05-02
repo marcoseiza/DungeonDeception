@@ -3,8 +3,8 @@
 #include "../network/NetworkController.h"
 #include "CollisionFiltering.h"
 #include "actions/Attack.h"
-#include "actions/Dash.h"
 #include "actions/Corrupt.h"
+#include "actions/Dash.h"
 #include "actions/Movement.h"
 #include "actions/TargetPlayer.h"
 
@@ -26,9 +26,6 @@
 
 #define MIN_POS_CHANGE 0.005
 
-// The number of ticks between footstep sounds.
-#define FOOTSTEP_SOUND_BUFFER 15
-
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
 
@@ -43,12 +40,13 @@ bool PlayerController::init(
     const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
     const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
   _player = player;
+  addTrailManager(player);
+
   _assets = assets;
   _slash_texture = _assets->get<cugl::Texture>("energy-slash");
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
-  _footstep_buffer_counter = -1;
 
   _sword = Sword::alloc(cugl::Vec2::ZERO);
   _world->addObstacle(_sword);
@@ -77,30 +75,25 @@ void PlayerController::update(float timestep) {
   }
   updateSlashes(timestep);
 
-  if (_player->getState() == Player::State::MOVING) {
-    if (_footstep_buffer_counter == -1) {
-      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
-    } else if (_footstep_buffer_counter == 0) {
+  for (auto it : _players) {
+    _trail_managers[it.first]->run(it.second->getState() ==
+                                   Player::State::DASHING);
+    _trail_managers[it.first]->update();
+
+    if (it.second->getState() == Player::State::MOVING &&
+        it.second->isSteppingOnFloor()) {
       _sound_controller->playPlayerFootstep(
           SoundController::FootstepType::GRASS);
-      _footstep_buffer_counter = FOOTSTEP_SOUND_BUFFER;
     }
 
-    _footstep_buffer_counter--;
-
-  } else {
-    _footstep_buffer_counter = -1;
-  }
-
-  if (_player->isHit()) {
-    _sound_controller->playPlayerHit();
+    if (it.second->isHit()) _sound_controller->playPlayerHit();
   }
 
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_hurt_frames--;
-  
+
   if (_player->_corrupt_count == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
@@ -179,7 +172,7 @@ void PlayerController::processData(
         _player->setLuminance(new_energy_value);
         _player->setCorruptedLuminance(new_corrupted_energy_value);
       }
-    }  break;
+    } break;
     default:
       break;
   }
@@ -295,15 +288,12 @@ void PlayerController::move(float timestep) {
 }
 
 void PlayerController::attack() {
-  bool did_attack = InputController::get<Attack>()->isAttacking();
-  int time_held_down = InputController::get<Attack>()->timeHeldDown();
-
   if (!_player->getDead()) {
-    if (time_held_down >= HOLD_ATTACK_COUNT) {
-      _player->getPlayerNode()->setColor(cugl::Color4::BLUE);
+    if (InputController::get<Attack>()->chargeOver()) {
       _player->_can_make_slash = true;
+      _player->getPlayerNode()->setColor(cugl::Color4(180, 180, 255));
     } else {
-      if (did_attack) {
+      if (InputController::get<Attack>()->isAttacking()) {
         if (_player->_hurt_frames <= 0) {
           _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
         }
@@ -391,4 +381,15 @@ void PlayerController::updateSlashes(float timestep) {
     }
     ++it;
   }
+}
+
+void PlayerController::addTrailManager(const std::shared_ptr<Player>& player) {
+  TrailManager::Config config;
+  config.max_length = 5;
+  config.freq = 4;
+  config.max_opacity = 220;
+  config.min_opacity = 140;
+  config.color = cugl::Color4(200, 200, 255, 255);
+  _trail_managers[player->getPlayerId()] =
+      TrailManager::alloc(player->getPlayerNode(), config);
 }

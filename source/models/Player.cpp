@@ -8,6 +8,7 @@
 #define IDLE_UP 83
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
+#define ATTACK_SETUP_LIM_GAP 7
 #define ATTACK_FRAMES 25
 #define HEALTH 100
 
@@ -82,6 +83,9 @@ void Player::setNameNode(std::shared_ptr<cugl::Font> name_font,
   _name_node->setAnchor(.5, 0);
   _name_node->setName("player_name");
 
+  _name_node->setPosition(_player_node->getWidth() / 2.0f,
+                          _player_node->getHeight() / 1.45f);
+
   _player_node->addChild(_name_node);
 }
 
@@ -125,11 +129,6 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
-
-    if (_name_node != nullptr) {
-      _name_node->setPosition(_player_node->getWidth() / 2.0f,
-                              _player_node->getHeight() / 1.45f);
-    }
   }
 }
 
@@ -137,18 +136,15 @@ void Player::animate() {
   switch (_current_state) {
     case DASHING:
     case MOVING: {
-      int run_high_lim = getRunHighLim();
-      int run_low_lim = run_high_lim - RUN_LIM_GAP;
-
       if (_frame_count == 0) {
-        _player_node->setFrame(run_low_lim);
+        _player_node->setFrame(getRunLowLim());
       }
 
       // Play the next animation frame.
       if (_frame_count >= 5) {
         _frame_count = 0;
-        if (_player_node->getFrame() >= run_high_lim) {
-          _player_node->setFrame(run_low_lim);
+        if (_player_node->getFrame() >= getRunHighLim()) {
+          _player_node->setFrame(getRunLowLim());
         } else {
           _player_node->setFrame(_player_node->getFrame() + 1);
         }
@@ -250,6 +246,13 @@ int Player::getRunHighLim() {
     return 79;  // Value for the up run high limit
   }
   return 49;  // Value for the down run high limit
+}
+
+int Player::getRunLowLim() { return getRunHighLim() - RUN_LIM_GAP; }
+
+bool Player::isSteppingOnFloor() {
+  int relative_frame = _player_node->getFrame() - getRunLowLim();
+  return (relative_frame == 1 || relative_frame == 6) && _frame_count == 1;
 }
 
 int Player::getAttackHighLim() {
