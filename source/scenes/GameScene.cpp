@@ -579,6 +579,30 @@ void GameScene::sendNetworkInfoHost() {
     }
   }
 
+  {
+    cugl::Timestamp time;
+    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+
+    if (millis > 200) {
+      _time_of_last_player_other_info_update.mark();
+      std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
+      for (auto it : _player_controller->getPlayers()) {
+        std::shared_ptr<Player> player = it.second;
+
+        auto info = cugl::PlayerOtherInfo::alloc();
+
+        info->player_id = player->getPlayerId();
+        info->energy = player->getEnergy();
+        info->corruption = player->getCorruptedEnergy();
+
+        all_player_info.push_back(info);
+      }
+
+      NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
+                                     all_player_info);
+    }
+  }
+
   auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
     // get enemy info only for the rooms that players are in
@@ -669,6 +693,26 @@ void GameScene::sendNetworkInfoClient() {
 
     // Send individual player information.
     NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_BASIC_INFO, info);
+  }
+
+  {  // Don't send this all the time.
+    cugl::Timestamp time;
+    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+
+    if (millis > 200) {
+      _time_of_last_player_other_info_update.mark();
+
+      auto info = cugl::PlayerOtherInfo::alloc();
+
+      info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+      info->energy = _player_controller->getMyPlayer()->getEnergy();
+      info->corruption =
+          _player_controller->getMyPlayer()->getCorruptedEnergy();
+
+      // Send individual player information.
+      NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_OTHER_INFO,
+                                               info);
+    }
   }
 }
 

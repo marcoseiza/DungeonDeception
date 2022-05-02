@@ -100,6 +100,8 @@ class GameScene : public cugl::Scene2 {
   /** A list of enemy IDs to die. */
   std::vector<int> _dead_enemy_cache;
 
+  /** Timestamp so unimportant player info isn't sent every tick. */
+  cugl::Timestamp _time_of_last_player_other_info_update;
   /** If the has sent play basic_info to all clients. */
   bool _has_sent_player_basic_info;
 

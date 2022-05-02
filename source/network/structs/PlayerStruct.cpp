@@ -24,6 +24,23 @@ void PlayerInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
 }
 
 #pragma mark -
+#pragma mark PlayerOtherInfo
+
+const Uint32 PlayerOtherInfo::Key = NC_HOST_ALL_PLAYER_OTHER_INFO;
+
+void PlayerOtherInfo::serialize(cugl::NetworkSerializer* serializer) {
+  serializer->writeUint32(player_id);
+  serializer->writeSint32(energy);
+  serializer->writeSint32(corruption);
+}
+
+void PlayerOtherInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
+  player_id = std::get<Uint32>(deserializer->read());
+  energy = std::get<Sint32>(deserializer->read());
+  corruption = std::get<Sint32>(deserializer->read());
+}
+
+#pragma mark -
 #pragma mark BasicPlayerInfo
 
 const Uint32 BasicPlayerInfo::Key = NC_HOST_ALL_PLAYER_BASIC_INFO;

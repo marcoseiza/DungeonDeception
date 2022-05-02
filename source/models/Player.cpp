@@ -85,8 +85,6 @@ void Player::setNameNode(const std::shared_ptr<cugl::Font>& name_font,
   }
   _name_node->setText(_display_name, true);
 
-  _player_node->addChild(_name_node);
-
   cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
   pos.y *= 1.48f;
   _name_node->setPosition(pos);

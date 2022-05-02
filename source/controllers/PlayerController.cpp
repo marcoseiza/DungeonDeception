@@ -147,6 +147,15 @@ void PlayerController::processData(
         processPlayerInfo(info->player_id, info->room_id, info->pos);
       }
     } break;
+    case NC_HOST_ALL_PLAYER_OTHER_INFO: {
+      auto all_info =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
+
+      for (std::shared_ptr<cugl::Serializable> info_ : all_info) {
+        auto info = std::dynamic_pointer_cast<cugl::PlayerOtherInfo>(info_);
+        processPlayerOtherInfo(info->player_id, info->energy, info->corruption);
+      }
+    } break;
     case NC_HOST_ALL_PLAYER_BASIC_INFO: {
       auto all_info =
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
@@ -156,16 +165,23 @@ void PlayerController::processData(
         processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
       }
     } break;
+
     case NC_CLIENT_ONE_PLAYER_INFO: {
       auto info = std::dynamic_pointer_cast<cugl::PlayerInfo>(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
       processPlayerInfo(info->player_id, info->room_id, info->pos);
+    } break;
+    case NC_CLIENT_PLAYER_OTHER_INFO: {
+      auto info = std::dynamic_pointer_cast<cugl::PlayerOtherInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      processPlayerOtherInfo(info->player_id, info->energy, info->corruption);
     } break;
     case NC_CLIENT_PLAYER_BASIC_INFO: {
       auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
       processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
     } break;
+
     case NC_DEPOSIT_ENERGY_SUCCESS: {
       // Process the incoming informaiton
       auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
@@ -206,6 +222,16 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
   player->animate();
 }
 
+void PlayerController::processPlayerOtherInfo(int player_id, int energy,
+                                              int corruption) {
+  if (player_id == _player->getPlayerId()) return;
+
+  auto player = getPlayerOrMakePlayer(player_id);
+
+  player->setEnergy(energy);
+  player->setCorruptedEnergy(corruption);
+}
+
 void PlayerController::processBasicPlayerInfo(int player_id,
                                               const std::string& display_name,
                                               bool is_betrayer) {
@@ -213,23 +239,34 @@ void PlayerController::processBasicPlayerInfo(int player_id,
 
   auto player = getPlayerOrMakePlayer(player_id);
 
-  player->setEnergy(energy);
-  player->setCorruptedEnergy(corrupted);
-
-  // Movement must exceed this value to be animated
-  if (abs(pos_x - old_position.x) > MIN_POS_CHANGE ||
-      abs(pos_y - old_position.y) > MIN_POS_CHANGE) {
-    player->setState(Player::MOVING);
-  } else {
-    player->setState(Player::IDLE);
-  }
-
   auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
   // Display different color if curr player and other player both betrayers.
   bool display_betrayer = is_betrayer && _player->isBetrayer();
   player->setBetrayer(is_betrayer);
   player->setDisplayName(display_name);
   player->setNameNode(pixelmix_font, display_betrayer);
+
+  auto energy_fill = _assets->get<cugl::Texture>("energy-fill-small");
+  auto energy_bar = _assets->get<cugl::Texture>("energy-bar-small");
+  auto energy_outline = _assets->get<cugl::Texture>("energy-outline-small");
+
+  auto regular_bar = cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+  regular_bar->addChild(
+      cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
+  regular_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+  // Orange for other betrayers.
+  if (is_betrayer) regular_bar->setForegroundColor(cugl::Color4("#df7126"));
+
+  auto corrupted_bar =
+      cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+  corrupted_bar->setForegroundColor(cugl::Color4("#df7126"));
+
+  if (_player->isBetrayer()) {
+    // It's important that these be placed in this specific order.
+    player->setCorruptedEnergyBar(corrupted_bar);
+    player->setEnergyBar(regular_bar);
+  }
+
   player->setBasicInfoSentToHost(true);
 }
 
