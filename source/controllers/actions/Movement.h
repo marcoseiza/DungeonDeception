@@ -52,6 +52,8 @@ class Movement : public Action {
   /* Vector between joystick nob and joystick anchor. Used for defining how much
      you move. */
   cugl::Vec2 _joystick_diff;
+  /** If the input is paused. */
+  bool _pause;
 
  public:
   /**
@@ -86,10 +88,10 @@ class Movement : public Action {
   }
 
   /** Pause all input. */
-  virtual void pause() override {}
+  virtual void pause() override;
 
   /** Resume all input. */
-  virtual void resume() override {}
+  virtual void resume() override;
 
   /**
    * This method allocates Movement and initializes it.
