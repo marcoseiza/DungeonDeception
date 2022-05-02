@@ -139,7 +139,7 @@ bool GameScene::init(
 
   auto target_player_button =
       ui_layer->getChildByName<cugl::scene2::Button>("target-player");
-  target_player_button->setVisible(is_betrayer);
+  target_player_button->setVisible(!is_betrayer);
 
   auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
   enrage_button->setVisible(is_betrayer);
@@ -386,7 +386,7 @@ void GameScene::update(float timestep) {
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer()) {
+  if (_player_controller->getMyPlayer()->isBetrayer() && _player_controller->getMyPlayer()->canCorrupt()) {
     int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >=
@@ -404,6 +404,10 @@ void GameScene::update(float timestep) {
         InputController::get<Corrupt>()->resetTimeDown();
       }
     }
+  }
+  
+  if (!_player_controller->getMyPlayer()->canCorrupt()) {
+    CULog("%d", _player_controller->getMyPlayer()->_blocked_corrupt_count);
   }
 
   std::shared_ptr<RoomModel> current_room =
@@ -874,9 +878,8 @@ void GameScene::processData(const Sint32& code,
     int player_id = target_data->getInt("target_player_id");
 
     if (player_id == _player_controller->getMyPlayer()->getPlayerId()) {
-      // Does 40 damage (in total).
-      _player_controller->getMyPlayer()->reduceHealth(35);
-      _player_controller->getMyPlayer()->takeDamage();
+      // Blocks the player from corrupting for 1 minute.
+      _player_controller->blockCorrupt();
     }
   } else if (code == 14 && _ishost) {
     std::shared_ptr<cugl::JsonValue> corrupt_data =

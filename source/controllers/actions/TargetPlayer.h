@@ -42,6 +42,9 @@ class TargetPlayer : public Action {
 
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
+  
+  /** The counter for the block cooldown. */
+  int _target_cooldown_counter;
 
  public:
   /**

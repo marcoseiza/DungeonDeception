@@ -6,6 +6,7 @@
 #include "actions/Dash.h"
 #include "actions/Corrupt.h"
 #include "actions/Movement.h"
+#include "actions/TargetPlayer.h"
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
@@ -68,7 +69,7 @@ void PlayerController::update(float timestep) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
   
-  if (_player->isBetrayer() && InputController::get<Corrupt>()->holdCorrupt()) {
+  if (_player->isBetrayer() && _player->canCorrupt() && InputController::get<Corrupt>()->holdCorrupt()) {
     _player->move(cugl::Vec2(0, 0), 0.0f);
   } else {
     move(timestep);
@@ -104,6 +105,14 @@ void PlayerController::update(float timestep) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_corrupt_count--;
+  
+  
+  
+  if (_player->_blocked_corrupt_count == 0) {
+    _player->setCanCorrupt(true);
+    InputController::get<Corrupt>()->setActive(true);
+  }
+  _player->_blocked_corrupt_count--;
 
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
@@ -119,6 +128,13 @@ void PlayerController::update(float timestep) {
 
   // Animate the player
   _player->animate();
+}
+
+void PlayerController::blockCorrupt() {
+  if (_player->isBetrayer()) {
+    _player->setCanCorrupt(false);
+    InputController::get<Corrupt>()->setActive(false);
+  }
 }
 
 void PlayerController::processData(
