@@ -1,9 +1,9 @@
-package com.oopsgames.dungeondeduction;
+package com.oopsgames.dungeondeception;
 
 import org.libsdl.app.*;
 import android.os.Bundle;
 
-public class DungeonDeduction extends SDLActivity {
+public class DungeonDeception extends SDLActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

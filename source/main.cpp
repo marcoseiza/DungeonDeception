@@ -9,8 +9,8 @@
 int main(int argc, char *argv[]) {
   GameApp app;
 
-  app.setName("Dungeon Deduction");
-  app.setOrganization("(oops)");
+  app.setName("Dungeon Deception");
+  app.setOrganization("(Oops) Games");
 
   // Set the window properties (Only applies to OS X/Windows Desktop).
   app.setDisplaySize(GAME_WIDTH, GAME_HEIGHT);
