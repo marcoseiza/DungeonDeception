@@ -19,6 +19,12 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the player name (moving). */
   std::shared_ptr<cugl::scene2::Label> _name_node;
 
+  /** The energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _energy_bar;
+
+  /** The corrupted energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -46,11 +52,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Player health. */
   int _health;
 
-  /** Player luminance. */
-  int _luminance;
+  /** Player energy. */
+  int _energy;
 
-  /** Amount of player luminance that has been corrupted. */
-  int _corrupted_luminance;
+  /** Amount of player energy that has been corrupted. */
+  int _corrupted_energy;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -182,35 +188,57 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void setHealth(int value) { _health = value; }
 
   /**
-   * Returns the current luminance of the player.
+   * Returns the current energy of the player.
    *
-   * @return the current luminance.
+   * @return the current energy.
    */
-  int getLuminance() const { return _luminance; }
+  int getEnergy() const { return _energy; }
 
   /**
-   * Sets the current player's luminance.
+   * Sets the current player's energy.
    *
-   * @param value The current player luminance.
+   * @param value The current player energy.
    */
-  void setLuminance(int value) {
-    if (_luminance < 100) _luminance = value;
+  void setEnergy(int value) {
+    if (_energy < 100) _energy = value;
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
   }
 
   /**
-   * Returns the current corrupted luminance of the player.
+   * Returns the current corrupted energy of the player.
    *
-   * @return the current luminance.
+   * @return the current energy.
    */
-  int getCorruptedLuminance() const { return _corrupted_luminance; }
+  int getCorruptedEnergy() const { return _corrupted_energy; }
 
   /**
-   * Sets the current player's luminance.
+   * Turns regular energy into corrupted energy.
    *
-   * @param value The current player luminance.
+   * @param value The amount of energy to be corrupted.
    */
-  void setCorruptedLuminance(int value) {
-    if (value <= 100) _corrupted_luminance = value;
+  void turnEnergyCorrupted(int value) {
+    _corrupted_energy += std::min(value, _energy);
+
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
+  }
+
+  /**
+   * Manually set the corruption value.
+   * @param value The value that is corrupted.
+   */
+  void setCorruptedEnergy(int value) {
+    if (value <= 100) {
+      _corrupted_energy = value;
+    }
+    if (_energy_bar && _corrupted_energy_bar) {
+      _corrupted_energy_bar->setProgress((_energy) / 100.0f);
+    }
   }
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
@@ -409,6 +437,19 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setNameNode(const std::shared_ptr<cugl::Font>& font,
                    bool display_betrayer);
+
+  /**
+   * Sets the scene graph node representing the floating energy bar.
+   * @param node The scene graph node representing the energy bar.
+   */
+  void setEnergyBar(const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
+
+  /**
+   * Sets the scene graph node representing the floating corrupted energy bar.
+   * @param node The scene graph node representing the corrupted energy bar.
+   */
+  void setCorruptedEnergyBar(
+      const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
 
   /**
    * Gets the scene graph node representing this player's name.

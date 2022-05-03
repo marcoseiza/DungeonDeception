@@ -65,6 +65,9 @@ CustomNetworkDeserializer::CustomNetworkDeserializer() {
   // Register PlayerInfo struct in the factory for deserialization.
   _factory[PlayerInfo::Key] = []() { return PlayerInfo::alloc(); };
 
+  // Register PlayerOtherInfo struct in the factory for deserialization.
+  _factory[PlayerOtherInfo::Key] = []() { return PlayerOtherInfo::alloc(); };
+
   // Register BasicPlayerInfo struct in the factory for deserialization.
   _factory[BasicPlayerInfo::Key] = []() { return BasicPlayerInfo::alloc(); };
 }

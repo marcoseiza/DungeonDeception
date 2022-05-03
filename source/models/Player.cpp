@@ -42,8 +42,8 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _player_node = nullptr;
   _current_state = IDLE;
   _health = HEALTH;
-  _luminance = 40;
-  _corrupted_luminance = 0;
+  _energy = 40;
+  _corrupted_energy = 0;
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
@@ -89,6 +89,36 @@ void Player::setNameNode(const std::shared_ptr<cugl::Font>& name_font,
   pos.y *= 1.48f;
   _name_node->setPosition(pos);
   _name_node->setPriority(std::numeric_limits<float>::max());
+}
+
+void Player::setEnergyBar(
+    const std::shared_ptr<cugl::scene2::ProgressBar>& bar) {
+  _energy_bar = bar;
+  _player_node->addChild(_energy_bar);
+  _energy_bar->setAnchor(0.5f, 0.5f);
+
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  pos.y *= 1.38f;
+  _energy_bar->setPosition(pos);
+  _energy_bar->setPriority(std::numeric_limits<float>::max());
+  for (auto child : _energy_bar->getChildren()) {
+    child->setPriority(std::numeric_limits<float>::max());
+  }
+}
+
+void Player::setCorruptedEnergyBar(
+    const std::shared_ptr<cugl::scene2::ProgressBar>& bar) {
+  _corrupted_energy_bar = bar;
+  _player_node->addChild(_corrupted_energy_bar);
+  _corrupted_energy_bar->setAnchor(0.5f, 0.5f);
+
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  pos.y *= 1.38f;
+  _corrupted_energy_bar->setPosition(pos);
+  _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max());
+  for (auto child : _corrupted_energy_bar->getChildren()) {
+    child->setPriority(std::numeric_limits<float>::max());
+  }
 }
 
 void Player::takeDamage() {

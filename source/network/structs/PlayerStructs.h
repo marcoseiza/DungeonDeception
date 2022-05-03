@@ -67,6 +67,64 @@ struct PlayerInfo : public Serializable {
 };
 
 #pragma mark -
+#pragma mark PlayerOtherInfo
+
+struct PlayerOtherInfo : public Serializable {
+  /** The unique key for the struct. Must be static. */
+  const static Uint32 Key;
+
+  /** The ID of the player. */
+  int player_id;
+  /** The amount of energy this player has. */
+  int energy;
+  /** The amount of corruption this player has. */
+  int corruption;
+
+  /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<PlayerOtherInfo> alloc() {
+    return std::make_shared<PlayerOtherInfo>();
+  }
+
+  /**
+   * This method serializes the class into the given serializer.
+   *
+   * Override this method when creating a new serializable structs and write all
+   * the properties of the struct into the serializer.
+   *
+   * THE ORDER IN WHICH YOU WRITE THEM IS IMPORTANT
+   *
+   * When you desserialize, you will have to read in the same order you wrote.
+   *
+   * @param serializer The network serializer.
+   */
+  void serialize(cugl::NetworkSerializer* serializer) override;
+
+  /**
+   * This method deserializes the given the deserializer.
+   *
+   * Override this method when creating a new serializable struct and read all
+   * the properties of the struct from the deserializer.
+   *
+   * THE ORDER IN WHICH YOU READ THEM IS IMPORTANT
+   *
+   * Make sure you read in the same order you wrote the properties in the
+   * serializer.
+   *
+   * @param deserializer
+   */
+  void deserialize(cugl::NetworkDeserializer* deserializer) override;
+
+  /**
+   * This method returns a unique key to the struct.
+   * @return The unique key.
+   */
+  virtual Uint32 key() override { return Key; }
+};
+
+#pragma mark -
 #pragma mark BasicPlayerInfo
 
 struct BasicPlayerInfo : public Serializable {

@@ -130,13 +130,25 @@ class PlayerController : public Controller {
   void processPlayerInfo(int player_id, int room_id, cugl::Vec2& pos);
 
   /**
+   * Process the unimportant parts of the player's data with the corresponding
+   * player_id in the _players list.
+   *
+   * @param player_id     The player ids
+   * @param energy        The amount of energy the player has.
+   * @param corruption    The amount of corruption the player has
+   *
+   */
+  void processPlayerOtherInfo(int player_id, int energy, int corruption);
+
+  /**
    * Process the basic player info that is only sent once, like display name and
    * betrayer state.
    *
    * @param player_id     The player ids
    * @param display_name  The name of this player
    * @param is_betrayer   True if player is a betrayer, false otherwise
-   *
+   * @param energy        The amount of energy
+   * @param corrupted     The amount of corrupted energy
    */
   void processBasicPlayerInfo(int player_id, const std::string& display_name,
                               bool is_betrayer);

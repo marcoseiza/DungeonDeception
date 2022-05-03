@@ -128,14 +128,14 @@ bool GameScene::init(
   health_layer->setContentSize(dim);
   health_layer->doLayout();
 
-  auto luminance_layer = assets->get<cugl::scene2::SceneNode>("luminance");
-  luminance_layer->setContentSize(dim);
-  luminance_layer->doLayout();
+  auto energy_layer = assets->get<cugl::scene2::SceneNode>("energy");
+  energy_layer->setContentSize(dim);
+  energy_layer->doLayout();
 
   _health_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("health_bar"));
-  _luminance_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
-      assets->get<cugl::scene2::SceneNode>("luminance_bar"));
+  _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
+      assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
@@ -182,7 +182,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
-  cugl::Scene2::addChild(luminance_layer);
+  cugl::Scene2::addChild(energy_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
@@ -213,7 +213,7 @@ void GameScene::dispose() {
   InputController::get()->dispose();
   _active = false;
   _health_bar->dispose();
-  _luminance_bar->dispose();
+  _energy_bar->dispose();
   _has_sent_player_basic_info = false;
   _dead_enemy_cache.clear();
 }
@@ -284,9 +284,8 @@ void GameScene::update(float timestep) {
 
   _health_bar->setProgress(
       static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
-  _luminance_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getLuminance()) /
-      100);
+  _energy_bar->setProgress(
+      static_cast<float>(_player_controller->getMyPlayer()->getEnergy()) / 100);
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
@@ -580,6 +579,30 @@ void GameScene::sendNetworkInfoHost() {
     }
   }
 
+  {
+    cugl::Timestamp time;
+    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+
+    if (millis > 200) {
+      _time_of_last_player_other_info_update.mark();
+      std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
+      for (auto it : _player_controller->getPlayers()) {
+        std::shared_ptr<Player> player = it.second;
+
+        auto info = cugl::PlayerOtherInfo::alloc();
+
+        info->player_id = player->getPlayerId();
+        info->energy = player->getEnergy();
+        info->corruption = player->getCorruptedEnergy();
+
+        all_player_info.push_back(info);
+      }
+
+      NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
+                                     all_player_info);
+    }
+  }
+
   auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
     // get enemy info only for the rooms that players are in
@@ -671,6 +694,26 @@ void GameScene::sendNetworkInfoClient() {
     // Send individual player information.
     NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_BASIC_INFO, info);
   }
+
+  {  // Don't send this all the time.
+    cugl::Timestamp time;
+    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+
+    if (millis > 200) {
+      _time_of_last_player_other_info_update.mark();
+
+      auto info = cugl::PlayerOtherInfo::alloc();
+
+      info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+      info->energy = _player_controller->getMyPlayer()->getEnergy();
+      info->corruption =
+          _player_controller->getMyPlayer()->getCorruptedEnergy();
+
+      // Send individual player information.
+      NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_OTHER_INFO,
+                                               info);
+    }
+  }
 }
 
 void GameScene::sendEnemyHitNetworkInfo(int id, int dir, float amount) {
@@ -751,7 +794,6 @@ void GameScene::processData(
           if (info->has_target) enemy->addBullet(info->target);
         }
       }
-
     } break;
 
     case NC_HOST_ALL_ENEMY_OTHER_INFO: {
@@ -807,8 +849,7 @@ void GameScene::processData(
         int player_id = corrupt_data->getInt("corrupt_player_id");
         auto corrupt_player = _player_controller->getPlayer(player_id);
 
-        corrupt_player->setCorruptedLuminance(
-            corrupt_player->getCorruptedLuminance() + 10);
+        corrupt_player->turnEnergyCorrupted(10);
       }
     }
   }
@@ -848,8 +889,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob1)->knockback(
         _player_controller->getSword()->getMoveDir());
     if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setLuminance(
-          _player_controller->getMyPlayer()->getLuminance() + 1);
+      _player_controller->getMyPlayer()->setEnergy(
+          _player_controller->getMyPlayer()->getEnergy() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getSword()->getMoveDir(),
@@ -864,8 +905,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
     if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setLuminance(
-          _player_controller->getMyPlayer()->getLuminance() + 1);
+      _player_controller->getMyPlayer()->setEnergy(
+          _player_controller->getMyPlayer()->getEnergy() + 1);
     }
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getSword()->getMoveDir(),
@@ -916,8 +957,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob1)->takeDamage();
     dynamic_cast<EnemyModel*>(ob1)->knockback(
         _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setLuminance(
-        _player_controller->getMyPlayer()->getLuminance() + 1);
+    _player_controller->getMyPlayer()->setEnergy(
+        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
@@ -926,8 +967,8 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<EnemyModel*>(ob2)->takeDamage();
     dynamic_cast<EnemyModel*>(ob2)->knockback(
         _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setLuminance(
-        _player_controller->getMyPlayer()->getLuminance() + 1);
+    _player_controller->getMyPlayer()->setEnergy(
+        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
