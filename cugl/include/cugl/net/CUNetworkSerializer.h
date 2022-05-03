@@ -99,6 +99,8 @@ enum NetworkType : uint8_t {
     StringType,
     /** Represents a shared pointer to a {@link JsonValue} object */
     JsonType,
+    /** Represents a serializable object */
+    SerializableType,
     /**
      * A type modifier to represent vector types.
      * 
@@ -135,7 +137,7 @@ enum NetworkType : uint8_t {
  * std::string. The same applies to vectors of char*.
  */
 class NetworkSerializer {
-private:
+protected:
     /** Buffer of data that has not been written out yet. */
     std::vector<uint8_t> _data;
 
@@ -387,6 +389,15 @@ public:
     void writeJsonVector(std::vector<std::shared_ptr<JsonValue>> j);
 
     /**
+     * Write a vector of uint8_t vales.
+     *
+     * Vector will be appended to the in class data.
+     * 
+     * @param v The vector to write
+     */
+    void writeData(std::vector<uint8_t> v);
+
+    /**
      * Returns a byte vector of all written values suitable for network transit.
      *
      * This method should be called after the appropriate write methods have been
@@ -421,7 +432,7 @@ public:
  * You should use {@link NetworkType} to guide your deserialization process. 
  */
 class NetworkDeserializer {
-private:
+protected:
     /** Currently loaded data */
     std::vector<uint8_t> _data;
     /** Position in the data of next byte to read */

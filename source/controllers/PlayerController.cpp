@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
 #include "../network/NetworkController.h"
+#include "../network/structs/PlayerStructs.h"
 #include "CollisionFiltering.h"
 #include "actions/Attack.h"
 #include "actions/Corrupt.h"
@@ -23,7 +24,7 @@
 
 #define HEALTH 100
 
-#define MIN_POS_CHANGE 0.005
+#define MIN_POS_CHANGE 0.5f
 
 // The max number of milliseconds between player network position updates.
 #define PLAYER_NETWORK_POS_UPDATE_MAX 100.0f
@@ -33,14 +34,10 @@
 PlayerController::PlayerController(){};
 
 bool PlayerController::init(
-    const std::shared_ptr<Player>& player,
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
     const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
     const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
-  _player = player;
-  addTrailManager(player);
-
   _assets = assets;
   _slash_texture = _assets->get<cugl::Texture>("energy-slash");
   _world = world;
@@ -54,7 +51,8 @@ bool PlayerController::init(
   _sword->setDebugColor(cugl::Color4f::BLACK);
 
   NetworkController::get()->addListener(
-      [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+      [=](const Sint32& code,
+          const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
         this->processData(code, msg);
       });
 
@@ -114,43 +112,63 @@ void PlayerController::update(float timestep) {
   _player->animate();
 }
 
+std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
+  std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
+
+  auto new_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
+  new_player->setPlayerId(player_id);
+
+  auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
+  new_player->setPlayerNode(player_node);
+  _world_node->addChild(player_node);
+  _world->addObstacle(new_player);
+
+  new_player->setDebugScene(_debug_node);
+  new_player->setDebugColor(cugl::Color4(cugl::Color4::BLACK));
+  new_player->setBasicInfoSentToHost(NetworkController::get()->isHost());
+
+  addPlayer(new_player);
+  addTrailManager(new_player);
+
+  return new_player;
+}
+
 void PlayerController::processData(
-    const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
+    const Sint32& code,
+    const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
   switch (code) {
     case NC_HOST_ALL_PLAYER_INFO: {
-      std::vector<std::shared_ptr<cugl::JsonValue>> player_positions =
-          std::get<std::vector<std::shared_ptr<cugl::JsonValue>>>(msg);
-      for (std::shared_ptr<cugl::JsonValue> player : player_positions) {
-        int player_id = player->getInt("player_id");
-        bool is_betrayer = player->getBool("is_betrayer");
-        string player_display_name = player->getString("player_display_name");
-        int room_id = player->getInt("room");
-        std::shared_ptr<cugl::JsonValue> player_position =
-            player->get("position");
-        float pos_x = player_position->get(0)->asFloat();
-        float pos_y = player_position->get(1)->asFloat();
-        processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
-                          is_betrayer);
+      auto all_info =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
+
+      for (std::shared_ptr<cugl::Serializable> info_ : all_info) {
+        auto info = std::dynamic_pointer_cast<cugl::PlayerInfo>(info_);
+        processPlayerInfo(info->player_id, info->room_id, info->pos);
+      }
+    } break;
+    case NC_HOST_ALL_PLAYER_BASIC_INFO: {
+      auto all_info =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
+
+      for (std::shared_ptr<cugl::Serializable> info_ : all_info) {
+        auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(info_);
+        processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
       }
     } break;
     case NC_CLIENT_ONE_PLAYER_INFO: {
-      std::shared_ptr<cugl::JsonValue> player =
-          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-      int player_id = player->getInt("player_id");
-      bool is_betrayer = player->getBool("is_betrayer");
-      string player_display_name = player->getString("player_display_name");
-      int room_id = player->getInt("room");
-      std::shared_ptr<cugl::JsonValue> player_position =
-          player->get("position");
-      float pos_x = player_position->get(0)->asFloat();
-      float pos_y = player_position->get(1)->asFloat();
-      processPlayerInfo(player_id, room_id, pos_x, pos_y, player_display_name,
-                        is_betrayer);
+      auto info = std::dynamic_pointer_cast<cugl::PlayerInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      processPlayerInfo(info->player_id, info->room_id, info->pos);
+    } break;
+    case NC_CLIENT_PLAYER_BASIC_INFO: {
+      auto info = std::dynamic_pointer_cast<cugl::BasicPlayerInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
     } break;
     case NC_DEPOSIT_ENERGY_SUCCESS: {
       // Process the incoming informaiton
-      std::shared_ptr<cugl::JsonValue> info =
-          std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+      auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
       int player_id = info->getInt("player_id");
       if (player_id == _player->getPlayerId()) {
         int new_energy_value = info->getInt("energy");
@@ -165,58 +183,42 @@ void PlayerController::processData(
 }
 
 void PlayerController::processPlayerInfo(int player_id, int room_id,
-                                         float pos_x, float pos_y,
-                                         string player_display_name,
-                                         bool is_betrayer) {
+                                         cugl::Vec2& pos) {
   if (player_id == _player->getPlayerId()) return;
 
-  if (getPlayer(player_id) == nullptr) {
-    // Haven't found a player with the player_id, so we must create a new one
+  auto player = getPlayerOrMakePlayer(player_id);
 
-    std::shared_ptr<cugl::Texture> player =
-        _assets->get<cugl::Texture>("player");
+  cugl::Vec2 old_pos = player->getNetworkPosCache()[0];
+  cugl::Vec2 diff = pos - old_pos;
 
-    cugl::Vec2 pos = ((cugl::Vec2)_world_node->getContentSize()) / 2.0f;
-    std::shared_ptr<Player> new_player = Player::alloc(
-        pos + cugl::Vec2(20, 20), "Johnathan", player_display_name);
-    new_player->setSensor(true);  // Makes it so we don't move other players
-    new_player->setPlayerId(player_id);
-    addPlayer(new_player);
-
-    auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
-    auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
-    // display different color if curr player and other player both betrayers.
-    bool display_betrayer = is_betrayer && _player->isBetrayer();
-    new_player->setBetrayer(is_betrayer);
-    new_player->setPlayerNode(player_node);
-    new_player->setNameNode(pixelmix_font, display_betrayer);
-    _world_node->addChild(player_node);
-    _world->addObstacle(new_player);
-
-    new_player->setDebugScene(_debug_node);
-    new_player->setDebugColor(cugl::Color4(cugl::Color4::BLACK));
+  // Movement must exceed this value to be animated
+  if (abs(diff.x) > MIN_POS_CHANGE || abs(diff.y) > MIN_POS_CHANGE) {
+    player->setState(Player::MOVING);
+  } else {
+    player->setState(Player::IDLE);
+    pos = old_pos;
   }
 
-  auto player = getPlayer(player_id);
+  player->setNetworkPos(pos);
+  player->setRoomId(room_id);
+  player->updateDirection(diff);
+  player->animate();
+}
 
-  if (player) {
-    cugl::Vec2 old_position = player->getPosition();
+void PlayerController::processBasicPlayerInfo(int player_id,
+                                              const std::string& display_name,
+                                              bool is_betrayer) {
+  if (player_id == _player->getPlayerId()) return;
 
-    // Movement must exceed this value to be animated
-    if (abs(pos_x - old_position.x) > MIN_POS_CHANGE ||
-        abs(pos_y - old_position.y) > MIN_POS_CHANGE) {
-      player->setState(Player::MOVING);
-    } else {
-      player->setState(Player::IDLE);
-    }
-    // TODO does name need to be updated here? Yes if it seems to not be set
-    // right?
+  auto player = getPlayerOrMakePlayer(player_id);
 
-    player->setRoomId(room_id);
-    player->setNetworkPos(cugl::Vec2(pos_x, pos_y));
-    player->updateDirection(pos_x - old_position.x, pos_y - old_position.y);
-    player->animate();
-  }
+  auto pixelmix_font = _assets->get<cugl::Font>("pixelmix_extra_extra_small");
+  // Display different color if curr player and other player both betrayers.
+  bool display_betrayer = is_betrayer && _player->isBetrayer();
+  player->setBetrayer(is_betrayer);
+  player->setDisplayName(display_name);
+  player->setNameNode(pixelmix_font, display_betrayer);
+  player->setBasicInfoSentToHost(true);
 }
 
 void PlayerController::interpolate(float timestep,
