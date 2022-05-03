@@ -254,7 +254,7 @@
           "y_offset": 0.16
         }
       },
-      "target-player": {
+      "infect-player": {
         "type": "Button",
         "format": {
           "type": "Anchored"
@@ -274,7 +274,7 @@
           "up": {
             "type": "Image",
             "data": {
-              "texture": "target-player",
+              "texture": "infect-player",
               "anchor": [0.5, 0.5],
               "scale": 1
             }

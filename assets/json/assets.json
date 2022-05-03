@@ -56,6 +56,20 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "infect-player": {
+      "file": "textures/ui/infect-button.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "block-player": {
+      "file": "textures/ui/block-button.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "player": {
       "file": "textures/player.png",
       "minfilter": "nearest",
@@ -242,8 +256,8 @@
       "wrapS": "clamp",
       "wrapT": "clamp",
       "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
+        "leftcap": [0, 0, 1, 20],
+        "rightcap": [300, 0, 301, 20]
       }
     },
     "energy-outline": {
