@@ -855,6 +855,16 @@ void GameScene::processData(
   }
 }
 
+void GameScene::setConnection(
+    const std::shared_ptr<cugl::NetworkConnection>& network) {
+  NetworkController::get()->init(network);
+  NetworkController::get()->addListener(
+      [=](const Sint32& code,
+          const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
+        this->processData(code, msg);
+      });
+}
+
 void GameScene::beginContact(b2Contact* contact) {
   b2Fixture* fx1 = contact->GetFixtureA();
   b2Fixture* fx2 = contact->GetFixtureB();

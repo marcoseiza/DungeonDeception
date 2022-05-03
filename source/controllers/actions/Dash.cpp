@@ -50,7 +50,7 @@ bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
 
   touch->addMotionListener(
       _listener_key,
-      [=](const cugl::TouchEventa &event, const cugl::Vec2 &previous,
+      [=](const cugl::TouchEvent &event, const cugl::Vec2 &previous,
           bool focus) { this->touchMoved(event, previous, focus); });
 #endif  // CU_TOUCH_SCREEN
 
