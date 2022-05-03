@@ -6,6 +6,7 @@
 #include "structs/EnemyStructs.h"
 #include "structs/PlayerStructs.h"
 #include "structs/Serializable.h"
+#include "structs/TerminalStructs.h"
 
 namespace cugl {
 #pragma mark -

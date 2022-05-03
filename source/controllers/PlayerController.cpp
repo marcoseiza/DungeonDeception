@@ -182,16 +182,12 @@ void PlayerController::processData(
       processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
     } break;
 
-    case NC_DEPOSIT_ENERGY_SUCCESS: {
-      // Process the incoming informaiton
-      auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-
-      int player_id = info->getInt("player_id");
-      if (player_id == _player->getPlayerId()) {
-        int new_energy_value = info->getInt("energy");
-        int new_corrupted_energy_value = info->getInt("corrupt_energy");
-        _player->setEnergy(new_energy_value);
-        _player->setCorruptedEnergy(new_corrupted_energy_value);
+    case NC_TERMINAL_ENERGY_UPDATE: {
+      auto info = std::dynamic_pointer_cast<cugl::TerminalUpdate>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      if (info->player_id == _player->getPlayerId()) {
+        _player->setEnergy(info->player_energy);
+        _player->setCorruptedEnergy(info->player_corrupted_energy);
       }
     } break;
     default:

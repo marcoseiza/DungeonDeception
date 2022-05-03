@@ -70,6 +70,12 @@ CustomNetworkDeserializer::CustomNetworkDeserializer() {
 
   // Register BasicPlayerInfo struct in the factory for deserialization.
   _factory[BasicPlayerInfo::Key] = []() { return BasicPlayerInfo::alloc(); };
+
+  // Register TerminalUpdate struct in the factory for deserialization.
+  _factory[TerminalUpdate::Key] = []() { return TerminalUpdate::alloc(); };
+
+  // Register TerminalDeposit struct in the factory for deserialization.
+  _factory[TerminalDeposit::Key] = []() { return TerminalDeposit::alloc(); };
 }
 
 /**

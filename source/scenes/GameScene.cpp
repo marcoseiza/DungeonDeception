@@ -327,10 +327,9 @@ void GameScene::update(float timestep) {
     std::shared_ptr<RoomModel> model = it.second;
 
     if (model->getType() == RoomType::TERMINAL) {
-      if (model->getEnergyToActivate() <= 0 && model->getEnergy() == 100) {
+      if (model->getEnergy() >= 100) {
         _num_terminals_activated++;
-      } else if (model->getCorruptedEnergyToActivate() <= 0 &&
-                 model->getCorruptedEnergy() == 100) {
+      } else if (model->getCorruptedEnergy() >= 100) {
         _num_terminals_corrupted++;
       }
     }

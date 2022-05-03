@@ -111,6 +111,9 @@ class TerminalController : public Controller {
       const Sint32& code,
       const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
+  void sendTerminalUpdate(const std::shared_ptr<Player>& player,
+                          const std::shared_ptr<RoomModel>& room);
+
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
