@@ -65,6 +65,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** Enemy unique id. */
   int _id;
 
+  /** Room id. */
+  int _room_id;
+
   /** Enemy health. */
   int _health;
 
@@ -235,6 +238,18 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param id The current enemy's id.
    */
   void setEnemyId(int id) { _id = id; }
+
+  /**
+   * Returns the room id of the enemy.
+   * @return the enemy room id.
+   */
+  int getRoomId() const { return _id; }
+
+  /**
+   * Sets the enemy's room id
+   * @param id The room id.
+   */
+  void setRoomId(int id) { _room_id = id; }
 
   /**
    * Returns whether the enemy is facing left.

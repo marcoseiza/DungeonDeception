@@ -321,6 +321,7 @@ void LevelController::instantiateEnemies(
                                    enemy_node->getName(), enemy_type);
 
     enemy->setEnemyId(_next_enemy_id++);
+    enemy->setRoomId(room_model->getKey());
     enemies.push_back(enemy);
 
     enemy->setNode(enemy_texture, _debug_node);

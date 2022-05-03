@@ -466,10 +466,6 @@ void GameScene::update(float timestep) {
     auto enemy = *it;
 
     if (enemy->getHealth() <= 0) {
-      // Give energy to all players in the room
-      _player_controller->getMyPlayer()->setEnergy(
-          _player_controller->getMyPlayer()->getEnergy() + 5);
-      
       _dead_enemy_cache.push_back(enemy->getEnemyId());
       enemy->deleteAllProjectiles(_world, _world_node);
       enemy->deactivatePhysics(*_world->getWorld());
@@ -811,6 +807,17 @@ void GameScene::processData(
 
         auto player = _player_controller->getPlayer(info->player_id);
         player->setEnergy(player->getEnergy() + 1);
+
+        // If the enemy dies, update all the players energy in the room they
+        // died in.
+        if (enemy->getHealth() <= 0) {
+          for (auto it : _player_controller->getPlayers()) {
+            std::shared_ptr<Player> player = it.second;
+            if (player->getRoomId() == enemy->getRoomId()) {
+              player->setEnergy(player->getEnergy() + 5);
+            }
+          }
+        }
       }
     } break;
 
