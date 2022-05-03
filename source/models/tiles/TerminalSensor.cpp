@@ -14,6 +14,7 @@ bool TerminalSensor::init(const cugl::Vec2 pos, string name) {
 
   BoxObstacle::init(pos_, size_);
 
+  _activated = false;
   setDensity(0.01f);
   setFriction(0.0f);
   setRestitution(0.01f);
