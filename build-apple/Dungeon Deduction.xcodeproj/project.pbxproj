@@ -145,6 +145,15 @@
 		D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
 		D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
 		D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */; };
+		D5E3B3572820436200298611 /* CustomNetworkSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B34F2820436200298611 /* CustomNetworkSerializer.cpp */; };
+		D5E3B3582820436200298611 /* CustomNetworkSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B34F2820436200298611 /* CustomNetworkSerializer.cpp */; };
+		D5E3B3592820436200298611 /* CustomNetworkSerializer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B34F2820436200298611 /* CustomNetworkSerializer.cpp */; };
+		D5E3B35B2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
+		D5E3B35C2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
+		D5E3B35D2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
+		D5E3B3602820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
+		D5E3B3612820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
+		D5E3B3622820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -344,6 +353,13 @@
 		D5B8BE7B27F50ED300A4A836 /* NetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkController.h; sourceTree = "<group>"; };
 		D5BA193327C6E0ED009CBEC1 /* Delaunator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Delaunator.h; sourceTree = "<group>"; };
 		D5CF094D27D6C94D00880F15 /* DefaultRooms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultRooms.h; sourceTree = "<group>"; };
+		D5E3B34F2820436200298611 /* CustomNetworkSerializer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomNetworkSerializer.cpp; sourceTree = "<group>"; };
+		D5E3B3532820436200298611 /* CustomNetworkSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNetworkSerializer.h; sourceTree = "<group>"; };
+		D5E3B3552820436200298611 /* EnemyStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyStructs.h; sourceTree = "<group>"; };
+		D5E3B3562820436200298611 /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
+		D5E3B35A2820550300298611 /* EnemyStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyStructs.cpp; sourceTree = "<group>"; };
+		D5E3B35E2820746300298611 /* PlayerStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerStructs.h; sourceTree = "<group>"; };
+		D5E3B35F2820746300298611 /* PlayerStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStruct.cpp; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
 		D5EB744D27C335C7007D157D /* Movement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movement.h; sourceTree = "<group>"; };
 		D5F3D6B027DD6E3B0071DD06 /* LevelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelModel.cpp; sourceTree = "<group>"; };
@@ -625,7 +641,10 @@
 		D57B36122811AAB8002DEBBA /* network */ = {
 			isa = PBXGroup;
 			children = (
+				D5E3B3542820436200298611 /* structs */,
 				D56377AE2819DDA3001C4D45 /* NetworkCodes.h */,
+				D5E3B34F2820436200298611 /* CustomNetworkSerializer.cpp */,
+				D5E3B3532820436200298611 /* CustomNetworkSerializer.h */,
 				D5B8BE7727F50ED300A4A836 /* NetworkController.cpp */,
 				D5B8BE7B27F50ED300A4A836 /* NetworkController.h */,
 			);
@@ -644,6 +663,18 @@
 				D598E69A27C57E3C0039326B /* LevelGenerator.h */,
 			);
 			path = generators;
+			sourceTree = "<group>";
+		};
+		D5E3B3542820436200298611 /* structs */ = {
+			isa = PBXGroup;
+			children = (
+				D5E3B35F2820746300298611 /* PlayerStruct.cpp */,
+				D5E3B35E2820746300298611 /* PlayerStructs.h */,
+				D5E3B35A2820550300298611 /* EnemyStructs.cpp */,
+				D5E3B3552820436200298611 /* EnemyStructs.h */,
+				D5E3B3562820436200298611 /* Serializable.h */,
+			);
+			path = structs;
 			sourceTree = "<group>";
 		};
 		EB22BDC325D0DE75002ACE41 /* Products */ = {
@@ -974,6 +1005,7 @@
 				572894D527D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673C27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3471280E097B002DEBBA /* SoundController.cpp in Sources */,
+				D5E3B35D2820550300298611 /* EnemyStructs.cpp in Sources */,
 				CA6B42B7281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				D53FDE2B281C5D14007723CB /* TrailManager.cpp in Sources */,
 				57CEFE4527DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
@@ -1000,7 +1032,9 @@
 				D5F3D6E027DEFA350071DD06 /* RoomModel.cpp in Sources */,
 				D579718927CFF851008FCC5E /* BasicTile.cpp in Sources */,
 				D58B0FDA27DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
+				D5E3B3592820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5E3B3622820746300298611 /* PlayerStruct.cpp in Sources */,
 				CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1026,6 +1060,7 @@
 				572894D427D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673B27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B3470280E097B002DEBBA /* SoundController.cpp in Sources */,
+				D5E3B35C2820550300298611 /* EnemyStructs.cpp in Sources */,
 				CA6B42B6281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				D53FDE2A281C5D14007723CB /* TrailManager.cpp in Sources */,
 				57CEFE4427DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
@@ -1052,7 +1087,9 @@
 				D5F3D6DF27DEFA350071DD06 /* RoomModel.cpp in Sources */,
 				D579718827CFF851008FCC5E /* BasicTile.cpp in Sources */,
 				D58B0FD927DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
+				D5E3B3582820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5E3B3612820746300298611 /* PlayerStruct.cpp in Sources */,
 				CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1078,6 +1115,7 @@
 				572894D327D1684500F9BBA5 /* Sword.cpp in Sources */,
 				D52E673A27BF305A00F8E2B8 /* InputController.cpp in Sources */,
 				D57B346F280E097B002DEBBA /* SoundController.cpp in Sources */,
+				D5E3B35B2820550300298611 /* EnemyStructs.cpp in Sources */,
 				CA6B42B5281BE08D0029B796 /* TerminalController.cpp in Sources */,
 				D53FDE29281C5D14007723CB /* TrailManager.cpp in Sources */,
 				57CEFE4327DE5E6100EF2B90 /* EnemyController.cpp in Sources */,
@@ -1104,7 +1142,9 @@
 				D5F3D6B527DD6E3B0071DD06 /* RoomModel.cpp in Sources */,
 				D579718727CFF851008FCC5E /* BasicTile.cpp in Sources */,
 				D58B0FD827DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
+				D5E3B3572820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5E3B3602820746300298611 /* PlayerStruct.cpp in Sources */,
 				CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,

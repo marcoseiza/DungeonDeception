@@ -256,7 +256,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
-
   /**
    * Gets the current attack cooldown of the enemy.
    *
@@ -310,7 +309,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    * @return whether the enemy fires a bullet.
    */
-  float didFireBullet() const { return _did_fire_bullet; }
+  bool didFireBullet() const { return _did_fire_bullet; }
 
   /**
    * Resets info about whether there was a bullet fired.

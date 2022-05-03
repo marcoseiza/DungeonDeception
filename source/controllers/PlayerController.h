@@ -5,6 +5,7 @@
 #include "../models/Player.h"
 #include "../models/Projectile.h"
 #include "../models/Sword.h"
+#include "../network/CustomNetworkSerializer.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "SoundController.h"
@@ -55,8 +56,7 @@ class PlayerController : public Controller {
    *
    * @return true if the obstacle is initialized properly, false otherwise.
    */
-  bool init(const std::shared_ptr<Player>& player,
-            const std::shared_ptr<cugl::AssetManager>& assets,
+  bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
             const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
             const std::shared_ptr<cugl::scene2::SceneNode>& debug_node);
@@ -91,7 +91,6 @@ class PlayerController : public Controller {
    * @return a new capsule object at the given point with no size.
    */
   static std::shared_ptr<PlayerController> alloc(
-      const std::shared_ptr<Player>& player,
       const std::shared_ptr<cugl::AssetManager>& assets,
       const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
       const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
@@ -99,7 +98,7 @@ class PlayerController : public Controller {
     std::shared_ptr<PlayerController> result =
         std::make_shared<PlayerController>();
 
-    if (result->init(player, assets, world, world_node, debug_node)) {
+    if (result->init(assets, world, world_node, debug_node)) {
       return result;
     }
     return nullptr;
@@ -117,21 +116,42 @@ class PlayerController : public Controller {
    * @param msg The deserialized message
    */
   void processData(const Sint32& code,
-                   const cugl::NetworkDeserializer::Message& msg);
+                   const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
   /**
    * Process the position of the player with the corresponding player_id in the
    * _players list.
    *
    * @param player_id     The player ids
-   * @param pos_x         The updated player x position
-   * @param pos_y         The updated player y position
-   * @param display_name  The name of this player
-   * @param is_betrayer   True if player is a betrayer, false otherwise
+   * @param room_id       The room the player is currently in.
+   * @param pos           The updated player position
    *
    */
-  void processPlayerInfo(int player_id, int room_id, float pos_x, float pos_y,
-                         string display_name, bool is_betrayer);
+  void processPlayerInfo(int player_id, int room_id, cugl::Vec2& pos);
+
+  /**
+   * Process the unimportant parts of the player's data with the corresponding
+   * player_id in the _players list.
+   *
+   * @param player_id     The player ids
+   * @param energy        The amount of energy the player has.
+   * @param corruption    The amount of corruption the player has
+   *
+   */
+  void processPlayerOtherInfo(int player_id, int energy, int corruption);
+
+  /**
+   * Process the basic player info that is only sent once, like display name and
+   * betrayer state.
+   *
+   * @param player_id     The player ids
+   * @param display_name  The name of this player
+   * @param is_betrayer   True if player is a betrayer, false otherwise
+   * @param energy        The amount of energy
+   * @param corrupted     The amount of corrupted energy
+   */
+  void processBasicPlayerInfo(int player_id, const std::string& display_name,
+                              bool is_betrayer);
 
   /** Update the projectiles. */
   void updateSlashes(float timestep);
@@ -153,13 +173,24 @@ class PlayerController : public Controller {
     }
   }
 
+  std::shared_ptr<Player> makePlayer(int player_id);
+
   std::shared_ptr<Player> getMyPlayer() { return _player; }
+
+  void setMyPlayer(const std::shared_ptr<Player>& player) { _player = player; }
 
   std::shared_ptr<Player> getPlayer(int id) {
     if (_players.find(id) != _players.end()) {
       return _players[id];
     }
     return nullptr;
+  }
+
+  std::shared_ptr<Player> getPlayerOrMakePlayer(int id) {
+    if (_players.find(id) != _players.end()) {
+      return _players[id];
+    }
+    return makePlayer(id);
   }
 
   std::vector<std::shared_ptr<Player>> getPlayerList() {

@@ -9,11 +9,12 @@ bool TerminalController::init(
   _assets = assets;
   _scene = _assets->get<cugl::scene2::SceneNode>("terminal-deposit-scene");
   _scene->setVisible(false);
-  
+
   _deposit_energy_scene = DepositEnergyScene::alloc(_assets);
 
   NetworkController::get()->addListener(
-      [=](const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
+      [=](const Sint32 &code,
+          const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
         this->processNetworkData(code, msg);
       });
 
@@ -24,7 +25,7 @@ void TerminalController::update(float timestep) {
   sendNetworkData();
 
   if (!_active) return;
-  
+
   if (!_deposit_energy_scene->isActive()) {
     _deposit_energy_scene->start(_terminal_room_id);
   } else {
@@ -39,13 +40,14 @@ void TerminalController::update(float timestep) {
 }
 
 void TerminalController::sendNetworkData() {
-//  if (NetworkController::get()->isHost()) {
-//
-//  }
+  //  if (NetworkController::get()->isHost()) {
+  //
+  //  }
 }
 
 void TerminalController::processNetworkData(
-    const Sint32 &code, const cugl::NetworkDeserializer::Message &msg) {
+    const Sint32 &code,
+    const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
   switch (code) {
     case NC_DEPOSIT_ENERGY: {
       // Process the incoming informaiton
@@ -53,90 +55,111 @@ void TerminalController::processNetworkData(
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
       int player_id = info->getInt("player_id");
       int terminal_room_id = info->getInt("terminal_room_id");
-      
+
       auto level_model = _level_controller->getLevelModel();
       auto player = _player_controller->getPlayer(player_id);
-      int corrupted_energy = player->getCorruptedLuminance();
-      int energy = player->getLuminance() - corrupted_energy;
+      int corrupted_energy = player->getCorruptedEnergy();
+      int energy = player->getEnergy();
 
       auto terminal_room = level_model->getRoom(terminal_room_id);
-      
-      // Whether there the player has enough corrupted energy to activate the terminal.
-      // If so, the corrupted energy will always take priority. Can be changed in the future!
-      bool will_reach_max_corruption = terminal_room->getCorruptedEnergyToActivate() - terminal_room->getCorruptedEnergy() <= corrupted_energy;
-      
-      bool will_reach_max_energy = terminal_room->getEnergyToActivate() - terminal_room->getEnergy() <= energy;
-      
+
+      // Whether there the player has enough corrupted energy to activate the
+      // terminal. If so, the corrupted energy will always take priority. Can be
+      // changed in the future!
+      bool will_reach_max_corruption =
+          terminal_room->getCorruptedEnergyToActivate() -
+              terminal_room->getCorruptedEnergy() <=
+          corrupted_energy;
+
+      bool will_reach_max_energy =
+          terminal_room->getEnergyToActivate() - terminal_room->getEnergy() <=
+          energy;
+
       if (player->isBetrayer()) {
         if (will_reach_max_energy) {
           // Use up all corrupted energy and no regular energy.
-          terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergyToActivate());
-          player->setLuminance(corrupted_energy - (terminal_room->getCorruptedEnergyToActivate() - terminal_room->getCorruptedEnergy()));
+          terminal_room->setCorruptedEnergy(
+              terminal_room->getCorruptedEnergyToActivate());
+          player->setEnergy(corrupted_energy -
+                            (terminal_room->getCorruptedEnergyToActivate() -
+                             terminal_room->getCorruptedEnergy()));
         } else {
-          terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergy() + energy);
+          terminal_room->setCorruptedEnergy(
+              terminal_room->getCorruptedEnergy() + energy);
         }
       } else {
         if (will_reach_max_corruption) {
           // Use up all corrupted energy and no regular energy.
-          terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergyToActivate());
-          player->setCorruptedLuminance(corrupted_energy - (terminal_room->getCorruptedEnergyToActivate() - terminal_room->getCorruptedEnergy()));
+          terminal_room->setCorruptedEnergy(
+              terminal_room->getCorruptedEnergyToActivate());
+          player->setCorruptedEnergy(
+              corrupted_energy -
+              (terminal_room->getCorruptedEnergyToActivate() -
+               terminal_room->getCorruptedEnergy()));
         } else if (will_reach_max_energy) {
-          terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergy() + corrupted_energy);
-          player->setCorruptedLuminance(0);
+          terminal_room->setCorruptedEnergy(
+              terminal_room->getCorruptedEnergy() + corrupted_energy);
+          player->setCorruptedEnergy(0);
           terminal_room->setEnergy(terminal_room->getEnergyToActivate());
-          player->setLuminance(energy - (terminal_room->getEnergyToActivate() - terminal_room->getEnergy()));
+          player->setEnergy(energy - (terminal_room->getEnergyToActivate() -
+                                      terminal_room->getEnergy()));
         } else {
-          terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergy() + corrupted_energy);
+          terminal_room->setCorruptedEnergy(
+              terminal_room->getCorruptedEnergy() + corrupted_energy);
           terminal_room->setEnergy(terminal_room->getEnergy() + energy);
         }
       }
-      
+
       // Send the success message to all clients
       auto success_info = cugl::JsonValue::allocObject();
-      
-      auto player_id_info = cugl::JsonValue::alloc(static_cast<long>(player_id));
+
+      auto player_id_info = cugl::JsonValue::alloc((long)(player_id));
       success_info->appendChild(player_id_info);
       player_id_info->setKey("player_id");
-      
-      auto updated_energy_info = cugl::JsonValue::alloc(static_cast<long>(player->getLuminance()));
+
+      auto updated_energy_info =
+          cugl::JsonValue::alloc(static_cast<long>(player->getEnergy()));
       success_info->appendChild(updated_energy_info);
       updated_energy_info->setKey("energy");
-      
-      auto updated_corrupt_energy_info = cugl::JsonValue::alloc(static_cast<long>(player->getCorruptedLuminance()));
+
+      auto updated_corrupt_energy_info = cugl::JsonValue::alloc(
+          static_cast<long>(player->getCorruptedEnergy()));
       success_info->appendChild(updated_corrupt_energy_info);
       updated_corrupt_energy_info->setKey("corrupt_energy");
 
       NetworkController::get()->sendAndProcess(NC_DEPOSIT_ENERGY_SUCCESS, info);
-      
-      
+
       auto terminal_update_info = cugl::JsonValue::allocObject();
-      
-      auto terminal_id_info = cugl::JsonValue::alloc(static_cast<long>(terminal_room_id));
+
+      auto terminal_id_info =
+          cugl::JsonValue::alloc(static_cast<long>(terminal_room_id));
       terminal_update_info->appendChild(terminal_id_info);
       terminal_id_info->setKey("terminal_room_id");
-      
-      auto updated_terminal_energy = cugl::JsonValue::alloc(static_cast<long>(terminal_room->getEnergy()));
+
+      auto updated_terminal_energy =
+          cugl::JsonValue::alloc(static_cast<long>(terminal_room->getEnergy()));
       terminal_update_info->appendChild(updated_terminal_energy);
       updated_terminal_energy->setKey("energy");
-      
-      auto updated_terminal_corrupted_energy = cugl::JsonValue::alloc(static_cast<long>(terminal_room->getCorruptedEnergy()));
+
+      auto updated_terminal_corrupted_energy = cugl::JsonValue::alloc(
+          static_cast<long>(terminal_room->getCorruptedEnergy()));
       terminal_update_info->appendChild(updated_terminal_corrupted_energy);
       updated_terminal_corrupted_energy->setKey("corrupt_energy");
 
-      NetworkController::get()->sendAndProcess(NC_TERMINAL_ENERGY_UPDATE, terminal_update_info);
+      NetworkController::get()->sendAndProcess(NC_TERMINAL_ENERGY_UPDATE,
+                                               terminal_update_info);
     } break;
-      
+
     case NC_TERMINAL_ENERGY_UPDATE: {
       std::shared_ptr<cugl::JsonValue> info =
           std::get<std::shared_ptr<cugl::JsonValue>>(msg);
       int terminal_room_id = info->getInt("terminal_room_id");
       int energy = info->getInt("energy");
       int corrupted_energy = info->getInt("corrupt_energy");
-      auto terminal_room = _level_controller->getLevelModel()->getRoom(terminal_room_id);
+      auto terminal_room =
+          _level_controller->getLevelModel()->getRoom(terminal_room_id);
       terminal_room->setEnergy(energy);
       terminal_room->setCorruptedEnergy(corrupted_energy);
     } break;
-      
   }
-  
 }

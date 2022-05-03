@@ -39,6 +39,9 @@
     <ClInclude Include="..\..\source\scenes\PeerScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\source\controllers\InputController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,6 +124,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\SoundController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\controllers\TerminalController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\controllers\TrailManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\controllers\enemies\GruntController.h">
@@ -218,6 +227,9 @@
     <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\controllers\InputController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -296,6 +308,12 @@
     <ClCompile Include="..\..\source\controllers\SoundController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\controllers\TerminalController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\controllers\TrailManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\scenes\LoadingLevelScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -346,7 +364,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DungeonDeduction.rc">
+    <ResourceCompile Include="DungeonDeception.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

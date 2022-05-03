@@ -16,6 +16,8 @@ bool Movement::init(const std::shared_ptr<cugl::AssetManager> &assets,
   _left_screen_bounds = Action::_display_coord_bounds;
   _left_screen_bounds.size.width *= LEFT_ZONE_FRAC;
 
+  _pause = false;
+
   _joystick_base = std::dynamic_pointer_cast<cugl::scene2::PolygonNode>(
       assets->get<cugl::scene2::SceneNode>("ui-scene_joystick-base"));
   _joystick = std::dynamic_pointer_cast<cugl::scene2::PolygonNode>(
@@ -45,6 +47,8 @@ bool Movement::init(const std::shared_ptr<cugl::AssetManager> &assets,
 }
 
 bool Movement::update() {
+  if (_pause) return true;
+
   _joystick->setVisible(_show_joystick);
   _joystick_base->setVisible(_show_joystick);
 
@@ -83,11 +87,22 @@ bool Movement::dispose() {
   return true;
 }
 
+void Movement::pause() {
+  _pause = true;
+  _joystick->setVisible(false);
+  _joystick_base->setVisible(false);
+  _joystick_diff.setZero();
+}
+
+void Movement::resume() { _pause = false; }
+
 #pragma mark Listeners
 
 #ifdef CU_TOUCH_SCREEN
 
 void Movement::touchBegan(const cugl::TouchEvent &event, bool focus) {
+  if (_pause) return;
+
   cugl::Vec2 pos = event.position;
 
   if (_left_screen_bounds.contains(pos) && _touch_ids.empty()) {
@@ -99,15 +114,25 @@ void Movement::touchBegan(const cugl::TouchEvent &event, bool focus) {
 }
 
 void Movement::touchEnded(const cugl::TouchEvent &event, bool focus) {
+  if (_pause) {
+    _show_joystick = false;
+    _touch_ids.clear();
+    _joystick_diff.setZero();
+  }
+
   if (_touch_ids.find(event.touch) != _touch_ids.end()) {
     _show_joystick = false;
     _touch_ids.clear();
-    _joystick_diff = cugl::Vec2::ZERO;
+    _joystick_diff.setZero();
   }
 }
 
 void Movement::touchMoved(const cugl::TouchEvent &event,
                           const cugl::Vec2 &previous, bool focus) {
+  if (_pause) {
+    _joystick_diff.setZero();
+  }
+
   if (_touch_ids.find(event.touch) != _touch_ids.end()) {
     cugl::Vec2 pos = event.position;
 

@@ -155,7 +155,7 @@ bool ProgressBar::initWithCaps(const std::shared_ptr<Texture>& background,
 
     _foreground->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     if (_begincap == nullptr) {
-        _foreground->setPosition(-_background->getSize().width/2.0f,0);
+        _foreground->setPosition(0,0);
     } else {
         _foreground->setPosition(_begincap->getBoundingBox().getMaxX(),0);
     }
