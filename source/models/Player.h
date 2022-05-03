@@ -200,7 +200,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The current player energy.
    */
   void setEnergy(int value) {
-    if (_energy < 100) _energy = value;
+    if (value <= 100) _energy = value;
     if (_energy_bar && _corrupted_energy_bar) {
       _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
       _corrupted_energy_bar->setProgress(_energy / 100.0f);
@@ -233,9 +233,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The value that is corrupted.
    */
   void setCorruptedEnergy(int value) {
-    if (value <= 100) {
-      _corrupted_energy = value;
-    }
+    if (value <= 100) _corrupted_energy = value;
+
     if (_energy_bar && _corrupted_energy_bar) {
       _corrupted_energy_bar->setProgress((_energy) / 100.0f);
     }

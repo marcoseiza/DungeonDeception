@@ -42,7 +42,7 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _player_node = nullptr;
   _current_state = IDLE;
   _health = HEALTH;
-  _energy = 40;
+  _energy = 100;
   _corrupted_energy = 0;
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;
