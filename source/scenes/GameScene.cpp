@@ -857,12 +857,12 @@ void GameScene::processData(
 
 void GameScene::setConnection(
     const std::shared_ptr<cugl::NetworkConnection>& network) {
-  _network = network;
-  NetworkController::get()->init(_network);
+  NetworkController::get()->init(network);
   NetworkController::get()->addListener(
-          [=](const Sint32& code, const cugl::NetworkDeserializer::Message& msg) {
-              this->processData(code, msg);
-          });
+      [=](const Sint32& code,
+          const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
+        this->processData(code, msg);
+      });
 }
 
 void GameScene::beginContact(b2Contact* contact) {
