@@ -318,23 +318,8 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  // Update the number of terminals activated and corrupted.
-  // TODO: Update number of terminals with new terminal system. Issue #234.
-  _num_terminals_activated = 0;
-  _num_terminals_corrupted = 0;
-
-  for (auto it : _level_controller->getLevelModel()->getRooms()) {
-    std::shared_ptr<RoomModel> model = it.second;
-
-    if (model->getType() == RoomType::TERMINAL) {
-      if (model->getEnergy() >= model->getEnergyToActivate()) {
-        _num_terminals_activated++;
-      } else if (model->getCorruptedEnergy() >=
-                 model->getCorruptedEnergyToActivate()) {
-        _num_terminals_corrupted++;
-      }
-    }
-  }
+  _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
+  _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());

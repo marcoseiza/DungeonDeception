@@ -29,6 +29,8 @@ void TerminalUpdate::serialize(cugl::NetworkSerializer* serializer) {
   serializer->writeUint32(room_id);
   serializer->writeUint32(room_energy);
   serializer->writeUint32(room_corrupted_energy);
+  serializer->writeUint32(num_terminals_activated);
+  serializer->writeUint32(num_terminals_corrupted);
 }
 
 void TerminalUpdate::deserialize(cugl::NetworkDeserializer* deserializer) {
@@ -38,6 +40,8 @@ void TerminalUpdate::deserialize(cugl::NetworkDeserializer* deserializer) {
   room_id = std::get<Uint32>(deserializer->read());
   room_energy = std::get<Uint32>(deserializer->read());
   room_corrupted_energy = std::get<Uint32>(deserializer->read());
+  num_terminals_activated = std::get<Uint32>(deserializer->read());
+  num_terminals_corrupted = std::get<Uint32>(deserializer->read());
 }
 
 }  // namespace cugl

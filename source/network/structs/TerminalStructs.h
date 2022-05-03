@@ -67,6 +67,11 @@ struct TerminalUpdate : public Serializable {
   /** The amount of corrupted energy for the room. */
   int room_corrupted_energy;
 
+  /** The amount of terminals activated. */
+  int num_terminals_activated;
+  /** The amount of terminals corrupted. */
+  int num_terminals_corrupted;
+
   /**
    * Alloc a new serializable object
    * @return The shared pointer with the new object.
