@@ -52,28 +52,25 @@ void DepositEnergyScene::update() {
   if (_terminal_room_id != -1) {
     auto terminal_room =
         _level_controller->getLevelModel()->getRoom(_terminal_room_id);
-    _energy_bar->setProgress(
-        static_cast<float>(terminal_room->getEnergy() / 100.0f));
+    _energy_bar->setProgress((float)terminal_room->getEnergy() / 100.0f);
     _corrupted_energy_bar->setProgress(
-        static_cast<float>(terminal_room->getCorruptedEnergy() / 100.0f));
+        (float)terminal_room->getCorruptedEnergy() / 100.0f);
   }
 }
 
 void DepositEnergyScene::depositButtonListener(const std::string& name,
                                                bool down) {
-  if (!down) return;
+  if (down) return;
 
   auto info = cugl::TerminalDeposit::alloc();
-
   info->room_id = _terminal_room_id;
   info->player_id = _player_controller->getMyPlayer()->getPlayerId();
-
   NetworkController::get()->sendOnlyToHostOrProcess(NC_DEPOSIT_ENERGY, info);
 }
 
 void DepositEnergyScene::doneButtonListener(const std::string& name,
                                             bool down) {
-  if (!down) return;
+  if (down) return;
 
   _exit = true;
 }

@@ -128,12 +128,7 @@ class TerminalController : public Controller {
 
  private:
   /** Called when the terminal voting is done. */
-  void done() {
-    _active = false;
-    _scene->setVisible(false);
-    InputController::get()->resume();
-    _terminal_sensor->activate();
-  }
+  void done();
 };
 
 #endif  // CONTROLLERS_TERMINAL_CONTROLLER_H_

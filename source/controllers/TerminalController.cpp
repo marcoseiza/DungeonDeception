@@ -50,7 +50,7 @@ void TerminalController::processNetworkData(
     const Sint32 &code,
     const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
   switch (code) {
-    case NC_DEPOSIT_ENERGY: {
+    case NC_DEPOSIT_ENERGY: {  // ONLY HOST
       // Process the incoming informaiton
       auto info = std::dynamic_pointer_cast<cugl::TerminalDeposit>(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
@@ -78,13 +78,18 @@ void TerminalController::processNetworkData(
       int cor_energy_to_deposit = std::min(cor_energy_needed, cor_energy);
       terminal_room->setCorruptedEnergy(terminal_room->getCorruptedEnergy() +
                                         cor_energy_to_deposit);
-      player->setCorruptedEnergy(cor_energy - cor_energy_to_deposit);
+      if (player->isBetrayer()) {
+        player->setEnergy(cor_energy - cor_energy_to_deposit);
 
-      if (!player->isBetrayer() && cor_energy_to_deposit < cor_energy_needed) {
-        int energy_to_deposit = std::min(energy_needed, energy);
-        terminal_room->setEnergy(terminal_room->getEnergy() +
-                                 energy_to_deposit);
-        player->setEnergy(energy - energy_to_deposit);
+      } else {
+        player->setCorruptedEnergy(cor_energy - cor_energy_to_deposit);
+
+        if (cor_energy_to_deposit < cor_energy_needed) {
+          int energy_to_deposit = std::min(energy_needed, energy);
+          terminal_room->setEnergy(terminal_room->getEnergy() +
+                                   energy_to_deposit);
+          player->setEnergy(energy - energy_to_deposit);
+        }
       }
 
       sendTerminalUpdate(player, terminal_room);
@@ -116,4 +121,11 @@ void TerminalController::sendTerminalUpdate(
   info->room_corrupted_energy = room->getCorruptedEnergy();
 
   NetworkController::get()->sendAndProcess(NC_TERMINAL_ENERGY_UPDATE, info);
+}
+
+void TerminalController::done() {
+  _active = false;
+  _scene->setVisible(false);
+  InputController::get()->resume();
+  _terminal_sensor->activate();
 }

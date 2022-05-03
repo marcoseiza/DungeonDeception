@@ -41,4 +41,3 @@ void TerminalUpdate::deserialize(cugl::NetworkDeserializer* deserializer) {
 }
 
 }  // namespace cugl
-#endif  // NETWORK_STRUCTS_TERMINAL_STRUCTS_H_
