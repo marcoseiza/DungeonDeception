@@ -20,11 +20,11 @@
 #define HURT_FRAMES 20
 #define DEAD_FRAMES 175
 
-#define MIN_DIFF_FOR_DIR_CHANGE 0.05
+#define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
 #pragma mark Init
 
-bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
+bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   cugl::Vec2 pos_ = pos;
   cugl::Size size_ = cugl::Size(WIDTH, HEIGHT);
 
@@ -39,13 +39,11 @@ bool Player::init(const cugl::Vec2 pos, string name, string display_name) {
   CapsuleObstacle::init(pos_, size_);
   setName(name);
 
-  _display_name = display_name;
-
   _player_node = nullptr;
   _current_state = IDLE;
   _health = HEALTH;
-  _luminance = 40;
-  _corrupted_luminance = 0;
+  _energy = 40;
+  _corrupted_energy = 0;
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;
   _hurt_frames = 0;
@@ -71,21 +69,56 @@ void Player::setPlayerNode(
   _player_node = node;
 }
 
-void Player::setNameNode(std::shared_ptr<cugl::Font> name_font,
+void Player::setNameNode(const std::shared_ptr<cugl::Font>& name_font,
                          bool display_betrayer) {
-  _name_node = cugl::scene2::TextField::allocWithText(_display_name, name_font);
+  if (_name_node == nullptr) {
+    _name_node = cugl::scene2::TextField::allocWithText("", name_font);
+    _name_node->setAnchor(.5, 0);
+    _name_node->setName("player_name");
+    _player_node->addChild(_name_node);
+  }
+
   _name_node->setForeground(cugl::Color4::WHITE);
   if (display_betrayer) {
     _name_node->setForeground(cugl::Color4::RED);
     _name_node->setDropShadow(.75, -.75);
   }
-  _name_node->setAnchor(.5, 0);
-  _name_node->setName("player_name");
+  _name_node->setText(_display_name, true);
 
-  _name_node->setPosition(_player_node->getWidth() / 2.0f,
-                          _player_node->getHeight() / 1.45f);
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  pos.y *= 1.48f;
+  _name_node->setPosition(pos);
+  _name_node->setPriority(std::numeric_limits<float>::max());
+}
 
-  _player_node->addChild(_name_node);
+void Player::setEnergyBar(
+    const std::shared_ptr<cugl::scene2::ProgressBar>& bar) {
+  _energy_bar = bar;
+  _player_node->addChild(_energy_bar);
+  _energy_bar->setAnchor(0.5f, 0.5f);
+
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  pos.y *= 1.38f;
+  _energy_bar->setPosition(pos);
+  _energy_bar->setPriority(std::numeric_limits<float>::max());
+  for (auto child : _energy_bar->getChildren()) {
+    child->setPriority(std::numeric_limits<float>::max());
+  }
+}
+
+void Player::setCorruptedEnergyBar(
+    const std::shared_ptr<cugl::scene2::ProgressBar>& bar) {
+  _corrupted_energy_bar = bar;
+  _player_node->addChild(_corrupted_energy_bar);
+  _corrupted_energy_bar->setAnchor(0.5f, 0.5f);
+
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  pos.y *= 1.38f;
+  _corrupted_energy_bar->setPosition(pos);
+  _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max());
+  for (auto child : _corrupted_energy_bar->getChildren()) {
+    child->setPriority(std::numeric_limits<float>::max());
+  }
 }
 
 void Player::takeDamage() {
@@ -168,33 +201,33 @@ void Player::animate() {
   }
 }
 
-void Player::move(float forwardX, float forwardY, float speed) {
-  _last_move_dir.set(forwardX, forwardY);
+void Player::move(const cugl::Vec2& forward, float speed) {
+  _last_move_dir.set(forward.x, forward.y);
 
-  setVX(speed * forwardX);
-  setVY(speed * forwardY);
-  if (forwardX == 0) setVX(0);
-  if (forwardY == 0) setVY(0);
+  setVX(speed * forward.x);
+  setVY(speed * forward.y);
+  if (forward.x == 0) setVX(0);
+  if (forward.y == 0) setVY(0);
 
   // Set the correct frame for idle
-  updateDirection(forwardX, forwardY);
+  updateDirection(forward);
 }
 
-void Player::updateDirection(float x_diff, float y_diff) {
+void Player::updateDirection(const cugl::Vec2& diff) {
   int new_direc = _mv_direc;
-  bool sufficiently_equal = (std::abs(std::abs(x_diff) - std::abs(y_diff)) <=
+  bool sufficiently_equal = (std::abs(std::abs(diff.x) - std::abs(diff.y)) <=
                              MIN_DIFF_FOR_DIR_CHANGE);
 
-  if (std::abs(x_diff) >= std::abs(y_diff) || sufficiently_equal) {
-    if (x_diff < 0) {
+  if (std::abs(diff.x) >= std::abs(diff.y) || sufficiently_equal) {
+    if (diff.x < 0) {
       new_direc = IDLE_LEFT;
-    } else if (x_diff > 0) {
+    } else if (diff.x > 0) {
       new_direc = IDLE_RIGHT;
     }
-  } else if (std::abs(x_diff) < std::abs(y_diff)) {
-    if (y_diff < 0) {
+  } else if (std::abs(diff.x) < std::abs(diff.y)) {
+    if (diff.y < 0) {
       new_direc = IDLE_DOWN;
-    } else if (y_diff > 0) {
+    } else if (diff.y > 0) {
       new_direc = IDLE_UP;
     }
   }

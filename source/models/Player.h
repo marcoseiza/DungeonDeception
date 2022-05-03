@@ -19,6 +19,12 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The scene graph node for the player name (moving). */
   std::shared_ptr<cugl::scene2::Label> _name_node;
 
+  /** The energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _energy_bar;
+
+  /** The corrupted energy bar for the player name (moving). */
+  std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -46,11 +52,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Player health. */
   int _health;
 
-  /** Player luminance. */
-  int _luminance;
-  
-  /** Amount of player luminance that has been corrupted. */
-  int _corrupted_luminance;
+  /** Player energy. */
+  int _energy;
+
+  /** Amount of player energy that has been corrupted. */
+  int _corrupted_energy;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -73,6 +79,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** The move direction for the last frame. */
   cugl::Vec2 _last_move_dir;
+
+  /** If basic display name and betrayer info has been sent to host. */
+  bool _basic_info_sent_to_host;
 
  public:
   /** Countdown to change animation frame. */
@@ -107,12 +116,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param  pos          Initial position in world coordinates.
    * @param  name         The name of the player (for Box2D).
-   * @param  display_name The chosen name of the player.
 
    *
    * @return  true if the obstacle is initialized properly, false otherwise.
    */
-  virtual bool init(const cugl::Vec2 pos, string name, string display_name);
+  virtual bool init(const cugl::Vec2 pos, const std::string& name);
 
 #pragma mark Static Constructors
   /**
@@ -120,14 +128,13 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param  pos          Initial position in world coordinates.
    * @param  name         The name of the player (for Box2D).
-   * @param  display_name The chosen name of the player.
    *
    * @return a new capsule object at the given point with no size.
    */
-  static std::shared_ptr<Player> alloc(const cugl::Vec2 pos, string name,
-                                       string display_name) {
+  static std::shared_ptr<Player> alloc(const cugl::Vec2 pos,
+                                       const std::string& name) {
     std::shared_ptr<Player> result = std::make_shared<Player>();
-    return (result->init(pos, name, display_name) ? result : nullptr);
+    return (result->init(pos, name) ? result : nullptr);
   }
 
 #pragma mark Properties
@@ -181,40 +188,62 @@ class Player : public cugl::physics2::CapsuleObstacle {
   void setHealth(int value) { _health = value; }
 
   /**
-   * Returns the current luminance of the player.
+   * Returns the current energy of the player.
    *
-   * @return the current luminance.
+   * @return the current energy.
    */
-  int getLuminance() const { return _luminance; }
+  int getEnergy() const { return _energy; }
 
   /**
-   * Sets the current player's luminance.
+   * Sets the current player's energy.
    *
-   * @param value The current player luminance.
+   * @param value The current player energy.
    */
-  void setLuminance(int value) {
-    if (_luminance < 100) _luminance = value;
+  void setEnergy(int value) {
+    if (_energy < 100) _energy = value;
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
   }
-  
-  /**
-   * Returns the current corrupted luminance of the player.
-   *
-   * @return the current luminance.
-   */
-  int getCorruptedLuminance() const { return _corrupted_luminance; }
 
   /**
-   * Sets the current player's luminance.
+   * Returns the current corrupted energy of the player.
    *
-   * @param value The current player luminance.
+   * @return the current energy.
    */
-  void setCorruptedLuminance(int value) {
-    if (value <= 100) _corrupted_luminance = value;
+  int getCorruptedEnergy() const { return _corrupted_energy; }
+
+  /**
+   * Turns regular energy into corrupted energy.
+   *
+   * @param value The amount of energy to be corrupted.
+   */
+  void turnEnergyCorrupted(int value) {
+    _corrupted_energy += std::min(value, _energy);
+
+    if (_energy_bar && _corrupted_energy_bar) {
+      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+      _corrupted_energy_bar->setProgress(_energy / 100.0f);
+    }
+  }
+
+  /**
+   * Manually set the corruption value.
+   * @param value The value that is corrupted.
+   */
+  void setCorruptedEnergy(int value) {
+    if (value <= 100) {
+      _corrupted_energy = value;
+    }
+    if (_energy_bar && _corrupted_energy_bar) {
+      _corrupted_energy_bar->setProgress((_energy) / 100.0f);
+    }
   }
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
   void setCorrupted();
-  
+
   /**
    * Reduce health by value.
    *
@@ -374,6 +403,16 @@ class Player : public cugl::physics2::CapsuleObstacle {
     return (float)millis;
   }
 
+  /**
+   * Set that the player has sent all it's basic info to the host.
+   */
+  void setBasicInfoSentToHost(bool val) { _basic_info_sent_to_host = val; }
+
+  /**
+   * @return If basic info has been sent to host.
+   */
+  bool hasBasicInfoSentToHost() { return _basic_info_sent_to_host; }
+
 #pragma mark Graphics
 
   /**
@@ -381,16 +420,36 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param node      The scene graph node representing this player.
    */
-  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode> &node);
+  void setPlayerNode(const std::shared_ptr<cugl::scene2::SpriteNode>& node);
+
+  /**
+   * Set the display name for the character. Will display above the head.
+   *
+   * @param name The name to display
+   */
+  void setDisplayName(const std::string& name) { _display_name = name; }
 
   /**
    * Sets the scene graph node representing the name above the player.
    *
-   * @param name_font         The font for the name above the player.
+   * @param font The font for the name above the player.
    * @param display_betrayer  True if name should be shown in different color.
    */
-  void setNameNode(std::shared_ptr<cugl::Font> name_font,
+  void setNameNode(const std::shared_ptr<cugl::Font>& font,
                    bool display_betrayer);
+
+  /**
+   * Sets the scene graph node representing the floating energy bar.
+   * @param node The scene graph node representing the energy bar.
+   */
+  void setEnergyBar(const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
+
+  /**
+   * Sets the scene graph node representing the floating corrupted energy bar.
+   * @param node The scene graph node representing the corrupted energy bar.
+   */
+  void setCorruptedEnergyBar(
+      const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
 
   /**
    * Gets the scene graph node representing this player's name.
@@ -441,18 +500,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param forward Amount to move in the x and y direction
    * @param speed The speed of movement.
    */
-  void move(cugl::Vec2 forward, float speed) {
-    move(forward.x, forward.y, speed);
-  }
-
-  /**
-   * Moves the player by the specified amount.
-   *
-   * @param forwardX Amount to move in the x direction.
-   * @param forwardY Amount to move in the y direction.
-   * @param speed The speed of movement.
-   */
-  void move(float forwardX, float forwardY, float speed);
+  void move(const cugl::Vec2& forward, float speed);
 
   /**
    * @return Returns the last move direction given to the player.
@@ -463,10 +511,9 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * Updates the directino the player sprite is facing based on changes in x and
    * y.
    *
-   * @param x_diff The change in x.
-   * @param y_diff The change in y.
+   * @param diff The change in position
    */
-  void updateDirection(float x_diff, float y_diff);
+  void updateDirection(const cugl::Vec2& diff);
 
   /**
    * Make a sword slash projectile.

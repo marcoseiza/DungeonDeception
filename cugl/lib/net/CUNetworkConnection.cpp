@@ -80,7 +80,8 @@ constexpr uint8_t ROOM_LENGTH = 5;
 constexpr unsigned int SHUTDOWN_BLOCK = 10;
 
 /** How long to wait before considering ourselves disconnected (ms) */
-constexpr size_t DISCONN_TIME = 5000;
+// constexpr size_t DISCONN_TIME = 5000;
+constexpr size_t DISCONN_TIME = std::numeric_limits<size_t>::max();
 
 /** How long to wait between reconnection attempts (seconds) */
 constexpr size_t RECONN_GAP = 3;
@@ -268,6 +269,14 @@ void NetworkConnection::setReliability(PacketReliability reliability) {
             break;
     }
 }
+
+/**
+  * All packets have a maximum size that can be sent over the network.
+  * This method returns the maximum size that cugl allows.
+  *
+  * @return The maximum packet size.
+  */
+unsigned int NetworkConnection::getMaxPacketSize() { return MAX_PACKET; }
 
 #pragma mark -
 #pragma mark Connection Handshake
