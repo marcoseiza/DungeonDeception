@@ -466,6 +466,10 @@ void GameScene::update(float timestep) {
     auto enemy = *it;
 
     if (enemy->getHealth() <= 0) {
+      // Give energy to all players in the room
+      _player_controller->getMyPlayer()->setEnergy(
+          _player_controller->getMyPlayer()->getEnergy() + 5);
+      
       _dead_enemy_cache.push_back(enemy->getEnemyId());
       enemy->deleteAllProjectiles(_world, _world_node);
       enemy->deactivatePhysics(*_world->getWorld());
