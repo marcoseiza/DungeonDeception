@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EBBF18901D74904A008E2001"
                BuildableName = "Dungeon Deduction (Mac).app"
-               BlueprintName = "Dungeon Deduction (Mac)"
+               BlueprintName = "Dungeon Deception (Mac)"
                ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBBF18901D74904A008E2001"
             BuildableName = "Dungeon Deduction (Mac).app"
-            BlueprintName = "Dungeon Deduction (Mac)"
+            BlueprintName = "Dungeon Deception (Mac)"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBBF18901D74904A008E2001"
             BuildableName = "Dungeon Deduction (Mac).app"
-            BlueprintName = "Dungeon Deduction (Mac)"
+            BlueprintName = "Dungeon Deception (Mac)"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

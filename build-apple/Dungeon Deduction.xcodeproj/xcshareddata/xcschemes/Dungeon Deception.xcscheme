@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
-               BuildableName = "Dungeon Deduction (Sim).app"
-               BlueprintName = "Dungeon Deduction (Sim)"
+               BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+               BuildableName = "Dungeon Deduction.app"
+               BlueprintName = "Dungeon Deception"
                ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
-            BuildableName = "Dungeon Deduction (Sim).app"
-            BlueprintName = "Dungeon Deduction (Sim)"
+            BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+            BuildableName = "Dungeon Deduction.app"
+            BlueprintName = "Dungeon Deception"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "EB22BF5D25D0E8BC002ACE41"
-            BuildableName = "Dungeon Deduction (Sim).app"
-            BlueprintName = "Dungeon Deduction (Sim)"
+            BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
+            BuildableName = "Dungeon Deduction.app"
+            BlueprintName = "Dungeon Deception"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
