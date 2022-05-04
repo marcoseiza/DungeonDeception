@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-               BuildableName = "Dungeon Deduction.app"
+               BuildableName = "Dungeon Deception.app"
                BlueprintName = "Dungeon Deception"
                ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-            BuildableName = "Dungeon Deduction.app"
+            BuildableName = "Dungeon Deception.app"
             BlueprintName = "Dungeon Deception"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EB74548B1D74D75C002FBAE6"
-            BuildableName = "Dungeon Deduction.app"
+            BuildableName = "Dungeon Deception.app"
             BlueprintName = "Dungeon Deception"
             ReferencedContainer = "container:Dungeon Deduction.xcodeproj">
          </BuildableReference>
