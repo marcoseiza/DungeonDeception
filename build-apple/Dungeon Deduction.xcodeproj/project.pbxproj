@@ -151,9 +151,9 @@
 		D5E3B35B2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
 		D5E3B35C2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
 		D5E3B35D2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
-		D5E3B3602820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
-		D5E3B3612820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
-		D5E3B3622820746300298611 /* PlayerStruct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStruct.cpp */; };
+		D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
+		D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
+		D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -359,7 +359,7 @@
 		D5E3B3562820436200298611 /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		D5E3B35A2820550300298611 /* EnemyStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyStructs.cpp; sourceTree = "<group>"; };
 		D5E3B35E2820746300298611 /* PlayerStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerStructs.h; sourceTree = "<group>"; };
-		D5E3B35F2820746300298611 /* PlayerStruct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStruct.cpp; sourceTree = "<group>"; };
+		D5E3B35F2820746300298611 /* PlayerStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStructs.cpp; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
 		D5EB744D27C335C7007D157D /* Movement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movement.h; sourceTree = "<group>"; };
 		D5F3D6B027DD6E3B0071DD06 /* LevelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelModel.cpp; sourceTree = "<group>"; };
@@ -668,7 +668,7 @@
 		D5E3B3542820436200298611 /* structs */ = {
 			isa = PBXGroup;
 			children = (
-				D5E3B35F2820746300298611 /* PlayerStruct.cpp */,
+				D5E3B35F2820746300298611 /* PlayerStructs.cpp */,
 				D5E3B35E2820746300298611 /* PlayerStructs.h */,
 				D5E3B35A2820550300298611 /* EnemyStructs.cpp */,
 				D5E3B3552820436200298611 /* EnemyStructs.h */,
@@ -1034,7 +1034,7 @@
 				D58B0FDA27DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
 				D5E3B3592820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */,
-				D5E3B3622820746300298611 /* PlayerStruct.cpp in Sources */,
+				D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */,
 				CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1089,7 +1089,7 @@
 				D58B0FD927DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
 				D5E3B3582820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */,
-				D5E3B3612820746300298611 /* PlayerStruct.cpp in Sources */,
+				D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */,
 				CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1144,7 +1144,7 @@
 				D58B0FD827DC1DAD00E65692 /* LoadingLevelScene.cpp in Sources */,
 				D5E3B3572820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */,
-				D5E3B3602820746300298611 /* PlayerStruct.cpp in Sources */,
+				D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */,
 				CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
