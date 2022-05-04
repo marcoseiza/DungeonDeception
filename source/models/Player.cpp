@@ -52,6 +52,7 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _is_respawning = false;
   _mv_direc = IDLE_LEFT;
   _room_id = -1;
+  _can_corrupt = true;
 
   setDensity(0.01f);
   setFriction(0.0f);
@@ -138,9 +139,16 @@ void Player::dies() {
 }
 
 void Player::setCorrupted() {
-  if (_is_betrayer) {
+  if (_is_betrayer && _can_corrupt) {
     _corrupt_count = 10;
     _player_node->setColor(cugl::Color4::ORANGE);
+  }
+}
+
+void Player::setCanCorrupt(bool val) {
+  _can_corrupt = val;
+  if (!val) {
+    _blocked_corrupt_count = 3600; // 1 minute
   }
 }
 

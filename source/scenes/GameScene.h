@@ -226,22 +226,6 @@ class GameScene : public cugl::Scene2 {
 #pragma mark Networking
 
   /**
-   * Returns the network connection (as made by this scene).
-   *
-   * This value will be reset every time the scene is made active.
-   *
-   * @return the network connection (as made by this scene)
-   */
-  void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network) {
-    NetworkController::get()->init(network);
-    NetworkController::get()->addListener(
-        [=](const Sint32& code,
-            const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
-          this->processData(code, msg);
-        });
-  }
-
-  /**
    * Sets the map SceneNode.
    */
   void setMap(const std::shared_ptr<cugl::scene2::SceneNode>& map) {
@@ -280,6 +264,15 @@ class GameScene : public cugl::Scene2 {
    */
   void processData(const Sint32& code,
                    const cugl::CustomNetworkDeserializer::CustomMessage& msg);
+
+  /**
+   * Returns the network connection (as made by this scene).
+   *
+   * This value will be reset every time the scene is made active.
+   *
+   * @return the network connection (as made by this scene)
+   */
+  void setConnection(const std::shared_ptr<cugl::NetworkConnection>& network);
 
   /**
    * Broadcasts the relevant network information to all clients and/or the host.

@@ -31,16 +31,17 @@ class RoomModel {
 
   /** The number of players required for activation. */
   int _num_players_required;
-  
+
   /** The amount of energy to activate the room, if it is a terminal room.*/
   int _energy_to_activate;
-  
-  /** The amount of corrupted energy to activate the room for betrayers, if it is a terminal room. */
+
+  /** The amount of corrupted energy to activate the room for betrayers, if it
+   * is a terminal room. */
   int _corrupted_energy_to_activate;
-  
+
   /** The current energy count. */
   int _energy;
-  
+
   /** The current corrupted energy count. */
   int _corrupted_energy;
 
@@ -49,9 +50,13 @@ class RoomModel {
    * Construct an empty RoomModel, please never use this. Instead use alloc().
    */
   RoomModel()
-      : _num_players_required(-1), _key(-1), _type(RoomType::STANDARD),
-        _energy_to_activate(100), _corrupted_energy_to_activate(100),
-        _energy(0), _corrupted_energy(0) {}
+      : _num_players_required(-1),
+        _key(-1),
+        _type(RoomType::STANDARD),
+        _energy_to_activate(100),
+        _corrupted_energy_to_activate(100),
+        _energy(0),
+        _corrupted_energy(0) {}
   /** Destroy this RoomModel and all it's internal data. */
   ~RoomModel() { dispose(); }
 
@@ -199,15 +204,52 @@ class RoomModel {
    * @return The number of players required.
    */
   int getNumPlayersRequired() { return _num_players_required; }
-  
+
+  /**
+   * Get the energy level of this terminal room.
+   * @return The energy level.
+   */
   int getEnergy() { return _energy; }
+  /**
+   * Set the energy level of this terminal room
+   * @param energy the amount of energy.
+   */
   void setEnergy(int energy) { _energy = energy; }
+
+  /**
+   * Get the corrupted energy level of this terminal room.
+   * @return The corrupted energy level.
+   */
   int getCorruptedEnergy() { return _corrupted_energy; }
-  void setCorruptedEnergy(int corrupted_energy) { _corrupted_energy = corrupted_energy; }
+  /**
+   * Set the corrupted energy level of this terminal room
+   * @param energy the amount of corrupted energy.
+   */
+  void setCorruptedEnergy(int energy) { _corrupted_energy = energy; }
+
+  /**
+   * Get the amount of energy needed to activate the terminal.
+   * @return The amount of energy needed to activate the terminal.
+   */
   int getEnergyToActivate() { return _energy_to_activate; }
-  void setEnergyToActivate(int energy_to_activate ) { _energy_to_activate = energy_to_activate; }
+  /**
+   * Set the energy level needed to activate this terminal room
+   * @param energy the amount of energy needed to activate this terminal.
+   */
+  void setEnergyToActivate(int energy) { _energy_to_activate = energy; }
+
+  /**
+   * Get the amount of corrupted energy needed to activate the terminal.
+   * @return The amount of corrupted energy needed to activate the terminal.
+   */
   int getCorruptedEnergyToActivate() { return _corrupted_energy_to_activate; }
-  void setCorruptedEnergyToActivate(int corrupted_energy_to_activate ) { _corrupted_energy_to_activate = corrupted_energy_to_activate; }
+  /**
+   * Set the energy level needed to activate this terminal room
+   * @param energy the amount of energy needed to activate this terminal.
+   */
+  void setCorruptedEnergyToActivate(int energy) {
+    _corrupted_energy_to_activate = energy;
+  }
 };
 
 #endif  // MODELS_ROOM_MODEL_H_

@@ -7,6 +7,7 @@
 #include "actions/Corrupt.h"
 #include "actions/Dash.h"
 #include "actions/Movement.h"
+#include "actions/TargetPlayer.h"
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
@@ -64,8 +65,8 @@ void PlayerController::update(float timestep) {
   for (auto it : _players) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
-
-  if (_player->isBetrayer() && InputController::get<Corrupt>()->holdCorrupt()) {
+  
+  if (_player->isBetrayer() && _player->canCorrupt() && InputController::get<Corrupt>()->holdCorrupt()) {
     _player->move(cugl::Vec2(0, 0), 0.0f);
   } else {
     move(timestep);
@@ -96,6 +97,12 @@ void PlayerController::update(float timestep) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_corrupt_count--;
+  
+  if (_player->_blocked_corrupt_count == 0) {
+    _player->setCanCorrupt(true);
+    InputController::get<Corrupt>()->setActive(true);
+  }
+  _player->_blocked_corrupt_count--;
 
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
@@ -113,6 +120,13 @@ void PlayerController::update(float timestep) {
   _player->animate();
 }
 
+void PlayerController::blockCorrupt() {
+  if (_player->isBetrayer()) {
+    _player->setCanCorrupt(false);
+    InputController::get<Corrupt>()->setActive(false);
+  }
+}
+  
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
 
@@ -182,16 +196,12 @@ void PlayerController::processData(
       processBasicPlayerInfo(info->player_id, info->name, info->betrayer);
     } break;
 
-    case NC_DEPOSIT_ENERGY_SUCCESS: {
-      // Process the incoming informaiton
-      auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
-
-      int player_id = info->getInt("player_id");
-      if (player_id == _player->getPlayerId()) {
-        int new_energy_value = info->getInt("energy");
-        int new_corrupted_energy_value = info->getInt("corrupt_energy");
-        _player->setEnergy(new_energy_value);
-        _player->setCorruptedEnergy(new_corrupted_energy_value);
+    case NC_TERMINAL_ENERGY_UPDATE: {
+      auto info = std::dynamic_pointer_cast<cugl::TerminalUpdate>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      if (info->player_id == _player->getPlayerId()) {
+        _player->setEnergy(info->player_energy);
+        _player->setCorruptedEnergy(info->player_corrupted_energy);
       }
     } break;
     default:
