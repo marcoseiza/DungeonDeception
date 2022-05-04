@@ -15,7 +15,7 @@ class TerminalSensor : public cugl::physics2::BoxObstacle {
   /** The node for debugging the terminal sensor */
   std::shared_ptr<cugl::scene2::WireNode> _terminal_sensor_node;
   /** Whether the terminal has been activated or not. */
-  bool _activated = false;
+  bool _activated;
 
  public:
 #pragma mark Constructors

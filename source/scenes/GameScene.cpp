@@ -318,9 +318,8 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  {  // Update the number of terminals activated and corrupted.
-     // TODO: Update number of terminals with new terminal system. Issue #234.
-  }
+  _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
+  _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
@@ -455,7 +454,8 @@ void GameScene::update(float timestep) {
 
   // hide role screen after a number of seconds
   cugl::Timestamp time;
-  if ((Uint32)time.ellapsedMillis(_time_started) > 5000) {
+  if ((Uint32)time.ellapsedMillis(_time_started) > 5000 &&
+      _role_layer->isVisible()) {
     _role_layer->setVisible(false);
     InputController::get()->resume();
   }

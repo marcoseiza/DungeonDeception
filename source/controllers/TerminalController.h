@@ -17,28 +17,24 @@ class TerminalController : public Controller {
 
   /** A reference to the terminal voting scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _scene;
-
   /** A reference to the deposit energy scene. */
   std::shared_ptr<DepositEnergyScene> _deposit_energy_scene;
 
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
-
   /** Player Controller */
   std::shared_ptr<PlayerController> _player_controller;
-
   /** Level Controller */
   std::shared_ptr<LevelController> _level_controller;
 
   TerminalSensor* _terminal_sensor;
-
   /** The terminal room this controller is handling. */
   int _terminal_room_id;
 
-  /**
-   * True if the terminal was activated, false if the terminal was corrupted.
-   */
-  bool _terminal_was_activated;
+  /** The number of terminals activated. */
+  int _num_terminals_activated;
+  /** The number of terminals corrupted. */
+  int _num_terminals_corrupted;
 
  public:
   TerminalController() : _active(false) {}
@@ -74,15 +70,13 @@ class TerminalController : public Controller {
     _active = false;
   }
 
-  void sendNetworkData();
-
   /**
    * Set the terminal controller as active due to a terminal being hit.
    *
    * @param terminal_room_id The room this controller will handle.
    */
   void setActive(int terminal_room_id, TerminalSensor* sensor,
-                 std::shared_ptr<Player> player) {
+                 const std::shared_ptr<Player>& player) {
     if (_active) return;
 
     // If the voting room has already started.
@@ -111,26 +105,45 @@ class TerminalController : public Controller {
       const Sint32& code,
       const cugl::CustomNetworkDeserializer::CustomMessage& msg);
 
+  /**
+   * Send a terminal update to all clients, includes the player info after
+   * depositing, the terminal info after depositing, and how many terminals are
+   * activated/corrupted.
+   *
+   * @param player The player that deposited.
+   * @param room The room where the player deposited the energy.
+   */
+  void sendTerminalUpdate(const std::shared_ptr<Player>& player,
+                          const std::shared_ptr<RoomModel>& room);
+
+  /**
+   * Set the player controller for access to the players.
+   * @param player_controller The player controller.
+   */
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
     _deposit_energy_scene->setPlayerController(_player_controller);
   }
 
+  /**
+   * Set the level controller for access to terminal rooms.
+   * @param level_controller The level controller.
+   */
   void setLevelController(
       const std::shared_ptr<LevelController>& level_controller) {
     _level_controller = level_controller;
     _deposit_energy_scene->setLevelController(level_controller);
   }
 
+  /** @return The number of terminals activated. */
+  int getNumTerminalsActivated() { return _num_terminals_activated; }
+  /** @return The number of terminals corrupted. */
+  int getNumTerminalsCorrupted() { return _num_terminals_corrupted; }
+
  private:
   /** Called when the terminal voting is done. */
-  void done() {
-    _active = false;
-    _scene->setVisible(false);
-    InputController::get()->resume();
-    _terminal_sensor->activate();
-  }
+  void done();
 };
 
 #endif  // CONTROLLERS_TERMINAL_CONTROLLER_H_
