@@ -247,18 +247,19 @@
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp"
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [0, 0, 1, 20],
+        "rightcap": [300, 0, 301, 20]
+      }
     },
     "energy-fill": {
       "file": "textures/ui/energy-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp",
-      "atlas": {
-        "leftcap": [0, 0, 1, 20],
-        "rightcap": [300, 0, 301, 20]
-      }
+      "wrapT": "clamp"
+      
     },
     "energy-outline": {
       "file": "textures/ui/energy-outline.png",

@@ -13,7 +13,7 @@ bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
   Action::init(assets, bounds);
 
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      assets->get<cugl::scene2::SceneNode>("ui-scene_target-player"));
+      assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player"));
 
   _button->addListener(
       [=](const std::string &name, bool down) { _butt_down = down; });

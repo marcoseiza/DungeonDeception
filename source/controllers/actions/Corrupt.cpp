@@ -14,7 +14,7 @@ bool Corrupt::init(const std::shared_ptr<cugl::AssetManager> &assets,
   _right_screen_bounds.origin.x += _right_screen_bounds.size.width;
 
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      assets->get<cugl::scene2::SceneNode>("ui-scene_enrage"));
+      assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player"));
 
   _butt_down = false;
   _button->addListener([=](const std::string &name, bool down) {

@@ -250,7 +250,7 @@ void PlayerController::processBasicPlayerInfo(int player_id,
   auto energy_bar = _assets->get<cugl::Texture>("energy-bar-small");
   auto energy_outline = _assets->get<cugl::Texture>("energy-outline-small");
 
-  auto regular_bar = cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+  auto regular_bar = cugl::scene2::ProgressBar::alloc(energy_bar, energy_fill);
   regular_bar->addChild(
       cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
   regular_bar->setForegroundColor(cugl::Color4("#9ec1de"));

@@ -142,12 +142,12 @@ bool GameScene::init(
   win_layer->doLayout();
   win_layer->setVisible(false);
 
-  auto target_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("target-player");
-  target_player_button->setVisible(is_betrayer);
+  auto infect_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
+  infect_player_button->setVisible(is_betrayer);
 
-  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
-  enrage_button->setVisible(is_betrayer);
+//  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
+//  enrage_button->setVisible(is_betrayer);
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
