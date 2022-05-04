@@ -29,6 +29,7 @@ bool GameScene::init(
     bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
+  _finished = false;
 
   _display_name = display_name;
   _has_sent_player_basic_info = false;
@@ -294,20 +295,8 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
-  if (checkCooperatorWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("cooperator");
-    std::string msg = cugl::strtool::format("Cooperators Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::GREEN);
-    win_layer->setVisible(true);
-  } else if (checkBetrayerWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("betrayer");
-    std::string msg = cugl::strtool::format("Betrayers Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::BLACK);
-    win_layer->setVisible(true);
+  if (checkCooperatorWin() || checkBetrayerWin()) {
+    setFinished(true);
   }
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
@@ -318,8 +307,8 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
-  _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
+  //_num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
+  //_num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
@@ -349,7 +338,8 @@ void GameScene::update(float timestep) {
             auto target_icon_node =
                 _world_node->getChildByName<cugl::scene2::SceneNode>(
                     "target-icon");
-            target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+            target_icon_node->setPosition(
+                player->getPlayerNode()->getPosition());
             target_icon_node->setVisible(true);
             found_player = true;
             break;
@@ -386,7 +376,8 @@ void GameScene::update(float timestep) {
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer() && _player_controller->getMyPlayer()->canCorrupt()) {
+  if (_player_controller->getMyPlayer()->isBetrayer() &&
+      _player_controller->getMyPlayer()->canCorrupt()) {
     int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >= 2000) {
@@ -405,7 +396,7 @@ void GameScene::update(float timestep) {
       }
     }
   }
-  
+
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
@@ -494,6 +485,7 @@ void GameScene::update(float timestep) {
   }
 
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
+  _num_terminals_corrupted += 4;
 }
 
 void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {

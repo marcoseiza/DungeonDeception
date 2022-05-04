@@ -444,8 +444,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [0.5, 0.5],
-            "size": [500, 65]
+            "anchor": [ 0.5, 0.5 ],
+            "size": [ 500, 65 ]
           },
           "children": {
             "host": {
@@ -453,14 +453,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 175, 55 ],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 25, 0]
+                "padding": [ 0, 0, 25, 0 ]
               }
             },
             "join": {
@@ -468,20 +468,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 175, 55 ],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 0, 0]
+                "padding": [ 0, 0, 0, 0 ]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 130]
+            "padding": [ 0, 25, 0, 130 ]
           }
         },
         "instructions": {
@@ -489,7 +489,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [170, 45],
+              "size": [ 170, 45 ],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -497,7 +497,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 0]
+            "padding": [ 0, 25, 0, 0 ]
           }
         },
         "settings": {
@@ -505,7 +505,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [140, 45],
+              "size": [ 140, 45 ],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -513,7 +513,79 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 175, 0, 0]
+            "padding": [ 0, 175, 0, 0 ]
+          }
+        }
+      }
+    },
+    "win-screen": {
+      "type": "Image",
+      "format": {
+        "type": "Float",
+        "orientation": "vertical",
+        "x_alignment": "center",
+        "y_alignment": "middle"
+      },
+      "data": {
+        "texture": "background"
+      },
+      "children": {
+        "title": {
+          "type": "Widget",
+          "data": {
+            "key": "menutitle",
+            "variables": {
+              "text": "RUNNERS WIN!"
+            }
+          }
+        },
+        "play": {
+          "type": "Node",
+          "format": {
+            "type": "Float",
+            "orientation": "horizontal",
+            "x_alignment": "center",
+            "y_alignment": "middle"
+          },
+          "data": {
+            "anchor": [ 0.5, 0.5 ],
+            "size": [ 500, 65 ]
+          },
+          "children": {
+            "play-again": {
+              "type": "Widget",
+              "data": {
+                "key": "textbutton",
+                "variables": {
+                  "size": [ 175, 55 ],
+                  "text": "PLAY AGAIN",
+                  "color": "#efebe3"
+                }
+              },
+              "layout": {
+                "priority": 1,
+                "padding": [ 0, 0, 25, 0 ]
+              }
+            },
+            "quit": {
+              "type": "Widget",
+              "data": {
+                "key": "textbutton",
+                "variables": {
+                  "size": [ 175, 55 ],
+                  "text": "QUIT",
+                  "color": "#efebe3"
+                }
+              },
+              "layout": {
+                "priority": 1,
+                "padding": [ 0, 0, 0, 0 ]
+              }
+            }
+          },
+          "layout": {
+            "priority": 1,
+            "padding": [ 0, 25, 0, 130 ]
           }
         }
       }
@@ -527,7 +599,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "background": "health-fill",
             "foreground": "health-bar",
             "left_cap": "health-fill_leftcap",
@@ -548,7 +620,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "scale": 0.402
           },
           "layout": {
@@ -569,7 +641,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "background": "energy-fill",
             "foreground": "energy-bar",
             "left_cap": "energy-fill_leftcap",
@@ -590,7 +662,7 @@
           },
           "data": {
             "texture": "energy-outline",
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "scale": 0.402
           },
           "layout": {

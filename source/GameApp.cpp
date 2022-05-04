@@ -48,6 +48,7 @@ void GameApp::onShutdown() {
   _joinlobby.dispose();
   _hostlobby.dispose();
   _menu.dispose();
+  _win.dispose();
   _level_loading.dispose();
   _assets = nullptr;
   _batch = nullptr;
@@ -89,6 +90,9 @@ void GameApp::update(float timestep) {
     case GAME:
       updateGameScene(timestep);
       break;
+    case WIN:
+      updateWinScene(timestep);
+      break;
   }
 }
 
@@ -118,6 +122,9 @@ void GameApp::draw() {
     case GAME:
       _gameplay.render(_batch);
       break;
+    case WIN:
+      _win.render(_batch);
+      break;
   }
 }
 
@@ -132,12 +139,14 @@ void GameApp::updateLoadingScene(float timestep) {
     _joingame.init(_assets);
     _joinlobby.init(_assets);
     _hostlobby.init(_assets);
+    _win.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
     _joingame.setActive(false);
     _hostlobby.setActive(false, nullptr);
     _joinlobby.setActive(false, nullptr);
     _gameplay.setActive(false);
+    _win.setActive(false);
     _scene = State::MENU;
     _loaded = true;
   }
@@ -303,4 +312,46 @@ void GameApp::updateLevelLoadingScene(float timestep) {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-void GameApp::updateGameScene(float timestep) { _gameplay.update(timestep); }
+void GameApp::updateGameScene(float timestep) { 
+    if (!_gameplay.isFinished()) {
+        _gameplay.update(timestep); 
+        return;
+    }
+    _gameplay.setActive(false);
+    _win.setActive(true);
+    _gameplay.dispose();
+    _scene = State::WIN;
+}
+
+/**
+ * Individualized update method for the win scene.
+ *
+ * This method keeps the primary {@link #update} from being a mess of switch
+ * statements. It also handles the transition logic from the game scene.
+ *
+ * @param timestep  The amount of time (in seconds) since the last frame
+ */
+void GameApp::updateWinScene(float timestep) {
+  _win.update(timestep);
+  switch (_win.getChoice()) {
+    case WinScene::Choice::PLAYAGAIN:
+      _win.setActive(false);
+      _level_loading.setActive(true);
+      _scene = State::LEVEL_LOADING;
+      break;
+    case WinScene::Choice::QUIT:
+      _win.setActive(false);
+      _menu.setActive(true);
+      _hostgame.setActive(false);
+      _joingame.setActive(false);
+      _hostlobby.setActive(false, nullptr);
+      _joinlobby.setActive(false, nullptr);
+
+      _scene = State::MENU;
+      _loaded = true;
+      break;
+    case WinScene::Choice::NONE:
+      // DO NOTHING
+      break;
+  }
+}
