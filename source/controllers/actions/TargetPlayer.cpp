@@ -9,7 +9,7 @@ TargetPlayer::TargetPlayer()
       _target_player_hang_frames(150),
       _target_player_counter(0),
       _target_player_id(-1),
-      _target_cooldown_counter(0) {}
+      _target_cooldown_counter(-1) {}
 
 bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
                 cugl::Rect bounds) {

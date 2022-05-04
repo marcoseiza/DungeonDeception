@@ -125,6 +125,7 @@ void PlayerController::blockCorrupt() {
     _player->setCanCorrupt(false);
     InputController::get<Corrupt>()->setActive(false);
   }
+}
   
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
