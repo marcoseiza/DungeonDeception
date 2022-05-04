@@ -459,25 +459,37 @@ void GameScene::update(float timestep) {
 
   // POST-UPDATE
   // Check for disposal
-  std::vector<std::shared_ptr<EnemyModel>>& enemies =
-      current_room->getEnemies();
-  auto it = enemies.begin();
-  while (it != enemies.end()) {
-    auto enemy = *it;
 
-    if (enemy->getHealth() <= 0) {
-      _dead_enemy_cache.push_back(enemy->getEnemyId());
-      enemy->deleteAllProjectiles(_world, _world_node);
-      enemy->deactivatePhysics(*_world->getWorld());
-      current_room->getNode()->removeChild(enemy->getNode());
-      _world->removeObstacle(enemy.get());
-      enemy->dispose();
-      it = enemies.erase(it);
-    } else {
-      enemy->deleteProjectile(_world, _world_node);
-      ++it;
+  for (auto room_id : room_ids_with_players) {
+    auto room = _level_controller->getLevelModel()->getRoom(room_id);
+    std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
+
+    for (auto it = enemies.begin(); it != enemies.end(); it++) {
+      auto enemy = *it;
+
+      if (enemy->getHealth() <= 0) {
+        _dead_enemy_cache.push_back(enemy->getEnemyId());
+        enemy->deleteAllProjectiles(_world, _world_node);
+        enemy->deactivatePhysics(*_world->getWorld());
+        room->getNode()->removeChild(enemy->getNode());
+        _world->removeObstacle(enemy.get());
+        enemies.erase(it--);
+
+        if (NetworkController::get()->isHost()) {
+          // Give all players in the same room some energy if an enemy dies.
+          for (auto jt : _player_controller->getPlayers()) {
+            std::shared_ptr<Player> player = jt.second;
+            if (player->getRoomId() == room_id) {
+              player->setEnergy(player->getEnergy() + 5);
+            }
+          }
+        }
+      } else {
+        enemy->deleteProjectile(_world, _world_node);
+      }
     }
   }
+
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
 }
 
@@ -653,6 +665,7 @@ void GameScene::sendNetworkInfoHost() {
           auto info = cugl::EnemyOtherInfo::alloc();
           info->enemy_id = enemy_id;
           info->health = -1;
+
           enemy_info.push_back(info);
         }
         _dead_enemy_cache.clear();
@@ -807,17 +820,6 @@ void GameScene::processData(
 
         auto player = _player_controller->getPlayer(info->player_id);
         player->setEnergy(player->getEnergy() + 1);
-
-        // If the enemy dies, update all the players energy in the room they
-        // died in.
-        if (enemy->getHealth() <= 0) {
-          for (auto it : _player_controller->getPlayers()) {
-            std::shared_ptr<Player> player = it.second;
-            if (player->getRoomId() == enemy->getRoomId()) {
-              player->setEnergy(player->getEnergy() + 5);
-            }
-          }
-        }
       }
     } break;
 
