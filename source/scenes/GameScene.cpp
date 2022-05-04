@@ -217,6 +217,9 @@ void GameScene::dispose() {
   _energy_bar->dispose();
   _has_sent_player_basic_info = false;
   _dead_enemy_cache.clear();
+  _world_node->removeAllChildren();
+  _debug_node->removeAllChildren();
+  removeAllChildren();
 }
 
 void GameScene::populate(cugl::Size dim) {

@@ -132,14 +132,13 @@ void GameApp::updateLoadingScene(float timestep) {
   if (!_loaded && _loading.isActive()) {
     _loading.update(timestep);
   } else if (!_loaded) {
-    _loading
-        .dispose();  // Permanently disables the input listeners in this mode.
+    // Permanently disables the input listeners in this mode.
+    _loading.dispose();
     _menu.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
     _joinlobby.init(_assets);
     _hostlobby.init(_assets);
-    _win.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
     _joingame.setActive(false);
@@ -312,15 +311,14 @@ void GameApp::updateLevelLoadingScene(float timestep) {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-void GameApp::updateGameScene(float timestep) { 
-    if (!_gameplay.isFinished()) {
-        _gameplay.update(timestep); 
-        return;
-    }
-    _gameplay.setActive(false);
-    _win.setActive(true);
-    _gameplay.dispose();
-    _scene = State::WIN;
+void GameApp::updateGameScene(float timestep) {
+  if (!_gameplay.isFinished()) {
+    _gameplay.update(timestep);
+    return;
+  }
+  _win.init(_assets);
+  _gameplay.dispose();
+  _scene = State::WIN;
 }
 
 /**
@@ -335,12 +333,13 @@ void GameApp::updateWinScene(float timestep) {
   _win.update(timestep);
   switch (_win.getChoice()) {
     case WinScene::Choice::PLAYAGAIN:
-      _win.setActive(false);
+      _win.dispose();
+      _level_loading.init(_assets);
       _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
       break;
     case WinScene::Choice::QUIT:
-      _win.setActive(false);
+      _win.dispose();
       _menu.setActive(true);
       _hostgame.setActive(false);
       _joingame.setActive(false);

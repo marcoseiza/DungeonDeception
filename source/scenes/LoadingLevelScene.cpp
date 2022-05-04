@@ -6,6 +6,12 @@
 
 #define SCENE_HEIGHT 720
 
+bool LoadingLevelScene::init(
+    const std::shared_ptr<cugl::AssetManager>& assets) {
+  std::random_device my_random_device;
+  return init(assets, (Uint64)my_random_device());
+}
+
 bool LoadingLevelScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
                              Uint64 seed) {
   if (_active) return false;
@@ -34,6 +40,7 @@ void LoadingLevelScene::dispose() {
   _active = false;
   _level_generator = nullptr;
   _map = nullptr;
+  _loading_phase = GENERATE_ROOMS;
 }
 
 void LoadingLevelScene::update(float timestep) {

@@ -157,6 +157,9 @@
 		D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
 		D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
 		D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
+		D5E3B3C42822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
+		D5E3B3C52822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
+		D5E3B3C62822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -365,6 +368,8 @@
 		D5E3B38D282197F500298611 /* TerminalStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerminalStructs.cpp; sourceTree = "<group>"; };
 		D5E3B391282197F500298611 /* TerminalStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalStructs.h; sourceTree = "<group>"; };
 		D5E3B35F2820746300298611 /* PlayerStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStructs.cpp; sourceTree = "<group>"; };
+		D5E3B3BF2822E0E000298611 /* WinScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WinScene.cpp; sourceTree = "<group>"; };
+		D5E3B3C32822E0E000298611 /* WinScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WinScene.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
 		D5EB744D27C335C7007D157D /* Movement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movement.h; sourceTree = "<group>"; };
 		D5F3D6B027DD6E3B0071DD06 /* LevelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelModel.cpp; sourceTree = "<group>"; };
@@ -554,6 +559,8 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D5E3B3BF2822E0E000298611 /* WinScene.cpp */,
+				D5E3B3C32822E0E000298611 /* WinScene.h */,
 				CA2DE0AB281BC461009C7117 /* terminal_scenes */,
 				D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */,
 				D563777F2818F2B8001C4D45 /* HostLobbyScene.h */,
@@ -1024,6 +1031,7 @@
 				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C62822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1080,6 +1088,7 @@
 				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C52822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1136,6 +1145,7 @@
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C42822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,
