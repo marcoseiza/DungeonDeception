@@ -222,18 +222,18 @@
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp"
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [0, 0, 1, 20],
+        "rightcap": [300, 0, 301, 20]
+      }
     },
     "health-fill": {
       "file": "textures/health-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp",
-      "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
-      }
+      "wrapT": "clamp"
     },
     "health-outline": {
       "file": "textures/health-outline.png",
@@ -543,11 +543,11 @@
           "type": "Progress",
           "data": {
             "anchor": [0.5, 0.5],
-            "background": "health-fill",
-            "foreground": "health-bar",
+            "background": "health-bar",
+            "foreground": "health-fill",
             "left_cap": "health-fill_leftcap",
             "right_cap": "health-fill_rightcap",
-            "scale": 0.4
+            "scale": 0.5
           },
           "layout": {
             "x_anchor": "left",
@@ -564,7 +564,7 @@
           "data": {
             "texture": "health-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.402
+            "scale": 0.5
           },
           "layout": {
             "x_anchor": "left",
@@ -585,11 +585,11 @@
           "type": "Progress",
           "data": {
             "anchor": [0.5, 0.5],
-            "background": "energy-fill",
-            "foreground": "energy-bar",
+            "background": "energy-bar",
+            "foreground": "energy-fill",
             "left_cap": "energy-fill_leftcap",
             "right_cap": "energy-fill_rightcap",
-            "scale": 0.4
+            "scale": 0.5
           },
           "layout": {
             "x_anchor": "left",
@@ -606,7 +606,7 @@
           "data": {
             "texture": "energy-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.402
+            "scale": 0.5
           },
           "layout": {
             "x_anchor": "left",
