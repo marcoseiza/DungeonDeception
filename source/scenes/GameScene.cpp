@@ -462,29 +462,37 @@ void GameScene::update(float timestep) {
 
   // POST-UPDATE
   // Check for disposal
-  std::vector<std::shared_ptr<EnemyModel>>& enemies =
-      current_room->getEnemies();
-  auto it = enemies.begin();
-  while (it != enemies.end()) {
-    auto enemy = *it;
 
-    if (enemy->getHealth() <= 0) {
-      // Give energy to all players in the room
-      _player_controller->getMyPlayer()->setEnergy(
-          _player_controller->getMyPlayer()->getEnergy() + 5);
-      
-      _dead_enemy_cache.push_back(enemy->getEnemyId());
-      enemy->deleteAllProjectiles(_world, _world_node);
-      enemy->deactivatePhysics(*_world->getWorld());
-      current_room->getNode()->removeChild(enemy->getNode());
-      _world->removeObstacle(enemy.get());
-      enemy->dispose();
-      it = enemies.erase(it);
-    } else {
-      enemy->deleteProjectile(_world, _world_node);
-      ++it;
+  for (auto room_id : room_ids_with_players) {
+    auto room = _level_controller->getLevelModel()->getRoom(room_id);
+    std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
+
+    for (auto it = enemies.begin(); it != enemies.end(); it++) {
+      auto enemy = *it;
+
+      if (enemy->getHealth() <= 0) {
+        _dead_enemy_cache.push_back(enemy->getEnemyId());
+        enemy->deleteAllProjectiles(_world, _world_node);
+        enemy->deactivatePhysics(*_world->getWorld());
+        room->getNode()->removeChild(enemy->getNode());
+        _world->removeObstacle(enemy.get());
+        enemies.erase(it--);
+
+        if (NetworkController::get()->isHost()) {
+          // Give all players in the same room some energy if an enemy dies.
+          for (auto jt : _player_controller->getPlayers()) {
+            std::shared_ptr<Player> player = jt.second;
+            if (player->getRoomId() == room_id) {
+              player->setEnergy(player->getEnergy() + 5);
+            }
+          }
+        }
+      } else {
+        enemy->deleteProjectile(_world, _world_node);
+      }
     }
   }
+
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
 }
 
@@ -660,6 +668,7 @@ void GameScene::sendNetworkInfoHost() {
           auto info = cugl::EnemyOtherInfo::alloc();
           info->enemy_id = enemy_id;
           info->health = -1;
+
           enemy_info.push_back(info);
         }
         _dead_enemy_cache.clear();
@@ -701,34 +710,18 @@ void GameScene::sendNetworkInfoClient() {
     // Send individual player information.
     NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_BASIC_INFO, info);
   }
-
-  {  // Don't send this all the time.
-    cugl::Timestamp time;
-    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
-
-    if (millis > 200) {
-      _time_of_last_player_other_info_update.mark();
-
-      auto info = cugl::PlayerOtherInfo::alloc();
-
-      info->player_id = _player_controller->getMyPlayer()->getPlayerId();
-      info->energy = _player_controller->getMyPlayer()->getEnergy();
-      info->corruption =
-          _player_controller->getMyPlayer()->getCorruptedEnergy();
-
-      // Send individual player information.
-      NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_OTHER_INFO,
-                                               info);
-    }
-  }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int id, int dir, float amount) {
+void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, int dir,
+                                        float amount) {
   auto info = cugl::EnemyHitInfo::alloc();
-  info->enemy_id = id;
+  info->enemy_id = enemy_id;
+  info->player_id = player_id;
   info->amount = amount;
   info->direction = dir;
-  NetworkController::get()->sendOnlyToHost(NC_CLIENT_ENEMY_HIT_INFO, info);
+
+  NetworkController::get()->sendOnlyToHostOrProcess(NC_CLIENT_ENEMY_HIT_INFO,
+                                                    info);
 }
 
 void GameScene::sendBetrayalTargetInfo(int target_player_id) {
@@ -822,11 +815,14 @@ void GameScene::processData(
       auto info = std::dynamic_pointer_cast<cugl::EnemyHitInfo>(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
 
-      std::shared_ptr<EnemyModel> enemy =
-          _level_controller->getEnemy(info->enemy_id);
+      auto enemy = _level_controller->getEnemy(info->enemy_id);
+
       if (enemy != nullptr) {
         enemy->takeDamage(info->amount);
-        enemy->knockback(info->direction);
+        if (info->direction != -1) enemy->knockback(info->direction);
+
+        auto player = _player_controller->getPlayer(info->player_id);
+        player->setEnergy(player->getEnergy() + 1);
       }
     } break;
 
@@ -901,14 +897,8 @@ void GameScene::beginContact(b2Contact* contact) {
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob1)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
 
-    dynamic_cast<EnemyModel*>(ob1)->takeDamage(damage);
-    dynamic_cast<EnemyModel*>(ob1)->knockback(
-        _player_controller->getSword()->getMoveDir());
-    if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setEnergy(
-          _player_controller->getMyPlayer()->getEnergy() + 1);
-    }
-    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
+    sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getSword()->getMoveDir(),
                             damage);
   } else if (fx2_name == "enemy_hitbox" &&
@@ -917,14 +907,8 @@ void GameScene::beginContact(b2Contact* contact) {
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob2)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
 
-    dynamic_cast<EnemyModel*>(ob2)->takeDamage(damage);
-    dynamic_cast<EnemyModel*>(ob2)->knockback(
-        _player_controller->getSword()->getMoveDir());
-    if (!(type == EnemyModel::EnemyType::TURTLE)) {
-      _player_controller->getMyPlayer()->setEnergy(
-          _player_controller->getMyPlayer()->getEnergy() + 1);
-    }
-    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
+    sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getSword()->getMoveDir(),
                             damage);
   }
@@ -933,18 +917,16 @@ void GameScene::beginContact(b2Contact* contact) {
       ob2 == _player_controller->getMyPlayer().get()) {
     Player::State player_state = _player_controller->getMyPlayer()->getState();
     if (player_state == Player::State::DASHING) {
-      dynamic_cast<EnemyModel*>(ob1)->takeDamage(5.0f);
-      sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                              _player_controller->getMyPlayer()->getMoveDir(),
+      sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                              dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), -1,
                               5.0f);
     }
   } else if (fx2_name == "enemy_hitbox" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     Player::State player_state = _player_controller->getMyPlayer()->getState();
     if (player_state == Player::State::DASHING) {
-      dynamic_cast<EnemyModel*>(ob2)->takeDamage(5.0f);
-      sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                              _player_controller->getMyPlayer()->getMoveDir(),
+      sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                              dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), -1,
                               5.0f);
     }
   }
@@ -970,23 +952,15 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
-    dynamic_cast<EnemyModel*>(ob1)->takeDamage();
-    dynamic_cast<EnemyModel*>(ob1)->knockback(
-        _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setEnergy(
-        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
+    sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
-    dynamic_cast<EnemyModel*>(ob2)->takeDamage();
-    dynamic_cast<EnemyModel*>(ob2)->knockback(
-        _player_controller->getSword()->getMoveDir());
-    _player_controller->getMyPlayer()->setEnergy(
-        _player_controller->getMyPlayer()->getEnergy() + 1);
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-    sendEnemyHitNetworkInfo(dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
+    sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
   }

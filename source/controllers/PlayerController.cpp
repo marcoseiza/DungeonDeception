@@ -234,8 +234,6 @@ void PlayerController::processPlayerInfo(int player_id, int room_id,
 
 void PlayerController::processPlayerOtherInfo(int player_id, int energy,
                                               int corruption) {
-  if (player_id == _player->getPlayerId()) return;
-
   auto player = getPlayerOrMakePlayer(player_id);
 
   player->setEnergy(energy);

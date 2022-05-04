@@ -292,11 +292,13 @@ class GameScene : public cugl::Scene2 {
   /**
    * Broadcasts enemy being hit to the host.
    *
-   * @param id the enemy that was hit
+   * @param player_id the player that hit the enemy
+   * @param enemy_id the enemy that was hit
    * @param amount the amount of damage taken
    * @param dir The direction the enemy should be knockedback
    */
-  void sendEnemyHitNetworkInfo(int id, int dir, float amount = 20);
+  void sendEnemyHitNetworkInfo(int player_id, int enemy_id, int dir,
+                               float amount = 20);
 
   /**
    * Broadcast a player being targeted by the betrayer target player ability.
