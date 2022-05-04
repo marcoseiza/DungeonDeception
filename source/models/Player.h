@@ -52,6 +52,15 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Player health. */
   int _health;
 
+  /** Player luminance. */
+  int _luminance;
+  
+  /** Amount of player luminance that has been corrupted. */
+  int _corrupted_luminance;
+  
+  /** Whether the player (if a betrayer) can corrupt. */
+  bool _can_corrupt;
+
   /** Player energy. */
   int _energy;
 
@@ -96,6 +105,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
   bool _can_make_slash;
   /** Countdown for betrayer corrupt feedback. */
   int _corrupt_count;
+  /** Countdown for betrayer blocked corruption. */
+  int _blocked_corrupt_count;
 
 #pragma mark Constructors
   /**
@@ -242,7 +253,13 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
   void setCorrupted();
-
+  
+  /** Gets whether the player can corrupt or not. */
+  bool canCorrupt() { return _can_corrupt; }
+  
+  /** Blocks or unblocks the player from corrupting. */
+  void setCanCorrupt(bool val);
+  
   /**
    * Reduce health by value.
    *
