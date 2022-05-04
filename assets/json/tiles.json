@@ -75,6 +75,7 @@
     "tile-72": "tiles/tile-72.json",
     "tile-73": "tiles/tile-73.json",
     "tile-74": "tiles/tile-74.json",
+    "tile-75": "tiles/tile-75.json",
 
     "tile-200": "tiles/composite-tiles/door-horizontal.json",
     "tile-201": "tiles/composite-tiles/door-vertical.json",
@@ -246,6 +247,55 @@
         "73": [301, 251, 350, 300],
         "74": [1, 301, 49, 349]
       }
+    },
+    "tile-broken-pillar": {
+      "file": "textures/tile-objects/brokenpillar.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-broken-pillar-shadow": {
+      "file": "textures/tile-objects/brokenpillar-shadow.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-bush-1": {
+      "file": "textures/tile-objects/bush1.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-bush-2": {
+      "file": "textures/tile-objects/bush2.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-rock-1": {
+      "file": "textures/tile-objects/rock1.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-rock-2": {
+      "file": "textures/tile-objects/rock2.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-rock-3": {
+      "file": "textures/tile-objects/rock3.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
     }
   }
 }
