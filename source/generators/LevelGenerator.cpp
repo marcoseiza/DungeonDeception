@@ -456,13 +456,18 @@ void LevelGenerator::addEdgesBackAndRemoveUnecessary(
         add_back &= num_edges_neighbor < _config.getMaxNumEdges();
 
         room->_edge_to_door.clear();
-        edge->_active = true;
+        edge->_active = true;  // Temporarily set active to check effect.
         room->initializeEdgeToDoorPairing();
         for (auto it : room->_edge_to_door) {
           float ag = room->angleBetweenEdgeAndDoor(it.first, it.second);
           add_back &= (std::abs(ag) <= M_PI_2 + 0.1f);
         }
-        edge->_active = false;
+        edge->_active = false;  // Revert from previous check.
+
+        cugl::Vec2 intersect = edge->getIntersectWithRectSide(room->getRect());
+        float edge_angle = (intersect - room->getMid()).getAngle();
+        // Not on a diagonal.
+        add_back &= (int)(edge_angle / M_PI_4) % 2 == 0;
 
         add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
         if (add_back) {
@@ -593,6 +598,11 @@ void LevelGenerator::fillHallways() {
         else if (end.y == 0 || end.y == neighbor->_size.height - 1)
           end.x = neighbor->_size.width / 2;
 
+        if (start.x == source->_size.width - 1) start.x++;
+        if (start.y == source->_size.height - 1) start.y++;
+        if (end.x == neighbor->_size.width - 1) end.x++;
+        if (end.y == neighbor->_size.height - 1) end.y++;
+
         start += source->_node->getPosition();
         end += neighbor->_node->getPosition();
 
@@ -603,22 +613,14 @@ void LevelGenerator::fillHallways() {
 
         std::vector<cugl::Vec2> path{start, end};
 
-        // edge->_node->dispose();
-        // edge->_node->initWithPath(path, 1.0f);
+        edge->_node->dispose();
+        edge->_node->initWithPath(path, 1.0f);
 
-        // edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
-        // edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
-        // edge->_node->setPosition(start_pos);
+        edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
+        edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
+        edge->_node->setPosition(start_pos);
 
-        // _map->addChild(edge->_node);
-
-        auto bounds = cugl::scene2::PathNode::allocWithVertices(path, 2.0f);
-
-        bounds->setColor(cugl::Color4(0, 0, 0, 127));
-        bounds->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
-        bounds->setPosition(start_pos);
-
-        _map->addChild(bounds);
+        _map->addChild(edge->_node);
       }
     }
   }

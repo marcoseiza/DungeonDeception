@@ -267,32 +267,32 @@ void GameApp::updateClientLobbyScene(float timestep) {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void GameApp::updateLevelLoadingScene(float timestep) {
-  // if (_level_loading.isActive()) {
-  _level_loading.update(timestep);
-  return;
-  // }
+  if (_level_loading.isActive()) {
+    _level_loading.update(timestep);
+    return;
+  }
 
-  // _level_loading.cugl::Scene2::removeChild(
-  //     _level_loading.getLevelGenerator()->getMap());
+  _level_loading.cugl::Scene2::removeChild(
+      _level_loading.getLevelGenerator()->getMap());
 
-  // // Transfer connection ownership
-  // _gameplay.setConnection(_level_loading.getConnection());
-  // _level_loading.disconnect();
-  // _gameplay.setHost(_level_loading.getIsHost());
+  // Transfer connection ownership
+  _gameplay.setConnection(_level_loading.getConnection());
+  _level_loading.disconnect();
+  _gameplay.setHost(_level_loading.getIsHost());
 
-  // if (_level_loading.getIsHost()) {
-  //   _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-  //                  _hostlobby.isBetrayer(), _hostlobby.getPlayerName());
-  // } else {
-  //   _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-  //                  _joinlobby.isBetrayer(), _joinlobby.getPlayerName());
-  // }
+  if (_level_loading.getIsHost()) {
+    _gameplay.init(_assets, _level_loading.getLevelGenerator(),
+                   _hostlobby.isBetrayer(), _hostlobby.getPlayerName());
+  } else {
+    _gameplay.init(_assets, _level_loading.getLevelGenerator(),
+                   _joinlobby.isBetrayer(), _joinlobby.getPlayerName());
+  }
 
-  // _level_loading.setActive(false);
-  // _gameplay.setActive(true);
+  _level_loading.setActive(false);
+  _gameplay.setActive(true);
 
-  // _level_loading.dispose();
-  // _scene = State::GAME;
+  _level_loading.dispose();
+  _scene = State::GAME;
 }
 
 /**
