@@ -65,8 +65,9 @@ void PlayerController::update(float timestep) {
   for (auto it : _players) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
-  
-  if (_player->isBetrayer() && _player->canCorrupt() && InputController::get<Corrupt>()->holdCorrupt()) {
+
+  if (_player->isBetrayer() && _player->canCorrupt() &&
+      InputController::get<Corrupt>()->holdCorrupt()) {
     _player->move(cugl::Vec2(0, 0), 0.0f);
   } else {
     move(timestep);
@@ -88,6 +89,10 @@ void PlayerController::update(float timestep) {
     if (it.second->isHit()) _sound_controller->playPlayerHit();
   }
 
+  if (InputController::get<Attack>()->chargeStart()) {
+    _sound_controller->playPlayerEnergyCharge();
+  }
+
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
@@ -97,7 +102,7 @@ void PlayerController::update(float timestep) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
   _player->_corrupt_count--;
-  
+
   if (_player->_blocked_corrupt_count == 0) {
     _player->setCanCorrupt(true);
     InputController::get<Corrupt>()->setActive(true);
@@ -126,7 +131,7 @@ void PlayerController::blockCorrupt() {
     InputController::get<Corrupt>()->setActive(false);
   }
 }
-  
+
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
 

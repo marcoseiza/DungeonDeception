@@ -108,6 +108,7 @@ bool Attack::update() {
     // Wait a bit before charing, so that it doesn't charge on quick tap.
     if (millis <= TIME_TO_WAIT_FOR_CHARGE) {
       millis = 0;
+      _charge_start = true;
     } else {
       // Reset millis so that animation starts at frame 0
       millis -= TIME_TO_WAIT_FOR_CHARGE;

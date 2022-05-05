@@ -26,6 +26,8 @@ class Attack : public Action {
   int _anim_buffer;
   /** Charge animation is done. */
   bool _charge_over;
+  /** Charge animation is starting. */
+  bool _charge_start;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -101,6 +103,7 @@ class Attack : public Action {
   virtual void pause() override {
     _button->deactivate();
     _charge_over = false;
+    _charge_start = false;
   }
 
   /** Resume all input. */
@@ -128,6 +131,15 @@ class Attack : public Action {
    * @return If player is holding attack button.
    */
   bool holdAttack() const { return _prev_down && _curr_down; }
+
+  /**
+   * @return If the player has just started charging the energy wave.
+   */
+  bool chargeStart() {
+    bool tmp = _charge_start;
+    _charge_start = false;
+    return tmp;
+  }
 
   /**
    * @return If the player has held the attack button long enough for energy
