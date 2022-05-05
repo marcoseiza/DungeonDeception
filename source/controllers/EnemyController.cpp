@@ -50,7 +50,7 @@ void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(-_direction);
-  diff.scale(0.6 * enemy->getSpeed());  // Make speed slower when strafing
+  diff.scale(0.8 * enemy->getSpeed());
   enemy->move(diff.x, diff.y);
 }
 

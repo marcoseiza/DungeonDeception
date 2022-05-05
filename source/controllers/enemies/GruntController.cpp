@@ -4,9 +4,9 @@
 #define HEALTH_LIM 25
 #define MOVE_BACK_RANGE 30
 #define ATTACK_RANGE 60
-#define ATTACK_FRAMES 18
-#define STOP_ATTACK_FRAMES 50
-#define ATTACK_COOLDOWN 100
+#define ATTACK_FRAMES 24
+#define STOP_ATTACK_FRAMES 80
+#define ATTACK_COOLDOWN 120
 
 #define STATE_CHANGE_LIM 10
 
@@ -66,22 +66,24 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
         enemy->_move_back_timer--;
         if (enemy->_move_back_timer <= 0) {
+          enemy->setAttackCooldown(ATTACK_COOLDOWN);
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
         }
       } else {
         // Chance for the enemy to move backwards, away from the player.
         std::uniform_int_distribution<int> dist(0, 100);
         int chance = dist(_generator);
-        if (distance <= MOVE_BACK_RANGE && chance <= 5) {
+        if (distance <= MOVE_BACK_RANGE && chance <= 5 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
           enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
           enemy->_move_back_timer = 60;
+          enemy->setAttackCooldown(ATTACK_COOLDOWN);
         } else {
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
         }
       }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
+    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING || enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
       enemy->_atc_timer++;
     }
     if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
@@ -127,7 +129,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
     case EnemyModel::State::ATTACKING: {
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
         // Play the next animation frame.
-        if (fc >= 3) {
+        if (fc >= 4) {
           enemy->_frame_count = 0;
           node->setFrame(node->getFrame() + 1);
         }

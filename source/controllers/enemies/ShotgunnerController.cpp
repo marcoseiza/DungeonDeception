@@ -62,21 +62,23 @@ void ShotgunnerController::changeStateIfApplicable(
         enemy->_move_back_timer--;
         if (enemy->_move_back_timer <= 0) {
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
+          enemy->setAttackCooldown(ATTACK_COOLDOWN);
         }
       } else {
         // Chance for the enemy to move backwards, away from the player.
         std::uniform_int_distribution<int> dist(0, 100);
         int chance = dist(_generator);
-        if (distance <= MOVE_BACK_RANGE && chance <= 5) {
+        if (distance <= MOVE_BACK_RANGE && chance <= 5 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 1) {
           enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
           enemy->_move_back_timer = 60;
+          enemy->setAttackCooldown(ATTACK_COOLDOWN);
         } else {
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
         }
       }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
+    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING || enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
       enemy->_atc_timer++;
     }
     if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
