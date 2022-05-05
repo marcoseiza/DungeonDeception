@@ -134,12 +134,6 @@ class LevelGenerator {
    */
   void markAndFillHallways();
 
-  /**
-   * The visualization has some different colors and objects to it that
-   * shouldn't appear on the map.
-   */
-  void cleanUpVisualization();
-
 #pragma mark Helpers
 
   /**

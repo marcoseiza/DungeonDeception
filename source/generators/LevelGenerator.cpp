@@ -248,7 +248,7 @@ void LevelGenerator::placeTerminalRooms(
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(room->getRoomNodeColor());
+    room->_node->setColor(room->getRoomNodeColorGenerator());
 
     min_angle += 2 * M_PI / num_rooms;
     max_angle += 2 * M_PI / num_rooms;
@@ -339,20 +339,6 @@ void LevelGenerator::markAndFillHallways() {
   }
 
   fillHallways();
-
-  _generator_step = [this]() { this->cleanUpVisualization(); };
-}
-
-void LevelGenerator::cleanUpVisualization() {
-  for (std::shared_ptr<Room> &room : _rooms) {
-    room->_node->setColor(room->getRoomNodeColor());
-    for (std::shared_ptr<Edge> &edge : room->_edges) {
-      if (!edge->_active) {
-        auto parent = edge->_node->getParent();
-        if (parent) parent->removeChild(edge->_node);
-      }
-    }
-  }
 
   _generator_step = nullptr;
 }
@@ -616,7 +602,7 @@ void LevelGenerator::fillHallways() {
         edge->_node->dispose();
         edge->_node->initWithPath(path, 1.0f);
 
-        edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
+        edge->_node->setColor(cugl::Color4(0, 0, 0, 127));
         edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
         edge->_node->setPosition(start_pos);
 
