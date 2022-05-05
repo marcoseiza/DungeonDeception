@@ -33,7 +33,7 @@
             "layout": {
               "x_anchor": "center",
               "y_anchor": "top",
-              "padding": [ 0, 75, 0, 125 ]
+              "padding": [ 0, 25, 0, 225 ]
             }
           },
           "content": {
@@ -46,7 +46,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.0 ],
-              "size": [ 1000, 350 ]
+              "size": [ 1000, 500 ]
             },
             "children": {
               "keys": {
@@ -82,7 +82,7 @@
                     },
                     "data": {
                       "anchor": [ 0.5, 0.5 ],
-                      "size": [ 370, 100 ]
+                      "size": [ 550, 100 ]
                     },
                     "children": {
                       "label": {
@@ -90,7 +90,7 @@
                         "data": {
                           "key": "labelbox",
                           "variables": {
-                            "size": [ 170, 70 ],
+                            "size": [ 220, 90 ],
                             "text": "GAME ID:",
                             "halign": "center",
                             "background": [ 239, 235, 227, 179 ]
@@ -106,7 +106,7 @@
                         "data": {
                           "key": "labelbox",
                           "variables": {
-                            "size": [ 170, 70 ],
+                            "size": [ 220, 90 ],
                             "text": "",
                             "halign": "center",
                             "foreground": "#ffffff",
@@ -120,7 +120,7 @@
                     },
                     "layout": {
                       "priority": 1,
-                      "padding": [ 0, 0, 0, 0 ]
+                      "padding": [ 50, 0, 0, 0 ]
                     }
                   },
                   "start": {
@@ -128,7 +128,7 @@
                     "data": {
                       "key": "textbutton",
                       "variables": {
-                        "size": [ 180, 75 ],
+                        "size": [ 300, 90 ],
                         "text": "JOIN LOBBY",
                         "font": "pixelmix",
                         "color": "#efebe3"
@@ -136,7 +136,7 @@
                     },
                     "layout": {
                       "priority": 3,
-                      "padding": [ 0, 25, 0, 50 ]
+                      "padding": [ 50, 25, 0, 50 ]
                     }
                   }
 
@@ -144,7 +144,7 @@
                 "layout": {
                   "x_anchor": "center",
                   "y_anchor": "bottom",
-                  "padding": [ 0, -20, 0, 0 ]
+                  "padding": [ 0, 70, 0, 0 ]
                 }
               }
             },

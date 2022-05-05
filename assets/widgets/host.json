@@ -46,7 +46,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.5 ],
-              "size": [ 370, 250 ]
+              "size": [ 500, 250 ]
             },
             "children": {
               "label": {
@@ -54,7 +54,7 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 170, 70 ],
+                    "size": [ 220, 90 ],
                     "text": "GAME ID:",
                     "halign": "center",
                     "background": [ 239, 235, 227, 179 ]
@@ -70,7 +70,7 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 170, 70 ],
+                    "size": [ 220, 90 ],
                     "text": "",
                     "halign": "center",
                     "foreground": "#ffffff",
@@ -92,7 +92,7 @@
             "data": {
               "key": "textbutton",
               "variables": {
-                "size": [ 250, 75 ],
+                "size": [ 350, 90 ],
                 "text": "START LOBBY",
                 "font": "pixelmix",
                 "color": "#efebe3"
@@ -100,7 +100,7 @@
             },
             "layout": {
               "priority": 3,
-              "padding": [ 0, 25, 0, 0 ]
+              "padding": [ 0, 10, 0, 0 ]
             }
           }
         },

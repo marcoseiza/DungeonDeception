@@ -203,7 +203,7 @@ bool ClientMenuScene::checkConnection() {
 void ClientMenuScene::configureStartButton() {
   if (_status == Status::IDLE) {
     _startgame->activate();
-    updateText(_startgame, "JOIN");
+    updateText(_startgame, "JOIN LOBBY");
   } else if (_status == Status::JOIN) {
     _startgame->deactivate();
     updateText(_startgame, "...");
