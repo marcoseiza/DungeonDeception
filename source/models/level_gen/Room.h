@@ -48,6 +48,9 @@ class Room {
   /** The size of the room. */
   cugl::Size _size;
 
+  /** Mark that this room should be deleted. */
+  bool _to_delete;
+
   /**
    * Create a Room with the given config. The doors are
    * represented by their grid unit coordinates in terlation to the bottom left
@@ -100,7 +103,9 @@ class Room {
   cugl::Color4 getRoomNodeColorGenerator() {
     switch (_type) {
       case RoomType::TERMINAL:
-        return cugl::Color4(125, 94, 52, 127);
+        // return cugl::Color4(125, 94, 52, 127);
+        return cugl::Color4(52, 205, 14, 127);
+
       case RoomType::SPAWN:
         return cugl::Color4(14, 14, 205, 127);
       case RoomType::STANDARD:

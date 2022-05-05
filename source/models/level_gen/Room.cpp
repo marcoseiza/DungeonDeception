@@ -13,6 +13,7 @@ Room::Room(default_rooms::RoomConfig config)
       _scene2_key(""),
       _scene2_source(config.scene2_source),
       _num_players_for_terminal(0),
+      _to_delete(false),
       _key(-1) {
   for (cugl::Vec2 &door : config.doors) {
     // If the door is within the bounds of the edges of the room then add it to

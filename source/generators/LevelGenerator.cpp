@@ -232,7 +232,7 @@ void LevelGenerator::placeTerminalRooms(
 
   float r = dis(_generator) * (max_radius - min_radius) + min_radius;
   float min_angle = dis(_generator) * 2 * M_PI;
-  float max_angle = min_angle + 2 * M_3_PI_4 / num_rooms;
+  float max_angle = min_angle + M_PI / num_rooms;
 
   for (float i = 0; i < num_rooms; i++) {
     std::shared_ptr<Room> room =
@@ -306,17 +306,44 @@ void LevelGenerator::segregateLayers() {
   }
 
   _generator_step = [this]() {
-    this->separateRooms([this]() {
-      for (std::shared_ptr<Room> room : _rooms) {
-        cugl::Vec2 pos = room->_node->getPosition();
-        pos = snapToGrid(pos, this->_config.getGridCell());
-        pos -= room->_node->getSize() / 2.0f;
-        room->_node->setPosition(pos);
-      }
-
-      this->markAndFillHallways();
-    });
+    this->separateRooms([this]() { this->snapToGridAndCullOverlap(); });
   };
+}
+
+/**
+ * Snap all the rooms to grid and remove all the rooms that are overlapping.
+ */
+void LevelGenerator::snapToGridAndCullOverlap() {
+  for (std::shared_ptr<Room> room : _rooms) {
+    cugl::Vec2 pos = room->_node->getPosition();
+    pos = snapToGrid(pos, this->_config.getGridCell());
+    pos -= room->_node->getSize() / 2.0f;
+    room->_node->setPosition(pos);
+  }
+
+  for (std::shared_ptr<Room> room : _rooms) {
+    auto overlapping = roomMostOverlappingWith(room);
+    if (overlapping != room && !room->_to_delete &&
+        overlapping->_type == RoomType::STANDARD) {
+      overlapping->_to_delete = true;
+    }
+  }
+
+  for (auto it = _rooms.begin(); it != _rooms.end(); it++) {
+    if ((*it)->_to_delete) {
+      _map->removeChild((*it)->_node);
+      _rooms.erase(it--);
+    }
+  }
+
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    auto &circle_rooms = _circle_rooms[i];
+    for (auto it = circle_rooms.begin(); it != circle_rooms.end(); it++) {
+      if ((*it)->_to_delete) _circle_rooms[i].erase(it--);
+    }
+  }
+
+  _generator_step = [this]() { this->markAndFillHallways(); };
 }
 
 void LevelGenerator::markAndFillHallways() {

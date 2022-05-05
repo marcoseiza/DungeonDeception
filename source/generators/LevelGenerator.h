@@ -130,6 +130,11 @@ class LevelGenerator {
   void separateRooms(std::function<void(void)> next_generator_step = nullptr);
 
   /**
+   * Snap all the rooms to grid and remove all the rooms that are overlapping.
+   */
+  void snapToGridAndCullOverlap();
+
+  /**
    * Mark the rooms with different types, and fill the hallways between them.
    */
   void markAndFillHallways();
