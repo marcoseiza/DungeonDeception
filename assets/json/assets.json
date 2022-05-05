@@ -557,35 +557,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 175, 55 ],
-                  "text": "PLAY AGAIN",
+                  "size": [ 225, 55 ],
+                  "text": "GO TO MENU",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 25, 0 ]
-              }
-            },
-            "quit": {
-              "type": "Widget",
-              "data": {
-                "key": "textbutton",
-                "variables": {
-                  "size": [ 175, 55 ],
-                  "text": "QUIT",
-                  "color": "#efebe3"
-                }
-              },
-              "layout": {
-                "priority": 1,
-                "padding": [ 0, 0, 0, 0 ]
+                "padding": [ 0, 0, 18, 0 ]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 25, 0, 130 ]
+            "padding": [ 0, 25, 0, 420 ]
           }
         }
       }

@@ -16,18 +16,14 @@ class WinScene : public cugl::Scene2 {
     /** User has not yet made a choice */
     NONE,
     /** User wants to host a game */
-    PLAYAGAIN,
-    /** User wants to join a game */
-    QUIT
+    GOTOMENU
   };
 
  protected:
   /** The asset manager for this scene. */
   std::shared_ptr<cugl::AssetManager> _assets;
   /** The menu button for hosting a game */
-  std::shared_ptr<cugl::scene2::Button> _playagainbutton;
-  /** The menu button for joining a game */
-  std::shared_ptr<cugl::scene2::Button> _quitbutton;
+  std::shared_ptr<cugl::scene2::Button> _menubutton;
   /** The player menu choice */
   Choice _choice;
 
@@ -56,7 +52,7 @@ class WinScene : public cugl::Scene2 {
    *
    * @return true if the controller is initialized properly, false otherwise.
    */
-  bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+  bool init(const std::shared_ptr<cugl::AssetManager>& assets, bool runnersWin);
 
   /**
    * Returns the user's menu choice.

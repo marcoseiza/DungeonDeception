@@ -213,8 +213,6 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
-  _health_bar->dispose();
-  _energy_bar->dispose();
   _has_sent_player_basic_info = false;
   _dead_enemy_cache.clear();
   _world_node->removeAllChildren();
@@ -310,8 +308,8 @@ void GameScene::update(float timestep) {
     controller->update(timestep);
   }
 
-  //_num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
-  //_num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
+  _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
+  _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
@@ -488,7 +486,6 @@ void GameScene::update(float timestep) {
   }
 
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
-  _num_terminals_corrupted += 4;
 }
 
 void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {

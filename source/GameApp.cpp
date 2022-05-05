@@ -316,7 +316,7 @@ void GameApp::updateGameScene(float timestep) {
     _gameplay.update(timestep);
     return;
   }
-  _win.init(_assets);
+  _win.init(_assets, _gameplay.checkCooperatorWin());
   _gameplay.dispose();
   _scene = State::WIN;
 }
@@ -332,13 +332,7 @@ void GameApp::updateGameScene(float timestep) {
 void GameApp::updateWinScene(float timestep) {
   _win.update(timestep);
   switch (_win.getChoice()) {
-    case WinScene::Choice::PLAYAGAIN:
-      _win.dispose();
-      _level_loading.init(_assets);
-      _level_loading.setActive(true);
-      _scene = State::LEVEL_LOADING;
-      break;
-    case WinScene::Choice::QUIT:
+    case WinScene::Choice::GOTOMENU:
       _win.dispose();
       _menu.setActive(true);
       _hostgame.setActive(false);
