@@ -26,7 +26,7 @@
             "data": {
               "key": "menutitle",
               "variables": {
-                "text": "JOIN LOBBY"
+                "text": "JOIN GAME"
               },
               "anchor": [ 0.5, 1.0 ]
             },
