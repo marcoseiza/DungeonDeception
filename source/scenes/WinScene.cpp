@@ -14,7 +14,8 @@
 #pragma mark -
 #pragma mark Constructors
 
-bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets, bool runnersWin) {
+bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
+                    bool runnersWin) {
   if (_active) return false;
   _active = true;
 
@@ -28,18 +29,18 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets, bool runn
 
   // Acquire the scene built by the asset loader and resize it the scene
   std::shared_ptr<cugl::scene2::SceneNode> scene =
-      _assets->get<cugl::scene2::SceneNode>("win-screen");
+      _assets->get<cugl::scene2::SceneNode>("win-scene");
   auto winner_text = scene->getChildByName<cugl::scene2::Label>("title");
   if (runnersWin) {
-    winner_text->setText("RUNNERS WIN!");
+    winner_text->setText("RUNNERS WIN!", true);
   } else {
-    winner_text->setText("BETRAYERS WIN!");
+    winner_text->setText("BETRAYERS WIN!", true);
   }
   scene->setContentSize(dimen);
   scene->doLayout();  // Repositions the HUD
   _choice = Choice::NONE;
   _menubutton = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      _assets->get<cugl::scene2::SceneNode>("win-screen_play_play-again"));
+      _assets->get<cugl::scene2::SceneNode>("win-scene_play_play-again"));
 
   // Program the buttons
   _menubutton->addListener([this](const std::string& name, bool down) {

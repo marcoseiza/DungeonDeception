@@ -2,45 +2,58 @@
   "variables": {},
   "contents": {
     "comments": "This is the root node for the ui scene",
-    "type": "Node",
+    "type": "Image",
     "format": {
-      "type": "Anchored"
+      "type": "Float",
+      "orientation": "vertical",
+      "x_alignment": "center",
+      "y_alignment": "middle"
+    },
+    "data": {
+      "texture": "background"
     },
     "children": {
-      "cooperator": {
-        "type": "Label",
+      "title": {
+        "type": "Widget",
         "data": {
-          "anchor": [ -0.9, 2 ],
-          "font": "pixel32",
-          "text": "Cooperators Win!",
-          "padding": [ 20, 20, 20, 20 ],
-          "halign": "left",
-          "valign": "top"
-        },
-        "layout": {
-          "priority": 1,
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.05,
-          "y_offset": -0.15
+          "key": "menutitle",
+          "variables": {
+            "text": "RUNNERS WIN!"
+          }
         }
       },
-      "betrayer": {
-        "type": "Label",
+      "play": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "horizontal",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
         "data": {
-          "anchor": [ -0.9, 2 ],
-          "font": "pixel32",
-          "text": "Betrayers Win!",
-          "padding": [ 20, 20, 20, 20 ],
-          "halign": "left",
-          "valign": "top"
+          "anchor": [0.5, 0.5],
+          "size": [500, 65]
+        },
+        "children": {
+          "play-again": {
+            "type": "Widget",
+            "data": {
+              "key": "textbutton",
+              "variables": {
+                "size": [225, 55],
+                "text": "GO TO MENU",
+                "color": "#efebe3"
+              }
+            },
+            "layout": {
+              "priority": 1,
+              "padding": [0, 0, 18, 0]
+            }
+          }
         },
         "layout": {
           "priority": 1,
-          "x_anchor": "left",
-          "y_anchor": "top",
-          "x_offset": 0.05,
-          "y_offset": -0.15
+          "padding": [0, 25, 0, 420]
         }
       }
     }

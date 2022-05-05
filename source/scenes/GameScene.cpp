@@ -138,11 +138,6 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
-  auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
-  win_layer->setContentSize(dim);
-  win_layer->doLayout();
-  win_layer->setVisible(false);
-
   auto target_player_button =
       ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(!is_betrayer);
@@ -187,7 +182,6 @@ bool GameScene::init(
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
-  cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
 
@@ -214,6 +208,7 @@ void GameScene::dispose() {
   InputController::get()->dispose();
   _active = false;
   _has_sent_player_basic_info = false;
+  _sound_controller->stop();
   _dead_enemy_cache.clear();
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
