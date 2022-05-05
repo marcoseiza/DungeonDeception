@@ -26,7 +26,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     SKIRTING,
     /** The enemy is knocked back. */
     STUNNED,
-
+    /** The enemy wants to move away from the player for a little. */
+    MOVING_BACK
   };
 
   /** Enum for which enemy this is. */
@@ -163,6 +164,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Whether the turtle needs to close/open. */
   TurtleAnimationState _turtle_state;
+  
+  /** Timer for staying in the move back state. */
+  int _move_back_timer;
 
 #pragma mark Constructors
   /**

@@ -50,6 +50,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _isKnockbacked = false;
   _stunned_timer = 0;
   _goal_frame = 0;
+  _move_back_timer = 0;
 
   _attack_cooldown = 0;
 

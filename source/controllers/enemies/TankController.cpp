@@ -1,6 +1,7 @@
 #include "TankController.h"
 
 #define MIN_DISTANCE 300
+#define MOVE_BACK_RANGE 40
 #define ATTACK_RANGE 75
 #define ATTACK_FRAMES 18
 #define STOP_ATTACK_FRAMES 50
@@ -61,8 +62,23 @@ void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       enemy->_cta_timer++;
     }
     if (enemy->_cta_timer == 0 || enemy->_cta_timer == STATE_CHANGE_LIM) {
-      enemy->setCurrentState(EnemyModel::State::ATTACKING);
       enemy->_cta_timer = 0;
+      if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+        enemy->_move_back_timer--;
+        if (enemy->_move_back_timer <= 0) {
+          enemy->setCurrentState(EnemyModel::State::ATTACKING);
+        }
+      } else {
+        // Chance for the enemy to move backwards, away from the player.
+        std::uniform_int_distribution<int> dist(0, 100);
+        int chance = dist(_generator);
+        if (distance <= MOVE_BACK_RANGE && chance <= 5) {
+          enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
+          enemy->_move_back_timer = 60;
+        } else {
+          enemy->setCurrentState(EnemyModel::State::ATTACKING);
+        }
+      }
     }
   } else if (distance <= MIN_DISTANCE) {
     if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
@@ -86,6 +102,10 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
     case EnemyModel::State::ATTACKING: {
       attackPlayer(enemy, p);
+      break;
+    }
+    case EnemyModel::State::MOVING_BACK: {
+      avoidPlayer(enemy, p);
       break;
     }
     default: {
