@@ -45,6 +45,9 @@ class Room {
   /** The key for the room object. */
   int _key;
 
+  /** The size of the room. */
+  cugl::Size _size;
+
   /**
    * Create a Room with the given config. The doors are
    * represented by their grid unit coordinates in terlation to the bottom left
@@ -63,6 +66,12 @@ class Room {
   void move(cugl::Vec2 dist);
 
   /**
+   * Move the room to given position.
+   * @param dist The position to move to.
+   */
+  void moveTo(cugl::Vec2 pos);
+
+  /**
    * Add an edge in counter clockwise order to the list of edges.
    *
    * @param edge The edge to be added.
@@ -71,13 +80,27 @@ class Room {
 
   /**
    * Returns the SceneNode color for the room type.
-   *
    * @return the color corresponding to the room type.
    */
   cugl::Color4 getRoomNodeColor() {
     switch (_type) {
       case RoomType::TERMINAL:
         return cugl::Color4(52, 205, 14, 127);
+      case RoomType::SPAWN:
+        return cugl::Color4(14, 14, 205, 127);
+      case RoomType::STANDARD:
+        return cugl::Color4(125, 94, 52, 127);
+    }
+  }
+
+  /**
+   * Returns the SceneNode color for the room type while generating the room.
+   * @return the color corresponding to the room type.
+   */
+  cugl::Color4 getRoomNodeColorGenerator() {
+    switch (_type) {
+      case RoomType::TERMINAL:
+        return cugl::Color4(125, 94, 52, 127);
       case RoomType::SPAWN:
         return cugl::Color4(14, 14, 205, 127);
       case RoomType::STANDARD:
@@ -145,6 +168,9 @@ class Room {
     return cugl::Vec2(_node->getSize()).length() / 2.0f;
   }
 
+  /** Calculate the edge to door pairing. */
+  void initializeEdgeToDoorPairing();
+
  private:
   /**
    * Initialize the scene2 nodes for this room given a certain size in grid
@@ -153,9 +179,6 @@ class Room {
    * @param size The size of the room in grid units.
    */
   void initScene2(cugl::Size size);
-
-  /** Calculate the edge to door pairing. */
-  void initializeEdgeToDoorPairing();
 
   float angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,
                                 cugl::Vec2 &door);

@@ -135,11 +135,19 @@ class LevelGenerator {
   void markAndFillHallways();
 
   /**
-   * Create the gates between the rooms and the hallways.
+   * The visualization has some different colors and objects to it that
+   * shouldn't appear on the map.
    */
-  void establishGates();
+  void cleanUpVisualization();
 
 #pragma mark Helpers
+
+  /**
+   * @param pos A position to snap to the grid
+   * @param size The grid cell size
+   * @return The snapped vector for easy calculation
+   */
+  cugl::Vec2 snapToGrid(const cugl::Vec2 &pos, const cugl::Vec2 &size);
 
   void placeTerminals();
 

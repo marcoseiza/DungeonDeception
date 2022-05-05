@@ -75,7 +75,7 @@ void LevelGenerator::generateRooms() {
   _spawn_room->_fixed = true;
   _spawn_room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
   _spawn_room->_node->setPosition(_spawn_room->_node->getContentSize() / -2.0f);
-  _spawn_room->_node->setColor(_spawn_room->getRoomNodeColor());
+  _spawn_room->_node->setColor(_spawn_room->getRoomNodeColorGenerator());
   _rooms.push_back(_spawn_room);
 
   for (int i = 0; i < _config.getLayers().size(); i++) {
@@ -122,7 +122,7 @@ void LevelGenerator::placeRegularRooms(int num_rooms, float min_radius,
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(room->getRoomNodeColor());
+    room->_node->setColor(room->getRoomNodeColorGenerator());
 
     _rooms.push_back(room);
     _map->addChild(room->_node);
@@ -149,6 +149,7 @@ void LevelGenerator::separateRooms(
           direction += cugl::Vec2::ONE;
         }
         direction.normalize();
+
         room->move(direction);
         n_room->move(direction * -1.0f);
       }
@@ -187,6 +188,21 @@ std::shared_ptr<Room> LevelGenerator::roomMostOverlappingWith(
       });
 
   return (it != _rooms.end()) ? (*it) : room;
+}
+
+cugl::Vec2 LevelGenerator::snapToGrid(const cugl::Vec2 &pos,
+                                      const cugl::Vec2 &size) {
+  cugl::Vec2 new_pos;
+
+  new_pos.x = std::abs(pos.x) + (int)size.x / 2;
+  new_pos.x -= (int)new_pos.x % (int)size.x;
+  new_pos.x *= pos.x > 0 ? 1 : -1;
+
+  new_pos.y = std::abs(pos.y) + (int)size.y / 2;
+  new_pos.y -= (int)new_pos.y % (int)size.y;
+  new_pos.y *= pos.y > 0 ? 1 : -1;
+
+  return new_pos;
 }
 
 void LevelGenerator::placeTerminals() {
@@ -290,7 +306,16 @@ void LevelGenerator::segregateLayers() {
   }
 
   _generator_step = [this]() {
-    this->separateRooms([this]() { this->markAndFillHallways(); });
+    this->separateRooms([this]() {
+      for (std::shared_ptr<Room> room : _rooms) {
+        cugl::Vec2 pos = room->_node->getPosition();
+        pos = snapToGrid(pos, this->_config.getGridCell());
+        pos -= room->_node->getSize() / 2.0f;
+        room->_node->setPosition(pos);
+      }
+
+      this->markAndFillHallways();
+    });
   };
 }
 
@@ -315,10 +340,22 @@ void LevelGenerator::markAndFillHallways() {
 
   fillHallways();
 
-  _generator_step = [this]() { this->establishGates(); };
+  _generator_step = [this]() { this->cleanUpVisualization(); };
 }
 
-void LevelGenerator::establishGates() { _generator_step = nullptr; }
+void LevelGenerator::cleanUpVisualization() {
+  for (std::shared_ptr<Room> &room : _rooms) {
+    room->_node->setColor(room->getRoomNodeColor());
+    for (std::shared_ptr<Edge> &edge : room->_edges) {
+      if (!edge->_active) {
+        auto parent = edge->_node->getParent();
+        if (parent) parent->removeChild(edge->_node);
+      }
+    }
+  }
+
+  _generator_step = nullptr;
+}
 
 void LevelGenerator::calculateDelaunayTriangles(
     std::vector<std::shared_ptr<Room>> &rooms, float min_r) {
@@ -417,6 +454,20 @@ void LevelGenerator::addEdgesBackAndRemoveUnecessary(
       add_back &= num_edges_source < _config.getMaxNumEdges();
       add_back &= num_edges_neighbor < _config.getMaxNumEdges();
 
+      std::unordered_map<std::shared_ptr<Edge>, cugl::Vec2> prev =
+          room->_edge_to_door;
+      room->_edge_to_door.clear();
+      room->initializeEdgeToDoorPairing();
+
+      // If the pairing isn't changed then don't add it back.
+      // No significan't change, so it will lead to a weird edge to door
+      // pairing.
+      bool changed = true;
+      for (auto it : prev) {
+        changed &= it.second == room->_edge_to_door[it.first];
+      }
+      add_back &= !changed;
+
       add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
       if (!edge->_active && add_back) {
         edge->_node->setVisible(true);
@@ -424,6 +475,10 @@ void LevelGenerator::addEdgesBackAndRemoveUnecessary(
         edge->_node->setColor(cugl::Color4(255, 14, 14, 124));
       }
     }
+  }
+
+  for (std::shared_ptr<Room> &room : rooms) {
+    room->_edge_to_door.clear();
   }
 }
 
@@ -518,23 +573,45 @@ void LevelGenerator::fillHallways() {
         std::shared_ptr<Room> &source = edge->_source;
         std::shared_ptr<Room> &neighbor = edge->_neighbor;
 
-        cugl::Vec2 start =
-            source->_node->getPosition() + source->getDoorForEdge(edge);
-        cugl::Vec2 end =
-            neighbor->_node->getPosition() + neighbor->getDoorForEdge(edge);
+        cugl::Vec2 start = source->getDoorForEdge(edge);
+        cugl::Vec2 end = neighbor->getDoorForEdge(edge);
+
+        if (start.x == 0 || start.x == source->_size.width - 1)
+          start.y = source->_size.height / 2;
+        else if (start.y == 0 || start.y == source->_size.height - 1)
+          start.x = source->_size.width / 2;
+
+        if (end.x == 0 || end.x == neighbor->_size.width - 1)
+          end.y = neighbor->_size.height / 2;
+        else if (end.y == 0 || end.y == neighbor->_size.height - 1)
+          end.x = neighbor->_size.width / 2;
+
+        start += source->_node->getPosition();
+        end += neighbor->_node->getPosition();
+
         cugl::Vec2 start_pos(std::min(start.x, end.x),
                              std::min(start.y, end.y));
         cugl::Vec2 end_pos(std::max(start.x, end.x) + 1,
                            std::max(start.y, end.y) + 1);
 
         std::vector<cugl::Vec2> path{start, end};
-        auto bounds = cugl::scene2::PathNode::allocWithVertices(path, 0.4f);
 
-        bounds->setColor(cugl::Color4::BLACK);
+        // edge->_node->dispose();
+        // edge->_node->initWithPath(path, 1.0f);
+
+        // edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
+        // edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
+        // edge->_node->setPosition(start_pos);
+
+        // _map->addChild(edge->_node);
+
+        auto bounds = cugl::scene2::PathNode::allocWithVertices(path, 2.0f);
+
+        bounds->setColor(cugl::Color4(0, 0, 0, 127));
         bounds->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
         bounds->setPosition(start_pos);
 
-        //        _map->addChild(bounds);
+        _map->addChild(bounds);
       }
     }
   }

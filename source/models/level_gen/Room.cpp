@@ -38,6 +38,10 @@ void Room::move(cugl::Vec2 dist) {
   }
 }
 
+void Room::moveTo(cugl::Vec2 pos) {
+  if (!_fixed) _node->setPosition(pos);
+}
+
 void Room::addEdge(const std::shared_ptr<Edge> &edge) {
   auto it = std::upper_bound(
       _edges.begin(), _edges.end(), edge,
@@ -98,6 +102,11 @@ void Room::initializeEdgeToDoorPairing() {
       active_edges.push_back(edge);
       std::vector<double> weights;
       for (cugl::Vec2 &door : _doors) {
+        if (door.x == 0 || door.x == _size.width - 1)
+          door.y = _size.height / 2;
+        else if (door.y == 0 || door.y == _size.height - 1)
+          door.x = _size.width / 2;
+
         weights.push_back(
             static_cast<double>(angleBetweenEdgeAndDoor(edge, door)));
       }
@@ -128,6 +137,7 @@ float Room::angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,
 void Room::initScene2(cugl::Size size) {
   _node = cugl::scene2::PolygonNode::alloc();
   _node->setContentSize(size);
+  _size = size;
 
   for (cugl::Vec2 door : _doors) {
     cugl::Vec2 pos(floorf(door.x), floorf(door.y));
