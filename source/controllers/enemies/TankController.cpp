@@ -59,8 +59,8 @@ void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
                                              float distance) {
   // Change state if applicable
   if (distance <= ATTACK_RANGE) {
+    std::uniform_int_distribution<int> dist(0, 50);
     if (enemy->getCurrentState() == EnemyModel::State::CHASING) {
-      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
       enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
       enemy->_cta_timer++;
     }
@@ -69,13 +69,11 @@ void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
         enemy->_move_back_timer--;
         if (enemy->_move_back_timer <= 0) {
-          std::uniform_int_distribution<int> dist(0.0f, 50.0f);
           enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
         }
       } else {
         // Chance for the enemy to move backwards, away from the player.
-        std::uniform_int_distribution<int> dist(0, 100);
         int chance = dist(_generator);
         // Chance is 1/20 for every tick, +10 to attack frames to ensure does not attack in backwards direction
         if (distance <= MOVE_BACK_RANGE && chance <= 5 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
@@ -88,7 +86,7 @@ void TankController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING || enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+    if (enemy->getCurrentState() != EnemyModel::State::CHASING) {
       enemy->_atc_timer++;
     }
     if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
