@@ -442,37 +442,44 @@ void LevelGenerator::addEdgesBackAndRemoveUnecessary(
   std::uniform_real_distribution<float> rand(0.0f, 1.0f);
   for (std::shared_ptr<Room> &room : rooms) {
     for (std::shared_ptr<Edge> edge : room->_edges) {
-      bool add_back = edge->_weight < _config.getMaxHallwayLength();
+      if (!edge->_active) {
+        bool add_back = edge->_weight < _config.getMaxHallwayLength();
 
-      long num_edges_source = std::count_if(
-          edge->_source->_edges.begin(), edge->_source->_edges.end(),
-          [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
-      long num_edges_neighbor = std::count_if(
-          edge->_neighbor->_edges.begin(), edge->_neighbor->_edges.end(),
-          [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
+        long num_edges_source = std::count_if(
+            edge->_source->_edges.begin(), edge->_source->_edges.end(),
+            [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
+        long num_edges_neighbor = std::count_if(
+            edge->_neighbor->_edges.begin(), edge->_neighbor->_edges.end(),
+            [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
 
-      add_back &= num_edges_source < _config.getMaxNumEdges();
-      add_back &= num_edges_neighbor < _config.getMaxNumEdges();
+        add_back &= num_edges_source < _config.getMaxNumEdges();
+        add_back &= num_edges_neighbor < _config.getMaxNumEdges();
 
-      std::unordered_map<std::shared_ptr<Edge>, cugl::Vec2> prev =
-          room->_edge_to_door;
-      room->_edge_to_door.clear();
-      room->initializeEdgeToDoorPairing();
-
-      // If the pairing isn't changed then don't add it back.
-      // No significan't change, so it will lead to a weird edge to door
-      // pairing.
-      bool changed = true;
-      for (auto it : prev) {
-        changed &= it.second == room->_edge_to_door[it.first];
-      }
-      add_back &= !changed;
-
-      add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
-      if (!edge->_active && add_back) {
-        edge->_node->setVisible(true);
+        room->_edge_to_door.clear();
         edge->_active = true;
-        edge->_node->setColor(cugl::Color4(255, 14, 14, 124));
+        room->initializeEdgeToDoorPairing();
+        for (auto it : room->_edge_to_door) {
+          float ag = room->angleBetweenEdgeAndDoor(it.first, it.second);
+          add_back &= (std::abs(ag) <= M_PI_2 + 0.1f);
+        }
+        edge->_active = false;
+
+        add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
+        if (add_back) {
+          edge->_node->setVisible(true);
+          edge->_active = true;
+          edge->_node->setColor(cugl::Color4(255, 14, 14, 124));
+        }
+      }
+    }
+  }
+
+  for (std::shared_ptr<Room> &room : rooms) {
+    for (auto it : room->_edge_to_door) {
+      float ag = room->angleBetweenEdgeAndDoor(it.first, it.second);
+      if (std::abs(ag) > M_PI_2 + 0.1f) {
+        it.first->_node->setVisible(false);
+        it.first->_active = false;
       }
     }
   }

@@ -171,6 +171,9 @@ class Room {
   /** Calculate the edge to door pairing. */
   void initializeEdgeToDoorPairing();
 
+  float angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,
+                                cugl::Vec2 door);
+
  private:
   /**
    * Initialize the scene2 nodes for this room given a certain size in grid
@@ -179,9 +182,6 @@ class Room {
    * @param size The size of the room in grid units.
    */
   void initScene2(cugl::Size size);
-
-  float angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,
-                                cugl::Vec2 &door);
 };
 
 /**

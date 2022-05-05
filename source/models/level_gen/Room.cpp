@@ -102,13 +102,7 @@ void Room::initializeEdgeToDoorPairing() {
       active_edges.push_back(edge);
       std::vector<double> weights;
       for (cugl::Vec2 &door : _doors) {
-        if (door.x == 0 || door.x == _size.width - 1)
-          door.y = _size.height / 2;
-        else if (door.y == 0 || door.y == _size.height - 1)
-          door.x = _size.width / 2;
-
-        weights.push_back(
-            static_cast<double>(angleBetweenEdgeAndDoor(edge, door)));
+        weights.push_back(angleBetweenEdgeAndDoor(edge, door));
       }
       weight_matrix.push_back(weights);
     }
@@ -123,15 +117,24 @@ void Room::initializeEdgeToDoorPairing() {
 }
 
 float Room::angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,
-                                    cugl::Vec2 &door) {
+                                    cugl::Vec2 door) {
+  cugl::Vec2 approx_door = door;
+  if (approx_door.x == 0 || approx_door.x == _size.width - 1)
+    approx_door.y = (int)(_size.height / 2);
+  else if (approx_door.y == 0 || approx_door.y == _size.height - 1)
+    approx_door.x = (int)(_size.width / 2);
+
   cugl::Rect rect = getRect();
   cugl::Vec2 mid = getMid();
   cugl::Vec2 intersect = edge->getIntersectWithRectSide(rect);
   float edge_angle = (intersect - mid).getAngle();
   float door_angle = (door + rect.origin - mid).getAngle();
+  float approx_door_angle = (approx_door + rect.origin - mid).getAngle();
   float diff = fabs(door_angle - edge_angle);
+  float approx_diff = fabs(approx_door_angle - edge_angle);
   if (diff > M_PI) diff = 2 * M_PI - diff;
-  return diff;
+  if (approx_diff > M_PI) approx_diff = 2 * M_PI - approx_diff;
+  return std::min(diff, approx_diff);
 }
 
 void Room::initScene2(cugl::Size size) {
