@@ -7,6 +7,7 @@
 #define ATTACK_FRAMES 24
 #define STOP_ATTACK_FRAMES 80
 #define ATTACK_COOLDOWN 120
+#define MOVE_BACK_COOLDOWN 60
 
 #define STATE_CHANGE_LIM 10
 
@@ -59,6 +60,8 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
   // Change state if applicable
   if (distance <= ATTACK_RANGE) {
     if (enemy->getCurrentState() == EnemyModel::State::CHASING) {
+      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
       enemy->_cta_timer++;
     }
     if (enemy->_cta_timer == 0 || enemy->_cta_timer == STATE_CHANGE_LIM) {
@@ -66,16 +69,18 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
         enemy->_move_back_timer--;
         if (enemy->_move_back_timer <= 0) {
-          enemy->setAttackCooldown(ATTACK_COOLDOWN);
+          std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+          enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
         }
       } else {
         // Chance for the enemy to move backwards, away from the player.
         std::uniform_int_distribution<int> dist(0, 100);
         int chance = dist(_generator);
-        if (distance <= MOVE_BACK_RANGE && chance <= 5 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
+        // Chance is 1/20 for every tick, +10 to attack frames to ensure does not attack in backwards direction
+        if (distance <= MOVE_BACK_RANGE && chance <= 5 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
           enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
-          enemy->_move_back_timer = 60;
+          enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
           enemy->setAttackCooldown(ATTACK_COOLDOWN);
         } else {
           enemy->setCurrentState(EnemyModel::State::ATTACKING);
@@ -83,7 +88,7 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
       }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING || enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+    if (enemy->getCurrentState() != EnemyModel::State::CHASING) {
       enemy->_atc_timer++;
     }
     if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
