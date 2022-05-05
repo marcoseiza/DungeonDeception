@@ -92,8 +92,8 @@
             "data": {
               "key": "textbutton",
               "variables": {
-                "size": [ 220, 75 ],
-                "text": "START GAME",
+                "size": [ 250, 75 ],
+                "text": "START LOBBY",
                 "font": "pixelmix",
                 "color": "#efebe3"
               }

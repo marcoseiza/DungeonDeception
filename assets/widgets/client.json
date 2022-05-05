@@ -26,7 +26,7 @@
             "data": {
               "key": "menutitle",
               "variables": {
-                "text": "JOIN GAME"
+                "text": "JOIN LOBBY"
               },
               "anchor": [ 0.5, 1.0 ]
             },
@@ -129,7 +129,7 @@
                       "key": "textbutton",
                       "variables": {
                         "size": [ 180, 75 ],
-                        "text": "JOIN",
+                        "text": "JOIN LOBBY",
                         "font": "pixelmix",
                         "color": "#efebe3"
                       }
