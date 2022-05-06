@@ -92,7 +92,7 @@
             "data": {
               "key": "textbutton",
               "variables": {
-                "size": [ 350, 90 ],
+                "size": [ 300, 90 ],
                 "text": "START LOBBY",
                 "font": "pixelmix",
                 "color": "#efebe3"
