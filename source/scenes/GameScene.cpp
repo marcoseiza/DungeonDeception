@@ -688,7 +688,7 @@ void GameScene::sendNetworkInfoHost() {
     {
       std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
       for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-        auto info = cugl::EnemyInfo::alloc();
+        auto info = cugl::EnemyAdjacentInfo::alloc();
 
         info->enemy_id = enemy->getEnemyId();
         info->pos = enemy->getPosition();
@@ -839,7 +839,7 @@ void GameScene::processData(
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
 
       for (std::shared_ptr<cugl::Serializable>& info_ : all_enemy) {
-        auto info = std::dynamic_pointer_cast<cugl::EnemyInfo>(info_);
+        auto info = std::dynamic_pointer_cast<cugl::EnemyAdjacentInfo>(info_);
         std::shared_ptr<EnemyModel> enemy =
             _level_controller->getEnemy(info->enemy_id);
 

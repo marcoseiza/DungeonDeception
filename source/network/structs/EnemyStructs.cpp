@@ -48,6 +48,24 @@ void EnemyOtherInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
 }
 
 #pragma mark -
+#pragma mark EnemyAdjacentInfo
+
+const Uint32 EnemyAdjacentInfo::Key = NC_HOST_ADJACENT_ENEMY_INFO;
+
+void EnemyAdjacentInfo::serialize(cugl::NetworkSerializer* serializer) {
+  serializer->writeUint32(enemy_id);
+  
+  serializer->writeDouble(pos.x);
+  serializer->writeDouble(pos.y);
+}
+
+void EnemyAdjacentInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
+  enemy_id = std::get<Uint32>(deserializer->read());
+  pos.x = std::get<double>(deserializer->read());
+  pos.y = std::get<double>(deserializer->read());
+}
+
+#pragma mark -
 #pragma mark EnemyHitInfo
 
 const Uint32 EnemyHitInfo::Key = NC_CLIENT_ENEMY_HIT_INFO;
