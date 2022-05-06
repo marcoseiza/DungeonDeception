@@ -166,11 +166,11 @@ bool GameScene::init(
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(Betrayer)";
-    role_text->setForeground(cugl::Color4::RED);
+    role_msg = "(BETRAYER)";
+    role_text->setForeground(cugl::Color4::BLACK);
     role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(Runner)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
@@ -448,11 +448,11 @@ void GameScene::update(float timestep) {
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(Betrayer)";
-    role_text->setForeground(cugl::Color4::RED);
+    role_msg = "(BETRAYER)";
+    role_text->setForeground(cugl::Color4::BLACK);
     role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(Runner)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
 
