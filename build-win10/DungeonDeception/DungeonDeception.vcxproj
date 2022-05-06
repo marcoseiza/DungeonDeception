@@ -230,7 +230,11 @@
     <ClInclude Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
     <ClInclude Include="..\..\source\network\NetworkController.h" />
-    <ClInclude Include="..\..\source\network\structs\VotingInfo.h" />
+    <ClInclude Include="..\..\source\network\CustomNetworkSerializer.h" />
+    <ClInclude Include="..\..\source\network\structs\EnemyStructs.h" />
+    <ClInclude Include="..\..\source\network\structs\PlayerStructs.h" />
+    <ClInclude Include="..\..\source\network\structs\TerminalStructs.h" />
+    <ClInclude Include="..\..\source\network\structs\Serializable.h" />
     <ClInclude Include="..\..\source\controllers\actions\Action.h" />
     <ClInclude Include="..\..\source\controllers\actions\Attack.h" />
     <ClInclude Include="..\..\source\controllers\actions\Movement.h" />
@@ -283,6 +287,10 @@
     <ClCompile Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
     <ClCompile Include="..\..\source\network\NetworkController.cpp" />
+    <ClCompile Include="..\..\source\network\CustomNetworkSerializer.cpp" />
+    <ClCompile Include="..\..\source\network\structs\EnemyStructs.cpp" />
+    <ClCompile Include="..\..\source\network\structs\PlayerStructs.cpp" />
+    <ClCompile Include="..\..\source\network\structs\TerminalStructs.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Movement.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />

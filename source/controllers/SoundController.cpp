@@ -100,6 +100,10 @@ void SoundController::initPlayerSFX() {
       SFX("player-attack-energy-wave",
           _assets->get<cugl::Sound>("player-attack-energy-wave"));
 
+  _player_energy_charge =
+      SFX("player-attack-energy-charge",
+          _assets->get<cugl::Sound>("player-attack-energy-charge"));
+
   for (int i = 1; i <= 4; i++) {  // 4 grass footsteps
     std::string name = "player-footsteps-grass-" + std::to_string(i);
     _player_footsteps_grass.push_back(
@@ -127,6 +131,16 @@ void SoundController::playPlayerEnergyWave() {
   cugl::AudioEngine::get()->play(_player_energy_wave.name,
                                  _player_energy_wave.sound, false,
                                  _player_energy_wave.volume, true);
+}
+
+void SoundController::playPlayerEnergyCharge() {
+  cugl::AudioEngine::get()->play(_player_energy_charge.name,
+                                 _player_energy_charge.sound, false,
+                                 _player_energy_charge.volume, true);
+}
+
+void SoundController::stopPlayerEnergyCharge() {
+  cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
 }
 
 void SoundController::playPlayerFootstep(const FootstepType& type) {

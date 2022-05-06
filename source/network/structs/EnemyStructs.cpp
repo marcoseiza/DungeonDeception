@@ -54,12 +54,14 @@ const Uint32 EnemyHitInfo::Key = NC_CLIENT_ENEMY_HIT_INFO;
 
 void EnemyHitInfo::serialize(cugl::NetworkSerializer* serializer) {
   serializer->writeUint32(enemy_id);
+  serializer->writeUint32(player_id);
   serializer->writeUint32(amount);
   serializer->writeUint32(direction);
 }
 
 void EnemyHitInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
   enemy_id = std::get<Uint32>(deserializer->read());
+  player_id = std::get<Uint32>(deserializer->read());
   amount = std::get<Uint32>(deserializer->read());
   direction = std::get<Uint32>(deserializer->read());
 }

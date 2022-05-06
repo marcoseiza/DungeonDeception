@@ -133,6 +133,8 @@ struct EnemyHitInfo : public Serializable {
 
   /** The ID of the enemy. */
   int enemy_id;
+  /** The ID of the player that hit the enemy. */
+  int player_id;
   /** The amount of health the enemy has been hit by. */
   int amount;
   /** The direction of the hit, for knockback. */
