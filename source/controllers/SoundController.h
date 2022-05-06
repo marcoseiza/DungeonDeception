@@ -82,6 +82,8 @@ class SoundController : public Controller {
   SFX _player_hit;
   /** The player energy wave SFX. */
   SFX _player_energy_wave;
+  /** The player energy wave charge SFX. */
+  SFX _player_energy_charge;
   /** A list of all the possible grass footstep sounds. */
   std::vector<SFX> _player_footsteps_grass;
   /** A list of all the possible stone footstep sounds. */
@@ -201,6 +203,12 @@ class SoundController : public Controller {
 
   /** Play a energy wave sound effect. */
   void playPlayerEnergyWave();
+
+  /** Play a energy wave charge up sound effect. */
+  void playPlayerEnergyCharge();
+
+  /** Stop a energy wave charge up sound effect. */
+  void stopPlayerEnergyCharge();
 
   /** Play a player hit sound effect. */
   void playPlayerHit();

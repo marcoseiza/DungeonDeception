@@ -674,6 +674,12 @@
       "stream": true,
       "volume": 1.0
     },
+    "player-attack-energy-charge": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_energy_charge.wav",
+      "stream": true,
+      "volume": 1.0
+    },
     "player-footsteps-grass-1": {
       "type": "sample",
       "file": "sounds/player/footsteps/sfx_footstep_grass_1.wav",
