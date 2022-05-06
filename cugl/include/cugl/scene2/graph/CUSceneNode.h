@@ -203,8 +203,8 @@ protected:
      */
     std::string _name;
   
-  /** Specifically for enemies, is the type of the enemy. */
-  std::string _type;
+    /** Specifically for enemies, is the type of the enemy. */
+    std::string _type;
 
     /**
      * A cached has value of _name.

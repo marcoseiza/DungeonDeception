@@ -367,9 +367,11 @@ std::shared_ptr<SceneNode> PathNode::copy(const std::shared_ptr<SceneNode>& dst)
  */
 std::shared_ptr<SceneNode> PathNode::deepcopy() const {
     auto dst = copy(PathNode::alloc());
+    dst->setLayout(_layout);
     for (std::shared_ptr<SceneNode> child : _children) {
         dst->addChild(child->deepcopy());
     }
+    dst->doLayout();
     return dst;
 }
 

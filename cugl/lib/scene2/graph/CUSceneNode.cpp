@@ -303,6 +303,7 @@ std::shared_ptr<SceneNode> SceneNode::copy(const std::shared_ptr<SceneNode>& dst
     dst->_hashOfName = _hashOfName;
     dst->_priority = _priority;
     dst->_json = _json;
+    dst->_type = _type;
     return dst;
 }
 
@@ -317,9 +318,11 @@ std::shared_ptr<SceneNode> SceneNode::copy(const std::shared_ptr<SceneNode>& dst
  */
 std::shared_ptr<SceneNode> SceneNode::deepcopy() const {
     auto dst = copy(SceneNode::alloc());
+    dst->setLayout(_layout);
     for (std::shared_ptr<SceneNode> child : _children) {
         dst->addChild(child->deepcopy());
     }
+    dst->doLayout();
     return dst;
 }
 

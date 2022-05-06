@@ -39,7 +39,7 @@ bool Wall::initWithData(const cugl::Scene2Loader* loader,
 std::shared_ptr<cugl::physics2::PolygonObstacle> Wall::initBox2d() {
   _obstacle = cugl::physics2::PolygonObstacle::alloc(_obstacle_shape);
 
-  cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
+  cugl::Vec2 pos = getWorldPosition() - getPosition();
 
   if (_obstacle != nullptr) {
     _obstacle->setSensor(_init_as_sensor);
@@ -55,4 +55,25 @@ std::shared_ptr<cugl::physics2::PolygonObstacle> Wall::initBox2d() {
   }
 
   return _obstacle;
+}
+
+std::shared_ptr<cugl::scene2::SceneNode> Wall::copy(
+    const std::shared_ptr<cugl::scene2::SceneNode>& dst) const {
+  BasicTile::copy(dst);
+
+  std::shared_ptr<Wall> node = std::dynamic_pointer_cast<Wall>(dst);
+  node->_obstacle_shape = _obstacle_shape;
+  node->_init_as_sensor = _init_as_sensor;
+
+  return dst;
+}
+
+std::shared_ptr<cugl::scene2::SceneNode> Wall::deepcopy() const {
+  auto dst = copy(Wall::alloc());
+  dst->setLayout(_layout);
+  for (std::shared_ptr<cugl::scene2::SceneNode> child : _children) {
+    dst->addChild(child->deepcopy());
+  }
+  dst->doLayout();
+  return dst;
 }

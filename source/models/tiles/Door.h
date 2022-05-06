@@ -101,9 +101,18 @@ class Door : public BasicTile {
   }
 
   virtual std::shared_ptr<SceneNode> copy(
-      const std::shared_ptr<SceneNode>& dst) const override {
-    return BasicTile::copy(dst);
-  }
+      const std::shared_ptr<SceneNode>& dst) const override;
+
+  /**
+   * Performs a deep copy of this Node into dst.
+   *
+   * Children are inherited into the dst node.
+   *
+   * @param dst   The Node to copy into
+   *
+   * @return A reference to dst for chaining.
+   */
+  virtual std::shared_ptr<SceneNode> deepcopy() const override;
 
   /**
    * Initializes a tile node with the given JSON specificaton.
@@ -120,6 +129,11 @@ class Door : public BasicTile {
   virtual bool initWithData(
       const cugl::Scene2Loader* loader,
       const std::shared_ptr<cugl::JsonValue>& data) override;
+
+  static std::shared_ptr<Door> alloc() {
+    std::shared_ptr<Door> result = std::make_shared<Door>();
+    return (result->init() ? result : nullptr);
+  }
 
   /**
    * Returns a new tile node with the given JSON specificaton.

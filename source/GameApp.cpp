@@ -1,6 +1,7 @@
 #include "GameApp.h"
 
 #include "loaders/CustomScene2Loader.h"
+#include "models/level_gen/DefaultRooms.h"
 
 void GameApp::onStartup() {
   _assets = cugl::AssetManager::alloc();
@@ -32,10 +33,6 @@ void GameApp::onStartup() {
   // Create a "loading" screen.
   _loaded = false;
   _loading.init(_assets);
-
-  // Queue up the other assets (EMPTY in this case).
-  _assets->loadDirectoryAsync("json/assets.json", nullptr);
-  _assets->loadDirectoryAsync("json/tiles.json", nullptr);
 
   cugl::Application::onStartup();  // YOU MUST END with call to parent.
 }

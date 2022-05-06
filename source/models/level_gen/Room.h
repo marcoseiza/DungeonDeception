@@ -5,6 +5,10 @@
 #include "DefaultRooms.h"
 #include "RoomTypes.h"
 
+namespace default_rooms {
+struct RoomConfig;
+}
+
 namespace level_gen {
 
 // Forward declaration for use in Room.
@@ -21,6 +25,9 @@ class Room {
 
   /** A reference to the scene2 node for the room. */
   std::shared_ptr<cugl::scene2::PolygonNode> _node;
+
+  /** A reference to the scene2 node for the level. */
+  std::shared_ptr<cugl::scene2::SceneNode> _level_node;
 
   /** A list of all edges to other Rooms, sorted in counter clockwise order. */
   std::vector<std::shared_ptr<Edge>> _edges;

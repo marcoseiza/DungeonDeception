@@ -168,12 +168,13 @@ void LevelController::populate() {
 
   // Initialize every room.
   for (std::shared_ptr<level_gen::Room> room : _level_gen->getRooms()) {
-    auto room_node = _assets->get<cugl::scene2::SceneNode>(room->_scene2_key);
+    auto room_node = room->_level_node;
 
     room_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     cugl::Vec2 pos = room->getRect().origin * (TILE_SIZE * TILE_SCALE);
     room_node->setPosition(pos);
     room_node->setVisible(false);
+    room_node->doLayout();
 
     auto room_model = RoomModel::alloc(room_node, room->_key);
     room_model->setType(room->_type);
@@ -236,14 +237,17 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
         std::remove(unused_doors.begin(), unused_doors.end(), door),
         unused_doors.end());
 
-    int y = static_cast<int>(door.y);
-    int x = static_cast<int>(door.x);
+    int y = (int)door.y, x = (int)door.x;
+
     std::stringstream ss;
-    ss << room->_scene2_key << "_tiles_tile-(" << x << "-" << y << ")_tile";
+    ss << "tile-(" << x << "-" << y << ")";
     std::string door_name = ss.str();
 
-    auto door_room_node = std::dynamic_pointer_cast<Door>(
-        _assets->get<cugl::scene2::SceneNode>(door_name));
+    auto door_room_node =
+        std::dynamic_pointer_cast<Door>(room_model->getNode()
+                                            ->getChildByName("tiles")
+                                            ->getChildByName(door_name)
+                                            ->getChildByName("tile"));
 
     if (door_room_node) {
       door_room_node->initDelegates();
@@ -283,14 +287,17 @@ void LevelController::coverUnusedDoors(
     const std::shared_ptr<RoomModel> &room_model,
     std::vector<cugl::Vec2> &unused_doors) {
   for (cugl::Vec2 door : unused_doors) {
-    int y = static_cast<int>(door.y);
-    int x = static_cast<int>(door.x);
+    int y = (int)door.y, x = (int)door.x;
+
     std::stringstream ss;
-    ss << room->_scene2_key << "_tiles_tile-(" << x << "-" << y << ")_tile";
+    ss << "tile-(" << x << "-" << y << ")";
     std::string door_name = ss.str();
 
-    auto door_room_node = std::dynamic_pointer_cast<Door>(
-        _assets->get<cugl::scene2::SceneNode>(door_name));
+    auto door_room_node =
+        std::dynamic_pointer_cast<Door>(room_model->getNode()
+                                            ->getChildByName("tiles")
+                                            ->getChildByName(door_name)
+                                            ->getChildByName("tile"));
 
     if (door_room_node) {
       door_room_node->initDelegates();

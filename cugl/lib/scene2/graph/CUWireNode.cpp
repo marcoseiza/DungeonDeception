@@ -357,9 +357,11 @@ std::shared_ptr<SceneNode> WireNode::copy(const std::shared_ptr<SceneNode>& dst)
  */
 std::shared_ptr<SceneNode> WireNode::deepcopy() const {
     auto dst = copy(WireNode::alloc());
+    dst->setLayout(_layout);
     for (std::shared_ptr<SceneNode> child : _children) {
         dst->addChild(child->deepcopy());
     }
+    dst->doLayout();
     return dst;
 }
 

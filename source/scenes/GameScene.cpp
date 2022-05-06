@@ -14,6 +14,7 @@
 #include "../controllers/actions/TargetPlayer.h"
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
+#include "../models/tiles/TileHelper.h"
 #include "../models/tiles/Wall.h"
 #include "../network/NetworkController.h"
 #include "../network/structs/EnemyStructs.h"
@@ -183,7 +184,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
   cugl::Scene2::addChild(_debug_node);
-  _debug_node->setVisible(false);
+  _debug_node->setVisible(true);
 
   _sound_controller = SoundController::alloc(_assets);
   _controllers.push_back(_sound_controller);
@@ -212,6 +213,7 @@ void GameScene::dispose() {
   _dead_enemy_cache.clear();
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
+  _role_layer->setVisible(true);
   removeAllChildren();
 }
 
@@ -235,16 +237,15 @@ void GameScene::populate(cugl::Size dim) {
   auto loader = std::dynamic_pointer_cast<cugl::CustomScene2Loader>(
       _assets->access<cugl::scene2::SceneNode>());
 
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("wall")) {
-    auto wall = std::dynamic_pointer_cast<Wall>(tile);
+  for (std::shared_ptr<Wall> wall : TileHelper::getTile<Wall>(_world_node)) {
     _world->addObstacle(wall->initBox2d());
     wall->getObstacle()->setDebugColor(cugl::Color4::GREEN);
     wall->getObstacle()->setDebugScene(_debug_node);
   }
 
   _num_terminals = 0;
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("terminal")) {
-    auto terminal = std::dynamic_pointer_cast<Terminal>(tile);
+  for (std::shared_ptr<Terminal> terminal :
+       TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
@@ -862,11 +863,15 @@ void GameScene::beginContact(b2Contact* contact) {
   void* fx2_d = (void*)fx2->GetUserData().pointer;
 
   std::string fx1_name;
-  if (static_cast<std::string*>(fx1_d) != nullptr)
-    fx1_name.assign(*static_cast<std::string*>(fx1_d));
+  if (static_cast<std::string*>(fx1_d) != nullptr) {
+    std::string* tmp = static_cast<std::string*>(fx1_d);
+    fx1_name.assign(*tmp);
+  }
   std::string fx2_name;
-  if (static_cast<std::string*>(fx2_d) != nullptr)
-    fx2_name.assign(*static_cast<std::string*>(fx2_d));
+  if (static_cast<std::string*>(fx2_d) != nullptr) {
+    std::string* tmp = static_cast<std::string*>(fx2_d);
+    fx2_name.assign(*tmp);
+  }
 
   b2Body* body1 = fx1->GetBody();
   b2Body* body2 = fx2->GetBody();

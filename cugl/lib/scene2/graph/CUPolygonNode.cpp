@@ -183,9 +183,11 @@ std::shared_ptr<SceneNode> PolygonNode::copy(const std::shared_ptr<SceneNode>& d
  */
 std::shared_ptr<SceneNode> PolygonNode::deepcopy() const {
     auto dst = copy(PolygonNode::alloc());
+    dst->setLayout(_layout);
     for (std::shared_ptr<SceneNode> child : _children) {
         dst->addChild(child->deepcopy());
     }
+    dst->doLayout();
     return dst;
 }
 
