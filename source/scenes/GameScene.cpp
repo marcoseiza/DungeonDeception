@@ -169,7 +169,7 @@ bool GameScene::init(
     role_msg = "(B)";
     role_text->setForeground(cugl::Color4::BLACK);
   } else {
-    role_msg = "(C)";
+    role_msg = "(R)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
@@ -349,7 +349,8 @@ void GameScene::update(float timestep) {
             auto target_icon_node =
                 _world_node->getChildByName<cugl::scene2::SceneNode>(
                     "target-icon");
-            target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+            target_icon_node->setPosition(
+                player->getPlayerNode()->getPosition());
             target_icon_node->setVisible(true);
             found_player = true;
             break;
@@ -386,7 +387,8 @@ void GameScene::update(float timestep) {
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer() && _player_controller->getMyPlayer()->canCorrupt()) {
+  if (_player_controller->getMyPlayer()->isBetrayer() &&
+      _player_controller->getMyPlayer()->canCorrupt()) {
     int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >= 2000) {
@@ -405,7 +407,7 @@ void GameScene::update(float timestep) {
       }
     }
   }
-  
+
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
@@ -448,7 +450,7 @@ void GameScene::update(float timestep) {
     role_msg = "(B)";
     role_text->setForeground(cugl::Color4::BLACK);
   } else {
-    role_msg = "(C)";
+    role_msg = "(R)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
 
