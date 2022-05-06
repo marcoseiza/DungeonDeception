@@ -1,27 +1,27 @@
 {
-    "variables": {
-        "text": [ "data", "variables", "text" ],
-        "x_index": [ "layout", "x_index" ],
-        "y_index": [ "layout", "y_index" ]
+  "variables": {
+    "text": [ "data", "variables", "text" ],
+    "x_index": [ "layout", "x_index" ],
+    "y_index": [ "layout", "y_index" ]
+  },
+  "contents": {
+    "type": "Widget",
+    "data": {
+      "key": "textbutton",
+      "variables": {
+        "size": [ 85, 85 ],
+        "text": "1",
+        "foreground": "#ffffff",
+        "texture": "button"
+      }
     },
-    "contents": {
-        "type": "Widget",
-        "data": {
-            "key": "textbutton",
-            "variables": {
-                "size": [ 70, 70 ],
-                "text": "1",
-                "foreground": "#ffffff",
-                "texture": "button"
-            }
-        },
-        "layout": {
-            "priority": 1,
-            "x_index": 0,
-            "y_index": 0,
-            "x_anchor": "center",
-            "y_anchor": "middle",
-            "padding": [ 30, 30, 30, 30 ]
-        }
+    "layout": {
+      "priority": 1,
+      "x_index": 0,
+      "y_index": 0,
+      "x_anchor": "center",
+      "y_anchor": "middle",
+      "padding": [ 35, 35, 35, 35 ]
     }
+  }
 }

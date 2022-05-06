@@ -233,6 +233,7 @@
     <ClInclude Include="..\..\source\network\CustomNetworkSerializer.h" />
     <ClInclude Include="..\..\source\network\structs\EnemyStructs.h" />
     <ClInclude Include="..\..\source\network\structs\PlayerStructs.h" />
+    <ClInclude Include="..\..\source\network\structs\TerminalStructs.h" />
     <ClInclude Include="..\..\source\network\structs\Serializable.h" />
     <ClInclude Include="..\..\source\controllers\actions\Action.h" />
     <ClInclude Include="..\..\source\controllers\actions\Attack.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="..\..\source\network\CustomNetworkSerializer.cpp" />
     <ClCompile Include="..\..\source\network\structs\EnemyStructs.cpp" />
     <ClCompile Include="..\..\source\network\structs\PlayerStructs.cpp" />
+    <ClCompile Include="..\..\source\network\structs\TerminalStructs.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Attack.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Movement.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Dash.cpp" />
