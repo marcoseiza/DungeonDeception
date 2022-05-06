@@ -372,7 +372,7 @@
 		D5F3D6B227DD6E3B0071DD06 /* RoomModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomModel.cpp; sourceTree = "<group>"; };
 		D5F3D6B327DD6E3B0071DD06 /* RoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomModel.h; sourceTree = "<group>"; };
 		EB07CFB021EFF3EF000CB3A3 /* DeviceMargins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DeviceMargins.plist; sourceTree = "<group>"; };
-		EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B41D74952A002FE78B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
 		EB2BE9BE1D749908002FE78B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -383,14 +383,14 @@
 		EB2BE9CB1D749937002FE78B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		EB2BE9CD1D749953002FE78B /* ForceFeedback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ForceFeedback.framework; path = System/Library/Frameworks/ForceFeedback.framework; sourceTree = SDKROOT; };
 		EB2BE9CE1D749953002FE78B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7454A61D74D846002FBAE6 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
 		EB7454A71D74D846002FBAE6 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		EB7454A81D74D846002FBAE6 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
 		EB7454A91D74D846002FBAE6 /* Portrait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Portrait.storyboard; sourceTree = "<group>"; };
 		EBB3D284201444B300E6A7CD /* CUGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CUGL.xcodeproj; path = "../cugl/build-apple/CUGL.xcodeproj"; sourceTree = "<group>"; };
 		EBB3D29B201444F100E6A7CD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBC147141E27F07C005494CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -776,9 +776,9 @@
 		EBBF18921D74904A008E2001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */,
-				EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */,
-				EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */,
+				EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */,
+				EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */,
+				EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -817,9 +817,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */ = {
+		EB22BF5D25D0E8BC002ACE41 /* Dungeon Deception (Sim) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */;
+			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Sim)" */;
 			buildPhases = (
 				EB22BF5A25D0E8BC002ACE41 /* Sources */,
 				EB22BF5B25D0E8BC002ACE41 /* Frameworks */,
@@ -829,14 +829,14 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction (Sim)";
+			name = "Dungeon Deception (Sim)";
 			productName = "HelloWorld (Sim)";
-			productReference = EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */;
+			productReference = EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */ = {
+		EB74548B1D74D75C002FBAE6 /* Dungeon Deception */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */;
+			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deception" */;
 			buildPhases = (
 				EB7454881D74D75C002FBAE6 /* Sources */,
 				EB7454891D74D75C002FBAE6 /* Frameworks */,
@@ -846,14 +846,14 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction";
+			name = "Dungeon Deception";
 			productName = "CUGL Demo (iOS)";
-			productReference = EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */;
+			productReference = EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */ = {
+		EBBF18901D74904A008E2001 /* Dungeon Deception (Mac) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */;
+			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Mac)" */;
 			buildPhases = (
 				EBBF188D1D74904A008E2001 /* Sources */,
 				EBBF188E1D74904A008E2001 /* Frameworks */,
@@ -863,9 +863,9 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction (Mac)";
+			name = "Dungeon Deception (Mac)";
 			productName = "CUGL Demo";
-			productReference = EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */;
+			productReference = EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -911,9 +911,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */,
-				EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */,
-				EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */,
+				EBBF18901D74904A008E2001 /* Dungeon Deception (Mac) */,
+				EB74548B1D74D75C002FBAE6 /* Dungeon Deception */,
+				EB22BF5D25D0E8BC002ACE41 /* Dungeon Deception (Sim) */,
 			);
 		};
 /* End PBXProject section */
@@ -1422,7 +1422,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */ = {
+		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Sim)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB22BF7425D0E8BD002ACE41 /* Debug */,
@@ -1431,7 +1431,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */ = {
+		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deception" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB7454A11D74D75C002FBAE6 /* Debug */,
@@ -1449,7 +1449,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */ = {
+		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Mac)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A31D74904A008E2001 /* Debug */,

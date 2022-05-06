@@ -148,7 +148,7 @@ void Player::setCorrupted() {
 void Player::setCanCorrupt(bool val) {
   _can_corrupt = val;
   if (!val) {
-    _blocked_corrupt_count = 3600; // 1 minute
+    _blocked_corrupt_count = 3600;  // 1 minute
   }
 }
 

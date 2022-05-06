@@ -111,7 +111,7 @@ class Corrupt : public Action {
     cugl::Timestamp time;
     return (Uint32)time.ellapsedMillis(_time_down_start);
   }
-  
+
   /** Reset the time down. */
   void resetTimeDown() { _time_down_start.mark(); }
 
