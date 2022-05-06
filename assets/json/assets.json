@@ -678,7 +678,7 @@
       "type": "sample",
       "file": "sounds/player/attack/sfx_energy_charge.wav",
       "stream": true,
-      "volume": 0.6
+      "volume": 1.0
     },
     "player-footsteps-grass-1": {
       "type": "sample",

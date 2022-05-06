@@ -207,6 +207,9 @@ class SoundController : public Controller {
   /** Play a energy wave charge up sound effect. */
   void playPlayerEnergyCharge();
 
+  /** Stop a energy wave charge up sound effect. */
+  void stopPlayerEnergyCharge();
+
   /** Play a player hit sound effect. */
   void playPlayerHit();
 

@@ -91,6 +91,8 @@ void PlayerController::update(float timestep) {
 
   if (InputController::get<Attack>()->chargeStart()) {
     _sound_controller->playPlayerEnergyCharge();
+  } else if (InputController::get<Attack>()->attackReleased()) {
+    _sound_controller->stopPlayerEnergyCharge();
   }
 
   if (_player->_hurt_frames == 0) {

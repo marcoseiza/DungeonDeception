@@ -26,8 +26,12 @@ class Attack : public Action {
   int _anim_buffer;
   /** Charge animation is done. */
   bool _charge_over;
-  /** Charge animation is starting. */
+  /** Charge animation is running. */
+  bool _charge_running;
+  /** Charge animation first started, false while running. */
   bool _charge_start;
+  /** Charge animation was released early. */
+  bool _charge_released_early;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -142,10 +146,20 @@ class Attack : public Action {
   }
 
   /**
+   * @return If the player is currently charging.
+   */
+  bool chargeRunning() { return _charge_running; }
+
+  /**
    * @return If the player has held the attack button long enough for energy
    * wave.
    */
   bool chargeOver() const { return _charge_over; }
+
+  /**
+   * @return If the player has released the attack button.
+   */
+  bool attackReleased() { return _prev_down && !_curr_down; }
 
   /**
    * Toggels activation on attack button. When deactivated, the button

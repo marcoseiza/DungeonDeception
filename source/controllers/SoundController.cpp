@@ -139,6 +139,10 @@ void SoundController::playPlayerEnergyCharge() {
                                  _player_energy_charge.volume, true);
 }
 
+void SoundController::stopPlayerEnergyCharge() {
+  cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
+}
+
 void SoundController::playPlayerFootstep(const FootstepType& type) {
   SFX sfx;
   if (type == FootstepType::GRASS) {

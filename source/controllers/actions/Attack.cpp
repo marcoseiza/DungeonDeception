@@ -108,10 +108,11 @@ bool Attack::update() {
     // Wait a bit before charing, so that it doesn't charge on quick tap.
     if (millis <= TIME_TO_WAIT_FOR_CHARGE) {
       millis = 0;
-      _charge_start = true;
     } else {
       // Reset millis so that animation starts at frame 0
       millis -= TIME_TO_WAIT_FOR_CHARGE;
+      if (!_charge_start && !_charge_running) _charge_start = true;
+      _charge_running = true;
     }
 
     if (frame < CHARGE_ANIM_LIMIT - 1) {
@@ -124,6 +125,8 @@ bool Attack::update() {
   } else {
     _button_node->setFrame(0);
     _charge_over = false;
+    _charge_running = false;
+    _charge_start = false;
   }
 
   return true;
