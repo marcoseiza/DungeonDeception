@@ -225,7 +225,7 @@
       "wrapT": "clamp",
       "atlas": {
         "leftcap": [0, 0, 1, 20],
-        "rightcap": [300, 0, 301, 20]
+        "rightcap": [299, 0, 300, 20]
       }
     },
     "health-fill": {
@@ -250,7 +250,7 @@
       "wrapT": "clamp",
       "atlas": {
         "leftcap": [0, 0, 1, 20],
-        "rightcap": [300, 0, 301, 20]
+        "rightcap": [299, 0, 300, 20]
       }
     },
     "energy-fill": {
@@ -545,9 +545,9 @@
             "anchor": [0.5, 0.5],
             "background": "health-bar",
             "foreground": "health-fill",
-            "left_cap": "health-fill_leftcap",
-            "right_cap": "health-fill_rightcap",
-            "scale": 0.5
+            "left_cap": "health-bar_leftcap",
+            "right_cap": "health-bar_rightcap",
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
@@ -564,7 +564,7 @@
           "data": {
             "texture": "health-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.5
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
@@ -587,18 +587,18 @@
             "anchor": [0.5, 0.5],
             "background": "energy-bar",
             "foreground": "energy-fill",
-            "left_cap": "energy-fill_leftcap",
-            "right_cap": "energy-fill_rightcap",
-            "scale": 0.5
+            "left_cap": "energy-bar_leftcap",
+            "right_cap": "energy-bar_rightcap",
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
             "y_anchor": "top",
             "x_offset": 0.2,
-            "y_offset": -0.20
+            "y_offset": -0.17
           }
         },
-        "health-outline": {
+        "energy-outline": {
           "type": "Image",
           "format": {
             "type": "Anchored"
@@ -606,13 +606,13 @@
           "data": {
             "texture": "energy-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.5
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
             "y_anchor": "top",
             "x_offset": 0.2,
-            "y_offset": -0.20
+            "y_offset": -0.17
           }
         }
       }
