@@ -301,6 +301,13 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "logo_title": {
+      "file": "textures/ui/logo.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
   },
   "jsons": {
@@ -427,12 +434,17 @@
       },
       "children": {
         "title": {
-          "type": "Widget",
+          "type": "Image",
           "data": {
-            "key": "menutitle",
-            "variables": {
-              "text": "DUNGEON DEDUCTION"
-            }
+            "texture": "logo_title",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1.2
+          },
+          "layout": {
+            "priority": 1,
+            "x_alignment": "center",
+            "y_alignment": "top",
+            "padding": [ 0, 0, 0, 50 ]
           }
         },
         "play": {
@@ -481,7 +493,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 50, 0, 115 ]
+            "padding": [ 0, 50, 0, 40 ]
           }
         },
         "instructions": {
