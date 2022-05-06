@@ -11,7 +11,7 @@ bool TerminalController::init(
   _scene = _assets->get<cugl::scene2::SceneNode>("terminal-deposit-scene");
   _scene->setVisible(false);
 
-  _num_terminals_activated = 3;
+  _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
 
   _deposit_energy_scene = DepositEnergyScene::alloc(_assets);
