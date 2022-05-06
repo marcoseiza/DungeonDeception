@@ -69,6 +69,7 @@ class PlayerController : public Controller {
     _world_node = nullptr;
     _debug_node = nullptr;
     _world = nullptr;
+    _trail_managers.clear();
   }
 
   /**
@@ -162,14 +163,14 @@ class PlayerController : public Controller {
   void move(float timestep);
 
   void attack();
-  
-  /** If player is a betrayer and they get blocked, blocks their corrupt button. */
+
+  /** If player is a betrayer and they get blocked, blocks their corrupt button.
+   */
   void blockCorrupt();
 
   void addPlayer(const std::shared_ptr<Player>& player) {
     if (_players.find(player->getPlayerId()) == _players.end()) {
       _players[player->getPlayerId()] = player;
-      addTrailManager(player);
     }
   }
 

@@ -170,6 +170,22 @@ std::shared_ptr<SceneNode> SpriteNode::copy(const std::shared_ptr<SceneNode>& ds
     return dst;
 }
 
+/**
+ * Performs a deep copy of this Node into dst.
+ *
+ * Children are inherited into the dst node.
+ *
+ * @param dst   The Node to copy into
+ *
+ * @return A reference to dst for chaining.
+ */
+std::shared_ptr<SceneNode> SpriteNode::deepcopy() const {
+    auto dst = copy(SpriteNode::alloc());
+    for (std::shared_ptr<SceneNode> child : _children) {
+        dst->addChild(child->deepcopy());
+    }
+    return dst;
+}
 
 #pragma mark -
 #pragma mark Attribute Accessors

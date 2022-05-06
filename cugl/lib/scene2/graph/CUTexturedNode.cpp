@@ -289,6 +289,23 @@ std::shared_ptr<SceneNode> TexturedNode::copy(const std::shared_ptr<SceneNode>& 
     return dst;
 }
 
+/**
+ * Performs a deep copy of this Node into dst.
+ *
+ * Children are inherited into the dst node.
+ *
+ * @param dst   The Node to copy into
+ *
+ * @return A reference to dst for chaining.
+ */
+std::shared_ptr<SceneNode> TexturedNode::deepcopy() const {
+    auto dst = copy(TexturedNode::alloc());
+    for (std::shared_ptr<SceneNode> child : _children) {
+        dst->addChild(child->deepcopy());
+    }
+    return dst;
+}
+
 #pragma mark -
 #pragma mark Attributes
 /**

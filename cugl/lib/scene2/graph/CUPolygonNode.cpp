@@ -172,6 +172,23 @@ std::shared_ptr<SceneNode> PolygonNode::copy(const std::shared_ptr<SceneNode>& d
     return dst;
 }
 
+/**
+ * Performs a deep copy of this Node into dst.
+ *
+ * Children are inherited into the dst node.
+ *
+ * @param dst   The Node to copy into
+ *
+ * @return A reference to dst for chaining.
+ */
+std::shared_ptr<SceneNode> PolygonNode::deepcopy() const {
+    auto dst = copy(PolygonNode::alloc());
+    for (std::shared_ptr<SceneNode> child : _children) {
+        dst->addChild(child->deepcopy());
+    }
+    return dst;
+}
+
 #pragma mark -
 #pragma mark Polygon Attributes
 /**

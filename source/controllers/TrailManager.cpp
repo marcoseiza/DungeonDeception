@@ -30,6 +30,9 @@ bool TrailManager::init(
 void TrailManager::dispose() {
   _buffer = 0;
   _run = false;
+  for (auto& node : _trail_nodes_pool) {
+    node->getParent()->removeChild(node);
+  }
   _trail_nodes_pool.clear();
 }
 
@@ -61,11 +64,13 @@ void TrailManager::update() {
           cugl::scene2::SpriteNode::alloc(_sprite->getTexture(), 0, 0);
       _sprite->copy(trail_node);
       _trail_nodes_pool.push_back(trail_node);
-      _sprite->getParent()->addChild(trail_node);
+      auto parent = _sprite->getParent();
+      if (parent) parent->addChild(trail_node);
     }
   } else if (num_nodes > 0) {
     auto node = _trail_nodes_pool.front();
-    node->getParent()->removeChild(node);
+    auto parent = node->getParent();
+    if (parent) parent->removeChild(node);
     _trail_nodes_pool.pop_front();
   }
 }

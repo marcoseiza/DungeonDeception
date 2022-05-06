@@ -397,6 +397,17 @@ public:
      */
     virtual std::shared_ptr<SceneNode> copy(const std::shared_ptr<SceneNode>& dst) const;
 
+    /**
+     * Performs a deep copy of this Node into dst.
+     *
+     * Children are inherited into the dst node.
+     *
+     * @param dst   The Node to copy into
+     *
+     * @return A reference to dst for chaining.
+     */
+    virtual std::shared_ptr<SceneNode> deepcopy() const;
+
     
 #pragma mark -
 #pragma mark Static Constructors
