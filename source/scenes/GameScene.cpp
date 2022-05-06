@@ -410,8 +410,8 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
 
-  std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
-  for (auto room_id_to_update : room_ids_with_players) {
+  std::unordered_set<int> all_enemy_update_rooms = getAdjacentRoomIdsWithPlayers();
+  for (auto room_id_to_update : all_enemy_update_rooms) {
     auto room_to_update =
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
     updateEnemies(timestep, room_to_update);
@@ -463,6 +463,7 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
+  auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
@@ -620,7 +621,7 @@ void GameScene::sendNetworkInfoHost() {
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
-    // get enemy info only for the rooms that players are in
+    // get enemy info for the rooms that players are in
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     {
       std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
@@ -675,6 +676,28 @@ void GameScene::sendNetworkInfoHost() {
 
         NetworkController::get()->send(NC_HOST_ALL_ENEMY_OTHER_INFO,
                                        enemy_info);
+      }
+    }
+  }
+  
+  // Decrease packet size of adjacent-room enemies by only sending the position.
+  auto adjacent_room_ids = getAdjacentRoomIdsWithoutPlayers();
+  for (auto room_id : adjacent_room_ids) {
+    // get enemy info for the adjacent rooms to players
+    auto room = _level_controller->getLevelModel()->getRoom(room_id);
+    {
+      std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
+      for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
+        auto info = cugl::EnemyInfo::alloc();
+
+        info->enemy_id = enemy->getEnemyId();
+        info->pos = enemy->getPosition();
+        
+        // Serialize one enemy at a time to avoid reaching packet limit
+        enemy_info.push_back(info);
+      }
+      if (enemy_info.size() > 0) {
+        NetworkController::get()->send(NC_HOST_ADJACENT_ENEMY_INFO, enemy_info);
       }
     }
   }
@@ -807,6 +830,21 @@ void GameScene::processData(
             _level_controller->getEnemy(info->enemy_id);
         if (enemy != nullptr) {
           enemy->setHealth(info->health);
+        }
+      }
+    } break;
+      
+    case NC_HOST_ADJACENT_ENEMY_INFO: {
+      auto all_enemy =
+          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
+
+      for (std::shared_ptr<cugl::Serializable>& info_ : all_enemy) {
+        auto info = std::dynamic_pointer_cast<cugl::EnemyInfo>(info_);
+        std::shared_ptr<EnemyModel> enemy =
+            _level_controller->getEnemy(info->enemy_id);
+
+        if (enemy != nullptr) {
+          enemy->setPosition(info->pos);
         }
       }
     } break;

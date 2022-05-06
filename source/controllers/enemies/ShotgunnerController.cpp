@@ -8,6 +8,7 @@
 #define STOP_ATTACK_FRAMES 40
 #define ATTACK_COOLDOWN 100
 #define MOVE_BACK_COOLDOWN 60
+#define WANDER_COOLDOWN 500
 
 #define STATE_CHANGE_LIM 10
 
@@ -89,7 +90,15 @@ void ShotgunnerController::changeStateIfApplicable(
       enemy->_atc_timer = 0;
     }
   } else {
-    enemy->setCurrentState(EnemyModel::State::IDLE);
+    // Enemy first wanders back to spawn position until it changes to be idle.
+    if (enemy->_wander_timer <= 0) {
+      enemy->setCurrentState(EnemyModel::State::IDLE);
+    }
+    if (enemy->getCurrentState() != EnemyModel::State::IDLE && enemy->getCurrentState() != EnemyModel::State::WANDER) {
+      enemy->setCurrentState(EnemyModel::State::WANDER);
+      enemy->_wander_timer = WANDER_COOLDOWN; // Spends 6 seconds trying to return to original position
+    }
+    enemy->_wander_timer--;
   }
 }
 
@@ -106,6 +115,10 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
     }
     case EnemyModel::State::MOVING_BACK: {
       avoidPlayer(enemy, p);
+      break;
+    }
+    case EnemyModel::State::WANDER: {
+      moveBackToOriginalSpot(enemy);
       break;
     }
     default: {
@@ -148,6 +161,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy,
         break;
       }
     }
+    case EnemyModel::State::WANDER:
     case EnemyModel::State::MOVING_BACK:
     case EnemyModel::State::CHASING: {
       gun_node->setVisible(false);

@@ -58,6 +58,21 @@ void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
   enemy->move(10, 10);
 }
 
+void EnemyController::moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy) {
+  if ((enemy->getPosition() - enemy->getInitPos()).length() <= 50) {
+    // If the enemy is close enough to the original spot, stop moving.
+    idling(enemy);
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    cugl::Vec2 orig = enemy->getInitPos() - enemy->getPosition();
+    orig.normalize();
+    diff.add(orig);
+    diff.scale(0.8 * enemy->getSpeed());
+    enemy->move(diff.x, diff.y);
+  }
+}
+
 bool EnemyController::init(
     std::shared_ptr<cugl::AssetManager> assets,
     std::shared_ptr<cugl::physics2::ObstacleWorld> world,
@@ -98,8 +113,10 @@ void EnemyController::update(bool is_host, float timestep,
       }
     }
   }
-  // if player not in room id (i.e. no player found, should not happen, return!)
+  // if player not in room id
   if (min_player->getRoomId() != room_id) {
+    // Move back to the original spot.
+    moveBackToOriginalSpot(enemy);
     return;
   }
 
