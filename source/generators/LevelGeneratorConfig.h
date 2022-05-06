@@ -66,6 +66,9 @@ class LevelGeneratorConfig {
   /** The max number of edges to a room. (i.e. max number of doors per room). */
   int _max_num_of_edges;
 
+  /** The size of one grid cell */
+  cugl::Vec2 _grid_cell;
+
  public:
   /** Construct a new level generation config object with default values. */
   LevelGeneratorConfig();
@@ -171,6 +174,14 @@ class LevelGeneratorConfig {
   void setMaxNumEdges(int num) { _max_num_of_edges = num; }
   /** @return The max number of edges for a room. (i.e. max number of doors). */
   int getMaxNumEdges() const { return _max_num_of_edges; }
+
+  /**
+   * Set the grid cell size.
+   * @param num the grid cell size.
+   */
+  void setGridCell(const cugl::Vec2& size) { _grid_cell = size; }
+  /** @return The size of one grid cell. */
+  cugl::Vec2 getGridCell() const { return _grid_cell; }
 };
 
 }  // namespace level_gen
