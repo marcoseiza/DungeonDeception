@@ -109,7 +109,7 @@ void EnemyModel::deleteProjectile(
     std::shared_ptr<cugl::scene2::SceneNode> _world_node) {
   auto itt = _projectiles.begin();
   while (itt != _projectiles.end()) {
-    if ((*itt)->getFrames() <= 0) {
+    if ((*itt)->getFrames() <= 0 || (*itt)->shouldExpire()) {
       (*itt)->deactivatePhysics(*_world->getWorld());
       _world_node->removeChild((*itt)->getNode());
       _world->removeObstacle((*itt).get());
@@ -297,6 +297,10 @@ void EnemyModel::update(float delta) {
       _isKnockbacked = false;
       _stunned_timer = 0;
     }
+  }
+  
+  for (auto projectile: _projectiles) {
+    projectile->setLifetime(projectile->getLifetime() + 1);
   }
 }
 

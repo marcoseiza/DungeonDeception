@@ -23,6 +23,7 @@ bool Projectile::init(const cugl::Vec2 pos, const cugl::Vec2 v) {
 
   _live_frames = MAX_LIVE_FRAMES;
   _in_world = false;
+  _lifetime = 0; 
 
   return true;
 }
