@@ -30,19 +30,19 @@ class TargetPlayer : public Action {
 
   /* The counter for the target player duration. */
   int _target_player_counter;
-  
+
   /* The player being targeted. -1 if no target. */
   int _target_player_id;
-  
+
   /* Whether the betrayer action is being activated */
   bool _is_activating_action;
-  
+
   /* Players that have already been targeted */
   std::unordered_set<int> _dirty_players;
 
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
-  
+
   /** The counter for the block cooldown. */
   int _target_cooldown_counter;
 
@@ -101,22 +101,25 @@ class TargetPlayer : public Action {
    * @return If the player pressed the target button.
    */
   bool didChangeTarget() const { return _prev_down && !_curr_down; }
-  
+
   /**
-   * @return If the targeting ability has already seen and skipped the player id.
+   * @return If the targeting ability has already seen and skipped the player
+   * id.
    */
-  bool hasSeenPlayerId(int player_id) { return _dirty_players.find(player_id) != _dirty_players.end(); }
-  
+  bool hasSeenPlayerId(int player_id) {
+    return _dirty_players.find(player_id) != _dirty_players.end();
+  }
+
   /**
    * Clears all the dirty players so they can be iterated through again.
    */
   void clearDirtyPlayers() { _dirty_players.clear(); }
-  
+
   /**
    * @return Whether the betrayer action is being activated (lasts 1 tick).
    */
   bool isActivatingTargetAction() { return _is_activating_action; }
-  
+
   /**
    * Sets the target of the betrayer action to a specific player.
    * @param player_id The player to target.
@@ -124,11 +127,8 @@ class TargetPlayer : public Action {
   void setTarget(int player_id) {
     _dirty_players.insert(player_id);
     _target_player_id = player_id;
-    
   }
-  
-  
-  
+
   /**
    * Returns the target player id of the betrayer action.
    * @return The target player id of the betrayer action
@@ -141,7 +141,7 @@ class TargetPlayer : public Action {
    * @param value The activation state.
    */
   void setActive(bool value);
-  
+
 #ifdef CU_TOUCH_SCREEN
 
   /** Touch listener for when the player moves their finger. */

@@ -1,6 +1,6 @@
 #include "TargetPlayer.h"
 
-#define COOLDOWN 3600 // 1 minute cooldown to use block
+#define COOLDOWN 3600  // 1 minute cooldown to use block
 
 TargetPlayer::TargetPlayer()
     : _curr_down(false),
@@ -12,7 +12,7 @@ TargetPlayer::TargetPlayer()
       _target_cooldown_counter(-1) {}
 
 bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
-                cugl::Rect bounds) {
+                        cugl::Rect bounds) {
   Action::init(assets, bounds);
 
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
@@ -39,9 +39,9 @@ bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
 bool TargetPlayer::update() {
   _prev_down = _curr_down;
   _curr_down = _butt_down;
-  // Increment counter if target player button was just released or target player frames
-  // are still occuring
-  
+  // Increment counter if target player button was just released or target
+  // player frames are still occuring
+
   if (_target_cooldown_counter <= 0) {
     setActive(true);
     if (isActivatingTargetAction()) {
@@ -93,8 +93,8 @@ void TargetPlayer::setActive(bool value) {
 
 #ifdef CU_TOUCH_SCREEN
 
-void TargetPlayer::touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
-                      bool focus) {
+void TargetPlayer::touchMoved(const cugl::TouchEvent &event,
+                              const cugl::Vec2 &previous, bool focus) {
   if (_button->getTouchIds().find(event.touch) !=
       _button->getTouchIds().end()) {
   }

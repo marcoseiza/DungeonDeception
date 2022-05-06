@@ -152,7 +152,8 @@ bool GameScene::init(
       ui_layer->getChildByName<cugl::scene2::Button>("block-player");
   block_player_button->setVisible(!is_betrayer);
 
-  auto infect_player_button = ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
+  auto infect_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
   infect_player_button->setVisible(is_betrayer);
 
   _num_terminals_activated = 0;

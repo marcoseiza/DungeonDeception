@@ -1,12 +1,9 @@
 #include "Corrupt.h"
 
-Corrupt::Corrupt()
-    : _curr_down(false),
-      _prev_down(false),
-      _button(nullptr) {}
+Corrupt::Corrupt() : _curr_down(false), _prev_down(false), _button(nullptr) {}
 
 bool Corrupt::init(const std::shared_ptr<cugl::AssetManager> &assets,
-                  cugl::Rect bounds) {
+                   cugl::Rect bounds) {
   Action::init(assets, bounds);
 
   _right_screen_bounds = Action::_display_coord_bounds;
@@ -34,7 +31,7 @@ bool Corrupt::init(const std::shared_ptr<cugl::AssetManager> &assets,
 bool Corrupt::update() {
   _prev_down = _curr_down;
   _curr_down = _butt_down;
-  
+
   return true;
 }
 

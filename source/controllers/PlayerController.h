@@ -162,8 +162,9 @@ class PlayerController : public Controller {
   void move(float timestep);
 
   void attack();
-  
-  /** If player is a betrayer and they get blocked, blocks their corrupt button. */
+
+  /** If player is a betrayer and they get blocked, blocks their corrupt button.
+   */
   void blockCorrupt();
 
   void addPlayer(const std::shared_ptr<Player>& player) {
