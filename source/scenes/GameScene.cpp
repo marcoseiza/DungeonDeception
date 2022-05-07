@@ -45,7 +45,8 @@ bool GameScene::init(
 
   _assets = assets;
 
-  _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
+  _world_node = cugl::scene2::OrderedNode::allocWithOrder(
+      cugl::scene2::OrderedNode::Order::ASCEND);
   _world_node->setContentSize(dim);
 
   std::shared_ptr<cugl::Texture> target_texture =
@@ -184,7 +185,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
   cugl::Scene2::addChild(_debug_node);
-  _debug_node->setVisible(true);
+  _debug_node->setVisible(false);
 
   _sound_controller = SoundController::alloc(_assets);
   _controllers.push_back(_sound_controller);
@@ -211,10 +212,15 @@ void GameScene::dispose() {
   _has_sent_player_basic_info = false;
   _sound_controller->stop();
   _dead_enemy_cache.clear();
+  _world->dispose();
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
   _role_layer->setVisible(true);
   removeAllChildren();
+
+  _world_node = nullptr;
+  _debug_node = nullptr;
+  _role_layer = nullptr;
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -864,13 +870,11 @@ void GameScene::beginContact(b2Contact* contact) {
 
   std::string fx1_name;
   if (static_cast<std::string*>(fx1_d) != nullptr) {
-    std::string* tmp = static_cast<std::string*>(fx1_d);
-    fx1_name.assign(*tmp);
+    fx1_name.assign(*static_cast<std::string*>(fx1_d));
   }
   std::string fx2_name;
   if (static_cast<std::string*>(fx2_d) != nullptr) {
-    std::string* tmp = static_cast<std::string*>(fx2_d);
-    fx2_name.assign(*tmp);
+    fx2_name.assign(*static_cast<std::string*>(fx2_d));
   }
 
   b2Body* body1 = fx1->GetBody();

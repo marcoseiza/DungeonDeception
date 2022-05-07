@@ -55,6 +55,44 @@ class TileHelper {
     }
     return result;
   }
+
+  /**
+   * Given a list of names of children, traverse the tree and find the child
+   * that matches the name. Returns nullptr if not found
+   *
+   * @param node The parent.
+   * @param name The path to the child.
+   * @return The child.
+   */
+  static std::shared_ptr<cugl::scene2::SceneNode> getChildByNameRecursively(
+      const std::shared_ptr<cugl::scene2::SceneNode>& node,
+      const std::vector<std::string>& name) {
+    std::shared_ptr<cugl::scene2::SceneNode> dst = node;
+    for (std::string n : name) {
+      if (dst == nullptr) return nullptr;
+      dst = dst->getChildByName(n);
+    }
+    return dst;
+  }
+
+  /**
+   * Given a list of names of children, traverse the tree and find the child
+   * that matches the name. Returns nullptr if not found
+   *
+   * @tparam T, the scene2 node class the child will be.
+   * @param node The parent.
+   * @param name The path to the child.
+   * @return The child.
+   */
+  template <typename T>
+  static std::shared_ptr<T> getChildByNameRecursively(
+      const std::shared_ptr<cugl::scene2::SceneNode>& node,
+      const std::vector<std::string>& name) {
+    std::shared_ptr<cugl::scene2::SceneNode> dst =
+        getChildByNameRecursively(node, name);
+    if (dst == nullptr) return nullptr;
+    return std::dynamic_pointer_cast<T>(dst);
+  }
 };
 
 #endif  // MODELS_TILES_TILE_HELPER_H_

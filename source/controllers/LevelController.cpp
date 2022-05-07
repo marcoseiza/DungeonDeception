@@ -6,6 +6,7 @@
 #include "../generators/LevelGeneratorConfig.h"
 #include "../models/RoomModel.h"
 #include "../models/tiles/Door.h"
+#include "../models/tiles/TileHelper.h"
 #include "../models/tiles/Wall.h"
 #include "Controller.h"
 
@@ -32,10 +33,13 @@ void LevelController::update(float timestep) {
     std::shared_ptr<RoomModel> room =
         _level_model->getRoom(player->getRoomId());
 
-    float rel_player_y =
-        player->getBody()->GetPosition().y - room->getNode()->getPosition().y;
-    float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
-    player->getPlayerNode()->setPriority(room->getGridSize().height - row);
+    b2Body *body = player->getBody();
+    if (body != nullptr) {
+      float rel_player_y =
+          body->GetPosition().y - room->getNode()->getPosition().y;
+      float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
+      player->getPlayerNode()->setPriority(room->getGridSize().height - row);
+    }
   }
 
   // Update the ordering of all the enemies in my player's current room.
@@ -89,6 +93,7 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 
   int destination_room_id =
       current->getRoomIdFromDoorSensorId(door_sensor_name);
+  CULog("%d", destination_room_id);
   if (destination_room_id == -1) return;
 
   cugl::Vec2 door_pos = current->getPosOfDestinationDoor(door_sensor_name);
@@ -175,6 +180,7 @@ void LevelController::populate() {
     room_node->setPosition(pos);
     room_node->setVisible(false);
     room_node->doLayout();
+    _world_node->addChild(room_node);
 
     auto room_model = RoomModel::alloc(room_node, room->_key);
     room_model->setType(room->_type);
@@ -199,8 +205,6 @@ void LevelController::populate() {
     instantiateEnemies(room, room_model, enemies);
 
     room_model->setEnemies(enemies);
-
-    _world_node->addChild(room_node);
   }
 }
 
@@ -237,17 +241,13 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
         std::remove(unused_doors.begin(), unused_doors.end(), door),
         unused_doors.end());
 
-    int y = (int)door.y, x = (int)door.x;
+    int y = (int)door.y;
+    int x = (int)door.x;
 
     std::stringstream ss;
     ss << "tile-(" << x << "-" << y << ")";
-    std::string door_name = ss.str();
-
-    auto door_room_node =
-        std::dynamic_pointer_cast<Door>(room_model->getNode()
-                                            ->getChildByName("tiles")
-                                            ->getChildByName(door_name)
-                                            ->getChildByName("tile"));
+    auto door_room_node = TileHelper::getChildByNameRecursively<Door>(
+        room_model->getNode(), {"tiles", ss.str(), "tile"});
 
     if (door_room_node) {
       door_room_node->initDelegates();
@@ -258,8 +258,8 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
                  y == room_model->getGridSize().height - 1) {
         door_room_node->setPositive();
       }
-
-      std::string door_sensor_name = door_name + "-door";
+      ss << "-door";
+      std::string door_sensor_name = room->_scene2_key + ss.str();
       _world->addObstacle(door_room_node->initBox2d(door_sensor_name));
 
       std::shared_ptr<level_gen::Room> other_room = edge->getOther(room);
@@ -287,17 +287,14 @@ void LevelController::coverUnusedDoors(
     const std::shared_ptr<RoomModel> &room_model,
     std::vector<cugl::Vec2> &unused_doors) {
   for (cugl::Vec2 door : unused_doors) {
-    int y = (int)door.y, x = (int)door.x;
+    int y = (int)door.y;
+    int x = (int)door.x;
 
     std::stringstream ss;
     ss << "tile-(" << x << "-" << y << ")";
-    std::string door_name = ss.str();
 
-    auto door_room_node =
-        std::dynamic_pointer_cast<Door>(room_model->getNode()
-                                            ->getChildByName("tiles")
-                                            ->getChildByName(door_name)
-                                            ->getChildByName("tile"));
+    auto door_room_node = TileHelper::getChildByNameRecursively<Door>(
+        room_model->getNode(), {"tiles", ss.str(), "tile"});
 
     if (door_room_node) {
       door_room_node->initDelegates();

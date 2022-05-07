@@ -314,7 +314,6 @@
     "betrayer-icons": "widgets/betrayer-icons.json",
     "terminal-deposit-scene": "widgets/terminal-deposit-scene.json",
     "win-scene": "widgets/win-scene.json",
-    "world-scene": "widgets/world-scene.json",
     "wall-top": "widgets/wall-top.json",
     "wall-side": "widgets/wall-side.json",
     "textbutton": "widgets/textbutton.json",

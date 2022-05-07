@@ -56,9 +56,11 @@ void LoadingLevelScene::update(float timestep) {
         for (int i = 0; i < rooms.size(); i++) {
           std::shared_ptr<level_gen::Room> room = rooms[i];
           room->_key = i;
-          room->_level_node =
-              _assets->get<cugl::scene2::SceneNode>(room->_scene2_key)
-                  ->deepcopy();
+          auto loader = std::dynamic_pointer_cast<cugl::Scene2Loader>(
+              _assets->access<cugl::scene2::SceneNode>());
+          auto reader = cugl::JsonReader::allocWithAsset(room->_scene2_source);
+          auto json = (reader == nullptr ? nullptr : reader->readJson());
+          room->_level_node = loader->build("", json);
         }
       }
       break;
