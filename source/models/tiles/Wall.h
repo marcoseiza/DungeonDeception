@@ -54,17 +54,6 @@ class Wall : public BasicTile {
       const std::shared_ptr<cugl::scene2::SceneNode>& dst) const override;
 
   /**
-   * Performs a deep copy of this Node into dst.
-   *
-   * Children are inherited into the dst node.
-   *
-   * @param dst   The Node to copy into
-   *
-   * @return A reference to dst for chaining.
-   */
-  virtual std::shared_ptr<cugl::scene2::SceneNode> deepcopy() const override;
-
-  /**
    * Initializes a tile node with the given JSON specificaton.
    *
    * This initializer is designed to receive the "data" object from the

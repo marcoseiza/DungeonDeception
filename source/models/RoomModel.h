@@ -91,7 +91,7 @@ class RoomModel {
    * @param room_id The ID of the room the door should go to.
    * @param destination The destination of teleporting the player.
    */
-  void addConnection(std::string& door_sensor_id, int room_id,
+  void addConnection(const std::string& door_sensor_id, int room_id,
                      cugl::Vec2& destination) {
     if (_door_sensor_id_to_room_id.find(door_sensor_id) ==
         _door_sensor_id_to_room_id.end()) {

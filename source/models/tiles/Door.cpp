@@ -89,7 +89,7 @@ void Door::initDelegates() {
 }
 
 std::shared_ptr<cugl::physics2::PolygonObstacle> Door::initBox2d(
-    std::string& sensor_name) {
+    const std::string& sensor_name) {
   _obstacle = cugl::physics2::PolygonObstacle::alloc(_obstacle_shape);
 
   cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
@@ -211,15 +211,5 @@ std::shared_ptr<cugl::scene2::SceneNode> Door::copy(
   node->_delegates = _delegates;
   node->_obstacle_shape = _obstacle_shape;
 
-  return dst;
-}
-
-std::shared_ptr<cugl::scene2::SceneNode> Door::deepcopy() const {
-  auto dst = copy(Door::alloc());
-  dst->setLayout(_layout);
-  for (std::shared_ptr<cugl::scene2::SceneNode> child : _children) {
-    dst->addChild(child->deepcopy());
-  }
-  dst->doLayout();
   return dst;
 }

@@ -104,17 +104,6 @@ class Door : public BasicTile {
       const std::shared_ptr<SceneNode>& dst) const override;
 
   /**
-   * Performs a deep copy of this Node into dst.
-   *
-   * Children are inherited into the dst node.
-   *
-   * @param dst   The Node to copy into
-   *
-   * @return A reference to dst for chaining.
-   */
-  virtual std::shared_ptr<SceneNode> deepcopy() const override;
-
-  /**
    * Initializes a tile node with the given JSON specificaton.
    *
    * This initializer is designed to receive the "data" object from the
@@ -171,7 +160,7 @@ class Door : public BasicTile {
    * @return The obstacle it created for easy chaining.
    */
   virtual std::shared_ptr<cugl::physics2::PolygonObstacle> initBox2d(
-      std::string& sensor_name);
+      const std::string& sensor_name);
 
   /**
    * @return Returns the physics object for the tile.

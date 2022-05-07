@@ -67,13 +67,3 @@ std::shared_ptr<cugl::scene2::SceneNode> Wall::copy(
 
   return dst;
 }
-
-std::shared_ptr<cugl::scene2::SceneNode> Wall::deepcopy() const {
-  auto dst = copy(Wall::alloc());
-  dst->setLayout(_layout);
-  for (std::shared_ptr<cugl::scene2::SceneNode> child : _children) {
-    dst->addChild(child->deepcopy());
-  }
-  dst->doLayout();
-  return dst;
-}

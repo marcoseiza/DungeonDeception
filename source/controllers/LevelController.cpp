@@ -180,7 +180,6 @@ void LevelController::populate() {
     room_node->setPosition(pos);
     room_node->setVisible(false);
     room_node->doLayout();
-    _world_node->addChild(room_node);
 
     auto room_model = RoomModel::alloc(room_node, room->_key);
     room_model->setType(room->_type);
@@ -205,6 +204,8 @@ void LevelController::populate() {
     instantiateEnemies(room, room_model, enemies);
 
     room_model->setEnemies(enemies);
+
+    _world_node->addChild(room_node);
   }
 }
 
@@ -241,11 +242,10 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
         std::remove(unused_doors.begin(), unused_doors.end(), door),
         unused_doors.end());
 
-    int y = (int)door.y;
-    int x = (int)door.x;
-
+    int y = (int)door.y, x = (int)door.x;
     std::stringstream ss;
     ss << "tile-(" << x << "-" << y << ")";
+
     auto door_room_node = TileHelper::getChildByNameRecursively<Door>(
         room_model->getNode(), {"tiles", ss.str(), "tile"});
 
@@ -258,9 +258,9 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
                  y == room_model->getGridSize().height - 1) {
         door_room_node->setPositive();
       }
-      ss << "-door";
-      std::string door_sensor_name = room->_scene2_key + ss.str();
-      _world->addObstacle(door_room_node->initBox2d(door_sensor_name));
+      std::stringstream door_sensor_name;
+      door_sensor_name << "room-" << room->_key << "-door-" << ss.str();
+      _world->addObstacle(door_room_node->initBox2d(door_sensor_name.str()));
 
       std::shared_ptr<level_gen::Room> other_room = edge->getOther(room);
       cugl::Vec2 destination = other_room->_edge_to_door[edge];
@@ -273,7 +273,7 @@ std::vector<cugl::Vec2> LevelController::instantiateDoors(
         destination.y -= 2;
 
       if (other_room->_key != -1) {
-        room_model->addConnection(door_sensor_name, other_room->_key,
+        room_model->addConnection(door_sensor_name.str(), other_room->_key,
                                   destination);
       }
     }
@@ -287,9 +287,7 @@ void LevelController::coverUnusedDoors(
     const std::shared_ptr<RoomModel> &room_model,
     std::vector<cugl::Vec2> &unused_doors) {
   for (cugl::Vec2 door : unused_doors) {
-    int y = (int)door.y;
-    int x = (int)door.x;
-
+    int y = (int)door.y, x = (int)door.x;
     std::stringstream ss;
     ss << "tile-(" << x << "-" << y << ")";
 
