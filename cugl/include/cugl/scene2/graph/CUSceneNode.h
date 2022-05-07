@@ -203,8 +203,8 @@ protected:
      */
     std::string _name;
   
-    /** Specifically for enemies, is the type of the enemy. */
-    std::string _type;
+  /** Specifically for enemies, is the type of the enemy. */
+  std::string _type;
 
     /**
      * A cached has value of _name.
@@ -396,17 +396,6 @@ public:
      * @return A reference to dst for chaining.
      */
     virtual std::shared_ptr<SceneNode> copy(const std::shared_ptr<SceneNode>& dst) const;
-
-    /**
-     * Performs a deep copy of this Node into dst.
-     *
-     * Children are inherited into the dst node.
-     *
-     * @param dst   The Node to copy into
-     *
-     * @return A reference to dst for chaining.
-     */
-    virtual std::shared_ptr<SceneNode> deepcopy() const;
 
     
 #pragma mark -

@@ -303,26 +303,6 @@ std::shared_ptr<SceneNode> SceneNode::copy(const std::shared_ptr<SceneNode>& dst
     dst->_hashOfName = _hashOfName;
     dst->_priority = _priority;
     dst->_json = _json;
-    dst->_type = _type;
-    return dst;
-}
-
-/**
- * Performs a deep copy of this Node into dst.
- *
- * Children are inherited into the dst node.
- *
- * @param dst   The Node to copy into
- *
- * @return A reference to dst for chaining.
- */
-std::shared_ptr<SceneNode> SceneNode::deepcopy() const {
-    auto dst = copy(SceneNode::alloc());
-    dst->setLayout(_layout);
-    for (std::shared_ptr<SceneNode> child : _children) {
-        dst->addChild(child->deepcopy());
-    }
-    dst->doLayout();
     return dst;
 }
 

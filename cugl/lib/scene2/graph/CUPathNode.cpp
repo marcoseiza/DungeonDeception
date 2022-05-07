@@ -356,25 +356,6 @@ std::shared_ptr<SceneNode> PathNode::copy(const std::shared_ptr<SceneNode>& dst)
     return dst;
 }
 
-/**
- * Performs a deep copy of this Node into dst.
- *
- * Children are inherited into the dst node.
- *
- * @param dst   The Node to copy into
- *
- * @return A reference to dst for chaining.
- */
-std::shared_ptr<SceneNode> PathNode::deepcopy() const {
-    auto dst = copy(PathNode::alloc());
-    dst->setLayout(_layout);
-    for (std::shared_ptr<SceneNode> child : _children) {
-        dst->addChild(child->deepcopy());
-    }
-    dst->doLayout();
-    return dst;
-}
-
 #pragma mark -
 #pragma mark Attributes
 /**

@@ -191,31 +191,9 @@ public:
      * @return A reference to dst for chaining.
      */
     virtual std::shared_ptr<SceneNode> copy(const std::shared_ptr<SceneNode>& dst) const override;
-
-    /**
-     * Performs a deep copy of this Node into dst.
-     *
-     * Children are inherited into the dst node.
-     *
-     * @param dst   The Node to copy into
-     *
-     * @return A reference to dst for chaining.
-     */
-    virtual std::shared_ptr<SceneNode> deepcopy() const override;
     
 #pragma mark -
 #pragma mark Static Constructors
-    /**
-     * Returns a newly allocated empty filmstrip node.
-     *
-     * @return a newly allocated filmstrip node from the given texture.
-     */
-    static std::shared_ptr<SpriteNode> alloc() {
-        std::shared_ptr<SpriteNode> node = std::make_shared<SpriteNode>();
-        return (node->initWithSprite(nullptr,-1,-1) ? node : nullptr);
-
-    }
-
     /**
      * Returns a newly allocated filmstrip node from the given texture.
      *
