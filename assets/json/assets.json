@@ -56,6 +56,20 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "infect-player": {
+      "file": "textures/ui/infect-button.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "block-player": {
+      "file": "textures/ui/block-button.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "player": {
       "file": "textures/player.png",
       "minfilter": "nearest",
@@ -208,18 +222,18 @@
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp"
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [0, 0, 1, 20],
+        "rightcap": [299, 0, 300, 20]
+      }
     },
     "health-fill": {
       "file": "textures/health-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp",
-      "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
-      }
+      "wrapT": "clamp"
     },
     "health-outline": {
       "file": "textures/health-outline.png",
@@ -233,18 +247,18 @@
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp"
+      "wrapT": "clamp",
+      "atlas": {
+        "leftcap": [0, 0, 1, 20],
+        "rightcap": [299, 0, 300, 20]
+      }
     },
     "energy-fill": {
       "file": "textures/ui/energy-fill.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
-      "wrapT": "clamp",
-      "atlas": {
-        "leftcap": [0, 0, 1, 50],
-        "rightcap": [467, 0, 468, 50]
-      }
+      "wrapT": "clamp"
     },
     "energy-outline": {
       "file": "textures/ui/energy-outline.png",
@@ -297,6 +311,13 @@
     },
     "enrage": {
       "file": "textures/enrage.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "logo_title": {
+      "file": "textures/ui/logo.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -426,12 +447,17 @@
       },
       "children": {
         "title": {
-          "type": "Widget",
+          "type": "Image",
           "data": {
-            "key": "menutitle",
-            "variables": {
-              "text": "DUNGEON DEDUCTION"
-            }
+            "texture": "logo_title",
+            "anchor": [ 0.5, 0.5 ],
+            "scale": 1.2
+          },
+          "layout": {
+            "priority": 1,
+            "x_alignment": "center",
+            "y_alignment": "top",
+            "padding": [ 0, 0, 0, 50 ]
           }
         },
         "play": {
@@ -443,8 +469,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [0.5, 0.5],
-            "size": [500, 65]
+            "anchor": [ 0.5, 0.5 ],
+            "size": [ 600, 80 ]
           },
           "children": {
             "host": {
@@ -452,14 +478,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 260, 80 ],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 25, 0]
+                "padding": [ 0, 0, 25, 0 ]
               }
             },
             "join": {
@@ -467,20 +493,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [175, 55],
+                  "size": [ 260, 80 ],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 0, 0]
+                "padding": [ 0, 0, 0, 0 ]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 130]
+            "padding": [ 0, 50, 0, 40 ]
           }
         },
         "instructions": {
@@ -488,7 +514,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [170, 45],
+              "size": [ 260, 60 ],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -496,7 +522,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 25, 0, 0]
+            "padding": [ 0, 30, 0, 0 ]
           }
         },
         "settings": {
@@ -504,7 +530,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [140, 45],
+              "size": [ 220, 60 ],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -512,7 +538,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 175, 0, 0]
+            "padding": [ 0, 115, 0, 0 ]
           }
         }
       }
@@ -527,11 +553,11 @@
           "type": "Progress",
           "data": {
             "anchor": [0.5, 0.5],
-            "background": "health-fill",
-            "foreground": "health-bar",
-            "left_cap": "health-fill_leftcap",
-            "right_cap": "health-fill_rightcap",
-            "scale": 0.4
+            "background": "health-bar",
+            "foreground": "health-fill",
+            "left_cap": "health-bar_leftcap",
+            "right_cap": "health-bar_rightcap",
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
@@ -548,7 +574,7 @@
           "data": {
             "texture": "health-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.402
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
@@ -569,20 +595,20 @@
           "type": "Progress",
           "data": {
             "anchor": [0.5, 0.5],
-            "background": "energy-fill",
-            "foreground": "energy-bar",
-            "left_cap": "energy-fill_leftcap",
-            "right_cap": "energy-fill_rightcap",
-            "scale": 0.4
+            "background": "energy-bar",
+            "foreground": "energy-fill",
+            "left_cap": "energy-bar_leftcap",
+            "right_cap": "energy-bar_rightcap",
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
             "y_anchor": "top",
             "x_offset": 0.2,
-            "y_offset": -0.20
+            "y_offset": -0.17
           }
         },
-        "health-outline": {
+        "energy-outline": {
           "type": "Image",
           "format": {
             "type": "Anchored"
@@ -590,13 +616,13 @@
           "data": {
             "texture": "energy-outline",
             "anchor": [0.5, 0.5],
-            "scale": 0.402
+            "scale": 0.6
           },
           "layout": {
             "x_anchor": "left",
             "y_anchor": "top",
             "x_offset": 0.2,
-            "y_offset": -0.20
+            "y_offset": -0.17
           }
         }
       }
@@ -605,7 +631,7 @@
   "fonts": {
     "pixelmix": {
       "file": "fonts/pixelmix.ttf",
-      "size": 24
+      "size": 28
     },
     "pixelmix_title": {
       "file": "fonts/pixelmix.ttf",
@@ -617,7 +643,7 @@
     },
     "pixelmix_small": {
       "file": "fonts/pixelmix.ttf",
-      "size": 18
+      "size": 24
     },
     "pixelmix_extra_small": {
       "file": "fonts/pixelmix.ttf",
@@ -670,6 +696,12 @@
     "player-attack-energy-wave": {
       "type": "sample",
       "file": "sounds/player/attack/sfx_energy_wave.wav",
+      "stream": true,
+      "volume": 1.0
+    },
+    "player-attack-energy-charge": {
+      "type": "sample",
+      "file": "sounds/player/attack/sfx_energy_charge.wav",
       "stream": true,
       "volume": 1.0
     },

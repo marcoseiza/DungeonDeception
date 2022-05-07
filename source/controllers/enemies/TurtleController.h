@@ -81,13 +81,13 @@ class TurtleController : public EnemyController {
 
   /** Perform the action according to the enemy state. */
   void performAction(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
-  
+
   /** Animate the turtle.  */
   void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
-  
+
   /** Animate the closing animation for the turtle. */
   void animateClose(std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Animate the opening animation for the turtle. */
   void animateOpen(std::shared_ptr<EnemyModel> enemy);
 };

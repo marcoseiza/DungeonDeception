@@ -69,7 +69,7 @@
           "anchor": [0, 0],
           "font": "pixelmix_extra_small",
           "text": "judy",
-          "padding": [20, 20, 35, 20],
+          "padding": [20, 20, 55, 20],
           "halign": "left",
           "valign": "top"
         },
@@ -103,7 +103,7 @@
         "data": {
           "anchor": [0, 0],
           "font": "pixelmix_extra_small",
-          "text": "(C)",
+          "text": "(Runner)",
           "padding": [20, 20, 20, 20],
           "halign": "left",
           "valign": "top"
@@ -112,7 +112,7 @@
           "priority": 1,
           "x_anchor": "left",
           "y_anchor": "top",
-          "x_offset": 0.23,
+          "x_offset": 0.18,
           "y_offset": -0.15
         }
       },
@@ -253,7 +253,7 @@
           "y_offset": 0.16
         }
       },
-      "target-player": {
+      "infect-player": {
         "type": "Button",
         "format": {
           "type": "Anchored"
@@ -273,14 +273,14 @@
           "up": {
             "type": "Image",
             "data": {
-              "texture": "target-player",
+              "texture": "infect-player",
               "anchor": [0.5, 0.5],
               "scale": 1
             }
           }
         }
       },
-      "enrage": {
+      "block-player": {
         "type": "Button",
         "data": {
           "upnode": "up",
@@ -297,7 +297,7 @@
           "up": {
             "type": "Image",
             "data": {
-              "texture": "enrage"
+              "texture": "block-player"
             }
           }
         }

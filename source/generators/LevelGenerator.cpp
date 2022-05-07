@@ -75,7 +75,7 @@ void LevelGenerator::generateRooms() {
   _spawn_room->_fixed = true;
   _spawn_room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
   _spawn_room->_node->setPosition(_spawn_room->_node->getContentSize() / -2.0f);
-  _spawn_room->_node->setColor(_spawn_room->getRoomNodeColor());
+  _spawn_room->_node->setColor(_spawn_room->getRoomNodeColorGenerator());
   _rooms.push_back(_spawn_room);
 
   for (int i = 0; i < _config.getLayers().size(); i++) {
@@ -122,7 +122,7 @@ void LevelGenerator::placeRegularRooms(int num_rooms, float min_radius,
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(room->getRoomNodeColor());
+    room->_node->setColor(room->getRoomNodeColorGenerator());
 
     _rooms.push_back(room);
     _map->addChild(room->_node);
@@ -149,6 +149,7 @@ void LevelGenerator::separateRooms(
           direction += cugl::Vec2::ONE;
         }
         direction.normalize();
+
         room->move(direction);
         n_room->move(direction * -1.0f);
       }
@@ -189,6 +190,21 @@ std::shared_ptr<Room> LevelGenerator::roomMostOverlappingWith(
   return (it != _rooms.end()) ? (*it) : room;
 }
 
+cugl::Vec2 LevelGenerator::snapToGrid(const cugl::Vec2 &pos,
+                                      const cugl::Vec2 &size) {
+  cugl::Vec2 new_pos;
+
+  new_pos.x = std::abs(pos.x) + (int)size.x / 2;
+  new_pos.x -= (int)new_pos.x % (int)size.x;
+  new_pos.x *= pos.x > 0 ? 1 : -1;
+
+  new_pos.y = std::abs(pos.y) + (int)size.y / 2;
+  new_pos.y -= (int)new_pos.y % (int)size.y;
+  new_pos.y *= pos.y > 0 ? 1 : -1;
+
+  return new_pos;
+}
+
 void LevelGenerator::placeTerminals() {
   float min_radius = _config.getLayers()[0].radius * 0.4f;
 
@@ -216,7 +232,7 @@ void LevelGenerator::placeTerminalRooms(
 
   float r = dis(_generator) * (max_radius - min_radius) + min_radius;
   float min_angle = dis(_generator) * 2 * M_PI;
-  float max_angle = min_angle + 2 * M_3_PI_4 / num_rooms;
+  float max_angle = min_angle + M_PI / num_rooms;
 
   for (float i = 0; i < num_rooms; i++) {
     std::shared_ptr<Room> room =
@@ -232,7 +248,7 @@ void LevelGenerator::placeTerminalRooms(
 
     room->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
     room->_node->setPosition(pos);
-    room->_node->setColor(room->getRoomNodeColor());
+    room->_node->setColor(room->getRoomNodeColorGenerator());
 
     min_angle += 2 * M_PI / num_rooms;
     max_angle += 2 * M_PI / num_rooms;
@@ -290,8 +306,44 @@ void LevelGenerator::segregateLayers() {
   }
 
   _generator_step = [this]() {
-    this->separateRooms([this]() { this->markAndFillHallways(); });
+    this->separateRooms([this]() { this->snapToGridAndCullOverlap(); });
   };
+}
+
+/**
+ * Snap all the rooms to grid and remove all the rooms that are overlapping.
+ */
+void LevelGenerator::snapToGridAndCullOverlap() {
+  for (std::shared_ptr<Room> room : _rooms) {
+    cugl::Vec2 pos = room->_node->getPosition();
+    pos = snapToGrid(pos, this->_config.getGridCell());
+    pos -= room->_node->getSize() / 2.0f;
+    room->_node->setPosition(pos);
+  }
+
+  for (std::shared_ptr<Room> room : _rooms) {
+    auto overlapping = roomMostOverlappingWith(room);
+    if (overlapping != room && !room->_to_delete &&
+        overlapping->_type == RoomType::STANDARD) {
+      overlapping->_to_delete = true;
+    }
+  }
+
+  for (auto it = _rooms.begin(); it != _rooms.end(); it++) {
+    if ((*it)->_to_delete) {
+      _map->removeChild((*it)->_node);
+      _rooms.erase(it--);
+    }
+  }
+
+  for (int i = 0; i < _config.getLayers().size(); i++) {
+    auto &circle_rooms = _circle_rooms[i];
+    for (auto it = circle_rooms.begin(); it != circle_rooms.end(); it++) {
+      if ((*it)->_to_delete) _circle_rooms[i].erase(it--);
+    }
+  }
+
+  _generator_step = [this]() { this->markAndFillHallways(); };
 }
 
 void LevelGenerator::markAndFillHallways() {
@@ -315,10 +367,8 @@ void LevelGenerator::markAndFillHallways() {
 
   fillHallways();
 
-  _generator_step = [this]() { this->establishGates(); };
+  _generator_step = nullptr;
 }
-
-void LevelGenerator::establishGates() { _generator_step = nullptr; }
 
 void LevelGenerator::calculateDelaunayTriangles(
     std::vector<std::shared_ptr<Room>> &rooms, float min_r) {
@@ -405,25 +455,55 @@ void LevelGenerator::addEdgesBackAndRemoveUnecessary(
   std::uniform_real_distribution<float> rand(0.0f, 1.0f);
   for (std::shared_ptr<Room> &room : rooms) {
     for (std::shared_ptr<Edge> edge : room->_edges) {
-      bool add_back = edge->_weight < _config.getMaxHallwayLength();
+      if (!edge->_active) {
+        bool add_back = edge->_weight < _config.getMaxHallwayLength();
 
-      long num_edges_source = std::count_if(
-          edge->_source->_edges.begin(), edge->_source->_edges.end(),
-          [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
-      long num_edges_neighbor = std::count_if(
-          edge->_neighbor->_edges.begin(), edge->_neighbor->_edges.end(),
-          [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
+        long num_edges_source = std::count_if(
+            edge->_source->_edges.begin(), edge->_source->_edges.end(),
+            [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
+        long num_edges_neighbor = std::count_if(
+            edge->_neighbor->_edges.begin(), edge->_neighbor->_edges.end(),
+            [](const std::shared_ptr<Edge> &edge) { return edge->_active; });
 
-      add_back &= num_edges_source < _config.getMaxNumEdges();
-      add_back &= num_edges_neighbor < _config.getMaxNumEdges();
+        add_back &= num_edges_source < _config.getMaxNumEdges();
+        add_back &= num_edges_neighbor < _config.getMaxNumEdges();
 
-      add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
-      if (!edge->_active && add_back) {
-        edge->_node->setVisible(true);
-        edge->_active = true;
-        edge->_node->setColor(cugl::Color4(255, 14, 14, 124));
+        room->_edge_to_door.clear();
+        edge->_active = true;  // Temporarily set active to check effect.
+        room->initializeEdgeToDoorPairing();
+        for (auto it : room->_edge_to_door) {
+          float ag = room->angleBetweenEdgeAndDoor(it.first, it.second);
+          add_back &= (std::abs(ag) <= M_PI_2 + 0.1f);
+        }
+        edge->_active = false;  // Revert from previous check.
+
+        cugl::Vec2 intersect = edge->getIntersectWithRectSide(room->getRect());
+        float edge_angle = (intersect - room->getMid()).getAngle();
+        // Not on a diagonal.
+        add_back &= (int)(edge_angle / M_PI_4) % 2 == 0;
+
+        add_back &= rand(_generator) <= _config.getAddEdgesBackProb();
+        if (add_back) {
+          edge->_node->setVisible(true);
+          edge->_active = true;
+          edge->_node->setColor(cugl::Color4(255, 14, 14, 124));
+        }
       }
     }
+  }
+
+  for (std::shared_ptr<Room> &room : rooms) {
+    for (auto it : room->_edge_to_door) {
+      float ag = room->angleBetweenEdgeAndDoor(it.first, it.second);
+      if (std::abs(ag) > M_PI_2 + 0.1f) {
+        it.first->_node->setVisible(false);
+        it.first->_active = false;
+      }
+    }
+  }
+
+  for (std::shared_ptr<Room> &room : rooms) {
+    room->_edge_to_door.clear();
   }
 }
 
@@ -518,23 +598,42 @@ void LevelGenerator::fillHallways() {
         std::shared_ptr<Room> &source = edge->_source;
         std::shared_ptr<Room> &neighbor = edge->_neighbor;
 
-        cugl::Vec2 start =
-            source->_node->getPosition() + source->getDoorForEdge(edge);
-        cugl::Vec2 end =
-            neighbor->_node->getPosition() + neighbor->getDoorForEdge(edge);
+        cugl::Vec2 start = source->getDoorForEdge(edge);
+        cugl::Vec2 end = neighbor->getDoorForEdge(edge);
+
+        if (start.x == 0 || start.x == source->_size.width - 1)
+          start.y = source->_size.height / 2;
+        else if (start.y == 0 || start.y == source->_size.height - 1)
+          start.x = source->_size.width / 2;
+
+        if (end.x == 0 || end.x == neighbor->_size.width - 1)
+          end.y = neighbor->_size.height / 2;
+        else if (end.y == 0 || end.y == neighbor->_size.height - 1)
+          end.x = neighbor->_size.width / 2;
+
+        if (start.x == source->_size.width - 1) start.x++;
+        if (start.y == source->_size.height - 1) start.y++;
+        if (end.x == neighbor->_size.width - 1) end.x++;
+        if (end.y == neighbor->_size.height - 1) end.y++;
+
+        start += source->_node->getPosition();
+        end += neighbor->_node->getPosition();
+
         cugl::Vec2 start_pos(std::min(start.x, end.x),
                              std::min(start.y, end.y));
         cugl::Vec2 end_pos(std::max(start.x, end.x) + 1,
                            std::max(start.y, end.y) + 1);
 
         std::vector<cugl::Vec2> path{start, end};
-        auto bounds = cugl::scene2::PathNode::allocWithVertices(path, 0.4f);
 
-        bounds->setColor(cugl::Color4::BLACK);
-        bounds->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
-        bounds->setPosition(start_pos);
+        edge->_node->dispose();
+        edge->_node->initWithPath(path, 1.0f);
 
-        //        _map->addChild(bounds);
+        edge->_node->setColor(cugl::Color4(0, 0, 0, 127));
+        edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
+        edge->_node->setPosition(start_pos);
+
+        _map->addChild(edge->_node);
       }
     }
   }

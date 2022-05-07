@@ -69,8 +69,14 @@ bool GameScene::init(
   _map->setVisible(false);
 
   for (std::shared_ptr<level_gen::Room>& room : level_gen->getRooms()) {
-    for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
+    room->_node->setColor(room->getRoomNodeColor());
+    for (std::shared_ptr<level_gen::Edge>& edge : room->_edges) {
       edge->_node->setVisible(false);
+      edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
+      if (!edge->_active) {
+        auto parent = edge->_node->getParent();
+        if (parent) parent->removeChild(edge->_node);
+      }
     }
     room->_node->setVisible(false);
   }
@@ -144,8 +150,18 @@ bool GameScene::init(
       ui_layer->getChildByName<cugl::scene2::Button>("target-player");
   target_player_button->setVisible(!is_betrayer);
 
-  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
-  enrage_button->setVisible(is_betrayer);
+  auto block_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("block-player");
+  block_player_button->setVisible(!is_betrayer);
+
+  auto infect_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
+  infect_player_button->setVisible(is_betrayer);
+
+  auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
+  win_layer->setContentSize(dim);
+  win_layer->doLayout();
+  win_layer->setVisible(false);
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
@@ -164,10 +180,11 @@ bool GameScene::init(
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(B)";
+    role_msg = "(BETRAYER)";
     role_text->setForeground(cugl::Color4::BLACK);
+    role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(C)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
@@ -439,10 +456,11 @@ void GameScene::update(float timestep) {
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(B)";
+    role_msg = "(BETRAYER)";
     role_text->setForeground(cugl::Color4::BLACK);
+    role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(C)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
 

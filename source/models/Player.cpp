@@ -102,6 +102,8 @@ void Player::setEnergyBar(
   pos.y *= 1.38f;
   _energy_bar->setPosition(pos);
   _energy_bar->setPriority(std::numeric_limits<float>::max());
+  _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
+  
   for (auto child : _energy_bar->getChildren()) {
     child->setPriority(std::numeric_limits<float>::max());
   }
@@ -117,6 +119,9 @@ void Player::setCorruptedEnergyBar(
   pos.y *= 1.38f;
   _corrupted_energy_bar->setPosition(pos);
   _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max());
+  _corrupted_energy_bar->setProgress(_energy / 100.0f);
+
+  
   for (auto child : _corrupted_energy_bar->getChildren()) {
     child->setPriority(std::numeric_limits<float>::max());
   }
@@ -148,7 +153,7 @@ void Player::setCorrupted() {
 void Player::setCanCorrupt(bool val) {
   _can_corrupt = val;
   if (!val) {
-    _blocked_corrupt_count = 3600; // 1 minute
+    _blocked_corrupt_count = 3600;  // 1 minute
   }
 }
 

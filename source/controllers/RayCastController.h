@@ -5,10 +5,9 @@
 #include <cugl/cugl.h>
 
 class RayCastController : public b2RayCastCallback {
-public:
-    RayCastController() : m_fixture(NULL) {
-    }
-  
+ public:
+  RayCastController() : m_fixture(NULL) {}
+
   /**
    * Inititalize the ray cast controller.
    */
@@ -16,7 +15,7 @@ public:
     m_fixture = NULL;
     return true;
   }
-  
+
   /**
    * Returns a new ray cast controller.
    *
@@ -31,19 +30,20 @@ public:
     }
     return nullptr;
   }
-    
-    float ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float fraction) {
-        m_fixture = fixture;
-        m_point = point;
-        m_normal = normal;
-        m_fraction = fraction;
-        return fraction;
-    }
 
-    b2Fixture* m_fixture;
-    b2Vec2 m_point;
-    b2Vec2 m_normal;
-    float m_fraction;
+  float ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+                      const b2Vec2& normal, float fraction) {
+    m_fixture = fixture;
+    m_point = point;
+    m_normal = normal;
+    m_fraction = fraction;
+    return fraction;
+  }
+
+  b2Fixture* m_fixture;
+  b2Vec2 m_point;
+  b2Vec2 m_normal;
+  float m_fraction;
 };
 
 #endif /* CONTROLLERS_RAYCASTCONTROLLER_H */

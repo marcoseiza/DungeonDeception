@@ -393,6 +393,9 @@
 >>>>>>> bug with level gen
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\network\structs\TerminalStructs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\scenes\WinScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
