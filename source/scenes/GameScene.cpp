@@ -146,10 +146,6 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
-  auto target_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("target-player");
-  target_player_button->setVisible(!is_betrayer);
-
   auto block_player_button =
       ui_layer->getChildByName<cugl::scene2::Button>("block-player");
   block_player_button->setVisible(!is_betrayer);
@@ -506,6 +502,12 @@ void GameScene::update(float timestep) {
   }
 
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
+
+  if (cugl::Input::get<cugl::Keyboard>()->keyReleased(cugl::KeyCode::F)) {
+    _num_terminals_activated = 3;
+    _num_terminals_corrupted = 0;
+    setFinished(true);
+  }
 }
 
 void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {
