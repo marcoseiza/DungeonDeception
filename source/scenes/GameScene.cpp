@@ -502,12 +502,6 @@ void GameScene::update(float timestep) {
   }
 
   _player_controller->getMyPlayer()->checkDeleteSlashes(_world, _world_node);
-
-  if (cugl::Input::get<cugl::Keyboard>()->keyReleased(cugl::KeyCode::F)) {
-    _num_terminals_activated = 3;
-    _num_terminals_corrupted = 0;
-    setFinished(true);
-  }
 }
 
 void GameScene::updateEnemies(float timestep, std::shared_ptr<RoomModel> room) {

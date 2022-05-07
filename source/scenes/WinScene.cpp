@@ -28,8 +28,8 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
   _assets = assets;
 
   // Acquire the scene built by the asset loader and resize it the scene
-  std::shared_ptr<cugl::scene2::SceneNode> scene =
-      _assets->get<cugl::scene2::SceneNode>("win-scene");
+  auto scene = _assets->get<cugl::scene2::SceneNode>("win-scene");
+  scene->setVisible(true);
   auto winner_text = scene->getChildByName<cugl::scene2::Label>("title");
   if (runnersWin) {
     winner_text->setText("RUNNERS WIN!", true);
