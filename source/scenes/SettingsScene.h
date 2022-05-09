@@ -5,9 +5,15 @@
 
 class SettingsScene {
  public:
+  /**
+   * An enumeration of the end state choices the settings menu can end up with.
+   */
   enum Choice {
+    /** Default. */
     NONE,
+    /** Leave the game. */
     LEAVE,
+    /** Resume the game. */
     RESUME,
   };
 
