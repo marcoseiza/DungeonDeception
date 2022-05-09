@@ -346,6 +346,7 @@
     "client-lobby-scene": "widgets/client-lobby-scene.json",
     "host-lobby-scene": "widgets/host-lobby-scene.json",
     "menutitle": "widgets/menutitle.json",
+    "pause": "widgets/pause.json",
     "keypad": "widgets/keypad.json",
     "keypad-button": "widgets/keypad-button.json"
   },
@@ -417,6 +418,13 @@
       "type": "Widget",
       "data": {
         "key": "win-scene",
+        "variables": {}
+      }
+    },
+    "pause-scene": {
+      "type": "Widget",
+      "data": {
+        "key": "pause",
         "variables": {}
       }
     },
@@ -618,6 +626,10 @@
     "pixelmix": {
       "file": "fonts/pixelmix.ttf",
       "size": 28
+    },
+    "pixelmix_extra_large": {
+      "file": "fonts/pixelmix.ttf",
+      "size": 45
     },
     "pixelmix_title": {
       "file": "fonts/pixelmix.ttf",

@@ -309,13 +309,28 @@ void GameApp::updateLevelLoadingScene(float timestep) {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void GameApp::updateGameScene(float timestep) {
-  if (!_gameplay.isFinished()) {
-    _gameplay.update(timestep);
-    return;
+  switch (_gameplay.getState()) {
+    case GameScene::State::RUN:
+      _gameplay.update(timestep);
+      return;
+    case GameScene::State::DONE:
+      _gameplay.dispose();
+      _win.init(_assets, _gameplay.checkCooperatorWin());
+      _scene = State::WIN;
+      return;
+    case GameScene::State::LEAVE:
+      _gameplay.dispose();
+      _menu.setActive(true);
+      _hostgame.setActive(false);
+      _joingame.setActive(false);
+      _hostlobby.setActive(false, nullptr);
+      _joinlobby.setActive(false, nullptr);
+
+      _scene = State::MENU;
+      return;
+    default:
+      return;
   }
-  _win.init(_assets, _gameplay.checkCooperatorWin());
-  _gameplay.dispose();
-  _scene = State::WIN;
 }
 
 /**

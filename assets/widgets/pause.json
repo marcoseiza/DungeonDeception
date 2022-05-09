@@ -1,0 +1,183 @@
+{
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "pause-background": {
+        "type": "Image",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "texture": "terminal-voting-background",
+          "anchor": [0.5, 0.5],
+          "scale": 0.25
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "pause-wrapper": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "anchor": [0.5, 0.5],
+              "size": [1268, 715]
+            },
+            "layout": {
+              "x_anchor": "center",
+              "y_anchor": "middle"
+            },
+            "children": {
+              "title": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix_title",
+                  "text": "Game Paused",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 2
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top"
+                }
+              },
+              "leaving-prompt-host": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix",
+                  "text": "Are you sure you'd like to to leave the game?",
+                  "halign": "true center",
+                  "valign": "middle",
+                  "scale": 1.7,
+                  "size": [350, 100],
+                  "wrap": true
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.12
+                }
+              },
+              "leaving-prompt-client": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix",
+                  "text": "Are you sure you'd like to end the game for all players?",
+                  "halign": "true center",
+                  "valign": "middle",
+                  "scale": 1.7,
+                  "size": [350, 100],
+                  "wrap": true
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "top",
+                  "y_offset": -0.12
+                }
+              },
+              "leave-button": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [400, 133]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle"
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "LEAVE GAME",
+                        "size": [400, 133],
+                        "color": "#A65454",
+                        "font": "pixelmix_extra_large",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              },
+              "leave-button-yes": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [180, 133]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": -0.08
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "YES",
+                        "size": [180, 133],
+                        "color": "#4C7953",
+                        "font": "pixelmix_extra_large",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              },
+              "leave-button-no": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [180, 133]
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "middle",
+                  "x_offset": 0.08
+                },
+                "children": {
+                  "button": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "textbutton",
+                      "variables": {
+                        "text": "NO",
+                        "size": [180, 133],
+                        "color": "#A65454",
+                        "font": "pixelmix_extra_large",
+                        "texture": "button_white"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

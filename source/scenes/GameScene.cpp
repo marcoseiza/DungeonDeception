@@ -30,7 +30,7 @@ bool GameScene::init(
     bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
-  _finished = false;
+  _state = RUN;
 
   _display_name = display_name;
   _has_sent_player_basic_info = false;
@@ -121,6 +121,10 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  _pause_scene = PauseScene::alloc(_assets);
+  _pause_scene->getNode()->setContentSize(dim);
+  _pause_scene->getNode()->doLayout();
+
   // assign role screen depending on player role
   _role_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
   if (is_betrayer) {
@@ -198,6 +202,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
   cugl::Scene2::addChild(_debug_node);
+  cugl::Scene2::addChild(_pause_scene->getNode());
   _debug_node->setVisible(false);
 
   _sound_controller = SoundController::alloc(_assets);
@@ -220,6 +225,8 @@ bool GameScene::init(
 
 void GameScene::dispose() {
   if (!_active) return;
+  _state = NONE;
+
   InputController::get()->dispose();
   _active = false;
   _finished = false;
@@ -232,12 +239,14 @@ void GameScene::dispose() {
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
   _role_layer->setVisible(true);
+  _pause_scene->dispose();
   removeAllChildren();
 
   _world_node = nullptr;
   _debug_node = nullptr;
   _role_layer = nullptr;
 
+  _pause_scene = nullptr;
   _terminal_controller = nullptr;
   _sound_controller = nullptr;
   _player_controller = nullptr;
@@ -323,9 +332,7 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
-  if (checkCooperatorWin() || checkBetrayerWin()) {
-    setFinished(true);
-  }
+  if (checkCooperatorWin() || checkBetrayerWin()) _state = DONE;
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
 
@@ -341,6 +348,10 @@ void GameScene::update(float timestep) {
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
   }
+
+  _pause_scene->update();
+
+  if (_pause_scene->shouldLeave()) _state = LEAVE;
 
   // Cooperator block ability.
   if (!_player_controller->getMyPlayer()->isBetrayer()) {
