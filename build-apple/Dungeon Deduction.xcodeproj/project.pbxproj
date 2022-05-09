@@ -97,9 +97,12 @@
 		D53FDE29281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
 		D53FDE2A281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
 		D53FDE2B281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
-		D5556B7E282951780033ADBF /* PauseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* PauseScene.cpp */; };
-		D5556B7F282951780033ADBF /* PauseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* PauseScene.cpp */; };
-		D5556B80282951780033ADBF /* PauseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* PauseScene.cpp */; };
+		D5556B7E282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B7F282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B80282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B8F2829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
+		D5556B902829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
+		D5556B912829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
 		D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
@@ -325,8 +328,10 @@
 		D52E674827BF354400F8E2B8 /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
 		D53FDE24281C5D13007723CB /* TrailManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrailManager.cpp; sourceTree = "<group>"; };
 		D53FDE28281C5D13007723CB /* TrailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailManager.h; sourceTree = "<group>"; };
-		D5556B79282951780033ADBF /* PauseScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseScene.h; sourceTree = "<group>"; };
-		D5556B7A282951780033ADBF /* PauseScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseScene.cpp; sourceTree = "<group>"; };
+		D5556B79282951780033ADBF /* SettingsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsScene.h; sourceTree = "<group>"; };
+		D5556B7A282951780033ADBF /* SettingsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsScene.cpp; sourceTree = "<group>"; };
+		D5556B8D2829B02C0033ADBF /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		D5556B8E2829B02C0033ADBF /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
 		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
 		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
@@ -564,7 +569,8 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
-				D5556B78282951780033ADBF /* pause_scenes */,
+				D5556B79282951780033ADBF /* SettingsScene.h */,
+				D5556B7A282951780033ADBF /* SettingsScene.cpp */,
 				D5E3B3BF2822E0E000298611 /* WinScene.cpp */,
 				D5E3B3C32822E0E000298611 /* WinScene.h */,
 				CA2DE0AB281BC461009C7117 /* terminal_scenes */,
@@ -619,6 +625,8 @@
 		D52E672F27BF305900F8E2B8 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				D5556B8D2829B02C0033ADBF /* Settings.cpp */,
+				D5556B8E2829B02C0033ADBF /* Settings.h */,
 				D52E673227BF305900F8E2B8 /* Action.h */,
 				D52E674827BF354400F8E2B8 /* Attack.h */,
 				D52E673127BF305900F8E2B8 /* Attack.cpp */,
@@ -634,15 +642,6 @@
 				579187902819AFEF0043E657 /* Corrupt.cpp */,
 			);
 			path = actions;
-			sourceTree = "<group>";
-		};
-		D5556B78282951780033ADBF /* pause_scenes */ = {
-			isa = PBXGroup;
-			children = (
-				D5556B79282951780033ADBF /* PauseScene.h */,
-				D5556B7A282951780033ADBF /* PauseScene.cpp */,
-			);
-			path = pause_scenes;
 			sourceTree = "<group>";
 		};
 		D57971ED27D026E4008FCC5E /* loaders */ = {
@@ -1065,8 +1064,9 @@
 				D5E3B394282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3592820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B912829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */,
-				D5556B80282951780033ADBF /* PauseScene.cpp in Sources */,
+				D5556B80282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1123,8 +1123,9 @@
 				D5E3B393282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3582820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B902829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */,
-				D5556B7F282951780033ADBF /* PauseScene.cpp in Sources */,
+				D5556B7F282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1181,8 +1182,9 @@
 				D5E3B392282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3572820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B8F2829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */,
-				D5556B7E282951780033ADBF /* PauseScene.cpp in Sources */,
+				D5556B7E282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,

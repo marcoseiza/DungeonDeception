@@ -63,6 +63,16 @@ bool NetworkController::removeListener(Uint32 key) {
   return true;
 }
 
+void NetworkController::send(const Sint32 &code) {
+  if (_network == nullptr) return;
+  _serializer.writeSint32(code);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->send(msg);
+}
+
 void NetworkController::send(const Sint32 &code,
                              const std::shared_ptr<cugl::JsonValue> &info) {
   if (_network == nullptr) return;
@@ -135,6 +145,16 @@ void NetworkController::send(
 
   _serializer.reset();
   _network->send(msg);
+}
+
+void NetworkController::sendOnlyToHost(const Sint32 &code) {
+  if (_network == nullptr) return;
+  _serializer.writeSint32(code);
+
+  std::vector<uint8_t> msg = _serializer.serialize();
+
+  _serializer.reset();
+  _network->sendOnlyToHost(msg);
 }
 
 void NetworkController::sendOnlyToHost(

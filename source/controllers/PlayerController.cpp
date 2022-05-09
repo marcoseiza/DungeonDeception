@@ -435,6 +435,13 @@ void PlayerController::updateSlashes(float timestep) {
   }
 }
 
+void PlayerController::removePlayer(int id) {
+  if (_players.find(id) == _players.end()) return;
+  _trail_managers[id]->dispose();
+  _world->removeObstacle(_players[id].get());
+  _players.erase(id);
+}
+
 void PlayerController::addTrailManager(const std::shared_ptr<Player>& player) {
   TrailManager::Config config;
   config.max_length = 5;

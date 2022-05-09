@@ -174,6 +174,13 @@ class PlayerController : public Controller {
     }
   }
 
+  /**
+   * Remove the given player and all its dependencies from the controller
+   *
+   * @param id The id of the player to remove.
+   */
+  void removePlayer(int id);
+
   std::shared_ptr<Player> makePlayer(int player_id);
 
   std::shared_ptr<Player> getMyPlayer() { return _player; }
@@ -202,6 +209,18 @@ class PlayerController : public Controller {
 
   std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {
     return _players;
+  }
+
+  /**
+   * Get the number of betrayers currently in the game.
+   * @return The number of betrayers.
+   */
+  int getNumberBetrayers() {
+    int num_betrayers = 0;
+    for (auto it : _players) {
+      if (it.second->isBetrayer()) num_betrayers++;
+    }
+    return num_betrayers;
   }
 
   std::shared_ptr<Sword> getSword() { return _sword; }

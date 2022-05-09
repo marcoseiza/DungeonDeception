@@ -16,7 +16,7 @@
 #include "../generators/LevelGenerator.h"
 #include "../models/Player.h"
 #include "../network/NetworkController.h"
-#include "pause_scenes/PauseScene.h"
+#include "SettingsScene.h"
 
 class GameScene : public cugl::Scene2 {
  public:
@@ -72,8 +72,8 @@ class GameScene : public cugl::Scene2 {
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
 
-  /** Reference to the pause scene for exiting game. */
-  std::shared_ptr<PauseScene> _pause_scene;
+  /** Reference to the settings scene for exiting game. */
+  std::shared_ptr<SettingsScene> _settings_scene;
 
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;

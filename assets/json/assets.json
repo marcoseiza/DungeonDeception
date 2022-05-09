@@ -346,7 +346,7 @@
     "client-lobby-scene": "widgets/client-lobby-scene.json",
     "host-lobby-scene": "widgets/host-lobby-scene.json",
     "menutitle": "widgets/menutitle.json",
-    "pause": "widgets/pause.json",
+    "settings": "widgets/settings.json",
     "keypad": "widgets/keypad.json",
     "keypad-button": "widgets/keypad-button.json"
   },
@@ -421,10 +421,10 @@
         "variables": {}
       }
     },
-    "pause-scene": {
+    "settings-scene": {
       "type": "Widget",
       "data": {
-        "key": "pause",
+        "key": "settings",
         "variables": {}
       }
     },

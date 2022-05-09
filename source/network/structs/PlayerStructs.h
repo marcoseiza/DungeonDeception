@@ -11,6 +11,42 @@
 
 namespace cugl {
 
+struct PlayerIdInfo : public Serializable {
+  /** The unique key for the struct. Must be static. */
+  const static Uint32 Key;
+
+  /** The ID of the player. */
+  int player_id;
+
+  /**
+   * Alloc a new serializable object
+   * @return The shared pointer with the new object.
+   */
+  static std::shared_ptr<PlayerIdInfo> alloc() {
+    return std::make_shared<PlayerIdInfo>();
+  }
+
+  /**
+   * This method serializes the class into the given serializer.
+   *
+   * @param serializer The network serializer.
+   */
+  void serialize(cugl::NetworkSerializer* serializer) override;
+
+  /**
+   * This method deserializes the given the deserializer.
+   *
+   * @param deserializer
+   */
+  void deserialize(cugl::NetworkDeserializer* deserializer) override;
+
+  /**
+   * This method returns a unique key to the struct.
+   * @return The unique key.
+   */
+  virtual Uint32 key() override { return Key; }
+};
+
 struct PlayerInfo : public Serializable {
   /** The unique key for the struct. Must be static. */
   const static Uint32 Key;
