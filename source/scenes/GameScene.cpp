@@ -125,6 +125,7 @@ bool GameScene::init(
   background_layer->doLayout();
 
   _settings_scene = SettingsScene::alloc(_assets);
+  _settings_scene->setPlayerController(_player_controller);
   _settings_scene->getNode()->setContentSize(dim);
   _settings_scene->getNode()->doLayout();
 
@@ -843,7 +844,8 @@ void GameScene::processData(
           std::get<std::shared_ptr<cugl::Serializable>>(msg));
 
       bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
-      end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS;
+      end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
+                  _player_controller->getMyPlayer()->isBetrayer();
 
       if (end_game) {
         _state = LEAVE;

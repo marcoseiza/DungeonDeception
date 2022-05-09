@@ -3,6 +3,9 @@
 #include "../models/tiles/TileHelper.h"
 #include "../network/NetworkController.h"
 
+#define MIN_PLAYERS 4
+#define MIN_BETRAYERS 1
+
 bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
   _node = assets->get<cugl::scene2::SceneNode>("settings-scene");
@@ -62,26 +65,20 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
           _leave_button, {"up", "label"});
 
+  _leave_prompt_label_leave =
+      TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
+          wrapper, {"row-1-wrapper", "leaving-prompt-leave"});
+  _leave_prompt_label_exit =
+      TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
+          wrapper, {"row-1-wrapper", "leaving-prompt-exit"});
+
+  _leave_prompt_label_exit->setVisible(NetworkController::get()->isHost());
+  _leave_prompt_label_leave->setVisible(!NetworkController::get()->isHost());
+
   if (NetworkController::get()->isHost()) {
     _leave_button_label->setText("END GAME", true);
-
-    TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
-        wrapper, {"row-1-wrapper", "leaving-prompt-client"})
-        ->setVisible(false);
-
-    _leave_prompt_label =
-        TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
-            wrapper, {"row-1-wrapper", "leaving-prompt-host"});
   } else {
     _leave_button_label->setText("LEAVE GAME", true);
-
-    TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
-        wrapper, {"row-1-wrapper", "leaving-prompt-host"})
-        ->setVisible(false);
-
-    _leave_prompt_label =
-        TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
-            wrapper, {"row-1-wrapper", "leaving-prompt-client"});
   }
   _leave_prompt_label->setVisible(false);
 
@@ -126,6 +123,12 @@ void SettingsScene::setActive(bool active) {
 void SettingsScene::update() {
   if (!_active) return;
 
+  bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
+  end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
+              _player_controller->getMyPlayer()->isBetrayer();
+  if (end_game) {
+  }
+
   if (_leave_button_pressed) {
     _leave_button_pressed = false;
 
@@ -133,7 +136,13 @@ void SettingsScene::update() {
     _resume_button->setVisible(!_confirming_leave);
     _leave_button_no->setVisible(_confirming_leave);
     _leave_button_yes->setVisible(_confirming_leave);
-    _leave_prompt_label->setVisible(_confirming_leave);
+
+    bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
+    end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
+                _player_controller->getMyPlayer()->isBetrayer();
+
+    _leave_prompt_label_leave->setVisible(!end_game);
+    _leave_prompt_label_exit->setVisible(end_game);
 
     if (_confirming_leave) {
       _leave_button->deactivate();

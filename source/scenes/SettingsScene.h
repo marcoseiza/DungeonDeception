@@ -47,10 +47,15 @@ class SettingsScene {
   std::shared_ptr<cugl::scene2::Button> _leave_button_no;
 
   /** A label representing a small prompt durring the confriming leave stage. */
-  std::shared_ptr<cugl::scene2::Label> _leave_prompt_label;
+  std::shared_ptr<cugl::scene2::Label> _leave_prompt_label_leave;
+  /** A label representing a small prompt durring the confriming leave stage. */
+  std::shared_ptr<cugl::scene2::Label> _leave_prompt_label_exit;
 
   /** The resume button to resume gameplay. */
   std::shared_ptr<cugl::scene2::Button> _resume_button;
+
+  /** A reference to the player controller. */
+  std::shared_ptr<PlayerController> _player_controller;
 
  public:
   /** Create an empty Settings Scene. */
@@ -114,6 +119,15 @@ class SettingsScene {
    * @param leave If the player confirmed to leave or not.
    */
   void leaveButtonConfirmListener(bool leave);
+
+  /**
+   * Set the player controller for player access.
+   * @param player_controller The player controller.
+   */
+  void setPlayerController(
+      const std::shared_ptr<PlayerController>& player_controller) {
+    _player_controller = player_controller;
+  }
 };
 
 #endif  // SCENES_SETTINGS_SCENE_H_
