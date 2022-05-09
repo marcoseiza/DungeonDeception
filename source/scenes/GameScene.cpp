@@ -24,7 +24,7 @@
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
 #define CAMERA_LARGEST_DIFF 200.0f
-#define MIN_PLAYERS 5
+#define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
 
 bool GameScene::init(
