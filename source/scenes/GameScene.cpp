@@ -222,10 +222,13 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
+  _finished = false;
+
   _has_sent_player_basic_info = false;
   _sound_controller->stop();
   _dead_enemy_cache.clear();
   _world->dispose();
+  _world = nullptr;
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
   _role_layer->setVisible(true);
@@ -234,6 +237,15 @@ void GameScene::dispose() {
   _world_node = nullptr;
   _debug_node = nullptr;
   _role_layer = nullptr;
+
+  _terminal_controller = nullptr;
+  _sound_controller = nullptr;
+  _player_controller = nullptr;
+  _grunt_controller = nullptr;
+  _shotgunner_controller = nullptr;
+  _tank_controller = nullptr;
+  _turtle_controller = nullptr;
+  _level_controller = nullptr;
 }
 
 void GameScene::populate(cugl::Size dim) {
