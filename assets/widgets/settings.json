@@ -124,7 +124,7 @@
                     "data": {
                       "anchor": [0.5, 1.0],
                       "font": "pixelmix",
-                      "text": "Are you sure you'd like to lave the game?",
+                      "text": "Are you sure you'd like to leave the game?",
                       "halign": "true center",
                       "valign": "middle",
                       "scale": 1.7,

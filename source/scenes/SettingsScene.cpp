@@ -68,19 +68,18 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _leave_prompt_label_leave =
       TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
           wrapper, {"row-1-wrapper", "leaving-prompt-leave"});
-  _leave_prompt_label_exit =
+  _leave_prompt_label_end =
       TileHelper::getChildByNameRecursively<cugl::scene2::Label>(
-          wrapper, {"row-1-wrapper", "leaving-prompt-exit"});
+          wrapper, {"row-1-wrapper", "leaving-prompt-end"});
 
-  _leave_prompt_label_exit->setVisible(NetworkController::get()->isHost());
-  _leave_prompt_label_leave->setVisible(!NetworkController::get()->isHost());
+  _leave_prompt_label_end->setVisible(false);
+  _leave_prompt_label_leave->setVisible(false);
 
   if (NetworkController::get()->isHost()) {
     _leave_button_label->setText("END GAME", true);
   } else {
     _leave_button_label->setText("LEAVE GAME", true);
   }
-  _leave_prompt_label->setVisible(false);
 
   return true;
 }
@@ -137,21 +136,25 @@ void SettingsScene::update() {
     _leave_button_no->setVisible(_confirming_leave);
     _leave_button_yes->setVisible(_confirming_leave);
 
-    bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
-    end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
-                _player_controller->getMyPlayer()->isBetrayer();
-
-    _leave_prompt_label_leave->setVisible(!end_game);
-    _leave_prompt_label_exit->setVisible(end_game);
-
     if (_confirming_leave) {
       _leave_button->deactivate();
       _leave_button_no->activate();
       _leave_button_yes->activate();
+
+      bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
+      end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
+                  _player_controller->getMyPlayer()->isBetrayer();
+      end_game |= NetworkController::get()->isHost();
+
+      _leave_prompt_label_leave->setVisible(!end_game);
+      _leave_prompt_label_end->setVisible(end_game);
     } else {
       _leave_button->activate();
       _leave_button_no->deactivate();
       _leave_button_yes->deactivate();
+
+      _leave_prompt_label_leave->setVisible(false);
+      _leave_prompt_label_end->setVisible(false);
     }
   }
 }

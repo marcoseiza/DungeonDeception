@@ -3,6 +3,8 @@
 
 #include <cugl/cugl.h>
 
+#include "../controllers/PlayerController.h"
+
 class SettingsScene {
  public:
   /**
@@ -49,7 +51,7 @@ class SettingsScene {
   /** A label representing a small prompt durring the confriming leave stage. */
   std::shared_ptr<cugl::scene2::Label> _leave_prompt_label_leave;
   /** A label representing a small prompt durring the confriming leave stage. */
-  std::shared_ptr<cugl::scene2::Label> _leave_prompt_label_exit;
+  std::shared_ptr<cugl::scene2::Label> _leave_prompt_label_end;
 
   /** The resume button to resume gameplay. */
   std::shared_ptr<cugl::scene2::Button> _resume_button;
@@ -111,15 +113,6 @@ class SettingsScene {
    */
   bool isActive() { return _active; }
 
- private:
-  /** Internal method for when the leave button is pressed. */
-  void leaveButtonListener(const std::string& name, bool down);
-  /**
-   * Internal method for when a confirm leave button is pressed.
-   * @param leave If the player confirmed to leave or not.
-   */
-  void leaveButtonConfirmListener(bool leave);
-
   /**
    * Set the player controller for player access.
    * @param player_controller The player controller.
@@ -128,6 +121,15 @@ class SettingsScene {
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
   }
+
+ private:
+  /** Internal method for when the leave button is pressed. */
+  void leaveButtonListener(const std::string& name, bool down);
+  /**
+   * Internal method for when a confirm leave button is pressed.
+   * @param leave If the player confirmed to leave or not.
+   */
+  void leaveButtonConfirmListener(bool leave);
 };
 
 #endif  // SCENES_SETTINGS_SCENE_H_
