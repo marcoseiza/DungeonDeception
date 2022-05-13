@@ -8,6 +8,7 @@
 #include "actions/Dash.h"
 #include "actions/Movement.h"
 #include "actions/OpenMap.h"
+#include "actions/Settings.h"
 #include "actions/TargetPlayer.h"
 
 // static
@@ -37,6 +38,9 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
 
     _active = InputController::attachAction<OpenMap>(
         OpenMap::alloc(assets, bounds)->getHook());
+
+    _active = InputController::attachAction<Settings>(
+        Settings::alloc(assets, bounds)->getHook());
 
     _active = InputController::attachAction<TargetPlayer>(
         TargetPlayer::alloc(assets, bounds)->getHook());

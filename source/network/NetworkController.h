@@ -140,6 +140,16 @@ class NetworkController {
   }
 
   /**
+   * Sends a code info to all other players
+   *
+   * Within a few frames, other players should receive this via a call to
+   * {@link #receive}.
+   *
+   * @param code The message code for parsing during receive.
+   */
+  void send(const Sint32 &code);
+
+  /**
    * Sends json info to all other players
    *
    * Within a few frames, other players should receive this via a call to
@@ -198,6 +208,16 @@ class NetworkController {
     }
     send(code, info);
   }
+
+  /**
+   * Sends a code to the host only.
+   *
+   * Within a few frames, other players should receive this via a call to
+   * {@link #receive}.
+   *
+   * @param code The message code for parsing during receive.
+   */
+  void sendOnlyToHost(const Sint32 &code);
 
   /**
    * Sends a byte array to the host only.

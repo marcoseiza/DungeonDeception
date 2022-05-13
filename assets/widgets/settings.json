@@ -1,0 +1,251 @@
+{
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "grey-background": {
+        "type": "Image",
+        "data": {},
+        "layout": {
+          "x_anchor": "fill",
+          "y_anchor": "fill"
+        }
+      },
+      "settings-background": {
+        "type": "Image",
+        "format": {
+          "type": "Anchored"
+        },
+        "data": {
+          "texture": "terminal-voting-background",
+          "anchor": [0.5, 0.5],
+          "scale": 0.25
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        },
+        "children": {
+          "settings-wrapper": {
+            "type": "Node",
+            "format": {
+              "type": "Float",
+              "orientation": "vertical",
+              "x_alignment": "center",
+              "y_alignment": "top"
+            },
+            "data": {
+              "anchor": [0.5, 0.5],
+              "size": [1268, 715]
+            },
+            "layout": {
+              "x_anchor": "center",
+              "y_anchor": "middle"
+            },
+            "children": {
+              "title": {
+                "type": "Label",
+                "data": {
+                  "anchor": [0.5, 1.0],
+                  "font": "pixelmix_title",
+                  "text": "Game Paused",
+                  "halign": "center",
+                  "valign": "middle",
+                  "scale": 2
+                },
+                "layout": {
+                  "priority": 0
+                }
+              },
+              "row-1-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [400, 100]
+                },
+                "layout": {
+                  "priority": 1,
+                  "padding": [0, 40, 0, 100]
+                },
+                "children": {
+                  "resume-button": {
+                    "type": "Node",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "anchor": [0.5, 0.5],
+                      "size": [400, 133]
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle"
+                    },
+                    "children": {
+                      "button": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "textbutton",
+                          "variables": {
+                            "text": "RESUME",
+                            "size": [400, 133],
+                            "color": "#efebe3",
+                            "font": "pixelmix_extra_large",
+                            "texture": "button_white"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "leaving-prompt-end": {
+                    "type": "Label",
+                    "data": {
+                      "anchor": [0.5, 1.0],
+                      "font": "pixelmix",
+                      "text": "Are you sure you'd like to end the game for all players?",
+                      "halign": "true center",
+                      "valign": "middle",
+                      "scale": 1.7,
+                      "size": [400, 100],
+                      "wrap": true
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "top"
+                    }
+                  },
+                  "leaving-prompt-leave": {
+                    "type": "Label",
+                    "data": {
+                      "anchor": [0.5, 1.0],
+                      "font": "pixelmix",
+                      "text": "Are you sure you'd like to leave the game?",
+                      "halign": "true center",
+                      "valign": "middle",
+                      "scale": 1.7,
+                      "size": [350, 100],
+                      "wrap": true
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "top"
+                    }
+                  }
+                }
+              },
+              "leave-button-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "anchor": [0.5, 0.5],
+                  "size": [500, 200]
+                },
+                "layout": {
+                  "priority": 2
+                },
+                "children": {
+                  "leave-button": {
+                    "type": "Node",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "anchor": [0.5, 0.5],
+                      "size": [400, 133]
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle"
+                    },
+                    "children": {
+                      "button": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "textbutton",
+                          "variables": {
+                            "text": "LEAVE GAME",
+                            "size": [400, 133],
+                            "color": "#A65454",
+                            "font": "pixelmix_extra_large",
+                            "texture": "button_white"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "leave-button-yes": {
+                    "type": "Node",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "anchor": [1.0, 0.5],
+                      "size": [250, 133],
+                      "x_offset": -0.05
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle"
+                    },
+                    "children": {
+                      "button": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "textbutton",
+                          "variables": {
+                            "text": "YES",
+                            "size": [250, 133],
+                            "color": "#4C7953",
+                            "font": "pixelmix_extra_large",
+                            "texture": "button_white"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "leave-button-no": {
+                    "type": "Node",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "anchor": [0, 0.5],
+                      "size": [250, 133]
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle",
+                      "x_offset": 0.05
+                    },
+                    "children": {
+                      "button": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "textbutton",
+                          "variables": {
+                            "text": "NO",
+                            "size": [250, 133],
+                            "color": "#A65454",
+                            "font": "pixelmix_extra_large",
+                            "texture": "button_white"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

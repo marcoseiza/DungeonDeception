@@ -120,7 +120,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Disposes the player.
    */
-  ~Player() {}
+  ~Player() { dispose(); }
 
   /**
    * Initializes a new player with the given position and name.
@@ -132,6 +132,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @return  true if the obstacle is initialized properly, false otherwise.
    */
   virtual bool init(const cugl::Vec2 pos, const std::string& name);
+
+  /**
+   * Dispose of this player and all its dependencies.
+   */
+  void dispose();
 
 #pragma mark Static Constructors
   /**

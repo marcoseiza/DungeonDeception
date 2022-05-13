@@ -16,8 +16,23 @@
 #include "../generators/LevelGenerator.h"
 #include "../models/Player.h"
 #include "../network/NetworkController.h"
+#include "SettingsScene.h"
 
 class GameScene : public cugl::Scene2 {
+ public:
+  /** The game state. */
+  enum State {
+    /** Default state. */
+    NONE,
+    /** The game is running */
+    RUN,
+    /** User wants to leave. */
+    LEAVE,
+    /** The game is finished */
+    DONE
+  };
+
+ protected:
   /** The asset manager for loading. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
@@ -30,10 +45,10 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
-  /** Reference to the debug root of the scene graph */
+  /** Reference to the debug root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
-  /** Reference to the role screen scene graph */
+  /** Reference to the role screen scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _role_layer;
 
   /** The Box2d world */
@@ -57,6 +72,9 @@ class GameScene : public cugl::Scene2 {
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
 
+  /** Reference to the settings scene for exiting game. */
+  std::shared_ptr<SettingsScene> _settings_scene;
+
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
 
@@ -77,11 +95,8 @@ class GameScene : public cugl::Scene2 {
   /** Whether this player is a betrayer. */
   bool _is_betrayer;
 
-  /** Whether we quit the game. */
-  bool _quit;
-
-  /** Whether we finished the game. */
-  bool _finished;
+  /** The state of the game. */
+  State _state;
 
   /** The number of terminals in the world. */
   int _num_terminals;
@@ -338,25 +353,10 @@ class GameScene : public cugl::Scene2 {
   void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
-   * Returns true if the player quits the game.
-   *
-   * @return true if the player quits the game.
+   * Returns the game state
+   * @return The game state
    */
-  bool didQuit() const { return _quit; }
-
-   /**
-   * Returns true if the game is finished
-   *
-   * @return true if the game is finished
-   */
-  bool isFinished() const { return _finished; }
-
-   /**
-   * Sets whether the player is a betrayer or cooperator.
-   *
-   * @param betrayer  Whether the player is a betrayer.
-   */
-  void setFinished(bool finished) { _finished = finished; }
+  State getState() const { return _state; }
 
   /**
    * Disconnects this scene from the network controller.
