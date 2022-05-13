@@ -80,6 +80,9 @@ class GameScene : public cugl::Scene2 {
   /** Whether we quit the game. */
   bool _quit;
 
+  /** Whether we finished the game. */
+  bool _finished;
+
   /** The number of terminals in the world. */
   int _num_terminals;
 
@@ -340,6 +343,20 @@ class GameScene : public cugl::Scene2 {
    * @return true if the player quits the game.
    */
   bool didQuit() const { return _quit; }
+
+   /**
+   * Returns true if the game is finished
+   *
+   * @return true if the game is finished
+   */
+  bool isFinished() const { return _finished; }
+
+   /**
+   * Sets whether the player is a betrayer or cooperator.
+   *
+   * @param betrayer  Whether the player is a betrayer.
+   */
+  void setFinished(bool finished) { _finished = finished; }
 
   /**
    * Disconnects this scene from the network controller.

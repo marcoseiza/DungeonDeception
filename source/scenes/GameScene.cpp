@@ -14,6 +14,7 @@
 #include "../controllers/actions/TargetPlayer.h"
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
+#include "../models/tiles/TileHelper.h"
 #include "../models/tiles/Wall.h"
 #include "../network/NetworkController.h"
 #include "../network/structs/EnemyStructs.h"
@@ -29,6 +30,7 @@ bool GameScene::init(
     bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
+  _finished = false;
 
   _display_name = display_name;
   _has_sent_player_basic_info = false;
@@ -43,7 +45,8 @@ bool GameScene::init(
 
   _assets = assets;
 
-  _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
+  _world_node = cugl::scene2::OrderedNode::allocWithOrder(
+      cugl::scene2::OrderedNode::Order::ASCEND);
   _world_node->setContentSize(dim);
 
   std::shared_ptr<cugl::Texture> target_texture =
@@ -143,11 +146,6 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
-  auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
-  win_layer->setContentSize(dim);
-  win_layer->doLayout();
-  win_layer->setVisible(false);
-
   auto block_player_button =
       ui_layer->getChildByName<cugl::scene2::Button>("block-player");
   block_player_button->setVisible(!is_betrayer);
@@ -155,6 +153,11 @@ bool GameScene::init(
   auto infect_player_button =
       ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
   infect_player_button->setVisible(is_betrayer);
+
+  auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
+  win_layer->setContentSize(dim);
+  win_layer->doLayout();
+  win_layer->setVisible(false);
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
@@ -194,7 +197,6 @@ bool GameScene::init(
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
-  cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
   _debug_node->setVisible(false);
 
@@ -220,10 +222,30 @@ void GameScene::dispose() {
   if (!_active) return;
   InputController::get()->dispose();
   _active = false;
-  _health_bar->dispose();
-  _energy_bar->dispose();
+  _finished = false;
+
   _has_sent_player_basic_info = false;
+  _sound_controller->stop();
   _dead_enemy_cache.clear();
+  _world->dispose();
+  _world = nullptr;
+  _world_node->removeAllChildren();
+  _debug_node->removeAllChildren();
+  _role_layer->setVisible(true);
+  removeAllChildren();
+
+  _world_node = nullptr;
+  _debug_node = nullptr;
+  _role_layer = nullptr;
+
+  _terminal_controller = nullptr;
+  _sound_controller = nullptr;
+  _player_controller = nullptr;
+  _grunt_controller = nullptr;
+  _shotgunner_controller = nullptr;
+  _tank_controller = nullptr;
+  _turtle_controller = nullptr;
+  _level_controller = nullptr;
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -246,16 +268,15 @@ void GameScene::populate(cugl::Size dim) {
   auto loader = std::dynamic_pointer_cast<cugl::CustomScene2Loader>(
       _assets->access<cugl::scene2::SceneNode>());
 
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("wall")) {
-    auto wall = std::dynamic_pointer_cast<Wall>(tile);
+  for (std::shared_ptr<Wall> wall : TileHelper::getTile<Wall>(_world_node)) {
     _world->addObstacle(wall->initBox2d());
     wall->getObstacle()->setDebugColor(cugl::Color4::GREEN);
     wall->getObstacle()->setDebugScene(_debug_node);
   }
 
   _num_terminals = 0;
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("terminal")) {
-    auto terminal = std::dynamic_pointer_cast<Terminal>(tile);
+  for (std::shared_ptr<Terminal> terminal :
+       TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
@@ -302,20 +323,8 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
-  if (checkCooperatorWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("cooperator");
-    std::string msg = cugl::strtool::format("Cooperators Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::GREEN);
-    win_layer->setVisible(true);
-  } else if (checkBetrayerWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("betrayer");
-    std::string msg = cugl::strtool::format("Betrayers Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::BLACK);
-    win_layer->setVisible(true);
+  if (checkCooperatorWin() || checkBetrayerWin()) {
+    setFinished(true);
   }
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
@@ -886,11 +895,13 @@ void GameScene::beginContact(b2Contact* contact) {
   void* fx2_d = (void*)fx2->GetUserData().pointer;
 
   std::string fx1_name;
-  if (static_cast<std::string*>(fx1_d) != nullptr)
+  if (static_cast<std::string*>(fx1_d) != nullptr) {
     fx1_name.assign(*static_cast<std::string*>(fx1_d));
+  }
   std::string fx2_name;
-  if (static_cast<std::string*>(fx2_d) != nullptr)
+  if (static_cast<std::string*>(fx2_d) != nullptr) {
     fx2_name.assign(*static_cast<std::string*>(fx2_d));
+  }
 
   b2Body* body1 = fx1->GetBody();
   b2Body* body2 = fx2->GetBody();

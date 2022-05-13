@@ -10,7 +10,7 @@ Room::Room(default_rooms::RoomConfig config)
     : _type(RoomType::STANDARD),
       _visited(false),
       _fixed(false),
-      _scene2_key(""),
+      _scene2_key(config.scene2_key),
       _scene2_source(config.scene2_source),
       _num_players_for_terminal(0),
       _to_delete(false),

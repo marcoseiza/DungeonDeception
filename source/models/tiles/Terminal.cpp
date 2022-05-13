@@ -12,10 +12,10 @@ bool Terminal::initWithData(const cugl::Scene2Loader* loader,
 }
 
 std::shared_ptr<TerminalSensor> Terminal::initBox2d() {
-  cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition() +
-                   BasicTile::getSize() / 2.0f;
+  cugl::Vec2 pos = getWorldPosition() - getPosition() + getSize() / 2.0f;
+  pos.y -= getSize().height / 4.0f;
 
-  _obstacle = TerminalSensor::alloc(pos, BasicTile::getSize());
+  _obstacle = TerminalSensor::alloc(pos, getSize());
 
   if (_obstacle != nullptr) {
     _obstacle->setPosition(pos);

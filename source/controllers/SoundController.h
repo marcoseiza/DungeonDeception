@@ -142,6 +142,9 @@ class SoundController : public Controller {
   /** Dispose the controller and all its values. */
   void dispose() override;
 
+  /** Stop all sounds. */
+  void stop();
+
   /**
    * Helper function to pick random entry in vector.
    *

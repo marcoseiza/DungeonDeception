@@ -133,6 +133,8 @@ bool Attack::update() {
 }
 
 bool Attack::dispose() {
+  _button->getParent()->removeChild(_button);
+
   _button = nullptr;
   _attack_base = nullptr;
   _charge_over = false;

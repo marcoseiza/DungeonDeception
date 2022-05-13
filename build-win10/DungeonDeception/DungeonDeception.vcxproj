@@ -253,6 +253,7 @@
     <ClInclude Include="..\..\source\generators\LevelGenerator.h" />
     <ClInclude Include="..\..\source\generators\LevelGeneratorConfig.h" />
     <ClInclude Include="..\..\source\generators\Delaunator.h" />
+    <ClInclude Include="..\..\source\scenes\WinScene.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -305,6 +306,7 @@
     <ClCompile Include="..\..\source\loaders\CustomScene2Loader.cpp" />
     <ClCompile Include="..\..\source\generators\LevelGenerator.cpp" />
     <ClCompile Include="..\..\source\generators\LevelGeneratorConfig.cpp" />
+    <ClCompile Include="..\..\source\scenes\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DungeonDeception.rc" />

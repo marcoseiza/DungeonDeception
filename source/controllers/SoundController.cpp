@@ -17,6 +17,8 @@ void SoundController::update(float timestep) {}
 
 void SoundController::dispose() { _assets = nullptr; }
 
+void SoundController::stop() { cugl::AudioEngine::get()->pause(); }
+
 void SoundController::initMusic() {
   _music_state = MusicState::MAIN;
   startMusic();

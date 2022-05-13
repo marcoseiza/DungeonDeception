@@ -50,10 +50,8 @@ class Wall : public BasicTile {
     BasicTile::dispose();
   }
 
-  virtual std::shared_ptr<SceneNode> copy(
-      const std::shared_ptr<SceneNode>& dst) const override {
-    return BasicTile::copy(dst);
-  }
+  virtual std::shared_ptr<cugl::scene2::SceneNode> copy(
+      const std::shared_ptr<cugl::scene2::SceneNode>& dst) const override;
 
   /**
    * Initializes a tile node with the given JSON specificaton.
