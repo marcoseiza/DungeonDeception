@@ -93,7 +93,6 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 
   int destination_room_id =
       current->getRoomIdFromDoorSensorId(door_sensor_name);
-  CULog("%d", destination_room_id);
   if (destination_room_id == -1) return;
 
   cugl::Vec2 door_pos = current->getPosOfDestinationDoor(door_sensor_name);
