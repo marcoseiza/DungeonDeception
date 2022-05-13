@@ -58,9 +58,6 @@ CustomNetworkDeserializer::CustomNetworkDeserializer() {
 
   // Register EnemyOtherInfo struct in the factory for deserialization.
   _factory[EnemyOtherInfo::Key] = []() { return EnemyOtherInfo::alloc(); };
-  
-  // Register EnemyAdjacentInfo struct in the factory for deserialization.
-  _factory[EnemyAdjacentInfo::Key] = []() { return EnemyAdjacentInfo::alloc(); };
 
   // Register EnemyHitInfo struct in the factory for deserialization.
   _factory[EnemyHitInfo::Key] = []() { return EnemyHitInfo::alloc(); };

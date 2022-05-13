@@ -679,28 +679,6 @@ void GameScene::sendNetworkInfoHost() {
       }
     }
   }
-  
-  // Decrease packet size of adjacent-room enemies by only sending the position.
-  auto adjacent_room_ids = getAdjacentRoomIdsWithoutPlayers();
-  for (auto room_id : adjacent_room_ids) {
-    // get enemy info for the adjacent rooms to players
-    auto room = _level_controller->getLevelModel()->getRoom(room_id);
-    {
-      std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
-      for (std::shared_ptr<EnemyModel> enemy : room->getEnemies()) {
-        auto info = cugl::EnemyAdjacentInfo::alloc();
-
-        info->enemy_id = enemy->getEnemyId();
-        info->pos = enemy->getPosition();
-        
-        // Serialize one enemy at a time to avoid reaching packet limit
-        enemy_info.push_back(info);
-      }
-      if (enemy_info.size() > 0) {
-        NetworkController::get()->send(NC_HOST_ADJACENT_ENEMY_INFO, enemy_info);
-      }
-    }
-  }
 }
 
 /**
@@ -830,21 +808,6 @@ void GameScene::processData(
             _level_controller->getEnemy(info->enemy_id);
         if (enemy != nullptr) {
           enemy->setHealth(info->health);
-        }
-      }
-    } break;
-      
-    case NC_HOST_ADJACENT_ENEMY_INFO: {
-      auto all_enemy =
-          std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
-
-      for (std::shared_ptr<cugl::Serializable>& info_ : all_enemy) {
-        auto info = std::dynamic_pointer_cast<cugl::EnemyAdjacentInfo>(info_);
-        std::shared_ptr<EnemyModel> enemy =
-            _level_controller->getEnemy(info->enemy_id);
-
-        if (enemy != nullptr) {
-          enemy->setPosition(info->pos);
         }
       }
     } break;
