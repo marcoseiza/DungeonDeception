@@ -629,11 +629,11 @@ void GameScene::sendNetworkInfoHost() {
 
         info->enemy_id = enemy->getEnemyId();
         info->pos = enemy->getPosition();
-        info->has_target = enemy->didFireBullet();
+        info->has_target = enemy->didFireBullet() | enemy->didAttack();
+        info->target = enemy->getAttackDirection();
         if (info->has_target) {
-          info->target = enemy->getFiredBulletDirection();
-          // Make sure bullet is only fired once
-          enemy->clearBulletFiredState();
+          // Make sure bullet & attack is only sent once
+          enemy->clearAttackState();
         }
         // Serialize one enemy at a time to avoid reaching packet limit
         enemy_info.push_back(info);
@@ -791,7 +791,7 @@ void GameScene::processData(
 
         if (enemy != nullptr) {
           enemy->setPosition(info->pos);
-          if (info->has_target) enemy->addBullet(info->target);
+          if (info->has_target) enemy->performAttackAction(info->target);
         }
       }
     } break;

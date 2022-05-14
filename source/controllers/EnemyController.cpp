@@ -16,18 +16,19 @@
 
 EnemyController::EnemyController(){};
 
-void EnemyController::idling(std::shared_ptr<EnemyModel> enemy) {
+void EnemyController::idling(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 p) {
   enemy->move(0, 0);
+  enemy->_attack_dir = p - enemy->getPosition();
 }
 
 void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
   // Using steering behavior for smooth movement.
+  enemy->_attack_dir = p - enemy->getPosition();
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
   diff.scale(enemy->getSpeed());
-
   enemy->move(diff.x, diff.y);
 }
 
@@ -37,7 +38,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
   }
-
+  enemy->_attack_dir = p - enemy->getPosition();
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
@@ -73,14 +74,19 @@ bool EnemyController::init(
   return true;
 }
 
+void EnemyController::updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy, int room_id) {
+  // Update enemy & projectiles
+  updateProjectiles(timestep, enemy);
+  enemy->update(timestep);
+  animate(enemy, enemy->_attack_dir);
+}
+
 void EnemyController::update(bool is_host, float timestep,
                              std::shared_ptr<EnemyModel> enemy,
                              std::vector<std::shared_ptr<Player>> _players,
                              int room_id) {
   if (!is_host) {
-    // Update enemy & projectiles
-    updateProjectiles(timestep, enemy);
-    enemy->update(timestep);
+    updateIfClient(timestep, enemy, room_id);
     return;
   }
 
@@ -102,7 +108,7 @@ void EnemyController::update(bool is_host, float timestep,
   if (min_player->getRoomId() != room_id) {
     return;
   }
-
+  
   // Change state if applicable
   float distance =
       (enemy->getPosition()).subtract(min_player->getPosition()).length();

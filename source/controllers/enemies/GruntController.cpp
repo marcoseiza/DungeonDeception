@@ -30,16 +30,51 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     enemy->move(0, 0);
     if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+      enemy->setAttack(true);
       enemy->_attack_dir = p - enemy->getPosition();
       enemy->_attack_dir.normalize();
     }
   } else {
+    enemy->_attack_dir = p - enemy->getPosition();
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
     diff.scale(0.6 * enemy->getSpeed());
     enemy->move(diff.x, diff.y);
   }
+  
+//  if (enemy->getAttackCooldown() <= 0) {
+//    // Just finished attack, reset attack cooldown.
+//    std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+//    enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
+//    enemy->resetSensors();
+//  } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
+//    // Currently attacking player.
+//    cugl::Vec2 dir = enemy->_attack_dir;
+//    dir.scale(3.5);
+//    enemy->move(dir.x, dir.y);
+//  } else if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
+//    // Begin attack.
+//    enemy->setSensor(true);
+//    _sound_controller->playEnemySwing();
+//  } else if (enemy->getAttackCooldown() < STOP_ATTACK_FRAMES) {
+//    // Stops in place to wind up attack.
+//    enemy->move(0, 0);
+//    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+//      // Determine attack position.
+//      enemy->setAttack(true);
+//      enemy->_attack_dir = p - enemy->getPosition();
+//      enemy->_attack_dir.normalize();
+//    }
+//  } else {
+//    // Circle the player.
+//    enemy->_attack_dir = p;
+//    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+//    diff.normalize();
+//    diff.add(_direction);
+//    diff.scale(0.6 * enemy->getSpeed());
+//    enemy->move(diff.x, diff.y);
+//  }
 }
 
 bool GruntController::init(
@@ -81,7 +116,7 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
                                     cugl::Vec2 p) {
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::IDLE: {
-      idling(enemy);
+      idling(enemy, p);
       break;
     }
     case EnemyModel::State::CHASING: {

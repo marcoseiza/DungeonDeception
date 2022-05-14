@@ -122,6 +122,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** If the promise to change physics state should enable the body or
    * disable it */
   bool _promise_to_enable;
+  
+  /** If the enemy attacked via dashing this update step. */
+  bool _did_attack;
 
   /** If the enemy fired a bullet this update step */
   bool _did_fire_bullet;
@@ -318,6 +321,18 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the enemy speed.
    */
   float getSpeed() const { return _speed; }
+  
+  /**
+   * Set whether the enemy attacked.
+   */
+  void setAttack(bool val) { _did_attack = val; }
+  
+  /**
+   * Returns whether the enemy attacked.
+   *
+   * @return whether the enemy attacked.
+   */
+  bool didAttack() const { return _did_attack; }
 
   /**
    * Returns whether the enemy fired a bullet.
@@ -327,19 +342,27 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   bool didFireBullet() const { return _did_fire_bullet; }
 
   /**
-   * Resets info about whether there was a bullet fired.
+   * Resets info about whether an attack happened.
    */
-  void clearBulletFiredState() {
+  void clearAttackState() {
     _did_fire_bullet = false;
+    _did_attack = false;
     _fired_bullet_direction = cugl::Vec2::ZERO;
   }
 
+//  /**
+//   * Returns the direction of the most recently fired bullet.
+//   *
+//   * @return the bullet direction.
+//   */
+//  cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
+  
   /**
-   * Returns the direction of the most recently fired bullet.
+   * Returns the direction of the attack, whether it be attack_dir or the fired bullet direction.
    *
-   * @return the bullet direction.
+   * Should only be called by hosts.
    */
-  cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
+  cugl::Vec2 getAttackDirection() const;
 
   /**
    * Add a bullet.
@@ -347,6 +370,15 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param p the position of the bullet to spawn in.
    */
   void addBullet(cugl::Vec2 p);
+  
+  /**
+   * Perform attack action according to enemy type.
+   *
+   * Should only be called by clients.
+   *
+   * @param dir The direction of the bullet, if making a bullet.
+   */
+  void performAttackAction(const cugl::Vec2 dir);
 
   /**
    * Deletes a bullet if needed.

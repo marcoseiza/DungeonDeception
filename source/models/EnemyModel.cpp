@@ -337,3 +337,29 @@ void EnemyModel::knockback(int moveDir) {
     _knockback_dir.y = 1;
   }
 }
+
+cugl::Vec2 EnemyModel::getAttackDirection() const {
+  switch(_enemy_type) {
+    case SHOTGUNNER:
+    case TURTLE: {
+      if (didFireBullet()) {
+        return _fired_bullet_direction;
+      }
+    }
+    default:
+      return _attack_dir;
+  }
+}
+
+void EnemyModel::performAttackAction(const cugl::Vec2 dir) {
+  switch(_enemy_type) {
+    case SHOTGUNNER:
+    case TURTLE:
+      addBullet(dir);
+      break;
+    case GRUNT:
+    case TANK:
+      _did_attack = true;
+      _attack_dir = dir;
+  }
+}
