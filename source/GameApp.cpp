@@ -1,6 +1,7 @@
 #include "GameApp.h"
 
 #include "loaders/CustomScene2Loader.h"
+#include "models/level_gen/DefaultRooms.h"
 
 void GameApp::onStartup() {
   _assets = cugl::AssetManager::alloc();
@@ -33,10 +34,6 @@ void GameApp::onStartup() {
   _loaded = false;
   _loading.init(_assets);
 
-  // Queue up the other assets (EMPTY in this case).
-  _assets->loadDirectoryAsync("json/assets.json", nullptr);
-  _assets->loadDirectoryAsync("json/tiles.json", nullptr);
-
   cugl::Application::onStartup();  // YOU MUST END with call to parent.
 }
 
@@ -48,6 +45,7 @@ void GameApp::onShutdown() {
   _joinlobby.dispose();
   _hostlobby.dispose();
   _menu.dispose();
+  _win.dispose();
   _level_loading.dispose();
   _assets = nullptr;
   _batch = nullptr;
@@ -89,6 +87,9 @@ void GameApp::update(float timestep) {
     case GAME:
       updateGameScene(timestep);
       break;
+    case WIN:
+      updateWinScene(timestep);
+      break;
   }
 }
 
@@ -118,6 +119,9 @@ void GameApp::draw() {
     case GAME:
       _gameplay.render(_batch);
       break;
+    case WIN:
+      _win.render(_batch);
+      break;
   }
 }
 
@@ -125,8 +129,8 @@ void GameApp::updateLoadingScene(float timestep) {
   if (!_loaded && _loading.isActive()) {
     _loading.update(timestep);
   } else if (!_loaded) {
-    _loading
-        .dispose();  // Permanently disables the input listeners in this mode.
+    // Permanently disables the input listeners in this mode.
+    _loading.dispose();
     _menu.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
@@ -138,6 +142,7 @@ void GameApp::updateLoadingScene(float timestep) {
     _hostlobby.setActive(false, nullptr);
     _joinlobby.setActive(false, nullptr);
     _gameplay.setActive(false);
+    _win.setActive(false);
     _scene = State::MENU;
     _loaded = true;
   }
@@ -303,4 +308,55 @@ void GameApp::updateLevelLoadingScene(float timestep) {
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
-void GameApp::updateGameScene(float timestep) { _gameplay.update(timestep); }
+void GameApp::updateGameScene(float timestep) {
+  switch (_gameplay.getState()) {
+    case GameScene::State::RUN:
+      _gameplay.update(timestep);
+      return;
+    case GameScene::State::DONE:
+      _gameplay.dispose();
+      _win.init(_assets, _gameplay.checkCooperatorWin());
+      _scene = State::WIN;
+      return;
+    case GameScene::State::LEAVE:
+      _gameplay.dispose();
+      _menu.setActive(true);
+      _hostgame.setActive(false);
+      _joingame.setActive(false);
+      _hostlobby.setActive(false, nullptr);
+      _joinlobby.setActive(false, nullptr);
+
+      _scene = State::MENU;
+      return;
+    default:
+      return;
+  }
+}
+
+/**
+ * Individualized update method for the win scene.
+ *
+ * This method keeps the primary {@link #update} from being a mess of switch
+ * statements. It also handles the transition logic from the game scene.
+ *
+ * @param timestep  The amount of time (in seconds) since the last frame
+ */
+void GameApp::updateWinScene(float timestep) {
+  _win.update(timestep);
+  switch (_win.getChoice()) {
+    case WinScene::Choice::GOTOMENU:
+      _win.dispose();
+      _menu.setActive(true);
+      _hostgame.setActive(false);
+      _joingame.setActive(false);
+      _hostlobby.setActive(false, nullptr);
+      _joinlobby.setActive(false, nullptr);
+
+      _scene = State::MENU;
+      _loaded = true;
+      break;
+    case WinScene::Choice::NONE:
+      // DO NOTHING
+      break;
+  }
+}

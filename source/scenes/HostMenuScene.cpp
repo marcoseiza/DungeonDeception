@@ -148,7 +148,7 @@ void HostMenuScene::configureStartButton() {
     _startgame->deactivate();
     updateText(_startgame, "WAITING");
   } else {
-    updateText(_startgame, "START GAME");
+    updateText(_startgame, "START LOBBY");
     _startgame->activate();
   }
 }

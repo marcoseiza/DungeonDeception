@@ -48,9 +48,6 @@
     <ClInclude Include="..\..\source\network\NetworkController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\network\structs\VotingInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\controllers\actions\Action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -208,6 +205,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\network\structs\PlayerStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\network\structs\TerminalStructs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\network\structs\Serializable.h">
@@ -383,7 +383,17 @@
     <ClCompile Include="..\..\source\network\structs\EnemyStructs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\..\source\network\structs\PlayerStructs.cpp">
+=======
+    <ClCompile Include="..\..\source\network\structs\PlayerStruct.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\network\structs\TerminalStructs.cpp">
+>>>>>>> bug with level gen
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\network\structs\TerminalStructs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\scenes\WinScene.cpp">

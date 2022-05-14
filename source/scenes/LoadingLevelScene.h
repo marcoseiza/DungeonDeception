@@ -56,6 +56,14 @@ class LoadingLevelScene : public cugl::Scene2 {
    * Initializes the controller contents, and starts generating the level.
    *
    * @param assets    The (loaded) assets for this loading mode
+   * @return true if the controller is initialized properly, false otherwise.
+   */
+  bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+
+  /**
+   * Initializes the controller contents, and starts generating the level.
+   *
+   * @param assets    The (loaded) assets for this loading mode
    * @param seed        The seed to be used in the map generation
    * @return true if the controller is initialized properly, false otherwise.
    */

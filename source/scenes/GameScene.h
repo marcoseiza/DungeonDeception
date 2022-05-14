@@ -16,8 +16,23 @@
 #include "../generators/LevelGenerator.h"
 #include "../models/Player.h"
 #include "../network/NetworkController.h"
+#include "SettingsScene.h"
 
 class GameScene : public cugl::Scene2 {
+ public:
+  /** The game state. */
+  enum State {
+    /** Default state. */
+    NONE,
+    /** The game is running */
+    RUN,
+    /** User wants to leave. */
+    LEAVE,
+    /** The game is finished */
+    DONE
+  };
+
+ protected:
   /** The asset manager for loading. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
@@ -30,10 +45,10 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
-  /** Reference to the debug root of the scene graph */
+  /** Reference to the debug root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
-  /** Reference to the role screen scene graph */
+  /** Reference to the role screen scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _role_layer;
 
   /** The Box2d world */
@@ -57,6 +72,9 @@ class GameScene : public cugl::Scene2 {
   /** The terminal controller for voting in the game. */
   std::shared_ptr<TerminalController> _terminal_controller;
 
+  /** Reference to the settings scene for exiting game. */
+  std::shared_ptr<SettingsScene> _settings_scene;
+
   /** The controllers for the game. */
   std::vector<std::shared_ptr<Controller>> _controllers;
 
@@ -77,8 +95,8 @@ class GameScene : public cugl::Scene2 {
   /** Whether this player is a betrayer. */
   bool _is_betrayer;
 
-  /** Whether we quit the game. */
-  bool _quit;
+  /** The state of the game. */
+  State _state;
 
   /** The number of terminals in the world. */
   int _num_terminals;
@@ -191,6 +209,46 @@ class GameScene : public cugl::Scene2 {
       }
     }
     return room_ids_with_players;
+  }
+  
+  /**
+   * Returns an unordered set of all the room ids players are in, and adjacent rooms.
+   */
+  std::unordered_set<int> getAdjacentRoomIdsWithPlayers() {
+    std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
+    std::unordered_set<int> all_enemy_update_rooms;
+    for (auto room_id_to_update : room_ids_with_players) {
+      // Add the player room.
+      if (room_id_to_update != -1) {
+        all_enemy_update_rooms.emplace(room_id_to_update);
+      }
+      // Add the adjacent player rooms.
+      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto rooms = room->getAllConnectedRooms();
+      for (auto room_map : rooms) {
+        all_enemy_update_rooms.emplace(room_map.second);
+      }
+    }
+    return all_enemy_update_rooms;
+  }
+  
+  /**
+   * Returns an unordered set of all the player adjacent room ids without the player rooms.
+   */
+  std::unordered_set<int> getAdjacentRoomIdsWithoutPlayers() {
+    std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
+    std::unordered_set<int> all_enemy_update_rooms;
+    for (auto room_id_to_update : room_ids_with_players) {
+      // Add the adjacent player rooms.
+      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto rooms = room->getAllConnectedRooms();
+      for (auto room_map : rooms) {
+        if (room_ids_with_players.count(room_map.second) == 0) {
+          all_enemy_update_rooms.emplace(room_map.second);
+        }
+      }
+    }
+    return all_enemy_update_rooms;
   }
 
   /**
@@ -335,11 +393,10 @@ class GameScene : public cugl::Scene2 {
   void updatePlayerInfo(int player_id, int room_id, float pos_x, float pos_y);
 
   /**
-   * Returns true if the player quits the game.
-   *
-   * @return true if the player quits the game.
+   * Returns the game state
+   * @return The game state
    */
-  bool didQuit() const { return _quit; }
+  State getState() const { return _state; }
 
   /**
    * Disconnects this scene from the network controller.

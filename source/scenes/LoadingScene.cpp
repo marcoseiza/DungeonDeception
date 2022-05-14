@@ -1,5 +1,7 @@
 #include "LoadingScene.h"
 
+#include "../models/level_gen/DefaultRooms.h"
+
 /** The ideal size of the logo. */
 #define SCENE_SIZE 1024
 
@@ -18,6 +20,15 @@ bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
 
   // Immediately load the splash screen assets.
   _assets = assets;
+  // Queue up the other assets (EMPTY in this case).
+  _assets->loadDirectoryAsync(
+      "json/assets.json", [=](const std::string &key, bool success) {
+        for (default_rooms::RoomConfig room_config : default_rooms::kAllRooms) {
+          _assets->loadAsync<cugl::scene2::SceneNode>(
+              room_config.scene2_key, room_config.scene2_source, nullptr);
+        }
+      });
+  _assets->loadDirectoryAsync("json/tiles.json", nullptr);
   _assets->loadDirectory("json/loading.json");
 
   auto layer = assets->get<cugl::scene2::SceneNode>("load");

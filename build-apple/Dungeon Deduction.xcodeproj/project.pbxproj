@@ -97,6 +97,12 @@
 		D53FDE29281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
 		D53FDE2A281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
 		D53FDE2B281C5D14007723CB /* TrailManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D53FDE24281C5D13007723CB /* TrailManager.cpp */; };
+		D5556B7E282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B7F282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B80282951780033ADBF /* SettingsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B7A282951780033ADBF /* SettingsScene.cpp */; };
+		D5556B8F2829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
+		D5556B902829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
+		D5556B912829B02C0033ADBF /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5556B8D2829B02C0033ADBF /* Settings.cpp */; };
 		D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
 		D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */; };
@@ -151,12 +157,15 @@
 		D5E3B35B2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
 		D5E3B35C2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
 		D5E3B35D2820550300298611 /* EnemyStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35A2820550300298611 /* EnemyStructs.cpp */; };
-		D5E3B392282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
-		D5E3B393282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
-		D5E3B394282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
 		D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
 		D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
 		D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B35F2820746300298611 /* PlayerStructs.cpp */; };
+		D5E3B392282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
+		D5E3B393282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
+		D5E3B394282197F500298611 /* TerminalStructs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B38D282197F500298611 /* TerminalStructs.cpp */; };
+		D5E3B3C42822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
+		D5E3B3C52822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
+		D5E3B3C62822E0E000298611 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5E3B3BF2822E0E000298611 /* WinScene.cpp */; };
 		D5EB744E27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB744F27C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
 		D5EB745027C335C7007D157D /* Movement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5EB744C27C335C7007D157D /* Movement.cpp */; };
@@ -319,6 +328,10 @@
 		D52E674827BF354400F8E2B8 /* Attack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Attack.h; sourceTree = "<group>"; };
 		D53FDE24281C5D13007723CB /* TrailManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrailManager.cpp; sourceTree = "<group>"; };
 		D53FDE28281C5D13007723CB /* TrailManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrailManager.h; sourceTree = "<group>"; };
+		D5556B79282951780033ADBF /* SettingsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsScene.h; sourceTree = "<group>"; };
+		D5556B7A282951780033ADBF /* SettingsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingsScene.cpp; sourceTree = "<group>"; };
+		D5556B8D2829B02C0033ADBF /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
+		D5556B8E2829B02C0033ADBF /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLobbyScene.h; sourceTree = "<group>"; };
 		D563777F2818F2B8001C4D45 /* HostLobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HostLobbyScene.h; sourceTree = "<group>"; };
 		D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HostLobbyScene.cpp; sourceTree = "<group>"; };
@@ -362,9 +375,11 @@
 		D5E3B3562820436200298611 /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		D5E3B35A2820550300298611 /* EnemyStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyStructs.cpp; sourceTree = "<group>"; };
 		D5E3B35E2820746300298611 /* PlayerStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerStructs.h; sourceTree = "<group>"; };
+		D5E3B35F2820746300298611 /* PlayerStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStructs.cpp; sourceTree = "<group>"; };
 		D5E3B38D282197F500298611 /* TerminalStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerminalStructs.cpp; sourceTree = "<group>"; };
 		D5E3B391282197F500298611 /* TerminalStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalStructs.h; sourceTree = "<group>"; };
-		D5E3B35F2820746300298611 /* PlayerStructs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerStructs.cpp; sourceTree = "<group>"; };
+		D5E3B3BF2822E0E000298611 /* WinScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WinScene.cpp; sourceTree = "<group>"; };
+		D5E3B3C32822E0E000298611 /* WinScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WinScene.h; sourceTree = "<group>"; };
 		D5EB744C27C335C7007D157D /* Movement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Movement.cpp; sourceTree = "<group>"; };
 		D5EB744D27C335C7007D157D /* Movement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movement.h; sourceTree = "<group>"; };
 		D5F3D6B027DD6E3B0071DD06 /* LevelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelModel.cpp; sourceTree = "<group>"; };
@@ -372,7 +387,7 @@
 		D5F3D6B227DD6E3B0071DD06 /* RoomModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RoomModel.cpp; sourceTree = "<group>"; };
 		D5F3D6B327DD6E3B0071DD06 /* RoomModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomModel.h; sourceTree = "<group>"; };
 		EB07CFB021EFF3EF000CB3A3 /* DeviceMargins.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DeviceMargins.plist; sourceTree = "<group>"; };
-		EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception (Sim).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE9B41D74952A002FE78B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		EB2BE9BA1D7498D2002FE78B /* textures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = textures; sourceTree = "<group>"; };
 		EB2BE9BE1D749908002FE78B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -383,14 +398,14 @@
 		EB2BE9CB1D749937002FE78B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		EB2BE9CD1D749953002FE78B /* ForceFeedback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ForceFeedback.framework; path = System/Library/Frameworks/ForceFeedback.framework; sourceTree = SDKROOT; };
 		EB2BE9CE1D749953002FE78B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB7454A61D74D846002FBAE6 /* iOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "iOS-Info.plist"; sourceTree = "<group>"; };
 		EB7454A71D74D846002FBAE6 /* iOS.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = iOS.xcassets; sourceTree = "<group>"; };
 		EB7454A81D74D846002FBAE6 /* Landscape.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Landscape.storyboard; sourceTree = "<group>"; };
 		EB7454A91D74D846002FBAE6 /* Portrait.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Portrait.storyboard; sourceTree = "<group>"; };
 		EBB3D284201444B300E6A7CD /* CUGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CUGL.xcodeproj; path = "../cugl/build-apple/CUGL.xcodeproj"; sourceTree = "<group>"; };
 		EBB3D29B201444F100E6A7CD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deduction (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dungeon Deception (Mac).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBF189A1D74904A008E2001 /* Mac.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mac.xcassets; sourceTree = "<group>"; };
 		EBBF189F1D74904A008E2001 /* Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mac-Info.plist"; sourceTree = "<group>"; };
 		EBC147141E27F07C005494CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -554,6 +569,10 @@
 		D52E672727BF305900F8E2B8 /* scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D5556B79282951780033ADBF /* SettingsScene.h */,
+				D5556B7A282951780033ADBF /* SettingsScene.cpp */,
+				D5E3B3BF2822E0E000298611 /* WinScene.cpp */,
+				D5E3B3C32822E0E000298611 /* WinScene.h */,
 				CA2DE0AB281BC461009C7117 /* terminal_scenes */,
 				D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */,
 				D563777F2818F2B8001C4D45 /* HostLobbyScene.h */,
@@ -606,6 +625,8 @@
 		D52E672F27BF305900F8E2B8 /* actions */ = {
 			isa = PBXGroup;
 			children = (
+				D5556B8D2829B02C0033ADBF /* Settings.cpp */,
+				D5556B8E2829B02C0033ADBF /* Settings.h */,
 				D52E673227BF305900F8E2B8 /* Action.h */,
 				D52E674827BF354400F8E2B8 /* Attack.h */,
 				D52E673127BF305900F8E2B8 /* Attack.cpp */,
@@ -776,9 +797,9 @@
 		EBBF18921D74904A008E2001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */,
-				EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */,
-				EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */,
+				EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */,
+				EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */,
+				EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -817,9 +838,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */ = {
+		EB22BF5D25D0E8BC002ACE41 /* Dungeon Deception (Sim) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */;
+			buildConfigurationList = EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Sim)" */;
 			buildPhases = (
 				EB22BF5A25D0E8BC002ACE41 /* Sources */,
 				EB22BF5B25D0E8BC002ACE41 /* Frameworks */,
@@ -829,14 +850,14 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction (Sim)";
+			name = "Dungeon Deception (Sim)";
 			productName = "HelloWorld (Sim)";
-			productReference = EB22BF5E25D0E8BC002ACE41 /* Dungeon Deduction (Sim).app */;
+			productReference = EB22BF5E25D0E8BC002ACE41 /* Dungeon Deception (Sim).app */;
 			productType = "com.apple.product-type.application";
 		};
-		EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */ = {
+		EB74548B1D74D75C002FBAE6 /* Dungeon Deception */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */;
+			buildConfigurationList = EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deception" */;
 			buildPhases = (
 				EB7454881D74D75C002FBAE6 /* Sources */,
 				EB7454891D74D75C002FBAE6 /* Frameworks */,
@@ -846,14 +867,14 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction";
+			name = "Dungeon Deception";
 			productName = "CUGL Demo (iOS)";
-			productReference = EB74548C1D74D75C002FBAE6 /* Dungeon Deduction.app */;
+			productReference = EB74548C1D74D75C002FBAE6 /* Dungeon Deception.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */ = {
+		EBBF18901D74904A008E2001 /* Dungeon Deception (Mac) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */;
+			buildConfigurationList = EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Mac)" */;
 			buildPhases = (
 				EBBF188D1D74904A008E2001 /* Sources */,
 				EBBF188E1D74904A008E2001 /* Frameworks */,
@@ -863,9 +884,9 @@
 			);
 			dependencies = (
 			);
-			name = "Dungeon Deduction (Mac)";
+			name = "Dungeon Deception (Mac)";
 			productName = "CUGL Demo";
-			productReference = EBBF18911D74904A008E2001 /* Dungeon Deduction (Mac).app */;
+			productReference = EBBF18911D74904A008E2001 /* Dungeon Deception (Mac).app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -911,9 +932,9 @@
 			);
 			projectRoot = "";
 			targets = (
-				EBBF18901D74904A008E2001 /* Dungeon Deduction (Mac) */,
-				EB74548B1D74D75C002FBAE6 /* Dungeon Deduction */,
-				EB22BF5D25D0E8BC002ACE41 /* Dungeon Deduction (Sim) */,
+				EBBF18901D74904A008E2001 /* Dungeon Deception (Mac) */,
+				EB74548B1D74D75C002FBAE6 /* Dungeon Deception */,
+				EB22BF5D25D0E8BC002ACE41 /* Dungeon Deception (Sim) */,
 			);
 		};
 /* End PBXProject section */
@@ -1024,6 +1045,7 @@
 				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C62822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1042,7 +1064,9 @@
 				D5E3B394282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3592820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674227BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B912829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3622820746300298611 /* PlayerStructs.cpp in Sources */,
+				D5556B80282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1080,6 +1104,7 @@
 				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C52822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1098,7 +1123,9 @@
 				D5E3B393282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3582820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674127BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B902829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3612820746300298611 /* PlayerStructs.cpp in Sources */,
+				D5556B7F282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1136,6 +1163,7 @@
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
 				CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
+				D5E3B3C42822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,
@@ -1154,7 +1182,9 @@
 				D5E3B392282197F500298611 /* TerminalStructs.cpp in Sources */,
 				D5E3B3572820436200298611 /* CustomNetworkSerializer.cpp in Sources */,
 				D52E674027BF305A00F8E2B8 /* GameApp.cpp in Sources */,
+				D5556B8F2829B02C0033ADBF /* Settings.cpp in Sources */,
 				D5E3B3602820746300298611 /* PlayerStructs.cpp in Sources */,
+				D5556B7E282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
 				D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
@@ -1422,7 +1452,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Sim)" */ = {
+		EB22BF7B25D0E8BD002ACE41 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Sim)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB22BF7425D0E8BD002ACE41 /* Debug */,
@@ -1431,7 +1461,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deduction" */ = {
+		EB7454A01D74D75C002FBAE6 /* Build configuration list for PBXNativeTarget "Dungeon Deception" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EB7454A11D74D75C002FBAE6 /* Debug */,
@@ -1449,7 +1479,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deduction (Mac)" */ = {
+		EBBF18A21D74904A008E2001 /* Build configuration list for PBXNativeTarget "Dungeon Deception (Mac)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EBBF18A31D74904A008E2001 /* Debug */,

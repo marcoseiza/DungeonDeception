@@ -69,6 +69,7 @@ class PlayerController : public Controller {
     _world_node = nullptr;
     _debug_node = nullptr;
     _world = nullptr;
+    _trail_managers.clear();
   }
 
   /**
@@ -162,16 +163,23 @@ class PlayerController : public Controller {
   void move(float timestep);
 
   void attack();
-  
-  /** If player is a betrayer and they get blocked, blocks their corrupt button. */
+
+  /** If player is a betrayer and they get blocked, blocks their corrupt button.
+   */
   void blockCorrupt();
 
   void addPlayer(const std::shared_ptr<Player>& player) {
     if (_players.find(player->getPlayerId()) == _players.end()) {
       _players[player->getPlayerId()] = player;
-      addTrailManager(player);
     }
   }
+
+  /**
+   * Remove the given player and all its dependencies from the controller
+   *
+   * @param id The id of the player to remove.
+   */
+  void removePlayer(int id);
 
   std::shared_ptr<Player> makePlayer(int player_id);
 
@@ -201,6 +209,18 @@ class PlayerController : public Controller {
 
   std::unordered_map<int, std::shared_ptr<Player>> getPlayers() {
     return _players;
+  }
+
+  /**
+   * Get the number of betrayers currently in the game.
+   * @return The number of betrayers.
+   */
+  int getNumberBetrayers() {
+    int num_betrayers = 0;
+    for (auto it : _players) {
+      if (it.second->isBetrayer()) num_betrayers++;
+    }
+    return num_betrayers;
   }
 
   std::shared_ptr<Sword> getSword() { return _sword; }

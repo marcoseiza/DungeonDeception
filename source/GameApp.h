@@ -10,6 +10,7 @@
 #include "scenes/LoadingLevelScene.h"
 #include "scenes/LoadingScene.h"
 #include "scenes/MenuScene.h"
+#include "scenes/WinScene.h"
 
 /**
  * This class represents the application root for the game.
@@ -35,7 +36,9 @@ class GameApp : public cugl::Application {
     /** The scene when the level is loading */
     LEVEL_LOADING,
     /** The scene to play the game */
-    GAME
+    GAME,
+    /** The scene when a team wins */
+    WIN
   };
 
   /** The global sprite batch for drawing (only want one of these) */
@@ -63,6 +66,8 @@ class GameApp : public cugl::Application {
   State _scene;
   /** The controller for the level generation loading scene. */
   LoadingLevelScene _level_loading;
+  /** The controller for the win screen */
+  WinScene _win;
 
   /** Whether or not we have finished loading all assets */
   bool _loaded;
@@ -199,6 +204,16 @@ class GameApp : public cugl::Application {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   void updateLevelLoadingScene(float timestep);
+
+   /**
+   * Individualized update method for the win scene.
+   *
+   * This method keeps the primary {@link #update} from being a mess of switch
+   * statements. It also handles the transition logic from the client scene.
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame
+   */
+  void updateWinScene(float timestep);
 
   /**
    * Individualized update method for the game scene.

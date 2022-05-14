@@ -87,7 +87,7 @@ class OpenMap : public Action {
    * @param value The activation state.
    */
   void setActive(bool value);
-  
+
 #ifdef CU_TOUCH_SCREEN
 
   /** Touch listener for when the player moves their finger. */

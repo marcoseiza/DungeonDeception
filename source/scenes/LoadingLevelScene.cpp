@@ -6,6 +6,12 @@
 
 #define SCENE_HEIGHT 720
 
+bool LoadingLevelScene::init(
+    const std::shared_ptr<cugl::AssetManager>& assets) {
+  std::random_device my_random_device;
+  return init(assets, (Uint64)my_random_device());
+}
+
 bool LoadingLevelScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
                              Uint64 seed) {
   if (_active) return false;
@@ -34,6 +40,7 @@ void LoadingLevelScene::dispose() {
   _active = false;
   _level_generator = nullptr;
   _map = nullptr;
+  _loading_phase = GENERATE_ROOMS;
 }
 
 void LoadingLevelScene::update(float timestep) {
@@ -48,11 +55,12 @@ void LoadingLevelScene::update(float timestep) {
 
         for (int i = 0; i < rooms.size(); i++) {
           std::shared_ptr<level_gen::Room> room = rooms[i];
-          std::string key = "room-" + std::to_string(i);
-          room->_scene2_key = key;  // Update unique key for future reference.
           room->_key = i;
-          _assets->loadAsync<cugl::scene2::SceneNode>(key, room->_scene2_source,
-                                                      nullptr);
+          auto loader = std::dynamic_pointer_cast<cugl::Scene2Loader>(
+              _assets->access<cugl::scene2::SceneNode>());
+          auto reader = cugl::JsonReader::allocWithAsset(room->_scene2_source);
+          auto json = (reader == nullptr ? nullptr : reader->readJson());
+          room->_level_node = loader->build("", json);
         }
       }
       break;

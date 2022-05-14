@@ -155,6 +155,9 @@ class EnemyController {
   /** Stunned.
    */
   virtual void stunned(std::shared_ptr<EnemyModel> enemy);
+  
+  /** Move back to original position. */
+  void moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy);
 };
 
 #endif /* CONTROLLERS_ENEMY_CONTROLLER_H_ */

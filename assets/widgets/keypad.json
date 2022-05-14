@@ -1,141 +1,141 @@
 {
-    "contents": {
-        "type": "Node",
-        "format": {
-            "type": "Grid",
-            "width": 3,
-            "height": 4
-        },
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Grid",
+      "width": 3,
+      "height": 4
+    },
+    "data": {
+      "size": [ 350, 450 ]
+    },
+    "layout": {
+      "priority": 1,
+      "x_anchor": "center",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "1": {
+        "type": "Widget",
         "data": {
-            "size": [ 250, 330 ]
-        },
-        "layout": {
-            "priority": 1,
-            "x_anchor": "center",
-            "y_anchor": "bottom"
-        },
-        "children": {
-            "1": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "1",
-                        "x_index": 0,
-                        "y_index": 3
-                    }
-                }
-            },
-            "2": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "2",
-                        "x_index": 1,
-                        "y_index": 3
-                    }
-                }
-            },
-            "3": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "3",
-                        "x_index": 2,
-                        "y_index": 3
-                    }
-                }
-            },
-            "4": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "4",
-                        "x_index": 0,
-                        "y_index": 2
-                    }
-                }
-            },
-            "5": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "5",
-                        "x_index": 1,
-                        "y_index": 2
-                    }
-                }
-            },
-            "6": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "6",
-                        "x_index": 2,
-                        "y_index": 2
-                    }
-                }
-            },
-            "7": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "7",
-                        "x_index": 0,
-                        "y_index": 1
-                    }
-                }
-            },
-            "8": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "8",
-                        "x_index": 1,
-                        "y_index": 1
-                    }
-                }
-            },
-            "9": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "9",
-                        "x_index": 2,
-                        "y_index": 1
-                    }
-                }
-            },
-            "0": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "0",
-                        "x_index": 1,
-                        "y_index": 0
-                    }
-                }
-            },
-            "x": {
-                "type": "Widget",
-                "data": {
-                    "key": "keypad-button",
-                    "variables": {
-                        "text": "X",
-                        "x_index": 2,
-                        "y_index": 0
-                    }
-                }
-            }
+          "key": "keypad-button",
+          "variables": {
+            "text": "1",
+            "x_index": 0,
+            "y_index": 3
+          }
         }
+      },
+      "2": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "2",
+            "x_index": 1,
+            "y_index": 3
+          }
+        }
+      },
+      "3": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "3",
+            "x_index": 2,
+            "y_index": 3
+          }
+        }
+      },
+      "4": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "4",
+            "x_index": 0,
+            "y_index": 2
+          }
+        }
+      },
+      "5": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "5",
+            "x_index": 1,
+            "y_index": 2
+          }
+        }
+      },
+      "6": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "6",
+            "x_index": 2,
+            "y_index": 2
+          }
+        }
+      },
+      "7": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "7",
+            "x_index": 0,
+            "y_index": 1
+          }
+        }
+      },
+      "8": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "8",
+            "x_index": 1,
+            "y_index": 1
+          }
+        }
+      },
+      "9": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "9",
+            "x_index": 2,
+            "y_index": 1
+          }
+        }
+      },
+      "0": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "0",
+            "x_index": 1,
+            "y_index": 0
+          }
+        }
+      },
+      "x": {
+        "type": "Widget",
+        "data": {
+          "key": "keypad-button",
+          "variables": {
+            "text": "X",
+            "x_index": 2,
+            "y_index": 0
+          }
+        }
+      }
     }
+  }
 }

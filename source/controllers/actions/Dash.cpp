@@ -17,19 +17,17 @@ bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
                 cugl::Rect bounds) {
   Action::init(assets, bounds);
 
-  _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      assets->get<cugl::scene2::SceneNode>("ui-scene_dash"));
-
   _button_node = cugl::scene2::SpriteNode::alloc(
       assets->get<cugl::Texture>("dash"), 5, 6, DASH_ANIM_LIMIT);
   _button_node->setFrame(0);
   _button = cugl::scene2::Button::alloc(_button_node);
 
+  assets->get<cugl::scene2::SceneNode>("ui-scene_dash")->addChild(_button);
+
   _start_cooldown = false;
 
   _anim_buffer = 0;
 
-  assets->get<cugl::scene2::SceneNode>("ui-scene_dash")->addChild(_button);
   _button->setAnchor(cugl::Vec2::ANCHOR_CENTER);
   _button->setPosition(_button->getParent()->getContentSize() / 2);
   _button->setScale(_button->getParent()->getScale());
@@ -93,6 +91,7 @@ bool Dash::update() {
 }
 
 bool Dash::dispose() {
+  _button->getParent()->removeChild(_button);
   _button = nullptr;
 
 #ifdef CU_TOUCH_SCREEN

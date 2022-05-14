@@ -3,6 +3,19 @@
 namespace cugl {
 
 #pragma mark -
+#pragma mark PlayerIdInfo
+
+const Uint32 PlayerIdInfo::Key = NC_CLIENT_END_GAME;
+
+void PlayerIdInfo::serialize(cugl::NetworkSerializer* serializer) {
+  serializer->writeUint32(player_id);
+}
+
+void PlayerIdInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
+  player_id = std::get<Uint32>(deserializer->read());
+}
+
+#pragma mark -
 #pragma mark PlayerInfo
 
 const Uint32 PlayerInfo::Key = NC_HOST_ALL_PLAYER_INFO;

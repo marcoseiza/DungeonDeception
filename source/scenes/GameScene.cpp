@@ -11,9 +11,11 @@
 #include "../controllers/actions/Dash.h"
 #include "../controllers/actions/Movement.h"
 #include "../controllers/actions/OpenMap.h"
+#include "../controllers/actions/Settings.h"
 #include "../controllers/actions/TargetPlayer.h"
 #include "../loaders/CustomScene2Loader.h"
 #include "../models/RoomModel.h"
+#include "../models/tiles/TileHelper.h"
 #include "../models/tiles/Wall.h"
 #include "../network/NetworkController.h"
 #include "../network/structs/EnemyStructs.h"
@@ -22,6 +24,8 @@
 #define SCENE_HEIGHT 720
 #define CAMERA_SMOOTH_SPEED_FACTOR 300.0f
 #define CAMERA_LARGEST_DIFF 200.0f
+#define MIN_PLAYERS 4
+#define MIN_BETRAYERS 1
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -29,6 +33,7 @@ bool GameScene::init(
     bool is_betrayer, std::string display_name) {
   if (_active) return false;
   _active = true;
+  _state = RUN;
 
   _display_name = display_name;
   _has_sent_player_basic_info = false;
@@ -43,7 +48,8 @@ bool GameScene::init(
 
   _assets = assets;
 
-  _world_node = _assets->get<cugl::scene2::SceneNode>("world-scene");
+  _world_node = cugl::scene2::OrderedNode::allocWithOrder(
+      cugl::scene2::OrderedNode::Order::ASCEND);
   _world_node->setContentSize(dim);
 
   std::shared_ptr<cugl::Texture> target_texture =
@@ -66,8 +72,14 @@ bool GameScene::init(
   _map->setVisible(false);
 
   for (std::shared_ptr<level_gen::Room>& room : level_gen->getRooms()) {
-    for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
+    room->_node->setColor(room->getRoomNodeColor());
+    for (std::shared_ptr<level_gen::Edge>& edge : room->_edges) {
       edge->_node->setVisible(false);
+      edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
+      if (!edge->_active) {
+        auto parent = edge->_node->getParent();
+        if (parent) parent->removeChild(edge->_node);
+      }
     }
     room->_node->setVisible(false);
   }
@@ -112,6 +124,11 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  _settings_scene = SettingsScene::alloc(_assets);
+  _settings_scene->setPlayerController(_player_controller);
+  _settings_scene->getNode()->setContentSize(dim);
+  _settings_scene->getNode()->doLayout();
+
   // assign role screen depending on player role
   _role_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
   if (is_betrayer) {
@@ -137,17 +154,18 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
+  auto block_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("block-player");
+  block_player_button->setVisible(!is_betrayer);
+
+  auto infect_player_button =
+      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
+  infect_player_button->setVisible(is_betrayer);
+
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
   win_layer->doLayout();
   win_layer->setVisible(false);
-
-  auto target_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("target-player");
-  target_player_button->setVisible(!is_betrayer);
-
-  auto enrage_button = ui_layer->getChildByName<cugl::scene2::Button>("enrage");
-  enrage_button->setVisible(is_betrayer);
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
@@ -166,10 +184,11 @@ bool GameScene::init(
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(B)";
+    role_msg = "(BETRAYER)";
     role_text->setForeground(cugl::Color4::BLACK);
+    role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(C)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
   role_text->setText(role_msg);
@@ -186,8 +205,8 @@ bool GameScene::init(
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
-  cugl::Scene2::addChild(win_layer);
   cugl::Scene2::addChild(_debug_node);
+  cugl::Scene2::addChild(_settings_scene->getNode());
   _debug_node->setVisible(false);
 
   _sound_controller = SoundController::alloc(_assets);
@@ -210,12 +229,35 @@ bool GameScene::init(
 
 void GameScene::dispose() {
   if (!_active) return;
+  _state = NONE;
+
   InputController::get()->dispose();
   _active = false;
-  _health_bar->dispose();
-  _energy_bar->dispose();
+
   _has_sent_player_basic_info = false;
+  _sound_controller->stop();
   _dead_enemy_cache.clear();
+  _world->dispose();
+  _world = nullptr;
+  _world_node->removeAllChildren();
+  _debug_node->removeAllChildren();
+  _role_layer->setVisible(true);
+  _settings_scene->dispose();
+  removeAllChildren();
+
+  _world_node = nullptr;
+  _debug_node = nullptr;
+  _role_layer = nullptr;
+
+  _settings_scene = nullptr;
+  _terminal_controller = nullptr;
+  _sound_controller = nullptr;
+  _player_controller = nullptr;
+  _grunt_controller = nullptr;
+  _shotgunner_controller = nullptr;
+  _tank_controller = nullptr;
+  _turtle_controller = nullptr;
+  _level_controller = nullptr;
 }
 
 void GameScene::populate(cugl::Size dim) {
@@ -238,16 +280,15 @@ void GameScene::populate(cugl::Size dim) {
   auto loader = std::dynamic_pointer_cast<cugl::CustomScene2Loader>(
       _assets->access<cugl::scene2::SceneNode>());
 
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("wall")) {
-    auto wall = std::dynamic_pointer_cast<Wall>(tile);
+  for (std::shared_ptr<Wall> wall : TileHelper::getTile<Wall>(_world_node)) {
     _world->addObstacle(wall->initBox2d());
     wall->getObstacle()->setDebugColor(cugl::Color4::GREEN);
     wall->getObstacle()->setDebugScene(_debug_node);
   }
 
   _num_terminals = 0;
-  for (std::shared_ptr<BasicTile> tile : loader->getTiles("terminal")) {
-    auto terminal = std::dynamic_pointer_cast<Terminal>(tile);
+  for (std::shared_ptr<Terminal> terminal :
+       TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
@@ -294,21 +335,7 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getSpawnRoom()->getKey());
   }
 
-  if (checkCooperatorWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("cooperator");
-    std::string msg = cugl::strtool::format("Cooperators Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::GREEN);
-    win_layer->setVisible(true);
-  } else if (checkBetrayerWin()) {
-    auto win_layer = _assets->get<cugl::scene2::SceneNode>("win-scene");
-    auto text = win_layer->getChildByName<cugl::scene2::Label>("betrayer");
-    std::string msg = cugl::strtool::format("Betrayers Win!");
-    text->setText(msg);
-    text->setForeground(cugl::Color4::BLACK);
-    win_layer->setVisible(true);
-  }
+  if (checkCooperatorWin() || checkBetrayerWin()) _state = DONE;
 
   cugl::Application::get()->setClearColor(cugl::Color4f::BLACK);
 
@@ -323,6 +350,31 @@ void GameScene::update(float timestep) {
 
   if (InputController::get<OpenMap>()->didOpenMap()) {
     _map->setVisible(!_map->isVisible());
+  }
+
+  if (InputController::get<Settings>()->didOpenSettings()) {
+    _settings_scene->setActive(true);
+    InputController::get()->pause();
+  }
+  _settings_scene->update();
+
+  switch (_settings_scene->getChoice()) {
+    case SettingsScene::Choice::LEAVE:
+      _state = LEAVE;
+      if (NetworkController::get()->isHost()) {
+        NetworkController::get()->send(NC_HOST_END_GAME);
+      } else {
+        auto info = cugl::PlayerIdInfo::alloc();
+        info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+        NetworkController::get()->sendOnlyToHost(NC_CLIENT_END_GAME, info);
+      }
+      break;
+    case SettingsScene::Choice::RESUME:
+      _settings_scene->setActive(false);
+      InputController::get()->resume();
+      break;
+    default:
+      break;
   }
 
   // Cooperator block ability.
@@ -349,7 +401,8 @@ void GameScene::update(float timestep) {
             auto target_icon_node =
                 _world_node->getChildByName<cugl::scene2::SceneNode>(
                     "target-icon");
-            target_icon_node->setPosition(player->getPlayerNode()->getPosition());
+            target_icon_node->setPosition(
+                player->getPlayerNode()->getPosition());
             target_icon_node->setVisible(true);
             found_player = true;
             break;
@@ -386,7 +439,8 @@ void GameScene::update(float timestep) {
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer() && _player_controller->getMyPlayer()->canCorrupt()) {
+  if (_player_controller->getMyPlayer()->isBetrayer() &&
+      _player_controller->getMyPlayer()->canCorrupt()) {
     int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >= 2000) {
@@ -405,13 +459,13 @@ void GameScene::update(float timestep) {
       }
     }
   }
-  
+
   std::shared_ptr<RoomModel> current_room =
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
 
-  std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
-  for (auto room_id_to_update : room_ids_with_players) {
+  std::unordered_set<int> all_enemy_update_rooms = getAdjacentRoomIdsWithPlayers();
+  for (auto room_id_to_update : all_enemy_update_rooms) {
     auto room_to_update =
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
     updateEnemies(timestep, room_to_update);
@@ -445,10 +499,11 @@ void GameScene::update(float timestep) {
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
   if (_is_betrayer) {
-    role_msg = "(B)";
+    role_msg = "(BETRAYER)";
     role_text->setForeground(cugl::Color4::BLACK);
+    role_text->setDropShadow(.75, -.75);
   } else {
-    role_msg = "(C)";
+    role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
   }
 
@@ -463,6 +518,7 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
+  auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
@@ -620,7 +676,7 @@ void GameScene::sendNetworkInfoHost() {
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
-    // get enemy info only for the rooms that players are in
+    // get enemy info for the rooms that players are in
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     {
       std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;
@@ -780,6 +836,32 @@ void GameScene::processData(
     const Sint32& code,
     const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
   switch (code) {
+    case NC_HOST_END_GAME: {
+      _state = LEAVE;
+    } break;
+
+    case NC_CLIENT_END_GAME: {
+      auto info = std::dynamic_pointer_cast<cugl::PlayerIdInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+
+      bool end_game = (_player_controller->getPlayers().size() <= MIN_PLAYERS);
+      end_game |= _player_controller->getNumberBetrayers() <= MIN_BETRAYERS &&
+                  _player_controller->getMyPlayer()->isBetrayer();
+
+      if (end_game) {
+        _state = LEAVE;
+        NetworkController::get()->send(NC_HOST_END_GAME);
+      } else {
+        NetworkController::get()->sendAndProcess(NC_HOST_REMOVE_PLAYER, info);
+      }
+    } break;
+
+    case NC_HOST_REMOVE_PLAYER: {
+      auto info = std::dynamic_pointer_cast<cugl::PlayerIdInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      _player_controller->removePlayer(info->player_id);
+    } break;
+
     case NC_HOST_ALL_ENEMY_INFO: {
       auto all_enemy =
           std::get<std::vector<std::shared_ptr<cugl::Serializable>>>(msg);
@@ -875,11 +957,13 @@ void GameScene::beginContact(b2Contact* contact) {
   void* fx2_d = (void*)fx2->GetUserData().pointer;
 
   std::string fx1_name;
-  if (static_cast<std::string*>(fx1_d) != nullptr)
+  if (static_cast<std::string*>(fx1_d) != nullptr) {
     fx1_name.assign(*static_cast<std::string*>(fx1_d));
+  }
   std::string fx2_name;
-  if (static_cast<std::string*>(fx2_d) != nullptr)
+  if (static_cast<std::string*>(fx2_d) != nullptr) {
     fx2_name.assign(*static_cast<std::string*>(fx2_d));
+  }
 
   b2Body* body1 = fx1->GetBody();
   b2Body* body2 = fx2->GetBody();
@@ -1032,6 +1116,8 @@ void GameScene::render(const std::shared_ptr<cugl::SpriteBatch>& batch) {
 }
 
 void GameScene::updateCamera(float timestep) {
+  if (_settings_scene->isActive()) return;
+
   cugl::Vec2 desired_position =
       _world_node->getSize() / 2.0f -
       _player_controller->getMyPlayer()->getPosition();

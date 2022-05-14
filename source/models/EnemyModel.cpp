@@ -41,7 +41,8 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   pos_ -= _offset_from_center;
 
   CapsuleObstacle::init(pos_, _size);
-
+  
+  _init_pos = pos;
   _enemy_node = nullptr;
   _health = 100;
   _facing_left = false;
@@ -50,6 +51,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _isKnockbacked = false;
   _stunned_timer = 0;
   _goal_frame = 0;
+  _move_back_timer = 0;
 
   _attack_cooldown = 0;
 

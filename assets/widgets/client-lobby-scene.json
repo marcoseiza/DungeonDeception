@@ -26,7 +26,7 @@
             "data": {
               "key": "menutitle",
               "variables": {
-                "text": "WAITING"
+                "text": "LOBBY"
               },
               "anchor": [ 0.5, 1.0 ]
             },
@@ -46,7 +46,7 @@
             },
             "data": {
               "anchor": [ 0.5, 0.5 ],
-              "size": [ 450, 50 ]
+              "size": [ 600, 50 ]
             },
             "children": {
               "label": {
@@ -54,7 +54,7 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 200, 70 ],
+                    "size": [ 235, 90 ],
                     "text": "NAME:",
                     "halign": "center",
                     "background": [ 239, 235, 227, 179 ]
@@ -62,7 +62,7 @@
                 },
                 "layout": {
                   "priority": 1,
-                  "padding": [ 0, 0, 25, 0 ]
+                  "padding": [ 0, 0, 35, 0 ]
                 }
               },
               "field": {
@@ -70,7 +70,7 @@
                 "data": {
                   "key": "textfield",
                   "variables": {
-                    "size": [ 200, 70 ],
+                    "size": [ 235, 90 ],
                     "text": "runner_id",
                     "halign": "center",
                     "foreground": "#ffffff",
@@ -133,7 +133,7 @@
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 250,
+          "x_offset": 150,
           "y_offset": 80
         }
       },
@@ -152,7 +152,7 @@
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 245,
+          "x_offset": 145,
           "y_offset": 40
         }
       },
@@ -227,7 +227,7 @@
           "y_anchor": "bottom",
           "absolute": true,
           "y_offset": 100,
-          "x_offset": -350
+          "x_offset": -300
         }
       }
     }

@@ -89,7 +89,7 @@ void Door::initDelegates() {
 }
 
 std::shared_ptr<cugl::physics2::PolygonObstacle> Door::initBox2d(
-    std::string& sensor_name) {
+    const std::string& sensor_name) {
   _obstacle = cugl::physics2::PolygonObstacle::alloc(_obstacle_shape);
 
   cugl::Vec2 pos = BasicTile::getWorldPosition() - BasicTile::getPosition();
@@ -135,27 +135,27 @@ void Door::setState(State state) {
           del.off_node->setVisible(false);
           del.unused_node->setVisible(false);
 
-          tile_helper::setSensorCascade(del.on_node, false);
-          tile_helper::setSensorCascade(del.off_node, true);
-          tile_helper::setSensorCascade(del.unused_node, true);
+          TileHelper::setSensorCascade(del.on_node, false);
+          TileHelper::setSensorCascade(del.off_node, true);
+          TileHelper::setSensorCascade(del.unused_node, true);
           break;
         case OFF:
           del.on_node->setVisible(false);
           del.off_node->setVisible(true);
           del.unused_node->setVisible(false);
 
-          tile_helper::setSensorCascade(del.on_node, true);
-          tile_helper::setSensorCascade(del.off_node, false);
-          tile_helper::setSensorCascade(del.unused_node, true);
+          TileHelper::setSensorCascade(del.on_node, true);
+          TileHelper::setSensorCascade(del.off_node, false);
+          TileHelper::setSensorCascade(del.unused_node, true);
           break;
         case UNUSED:
           del.on_node->setVisible(false);
           del.off_node->setVisible(false);
           del.unused_node->setVisible(true);
 
-          tile_helper::setSensorCascade(del.on_node, true);
-          tile_helper::setSensorCascade(del.off_node, true);
-          tile_helper::setSensorCascade(del.unused_node, false);
+          TileHelper::setSensorCascade(del.on_node, true);
+          TileHelper::setSensorCascade(del.off_node, true);
+          TileHelper::setSensorCascade(del.unused_node, false);
           break;
       }
     }
@@ -200,4 +200,16 @@ void Door::setNegative() {
     tile->setInitializeAsSensor(false);
     tile->setVisible(true);
   }
+}
+
+std::shared_ptr<cugl::scene2::SceneNode> Door::copy(
+    const std::shared_ptr<cugl::scene2::SceneNode>& dst) const {
+  BasicTile::copy(dst);
+
+  std::shared_ptr<Door> node = std::dynamic_pointer_cast<Door>(dst);
+  node->_state = _state;
+  node->_delegates = _delegates;
+  node->_obstacle_shape = _obstacle_shape;
+
+  return dst;
 }

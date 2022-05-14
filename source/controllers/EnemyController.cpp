@@ -48,15 +48,30 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
 
 void EnemyController::avoidPlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
-  cugl::Vec2 diff = p - enemy->getPosition();
-  diff.subtract(enemy->getVX(), enemy->getVY());
-  diff.add(enemy->getVX(), enemy->getVY());
-  diff.scale(enemy->getSpeed() / 2);
-  enemy->move(-diff.x, -diff.y);
+  cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+  diff.normalize();
+  diff.add(-_direction);
+  diff.scale(0.8 * enemy->getSpeed());
+  enemy->move(diff.x, diff.y);
 }
 
 void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
   enemy->move(10, 10);
+}
+
+void EnemyController::moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy) {
+  if ((enemy->getPosition() - enemy->getInitPos()).length() <= 50) {
+    // If the enemy is close enough to the original spot, stop moving.
+    idling(enemy);
+  } else {
+    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
+    diff.normalize();
+    cugl::Vec2 orig = enemy->getInitPos() - enemy->getPosition();
+    orig.normalize();
+    diff.add(orig);
+    diff.scale(0.8 * enemy->getSpeed());
+    enemy->move(diff.x, diff.y);
+  }
 }
 
 bool EnemyController::init(
@@ -91,7 +106,7 @@ void EnemyController::update(bool is_host, float timestep,
   }
 
   float min_distance = std::numeric_limits<float>::max();
-  std::shared_ptr<Player> min_player = _players[0];
+  std::shared_ptr<Player> min_player = nullptr;
 
   // find closest player to enemy in the same room
   for (std::shared_ptr<Player> player : _players) {
@@ -104,8 +119,10 @@ void EnemyController::update(bool is_host, float timestep,
       }
     }
   }
-  // if player not in room id (i.e. no player found, should not happen, return!)
-  if (min_player->getRoomId() != room_id) {
+  // if player not in room id
+  if (min_player == nullptr) {
+    // Move back to the original spot.
+    moveBackToOriginalSpot(enemy);
     return;
   }
   

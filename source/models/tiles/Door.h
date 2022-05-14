@@ -101,9 +101,7 @@ class Door : public BasicTile {
   }
 
   virtual std::shared_ptr<SceneNode> copy(
-      const std::shared_ptr<SceneNode>& dst) const override {
-    return BasicTile::copy(dst);
-  }
+      const std::shared_ptr<SceneNode>& dst) const override;
 
   /**
    * Initializes a tile node with the given JSON specificaton.
@@ -120,6 +118,11 @@ class Door : public BasicTile {
   virtual bool initWithData(
       const cugl::Scene2Loader* loader,
       const std::shared_ptr<cugl::JsonValue>& data) override;
+
+  static std::shared_ptr<Door> alloc() {
+    std::shared_ptr<Door> result = std::make_shared<Door>();
+    return (result->init() ? result : nullptr);
+  }
 
   /**
    * Returns a new tile node with the given JSON specificaton.
@@ -157,7 +160,7 @@ class Door : public BasicTile {
    * @return The obstacle it created for easy chaining.
    */
   virtual std::shared_ptr<cugl::physics2::PolygonObstacle> initBox2d(
-      std::string& sensor_name);
+      const std::string& sensor_name);
 
   /**
    * @return Returns the physics object for the tile.

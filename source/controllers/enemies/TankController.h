@@ -76,7 +76,7 @@ class TankController : public EnemyController {
 
   /** Perform the action according to the enemy state. */
   void performAction(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
-  
+
   /**
    * Animate the tank.
    */
