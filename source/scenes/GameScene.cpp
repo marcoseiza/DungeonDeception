@@ -464,8 +464,8 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
 
-  std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
-  for (auto room_id_to_update : room_ids_with_players) {
+  std::unordered_set<int> all_enemy_update_rooms = getAdjacentRoomIdsWithPlayers();
+  for (auto room_id_to_update : all_enemy_update_rooms) {
     auto room_to_update =
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
     updateEnemies(timestep, room_to_update);
@@ -518,6 +518,7 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
+  auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
@@ -675,7 +676,7 @@ void GameScene::sendNetworkInfoHost() {
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
   for (auto room_id : room_ids_with_players) {
-    // get enemy info only for the rooms that players are in
+    // get enemy info for the rooms that players are in
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     {
       std::vector<std::shared_ptr<cugl::Serializable>> enemy_info;

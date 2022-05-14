@@ -2,10 +2,13 @@
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
-#define ATTACK_RANGE 60
-#define ATTACK_FRAMES 18
-#define STOP_ATTACK_FRAMES 50
-#define ATTACK_COOLDOWN 100
+#define MOVE_BACK_RANGE 30
+#define ATTACK_RANGE 70
+#define ATTACK_FRAMES 24
+#define STOP_ATTACK_FRAMES 80
+#define ATTACK_COOLDOWN 120
+#define MOVE_BACK_COOLDOWN 60
+#define WANDER_COOLDOWN 500
 
 #define STATE_CHANGE_LIM 10
 
@@ -57,23 +60,42 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
                                               float distance) {
   // Change state if applicable
   if (distance <= ATTACK_RANGE) {
-    if (enemy->getCurrentState() == EnemyModel::State::CHASING) {
-      enemy->_cta_timer++;
-    }
-    if (enemy->_cta_timer == 0 || enemy->_cta_timer == STATE_CHANGE_LIM) {
-      enemy->setCurrentState(EnemyModel::State::ATTACKING);
-      enemy->_cta_timer = 0;
+    std::uniform_int_distribution<int> dist(0, 50);
+    if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+      enemy->_move_back_timer--;
+      if (enemy->_move_back_timer <= 0) {
+        enemy->setAttackCooldown(STOP_ATTACK_FRAMES + 10);
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
+      }
+    } else {
+      // Chance for the enemy to move backwards, away from the player.
+      int chance = dist(_generator);
+      // Chance is 1/25 for every tick; +10 to attack frames to ensure does not attack in backwards direction
+      if (distance <= MOVE_BACK_RANGE && chance <= 1 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
+        enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
+        enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
+        enemy->setAttackCooldown(ATTACK_COOLDOWN);
+      } else {
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
+      }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() == EnemyModel::State::ATTACKING) {
-      enemy->_atc_timer++;
-    }
-    if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
+    // Only change to chasing if not currently attacking.
+    if (enemy->getCurrentState() != EnemyModel::State::ATTACKING || enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
       enemy->setCurrentState(EnemyModel::State::CHASING);
-      enemy->_atc_timer = 0;
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
     }
   } else {
-    enemy->setCurrentState(EnemyModel::State::IDLE);
+    // Enemy first wanders back to spawn position until it changes to be idle.
+    if (enemy->_wander_timer <= 0) {
+      enemy->setCurrentState(EnemyModel::State::IDLE);
+    }
+    if (enemy->getCurrentState() != EnemyModel::State::IDLE && enemy->getCurrentState() != EnemyModel::State::WANDER) {
+      enemy->setCurrentState(EnemyModel::State::WANDER);
+      enemy->_wander_timer = WANDER_COOLDOWN; // Spends 6 seconds trying to return to original position
+    }
+    enemy->setAttackCooldown(ATTACK_COOLDOWN);
+    enemy->_wander_timer--;
   }
 }
 
@@ -96,6 +118,10 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
       stunned(enemy);
       break;
     }
+    case EnemyModel::State::WANDER: {
+      moveBackToOriginalSpot(enemy);
+      break;
+    }
     default: {
       avoidPlayer(enemy, p);
       break;
@@ -111,7 +137,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
     case EnemyModel::State::ATTACKING: {
       if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
         // Play the next animation frame.
-        if (fc >= 3) {
+        if (fc >= 4) {
           enemy->_frame_count = 0;
           node->setFrame(node->getFrame() + 1);
         }
@@ -138,6 +164,8 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
       }
       break;
     }
+    case EnemyModel::State::WANDER:
+    case EnemyModel::State::MOVING_BACK:
     case EnemyModel::State::CHASING: {
       if (enemy->getVX() != 0) {
         if (enemy->getVX() < 0 != enemy->getFacingLeft()) {

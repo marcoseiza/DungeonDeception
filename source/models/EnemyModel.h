@@ -26,7 +26,10 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     SKIRTING,
     /** The enemy is knocked back. */
     STUNNED,
-
+    /** The enemy wants to move away from the player for a little. */
+    MOVING_BACK,
+    /** The enemy is wandering. */
+    WANDER
   };
 
   /** Enum for which enemy this is. */
@@ -53,6 +56,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   };
 
  private:
+  /** Initial position of the enemy. */
+  cugl::Vec2 _init_pos;
+  
   /** The current state of the enemy. */
   State _current_state;
 
@@ -163,6 +169,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Whether the turtle needs to close/open. */
   TurtleAnimationState _turtle_state;
+  
+  /** Timer for staying in the move back state. */
+  int _move_back_timer;
+  
+  /** Timer for attempting to return/wander to original position. */
+  int _wander_timer;
 
 #pragma mark Constructors
   /**
@@ -224,6 +236,11 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return If the enemy has been hit.
    */
   bool isHit() const;
+  
+  /**
+   * Returns the initial position of the enemy.
+   */
+  cugl::Vec2 getInitPos() const { return _init_pos; }
 
   /**
    * Returns the unique id of the enemy.
