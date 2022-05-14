@@ -100,7 +100,7 @@ void EnemyController::update(bool is_host, float timestep,
   }
 
   float min_distance = std::numeric_limits<float>::max();
-  std::shared_ptr<Player> min_player = _players[0];
+  std::shared_ptr<Player> min_player = nullptr;
 
   // find closest player to enemy in the same room
   for (std::shared_ptr<Player> player : _players) {
@@ -114,7 +114,7 @@ void EnemyController::update(bool is_host, float timestep,
     }
   }
   // if player not in room id
-  if (min_player->getRoomId() != room_id) {
+  if (min_player == nullptr) {
     // Move back to the original spot.
     moveBackToOriginalSpot(enemy);
     return;
