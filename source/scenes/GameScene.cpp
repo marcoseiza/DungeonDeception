@@ -26,6 +26,7 @@
 #define CAMERA_LARGEST_DIFF 200.0f
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
+#define ENERGY_BAR_UPDATE_SIZE 0.02f
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -309,10 +310,17 @@ void GameScene::update(float timestep) {
     NetworkController::get()->update();
   }
 
-  _health_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
-  _energy_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getEnergy()) / 100);
+  _health_bar->setProgress(_player_controller->getMyPlayer()->getHealth() / 100.0f);
+  
+  // Animate energy update.
+  float target_energy_amt = _player_controller->getMyPlayer()->getEnergy() / 100.0f;
+  if (_energy_bar->getProgress() < target_energy_amt) {
+    (_energy_bar->setProgress(std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                                       target_energy_amt)));
+  } else if (_energy_bar->getProgress() > target_energy_amt) {
+    (_energy_bar->setProgress(std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                                       target_energy_amt)));
+  }
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
@@ -1077,19 +1085,20 @@ void GameScene::beginContact(b2Contact* contact) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->setActive(room->getKey(),
-                                      dynamic_cast<TerminalSensor*>(ob1),
-                                      _player_controller->getMyPlayer());
+      _terminal_controller->depositEnergy(room->getKey());
+//      _terminal_controller->setActive(room->getKey(),
+//                                      dynamic_cast<TerminalSensor*>(ob1),
+//                                      _player_controller->getMyPlayer());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
-
-      _terminal_controller->setActive(room->getKey(),
-                                      dynamic_cast<TerminalSensor*>(ob2),
-                                      _player_controller->getMyPlayer());
+      _terminal_controller->depositEnergy(room->getKey());
+//      _terminal_controller->setActive(room->getKey(),
+//                                      dynamic_cast<TerminalSensor*>(ob2),
+//                                      _player_controller->getMyPlayer());
     }
   }
 }

@@ -6,6 +6,7 @@
 #include "../models/Player.h"
 #include "../models/tiles/TerminalSensor.h"
 #include "../scenes/terminal_scenes/DepositEnergyScene.h"
+#include "../network/NetworkController.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "LevelController.h"
@@ -86,6 +87,18 @@ class TerminalController : public Controller {
     _terminal_sensor = sensor;
     _scene->setVisible(true);
     InputController::get()->pause();
+  }
+  
+  /**
+   * Deposits the energy into the terminal with a given id.
+   *
+   * @param terminal_room_id    the id of the terminal room.
+   */
+  void depositEnergy(int terminal_room_id) {
+    auto info = cugl::TerminalDeposit::alloc();
+    info->room_id = terminal_room_id;
+    info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+    NetworkController::get()->sendOnlyToHostOrProcess(NC_DEPOSIT_ENERGY, info);
   }
 
   /**

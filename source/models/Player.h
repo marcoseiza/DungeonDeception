@@ -217,10 +217,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setEnergy(int value) {
     if (value <= 100) _energy = value;
-    if (_energy_bar && _corrupted_energy_bar) {
-      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
-      _corrupted_energy_bar->setProgress(_energy / 100.0f);
-    }
   }
 
   /**
@@ -237,11 +233,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void turnEnergyCorrupted(int value) {
     _corrupted_energy += std::min(value, _energy);
-
-    if (_energy_bar && _corrupted_energy_bar) {
-      _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
-      _corrupted_energy_bar->setProgress(_energy / 100.0f);
-    }
   }
 
   /**
@@ -250,10 +241,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setCorruptedEnergy(int value) {
     if (value <= 100) _corrupted_energy = value;
-
-    if (_energy_bar && _corrupted_energy_bar) {
-      _corrupted_energy_bar->setProgress((_energy) / 100.0f);
-    }
   }
 
   /** Sets the frames for player to turn orange to indicate corrupting. */

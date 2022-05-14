@@ -22,6 +22,8 @@
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
+#define ENERGY_BAR_UPDATE_SIZE 0.03f
+
 #pragma mark Init
 
 bool Player::init(const cugl::Vec2 pos, const std::string& name) {
@@ -107,7 +109,6 @@ void Player::setEnergyBar(
   pos.y *= 1.38f;
   _energy_bar->setPosition(pos);
   _energy_bar->setPriority(std::numeric_limits<float>::max());
-  _energy_bar->setProgress((_energy - _corrupted_energy) / 100.0f);
 
   for (auto child : _energy_bar->getChildren()) {
     child->setPriority(std::numeric_limits<float>::max());
@@ -124,7 +125,6 @@ void Player::setCorruptedEnergyBar(
   pos.y *= 1.38f;
   _corrupted_energy_bar->setPosition(pos);
   _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max());
-  _corrupted_energy_bar->setProgress(_energy / 100.0f);
 
   for (auto child : _corrupted_energy_bar->getChildren()) {
     child->setPriority(std::numeric_limits<float>::max());
@@ -171,6 +171,27 @@ void Player::update(float delta) {
       _promise_pos_cache = std::nullopt;
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
+  }
+  
+  // Animate the energy bars.
+  if (_energy_bar != nullptr && _corrupted_energy_bar != nullptr) {
+    float target_energy_amt = (_energy - _corrupted_energy) / 100.0f;
+    float target_corrupt_energy_amt = _energy / 100.0f;
+    if (_energy_bar->getProgress() < target_energy_amt) {
+      (_energy_bar->setProgress(std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                                         target_energy_amt)));
+    } else if (_energy_bar->getProgress() > target_energy_amt) {
+      (_energy_bar->setProgress(std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                                         target_energy_amt)));
+    }
+    
+    if (_corrupted_energy_bar->getProgress() < target_corrupt_energy_amt) {
+      (_corrupted_energy_bar->setProgress(std::min(_corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                                         target_corrupt_energy_amt)));
+    } else if (_corrupted_energy_bar->getProgress() > target_corrupt_energy_amt) {
+      (_corrupted_energy_bar->setProgress(std::max(_corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                                         target_corrupt_energy_amt)));
+    }
   }
 }
 
