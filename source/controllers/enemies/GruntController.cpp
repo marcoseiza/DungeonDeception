@@ -61,38 +61,29 @@ void GruntController::changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
   // Change state if applicable
   if (distance <= ATTACK_RANGE) {
     std::uniform_int_distribution<int> dist(0, 50);
-    if (enemy->getCurrentState() == EnemyModel::State::CHASING) {
-      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
-      enemy->_cta_timer++;
-    }
-    if (enemy->_cta_timer == 0 || enemy->_cta_timer == STATE_CHANGE_LIM) {
-      enemy->_cta_timer = 0;
-      if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
-        enemy->_move_back_timer--;
-        if (enemy->_move_back_timer <= 0) {
-          enemy->setAttackCooldown(STOP_ATTACK_FRAMES + 10);
-          enemy->setCurrentState(EnemyModel::State::ATTACKING);
-        }
+    if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+      enemy->_move_back_timer--;
+      if (enemy->_move_back_timer <= 0) {
+        enemy->setAttackCooldown(STOP_ATTACK_FRAMES + 10);
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
+      }
+    } else {
+      // Chance for the enemy to move backwards, away from the player.
+      int chance = dist(_generator);
+      // Chance is 1/25 for every tick; +10 to attack frames to ensure does not attack in backwards direction
+      if (distance <= MOVE_BACK_RANGE && chance <= 1 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
+        enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
+        enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
+        enemy->setAttackCooldown(ATTACK_COOLDOWN);
       } else {
-        // Chance for the enemy to move backwards, away from the player.
-        int chance = dist(_generator);
-        // Chance is 1/50 for every tick; +10 to attack frames to ensure does not attack in backwards direction
-        if (distance <= MOVE_BACK_RANGE && chance == 1 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
-          enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
-          enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
-          enemy->setAttackCooldown(ATTACK_COOLDOWN);
-        } else {
-          enemy->setCurrentState(EnemyModel::State::ATTACKING);
-        }
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
       }
     }
-  } else if (distance <= MIN_DISTANCE && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
-    if (enemy->getCurrentState() != EnemyModel::State::CHASING) {
-      enemy->_atc_timer++;
-    }
-    if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
+  } else if (distance <= MIN_DISTANCE) {
+    // Only change to chasing if not currently attacking.
+    if (enemy->getCurrentState() != EnemyModel::State::ATTACKING || enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
       enemy->setCurrentState(EnemyModel::State::CHASING);
-      enemy->_atc_timer = 0;
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
     }
   } else {
     // Enemy first wanders back to spawn position until it changes to be idle.
