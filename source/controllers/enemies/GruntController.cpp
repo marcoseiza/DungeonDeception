@@ -68,7 +68,7 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
 //    }
 //  } else {
 //    // Circle the player.
-//    enemy->_attack_dir = p;
+//    enemy->_attack_dir = p - enemy->getPosition();
 //    cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
 //    diff.normalize();
 //    diff.add(_direction);
