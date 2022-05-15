@@ -696,7 +696,7 @@ void GameScene::sendNetworkInfoHost() {
 
         info->enemy_id = enemy->getEnemyId();
         info->pos = enemy->getPosition();
-        info->has_target = enemy->didFireBullet() | enemy->didAttack();
+        info->has_target = enemy->didAttack();
         info->target = enemy->getAttackDirection();
         if (info->has_target) {
           // Make sure bullet & attack is only sent once

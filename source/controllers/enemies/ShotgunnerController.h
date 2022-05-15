@@ -81,6 +81,12 @@ class ShotgunnerController : public EnemyController {
    * @param p the player position.
    */
   void attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
+  
+  /** Update and attack the player if a client.
+   *
+   * @param enemy the enemy.
+   */
+  void clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) override;
 };
 
 #endif /* CONTROLLERS_SHOTGUNNER_CONTROLLER_H_ */
