@@ -30,6 +30,7 @@ bool Attack::init(const std::shared_ptr<cugl::AssetManager> &assets,
       assets->get<cugl::Texture>("attack"), 4, 6, CHARGE_ANIM_LIMIT);
   _button_node->setFrame(0);
   _button = cugl::scene2::Button::alloc(_button_node);
+  _button->setPlayClickSound(false);
 
   assets->get<cugl::scene2::SceneNode>("ui-scene_attack")->addChild(_button);
   _button->setAnchor(cugl::Vec2::ANCHOR_CENTER);

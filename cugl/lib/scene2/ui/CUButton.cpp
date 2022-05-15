@@ -44,6 +44,7 @@
 //  Author: Walker White
 //  Version: 8/20/20
 //
+#include <cugl/assets/CUAssetManager.h>
 #include <cugl/input/cu_input.h>
 #include <cugl/scene2/CUScene2.h>
 #include <cugl/scene2/ui/CUButton.h>
@@ -55,6 +56,12 @@ using namespace cugl::scene2;
 
 /** To define the size of an empty button */
 #define DEFAULT_SIZE 50
+
+#pragma mark -
+#pragma mark Static
+
+/** The click sound for buttons. */
+std::shared_ptr<cugl::Sound> Button::DEFAULT_CLICK_SOUND = nullptr;
 
 #pragma mark -
 #pragma mark Constructors
@@ -69,6 +76,9 @@ using namespace cugl::scene2;
 Button::Button() : SceneNode(),
 _down(false),
 _mouse(false),
+_click_sound(nullptr),
+_play_click_sound(true),
+_play_click_sound_on_down(true),
 _active(false),
 _toggle(false),
 _upform(nullptr),
@@ -222,6 +232,17 @@ bool Button::initWithData(const Scene2Loader* loader, const std::shared_ptr<Json
 
     if (data->has("pushable")) {
         _bounds.set(data->get("pushable"));
+    }
+
+    const AssetManager* assets = loader->getManager();
+    _click_sound = assets->get<cugl::Sound>(data->getString("click-sound", ""));
+
+    if (data->has("play-click-sound")) {
+        _play_click_sound = data->getBool("play-click-sound");
+    }
+
+    if (data->has("play-click-sound-on-down")) {
+        _play_click_sound_on_down = data->getBool("play-click-sound-on-down");
     }
     
     return true;
@@ -591,6 +612,14 @@ void Button::setDown(bool down) {
     
     for(auto it = _listeners.begin(); it != _listeners.end(); ++it) {
         it->second(getName(),down);
+    }
+
+    if (_play_click_sound && _play_click_sound_on_down == down) {
+        if (_click_sound != nullptr) {
+            cugl::AudioEngine::get()->play("button-click", _click_sound);
+        } else if (DEFAULT_CLICK_SOUND != nullptr) {
+            cugl::AudioEngine::get()->play("button-click", DEFAULT_CLICK_SOUND);
+        }
     }
 }
 

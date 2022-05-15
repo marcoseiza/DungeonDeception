@@ -131,6 +131,8 @@ void GameApp::updateLoadingScene(float timestep) {
   } else if (!_loaded) {
     // Permanently disables the input listeners in this mode.
     _loading.dispose();
+    cugl::scene2::Button::DEFAULT_CLICK_SOUND =
+        _assets->get<cugl::Sound>("button-click");
     _menu.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
