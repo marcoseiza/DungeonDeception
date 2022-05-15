@@ -336,6 +336,13 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "map-background": {
+      "file": "textures/ui/mapbg.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
   },
   "jsons": {
@@ -655,6 +662,10 @@
     },
     "pixelmix_small": {
       "file": "fonts/pixelmix.ttf",
+      "size": 24
+    },
+    "pixelmix_small_bold": {
+      "file": "fonts/pixelmix_bold.ttf",
       "size": 24
     },
     "pixelmix_extra_small": {

@@ -141,6 +141,7 @@ class GameScene : public cugl::Scene2 {
    *
    * @param assets        The (loaded) assets for this game mode.
    * @param level_gen     The generated level.
+   * @param map           The world map.
    * @param is_betrayer   True if the game is being played by a betrayer.
    * @param display_name  Name the player input in lobby.
 
@@ -149,6 +150,7 @@ class GameScene : public cugl::Scene2 {
    */
   bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
+            const std::shared_ptr<cugl::scene2::SceneNode>& map,
             bool is_betrayer, std::string display_name);
 
   /**
