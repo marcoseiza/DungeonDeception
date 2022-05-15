@@ -288,6 +288,19 @@ void LevelController::setupMap(bool is_betrayer) {
 
   auto map_bkg = cugl::scene2::PolygonNode::allocWithTexture(
       _assets->get<cugl::Texture>("map-background"));
+
+  cugl::Size layout_size = _world->getBounds().size / (TILE_SIZE * TILE_SCALE);
+
+  // Make it a square
+  if (layout_size.width > layout_size.height) {
+    layout_size.height = layout_size.width;
+  } else {
+    layout_size.width = layout_size.height;
+  }
+
+  layout_size += cugl::Vec2(15, 15);
+
+  map_bkg->setScale(layout_size / map_bkg->getContentSize());
   map_bkg->setAnchor(cugl::Vec2::ANCHOR_CENTER);
   map_bkg->setPosition(cugl::Vec2::ZERO);
 
@@ -306,8 +319,8 @@ void LevelController::instantiateWorld() {
         ((cugl::Vec2)room->getRect().size) * (TILE_SIZE * TILE_SCALE);
     if (pos.x < world_start.x) world_start.x = pos.x;
     if (pos.y < world_start.y) world_start.y = pos.y;
-    if (pos.x + size.x > world_end.x) world_end.x = pos.x;
-    if (pos.y + size.y > world_end.y) world_end.y = pos.y;
+    if (pos.x + size.x > world_end.x) world_end.x = pos.x + size.x;
+    if (pos.y + size.y > world_end.y) world_end.y = pos.y + size.y;
   }
 
   _world = cugl::physics2::ObstacleWorld::alloc(
