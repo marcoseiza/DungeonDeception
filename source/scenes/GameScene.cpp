@@ -66,6 +66,7 @@ bool GameScene::init(
   _map = map;
   _map->setContentSize(dim);
   _map->setPosition(dim / 2);
+  _map->setScale(1.2f);
   _map->setVisible(false);
 
   _level_controller = LevelController::alloc(_assets, _world_node, _debug_node,
@@ -449,7 +450,8 @@ void GameScene::update(float timestep) {
       _level_controller->getLevelModel()->getCurrentRoom();
   _player_controller->getMyPlayer()->setRoomId(current_room->getKey());
 
-  std::unordered_set<int> all_enemy_update_rooms = getAdjacentRoomIdsWithPlayers();
+  std::unordered_set<int> all_enemy_update_rooms =
+      getAdjacentRoomIdsWithPlayers();
   for (auto room_id_to_update : all_enemy_update_rooms) {
     auto room_to_update =
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
@@ -639,7 +641,7 @@ void GameScene::sendNetworkInfoHost() {
     cugl::Timestamp time;
     Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
 
-    if (millis > 200) {
+    if (millis > 5000) {
       _time_of_last_player_other_info_update.mark();
       std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
       for (auto it : _player_controller->getPlayers()) {

@@ -650,6 +650,10 @@
       "file": "fonts/pixelmix.ttf",
       "size": 24
     },
+    "pixelmix_small_bold": {
+      "file": "fonts/pixelmix_bold.ttf",
+      "size": 24
+    },
     "pixelmix_extra_small": {
       "file": "fonts/pixelmix.ttf",
       "size": 12

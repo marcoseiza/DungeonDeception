@@ -76,7 +76,7 @@ void LevelGenerator::generateRooms() {
 
   _circle_rooms[0].push_back(_spawn_room);
 
-  _map->addChild(_spawn_room->_node);
+  _map->getChildByName("rooms")->addChild(_spawn_room->_node);
 
   float min_radius = _spawn_room->getRadius();
 
@@ -117,7 +117,7 @@ void LevelGenerator::placeRegularRooms(int num_rooms, float min_radius,
     room->_node->setColor(room->getRoomNodeColorGenerator());
 
     _rooms.push_back(room);
-    _map->addChild(room->_node);
+    _map->getChildByName("rooms")->addChild(room->_node);
   }
 }
 
@@ -247,13 +247,13 @@ void LevelGenerator::placeTerminalRooms(
 
     _rooms.push_back(room);
     circle.push_back(room);
-    _map->addChild(room->_node);
+    _map->getChildByName("rooms")->addChild(room->_node);
 
     std::shared_ptr<Room> overlapping = roomMostOverlappingWith(room);
     if (overlapping != room) {
       auto it = std::find(_rooms.begin(), _rooms.end(), overlapping);
       if (it != _rooms.end() && (*it)->_type != RoomType::SPAWN) {
-        _map->removeChild(overlapping->_node);
+        _map->getChildByName("rooms")->removeChild(overlapping->_node);
         _rooms.erase(it);
       }
     }
@@ -323,7 +323,7 @@ void LevelGenerator::snapToGridAndCullOverlap() {
 
   for (auto it = _rooms.begin(); it != _rooms.end(); it++) {
     if ((*it)->_to_delete) {
-      _map->removeChild((*it)->_node);
+      _map->getChildByName("rooms")->removeChild((*it)->_node);
       _rooms.erase(it--);
     }
   }
@@ -386,7 +386,7 @@ void LevelGenerator::calculateDelaunayTriangles(
       std::shared_ptr<Edge> edge_0_1 = std::make_shared<Edge>(node_0, node_1);
 
       if (min_r == 0.0f || !edge_0_1->doesIntersect(cugl::Vec2::ZERO, min_r)) {
-        _map->addChild(edge_0_1->_node);
+        _map->getChildByName("edges")->addChild(edge_0_1->_node);
         node_0->addEdge(edge_0_1);
         node_1->addEdge(edge_0_1);
       }
@@ -567,7 +567,7 @@ void LevelGenerator::connectLayers(std::vector<std::shared_ptr<Room>> &layer_a,
     connection->_source->addEdge(connection);
     connection->_neighbor->addEdge(connection);
     connection->_node->setColor(cugl::Color4(15, 15, 230, 147));
-    _map->addChild(connection->_node);
+    _map->getChildByName("edges")->addChild(connection->_node);
   }
   _map->doLayout();
 }
@@ -625,7 +625,7 @@ void LevelGenerator::fillHallways() {
         edge->_node->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
         edge->_node->setPosition(start_pos);
 
-        _map->addChild(edge->_node);
+        _map->getChildByName("edges")->addChild(edge->_node);
       }
     }
   }
