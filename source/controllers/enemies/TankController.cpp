@@ -25,29 +25,54 @@ bool TankController::init(std::shared_ptr<cugl::AssetManager> assets,
   return true;
 }
 
-void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
-                                  cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
+void TankController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
+  if (enemy->didAttack()) {
+    // Begin holding.
+    enemy->setAttackCooldown(STOP_ATTACK_FRAMES);
+    enemy->setAttack(false);
+  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+    // Whether the enemy is attacking
+    if (enemy->getAttackCooldown() == 0) {
+      // Attack done.
+      enemy->resetSensors();
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
+    }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
-      enemy->setSensor(true);
+      // Begin actual dash.
+      enemy->setAttackingFilter();
       _sound_controller->playEnemySwing();
     }
-    if (enemy->getAttackCooldown() <= 0) {
-      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
-      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
-      enemy->resetSensors();
-    } else {
-      cugl::Vec2 dir = enemy->_attack_dir;
-      dir.scale(5);
-      enemy->move(dir.x, dir.y);
-    }
-  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    enemy->reduceAttackCooldown(1);
+  }
+}
+
+void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
+                                  cugl::Vec2 p) {
+  if (enemy->getAttackCooldown() <= 0) {
+    // Just finished attack, reset attack cooldown.
+    std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+    enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
+    enemy->resetSensors();
+  } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
+    // Currently attacking player.
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
+    dir.normalize();
+    dir.scale(3.5);
+    enemy->move(dir.x, dir.y);
+  } else if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
+    // Begin attack.
+    enemy->setAttackingFilter();
+    _sound_controller->playEnemySwing();
+  } else if (enemy->getAttackCooldown() < STOP_ATTACK_FRAMES) {
+    // Stops in place to wind up attack.
     enemy->move(0, 0);
-    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
-      enemy->_attack_dir = p - enemy->getPosition();
-      enemy->_attack_dir.normalize();
-    }
+  } else if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+    // Determine attack position.
+    enemy->setAttack(true);
+    enemy->setAttackDir(p);
   } else {
+    // Circle the player.
+    enemy->setAttackDir(p);
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
@@ -124,4 +149,4 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TankController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
+void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}

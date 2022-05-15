@@ -18,13 +18,13 @@ EnemyController::EnemyController(){};
 
 void EnemyController::idling(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 p) {
   enemy->move(0, 0);
-  enemy->_attack_dir = p;
+  enemy->setAttackDir(p);
 }
 
 void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
   // Using steering behavior for smooth movement.
-  enemy->_attack_dir = p;
+  enemy->setAttackDir(p);
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
@@ -38,7 +38,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
   }
-  enemy->_attack_dir = p;
+  enemy->setAttackDir(p);
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
@@ -98,7 +98,7 @@ void EnemyController::updateIfClient(float timestep, std::shared_ptr<EnemyModel>
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
   clientUpdateAttackPlayer(enemy);
-  animate(enemy, enemy->_attack_dir);
+  animate(enemy);
 }
 
 void EnemyController::update(bool is_host, float timestep,
@@ -156,7 +156,7 @@ void EnemyController::update(bool is_host, float timestep,
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
 
-  animate(enemy, p);
+  animate(enemy);
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy,

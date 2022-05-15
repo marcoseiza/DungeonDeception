@@ -55,9 +55,6 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   _attack_cooldown = 0;
 
-  _did_fire_bullet = false;
-  _fired_bullet_direction = cugl::Vec2::ZERO;
-
   setDensity(0.5f);
   setFriction(0.5f);
   setRestitution(0.5f);
@@ -94,8 +91,6 @@ void EnemyModel::takeDamage(float amount) {
 bool EnemyModel::isHit() const { return _damage_count == DAMAGE_COUNT - 1; }
 
 void EnemyModel::addBullet(const cugl::Vec2 p) {
-  _did_fire_bullet = true;
-  _fired_bullet_direction = p;
   cugl::Vec2 diff = p - getPosition();
   auto bullet = Projectile::alloc(
       cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
@@ -274,10 +269,28 @@ void EnemyModel::releaseFixtures() {
   }
 }
 
+void EnemyModel::setAttackingFilter() {
+  b2Filter dmg_filter = _damage_sensor->GetFilterData();
+  b2Filter hit_filter = _hitbox_sensor->GetFilterData();
+  
+  b2Filter filter_data = getFilterData();
+  filter_data.maskBits = MASK_ENEMY_ATTACKING;
+  setFilterData(filter_data);
+  
+  _hitbox_sensor->SetFilterData(hit_filter);
+  _damage_sensor->SetFilterData(dmg_filter);
+}
+
 void EnemyModel::resetSensors() {
-  setSensor(false);
-  _hitbox_sensor->SetSensor(true);
-  _damage_sensor->SetSensor(true);
+  b2Filter dmg_filter = _damage_sensor->GetFilterData();
+  b2Filter hit_filter = _hitbox_sensor->GetFilterData();
+  
+  b2Filter filter_data = getFilterData();
+  filter_data.maskBits = MASK_ENEMY;
+  setFilterData(filter_data);
+  
+  _hitbox_sensor->SetFilterData(hit_filter);
+  _damage_sensor->SetFilterData(dmg_filter);
 }
 
 void EnemyModel::update(float delta) {
@@ -338,12 +351,4 @@ void EnemyModel::knockback(int moveDir) {
     _knockback_dir.x = 0;
     _knockback_dir.y = 1;
   }
-}
-
-cugl::Vec2 EnemyModel::getAttackDirection() const {
- return _attack_dir;
-}
-
-void EnemyModel::performAttackAction(const cugl::Vec2 dir) {
-  _did_attack = true;
 }

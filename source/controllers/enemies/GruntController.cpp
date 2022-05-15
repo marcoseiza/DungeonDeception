@@ -28,7 +28,7 @@ void GruntController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy
     }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       // Begin actual dash.
-      enemy->setSensor(true);
+      enemy->setAttackingFilter();
       _sound_controller->playEnemySwing();
     }
     enemy->reduceAttackCooldown(1);
@@ -44,13 +44,13 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->resetSensors();
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
     // Currently attacking player.
-    cugl::Vec2 dir = enemy->_attack_dir - enemy->getPosition();
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
     dir.normalize();
     dir.scale(3.5);
     enemy->move(dir.x, dir.y);
   } else if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
     // Begin attack.
-    enemy->setSensor(true);
+    enemy->setAttackingFilter();
     _sound_controller->playEnemySwing();
   } else if (enemy->getAttackCooldown() < STOP_ATTACK_FRAMES) {
     // Stops in place to wind up attack.
@@ -58,10 +58,10 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
   } else if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
     // Determine attack position.
     enemy->setAttack(true);
-    enemy->_attack_dir = p;
+    enemy->setAttackDir(p);
   } else {
     // Circle the player.
-    enemy->_attack_dir = p;
+    enemy->setAttackDir(p);
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
@@ -154,7 +154,7 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   auto node =
       std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
@@ -171,7 +171,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
     enemy->_frame_count++;
   } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     // Hold in the first wind up attack frame depending on direction.
-    float frame_angle = (enemy->_attack_dir - enemy->getPosition()).getAngle();
+    float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
     if (frame_angle <= -M_PI / 2) {
       node->setFrame(60);  // Bottom left
     } else if (frame_angle <= 0) {
@@ -184,10 +184,10 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
     enemy->_frame_count = 0;
   } else {
     // Moving animation in all other cases.
-    float length = (enemy->_attack_dir - enemy->getPosition()).length();
+    float length = (enemy->getAttackDir() - enemy->getPosition()).length();
     if (length <= MIN_DISTANCE) {
       // Face left or right, depending on direction of player from grunt.
-      float direc_angle = abs((enemy->_attack_dir - enemy->getPosition()).getAngle());
+      float direc_angle = abs((enemy->getAttackDir() - enemy->getPosition()).getAngle());
       enemy->setFacingLeft(direc_angle > M_PI / 2);
       animateChase(enemy);
     } else {

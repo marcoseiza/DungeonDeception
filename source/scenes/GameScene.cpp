@@ -697,7 +697,7 @@ void GameScene::sendNetworkInfoHost() {
         info->enemy_id = enemy->getEnemyId();
         info->pos = enemy->getPosition();
         info->has_target = enemy->didAttack();
-        info->target = enemy->getAttackDirection();
+        info->target = enemy->getAttackDir();
         if (info->has_target) {
           // Make sure bullet & attack is only sent once
           enemy->clearAttackState();
@@ -884,8 +884,8 @@ void GameScene::processData(
 
         if (enemy != nullptr) {
           enemy->setPosition(info->pos);
-          if (info->has_target) enemy->performAttackAction(info->target);
-          enemy->_attack_dir = info->target;
+          if (info->has_target) enemy->setAttack(true);
+          enemy->setAttackDir(info->target);
         }
       }
     } break;
@@ -1029,11 +1029,11 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_damage" &&
       ob2 == _player_controller->getMyPlayer().get() &&
-      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
+      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 24) {
     dynamic_cast<Player*>(ob2)->takeDamage();
   } else if (fx2_name == "enemy_damage" &&
              ob1 == _player_controller->getMyPlayer().get() &&
-             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
+             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 24) {
     dynamic_cast<Player*>(ob1)->takeDamage();
   }
 
@@ -1059,18 +1059,6 @@ void GameScene::beginContact(b2Contact* contact) {
                             dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
-  }
-
-  if (fx1_name == "enemy_damage" && ob2->getName() == "Wall") {
-    auto enemy = dynamic_cast<EnemyModel*>(ob1);
-    if (enemy->getAttackCooldown() < 20) {
-      enemy->setAttackCooldown(0);
-    }
-  } else if (fx2_name == "enemy_damage" && ob1->getName() == "Wall") {
-    auto enemy = dynamic_cast<EnemyModel*>(ob2);
-    if (enemy->getAttackCooldown() < 20) {
-      enemy->setAttackCooldown(0);
-    }
   }
 
   if (ob1->getName() == "projectile" &&

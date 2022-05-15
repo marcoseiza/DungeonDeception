@@ -78,7 +78,7 @@ class GruntController : public EnemyController {
   /**
    * Animate the grunt.
    */
-  void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
+  void animate(std::shared_ptr<EnemyModel> enemy) override;
 
   /**
    * Animate the grunt when chasing.

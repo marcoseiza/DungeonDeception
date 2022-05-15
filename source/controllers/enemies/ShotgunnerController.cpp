@@ -40,7 +40,7 @@ void ShotgunnerController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> 
     }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
       // Add the bullet!
-      enemy->addBullet(enemy->_attack_dir);
+      enemy->addBullet(enemy->getAttackDir());
       _sound_controller->playEnemySmallGunshot();
     }
     enemy->reduceAttackCooldown(1);
@@ -53,10 +53,10 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->move(0, 0);
     if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
       enemy->setAttack(true);
-      enemy->_attack_dir = p;
+      enemy->setAttackDir(p);
     }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
-      enemy->addBullet(enemy->_attack_dir);
+      enemy->addBullet(enemy->getAttackDir());
       _sound_controller->playEnemySmallGunshot();
     }
     if (enemy->getAttackCooldown() <= 0) {
@@ -64,7 +64,7 @@ void ShotgunnerController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
       enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
     }
   } else {
-    enemy->_attack_dir = p;
+    enemy->setAttackDir(p);
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
@@ -150,14 +150,13 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy,
-                                   cugl::Vec2 p) {
+void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
   auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(
       enemy->getNode()->getChildByTag(0));
   auto gun_node = enemy->getNode()->getChildByTag(1);
   int fc = enemy->_frame_count;
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES - 5) {
-    float angle_inc = cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() / 15;
+    float angle_inc = cugl::Vec2(enemy->getAttackDir() - enemy->getPosition()).getAngle() / 15;
     gun_node->setAngle(angle_inc * enemy->getAttackCooldown());
     if (enemy->getAttackCooldown() == 0) {
       gun_node->setAngle(0);
@@ -169,14 +168,14 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy,
     node->setFrame(1);
     gun_node->setVisible(true);
     float angle_inc =
-        cugl::Vec2(enemy->_attack_dir - enemy->getPosition()).getAngle() /
+        cugl::Vec2(enemy->getAttackDir() - enemy->getPosition()).getAngle() /
         15;
     gun_node->setAngle(angle_inc *
                        (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 &&
              enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
   } else if (enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
-    float length = (enemy->_attack_dir - enemy->getPosition()).length();
+    float length = (enemy->getAttackDir() - enemy->getPosition()).length();
     if (length <= MIN_DISTANCE) {
       gun_node->setVisible(false);
       int run_high_lim = 19;

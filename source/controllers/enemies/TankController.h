@@ -80,7 +80,13 @@ class TankController : public EnemyController {
   /**
    * Animate the tank.
    */
-  void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
+  void animate(std::shared_ptr<EnemyModel> enemy) override;
+  
+  /** Update and attack the player if a client.
+   *
+   * @param enemy the enemy.
+   */
+  void clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) override;
 };
 
 #endif /* CONTROLLERS_ENEMIES_TANK_CONTROLLER_H_ */

@@ -128,7 +128,7 @@ class EnemyController {
                    std::shared_ptr<Player> player);
 
   /** Animate the enemy. */
-  virtual void animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {}
+  virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
 
 #pragma mark Movement
  protected:

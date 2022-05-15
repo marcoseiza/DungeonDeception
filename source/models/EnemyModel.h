@@ -30,8 +30,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     MOVING_BACK,
     /** The enemy is wandering. */
     WANDER,
-    CLOSING,
-    OPENING
   };
 
   /** Enum for which enemy this is. */
@@ -44,17 +42,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     TANK,
     /** The turtle enemy type. */
     TURTLE
-  };
-
-  /** Enum for determining whether the tank enemy model needs to open or close
-   * (for animation). */
-  enum TurtleAnimationState {
-    /** The turtle is opening. */
-    OPEN,
-    /** The turtle is closing. */
-    CLOSE,
-    /** The turtle should stay in its current animation state. */
-    STAY
   };
 
  private:
@@ -133,12 +120,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   
   /** If the enemy attacked via dashing this update step. */
   bool _did_attack;
-
-  /** If the enemy fired a bullet this update step */
-  bool _did_fire_bullet;
-
-  /** The direction of the bullet fired (if any) */
-  cugl::Vec2 _fired_bullet_direction;
+  
+  /** Player position to attack in. */
+  cugl::Vec2 _attack_dir;
 
  public:
   /** The set of polygon nodes corresponding to the weights for the direction of
@@ -162,18 +146,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Knockback direction. */
   cugl::Vec2 _knockback_dir;
-
-  /** When attacking, direction to attack in. */
-  cugl::Vec2 _attack_dir;
-
+  
   /** The count for switching to the next frame. */
   int _frame_count;
 
   /** The goal frame for the turtle enemy*/
   int _goal_frame;
-
-  /** Whether the turtle needs to close/open. */
-  TurtleAnimationState _turtle_state;
   
   /** Timer for staying in the move back state. */
   int _move_back_timer;
@@ -354,34 +332,18 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   bool didAttack() const { return _did_attack; }
 
   /**
-   * Returns whether the enemy fired a bullet.
-   *
-   * @return whether the enemy fires a bullet.
-   */
-  bool didFireBullet() const { return _did_fire_bullet; }
-
-  /**
    * Resets info about whether an attack happened.
    */
   void clearAttackState() {
-    _did_fire_bullet = false;
     _did_attack = false;
-    _fired_bullet_direction = cugl::Vec2::ZERO;
   }
-
-//  /**
-//   * Returns the direction of the most recently fired bullet.
-//   *
-//   * @return the bullet direction.
-//   */
-//  cugl::Vec2 getFiredBulletDirection() const { return _fired_bullet_direction; }
+  
+  void setAttackDir(const cugl::Vec2 v) { _attack_dir = v; }
   
   /**
-   * Returns the direction of the attack, whether it be attack_dir or the fired bullet direction.
-   *
-   * Should only be called by hosts.
+   * Returns the direction of the attack, whether it be attack_dir.
    */
-  cugl::Vec2 getAttackDirection() const;
+  cugl::Vec2 getAttackDir() const { return _attack_dir; }
 
   /**
    * Add a bullet.
@@ -453,6 +415,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * Resets the sensors of the enemy.
    */
   void resetSensors();
+  
+  /** When grunt or tank attacking, set the filter to only perform collisions on walls. */
+  void setAttackingFilter();
 
 #pragma mark -
 #pragma mark Physics Methods
