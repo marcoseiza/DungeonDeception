@@ -113,8 +113,11 @@ void Room::initializeEdgeToDoorPairing() {
   std::vector<int> assignment;
   HungAlgo.Solve(weight_matrix, assignment);
 
-  for (int i = 0; i < weight_matrix.size(); i++)
-    _edge_to_door[active_edges[i]] = _doors[assignment[i]];
+  for (int i = 0; i < weight_matrix.size(); i++) {
+    if (assignment[i] > -1) {
+      _edge_to_door[active_edges[i]] = _doors[assignment[i]];
+    }
+  }
 }
 
 float Room::angleBetweenEdgeAndDoor(const std::shared_ptr<Edge> &edge,

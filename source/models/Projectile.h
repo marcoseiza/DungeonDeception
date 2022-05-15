@@ -4,6 +4,8 @@
 #include <cugl/cugl.h>
 #include <stdio.h>
 
+#define MAX_LIFETIME 300
+
 class Projectile : public cugl::physics2::CapsuleObstacle {
  private:
   /** Number of frames until dead */
@@ -14,6 +16,10 @@ class Projectile : public cugl::physics2::CapsuleObstacle {
 
   /** Whether it should die or not. */
   bool _is_dead;
+  
+  /** How long the projectile has been alive */
+  int _lifetime;
+  
 
   /** The scene graph node for the projectile. */
   std::shared_ptr<cugl::scene2::SpriteNode> _projectile_node;
@@ -108,6 +114,25 @@ class Projectile : public cugl::physics2::CapsuleObstacle {
    * @return if the bullet is dead.
    */
   bool isDead() { return _is_dead; }
+  
+  /**
+   * Returns how long the projectile has been alive.
+   *
+   * @return how long the projectile has been alive.
+   */
+  int getLifetime() { return _lifetime; }
+  
+  /**
+   * Sets the lifetime of the projectile. Usually used to update lifetime every tick.
+   */
+  void setLifetime(int lifetime) { _lifetime = lifetime; }
+  
+  /**
+   * Returns whether a projectile should die because it has exceeded its max lifespan.
+   *
+   * @return true if a projectile should die of old age.
+   */
+  bool shouldExpire() { return _lifetime >= MAX_LIFETIME; }
 
 #pragma mark Graphics
   /**

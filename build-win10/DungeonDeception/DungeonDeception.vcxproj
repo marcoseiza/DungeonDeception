@@ -242,6 +242,7 @@
     <ClInclude Include="..\..\source\controllers\actions\OpenMap.h" />
     <ClInclude Include="..\..\source\controllers\actions\TargetPlayer.h" />
     <ClInclude Include="..\..\source\controllers\actions\Corrupt.h" />
+    <ClInclude Include="..\..\source\controllers\actions\Settings.h" />
     <ClInclude Include="..\..\source\models\Player.h" />
     <ClInclude Include="..\..\source\models\Sword.h" />
     <ClInclude Include="..\..\source\models\tiles\BasicTile.h" />
@@ -254,6 +255,7 @@
     <ClInclude Include="..\..\source\generators\LevelGeneratorConfig.h" />
     <ClInclude Include="..\..\source\generators\Delaunator.h" />
     <ClInclude Include="..\..\source\scenes\WinScene.h" />
+    <ClInclude Include="..\..\source\scenes\SettingsScene.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +300,7 @@
     <ClCompile Include="..\..\source\controllers\actions\OpenMap.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\TargetPlayer.cpp" />
     <ClCompile Include="..\..\source\controllers\actions\Corrupt.cpp" />
+    <ClCompile Include="..\..\source\controllers\actions\Settings.cpp" />
     <ClCompile Include="..\..\source\models\Player.cpp" />
     <ClCompile Include="..\..\source\models\Sword.cpp" />
     <ClCompile Include="..\..\source\models\tiles\BasicTile.cpp" />
@@ -307,6 +310,7 @@
     <ClCompile Include="..\..\source\generators\LevelGenerator.cpp" />
     <ClCompile Include="..\..\source\generators\LevelGeneratorConfig.cpp" />
     <ClCompile Include="..\..\source\scenes\WinScene.cpp" />
+    <ClCompile Include="..\..\source\scenes\SettingsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DungeonDeception.rc" />
