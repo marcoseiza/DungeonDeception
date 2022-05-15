@@ -66,10 +66,6 @@ void LoadingScene::update(float progress) {
   if (_progress < 1) {
     _progress = _assets->progress();
 
-    if (_loading_text->getText() == "loading...") {
-      _loading_text->setText("loading.");
-    }
-
     std::stringstream ss;
     ss << "loading";
     if (_loading_text_frame_cooldown > 0) {
