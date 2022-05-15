@@ -2,11 +2,11 @@
 
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
-#define ATTACK_RANGE 150
+#define ATTACK_RANGE 200
 #define TANK_RANGE 60
 
-#define ATTACK_FRAME_POS 40
-#define ATTACK_COOLDOWN 100
+#define ATTACK_FRAME_POS 25
+#define ATTACK_COOLDOWN 60
 
 #define TURTLE_OPENED 16
 #define CLOSED 23
@@ -32,6 +32,33 @@ bool TurtleController::init(
   return true;
 }
 
+void TurtleController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
+  if (enemy->didAttack()) {
+    // Begin attack cooldown.
+    enemy->setAttackCooldown(ATTACK_FRAME_POS);
+    enemy->setAttack(false);
+  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+    // Whether the enemy is attacking
+    if (enemy->getAttackCooldown() == 0) {
+      // Do attack done.
+      cugl::Vec2 e = enemy->getPosition();
+      cugl::Vec2 p1 = enemy->_attack_dir;
+
+      // Attack in closest cardinal direction
+      if (abs(p1.x - e.x) > abs(p1.y - e.y)) {
+        int add = (p1.x - e.x > 0) ? 1 : -1;
+        enemy->addBullet(cugl::Vec2(e.x + add, e.y));
+      } else {
+        int add = (p1.y - e.y > 0) ? 1 : -1;
+        enemy->addBullet(cugl::Vec2(e.x, e.y + add));
+      }
+      _sound_controller->playEnemyLargeGunshot();
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
+    }
+    enemy->reduceAttackCooldown(1);
+  }
+}
+
 void TurtleController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                     const cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= 0) {
@@ -42,21 +69,25 @@ void TurtleController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     if (abs(p1.x - e.x) > abs(p1.y - e.y)) {
       int add = (p1.x - e.x > 0) ? 1 : -1;
       enemy->addBullet(cugl::Vec2(e.x + add, e.y));
-      _sound_controller->playEnemyLargeGunshot();
     } else {
       int add = (p1.y - e.y > 0) ? 1 : -1;
       enemy->addBullet(cugl::Vec2(e.x, e.y + add));
-      _sound_controller->playEnemyLargeGunshot();
     }
+    _sound_controller->playEnemyLargeGunshot();
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   } else if (enemy->getAttackCooldown() == ATTACK_FRAME_POS) {
+    enemy->_attack_dir = p;
+    enemy->setAttack(true);
+  }
+  if (enemy->getAttackCooldown() > ATTACK_FRAME_POS) {
     enemy->_attack_dir = p;
   }
   enemy->move(0, 0);
 }
 
-void TurtleController::tank(std::shared_ptr<EnemyModel> enemy) {
+void TurtleController::tank(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 p) {
   enemy->move(0, 0);
+  enemy->_attack_dir = p;
 }
 
 void TurtleController::changeStateIfApplicable(
@@ -89,7 +120,7 @@ void TurtleController::performAction(std::shared_ptr<EnemyModel> enemy,
       break;
     }
     case EnemyModel::State::TANKING: {
-      tank(enemy);
+      tank(enemy, p);
       break;
     }
     default: {
@@ -103,11 +134,12 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy,
   auto node =
       std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-
-  // If opening/closing, don't animate here
-  if (enemy->_turtle_state == EnemyModel::TurtleAnimationState::STAY) {
-    switch (enemy->getCurrentState()) {
-      case EnemyModel::State::ATTACKING: {
+  float length = (enemy->_attack_dir - enemy->getPosition()).length();
+  if (length <= TANK_RANGE || length >= ATTACK_RANGE) {
+    animateClose(enemy);
+  } else {
+      if (node->getFrame() > CLOSED || node->getFrame() < TURTLE_OPENED) {
+        // Already opened.
         if (enemy->getAttackCooldown() == ATTACK_FRAME_POS - 1) {
           cugl::Vec2 e = enemy->getPosition();
           cugl::Vec2 p1 = enemy->_attack_dir;
@@ -149,16 +181,9 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy,
           }
           enemy->_frame_count++;
         }
-        break;
-      }
-      default: {
-        node->setFrame(CLOSED);
-      }
+    } else {
+      animateOpen(enemy);
     }
-  } else if (enemy->_turtle_state == EnemyModel::TurtleAnimationState::CLOSE) {
-    animateClose(enemy);
-  } else {
-    animateOpen(enemy);
   }
 }
 

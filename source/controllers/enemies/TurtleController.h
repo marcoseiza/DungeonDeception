@@ -19,7 +19,7 @@ class TurtleController : public EnemyController {
 
   /** Tank.
    */
-  void tank(std::shared_ptr<EnemyModel> enemy);
+  void tank(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p);
 
  public:
 #pragma mark Constructors
@@ -90,6 +90,12 @@ class TurtleController : public EnemyController {
 
   /** Animate the opening animation for the turtle. */
   void animateOpen(std::shared_ptr<EnemyModel> enemy);
+  
+  /** Update and attack the player if a client.
+   *
+   * @param enemy the enemy.
+   */
+  void clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) override;
 };
 
 #endif /* CONTROLLERS_ENEMIES_TURTLE_CONTROLLER_H_ */

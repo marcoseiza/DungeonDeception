@@ -29,7 +29,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     /** The enemy wants to move away from the player for a little. */
     MOVING_BACK,
     /** The enemy is wandering. */
-    WANDER
+    WANDER,
+    CLOSING,
+    OPENING
   };
 
   /** Enum for which enemy this is. */
