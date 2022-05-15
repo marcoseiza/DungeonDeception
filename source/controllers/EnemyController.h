@@ -108,6 +108,8 @@ class EnemyController {
   void update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
               std::vector<std::shared_ptr<Player>> players, int room_id);
   
+  virtual void clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy);
+  
   /** Update the enemy (client side). */
   void updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy, int room_id);
 

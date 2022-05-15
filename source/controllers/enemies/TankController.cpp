@@ -119,7 +119,7 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
       break;
     }
     default: {
-      idling(enemy);
+      idling(enemy, p);
     }
   }
 }

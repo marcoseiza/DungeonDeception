@@ -341,16 +341,12 @@ void EnemyModel::knockback(int moveDir) {
 }
 
 cugl::Vec2 EnemyModel::getAttackDirection() const {
-  switch(_enemy_type) {
-    case SHOTGUNNER:
-    case TURTLE: {
-      if (didFireBullet()) {
-        return _fired_bullet_direction;
-      }
+  if (_enemy_type == SHOTGUNNER || _enemy_type == TURTLE) {
+    if (didFireBullet()) {
+      return _fired_bullet_direction;
     }
-    default:
-      return _attack_dir;
   }
+  return _attack_dir;
 }
 
 void EnemyModel::performAttackAction(const cugl::Vec2 dir) {
@@ -362,6 +358,5 @@ void EnemyModel::performAttackAction(const cugl::Vec2 dir) {
     case GRUNT:
     case TANK:
       _did_attack = true;
-      _attack_dir = dir;
   }
 }
