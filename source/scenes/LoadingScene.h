@@ -17,12 +17,23 @@ class LoadingScene : public cugl::Scene2 {
  protected:
   /** The asset manager for loading. */
   std::shared_ptr<cugl::AssetManager> _assets;
-  /** The animated progress bar */
-  std::shared_ptr<cugl::scene2::ProgressBar> _bar;
-  /** The engine name */
-  std::shared_ptr<cugl::scene2::SceneNode> _brand;
-  /** The "play" button */
-  std::shared_ptr<cugl::scene2::Button> _button;
+
+  /** A reference to the loading text for animation. */
+  std::shared_ptr<cugl::scene2::Label> _loading_text;
+
+  /** Num of dots currently appended to "loading..." on the screen. */
+  int _num_of_dots;
+  /** The frame cooldown for loading text animation. */
+  int _loading_text_frame_cooldown;
+
+  /** The player sprites that moves accross the screen. */
+  std::vector<std::shared_ptr<cugl::scene2::SpriteNode>> _players;
+
+  /** The frame cooldown for player animation. */
+  int _frame_cooldown;
+
+  /** The dimensions of the screen. */
+  cugl::Size _dim;
 
   /** The progress displayed on the screen */
   float _progress;
@@ -30,7 +41,13 @@ class LoadingScene : public cugl::Scene2 {
   bool _completed;
 
  public:
-  LoadingScene() : cugl::Scene2(), _progress(0.0f) {}
+  LoadingScene()
+      : cugl::Scene2(),
+        _progress(0.0f),
+        _completed(false),
+        _frame_cooldown(0),
+        _loading_text_frame_cooldown(0),
+        _num_of_dots(1) {}
 
   /**
    * Disposes of all resources allocated to this mode.
@@ -65,13 +82,6 @@ class LoadingScene : public cugl::Scene2 {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   void update(float timestep);
-
-  /**
-   * Returns true if loading is complete, but the player has not pressed play
-   *
-   * @return true if loading is complete, but the player has not pressed play
-   */
-  bool isPending() const;
 };
 
 #endif /* SCENES_LOADING_SCENE_H_ */
