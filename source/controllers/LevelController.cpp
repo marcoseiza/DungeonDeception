@@ -417,6 +417,7 @@ void LevelController::setupMap(bool is_betrayer) {
   asterisk_description->setRelativeColor(false);
   asterisk_description->setForeground(cugl::Color4::WHITE);
   asterisk_description->setDropShadow(cugl::Vec2(0, -1));
+  asterisk_description->setVisible(is_betrayer);
   map_bkg->addChild(asterisk_description);
 
   cugl::PolyFactory poly_factory;
@@ -430,6 +431,7 @@ void LevelController::setupMap(bool is_betrayer) {
   asterisk_icon->setRelativeColor(false);
   asterisk_icon->setColor(cugl::Color4(172, 50, 50));
   asterisk_icon->setScale(1 / 20.0f);
+  asterisk_icon->setVisible(is_betrayer);
   map_bkg->addChild(asterisk_icon);
 
   // Show the spawn room (first room) as the current room.
