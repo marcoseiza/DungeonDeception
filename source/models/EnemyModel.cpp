@@ -270,27 +270,27 @@ void EnemyModel::releaseFixtures() {
 }
 
 void EnemyModel::setAttackingFilter() {
-  b2Filter dmg_filter = _damage_sensor->GetFilterData();
-  b2Filter hit_filter = _hitbox_sensor->GetFilterData();
-  
   b2Filter filter_data = getFilterData();
   filter_data.maskBits = MASK_ENEMY_ATTACKING;
-  setFilterData(filter_data);
-  
-  _hitbox_sensor->SetFilterData(hit_filter);
-  _damage_sensor->SetFilterData(dmg_filter);
+  if (_body != nullptr) {
+    for (b2Fixture* f = _body->GetFixtureList(); f; f = f->GetNext()) {
+      if (f != _damage_sensor && f != _hitbox_sensor) {
+        f->SetFilterData(filter_data);
+      }
+    }
+  }
 }
 
 void EnemyModel::resetSensors() {
-  b2Filter dmg_filter = _damage_sensor->GetFilterData();
-  b2Filter hit_filter = _hitbox_sensor->GetFilterData();
-  
   b2Filter filter_data = getFilterData();
   filter_data.maskBits = MASK_ENEMY;
-  setFilterData(filter_data);
-  
-  _hitbox_sensor->SetFilterData(hit_filter);
-  _damage_sensor->SetFilterData(dmg_filter);
+  if (_body != nullptr) {
+    for (b2Fixture* f = _body->GetFixtureList(); f; f = f->GetNext()) {
+      if (f != _damage_sensor && f != _hitbox_sensor) {
+        f->SetFilterData(filter_data);
+      }
+    }
+  }
 }
 
 void EnemyModel::update(float delta) {
