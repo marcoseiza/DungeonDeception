@@ -226,7 +226,6 @@ void GameApp::updateHostLobbyScene(float timestep) {
     case ClientLobbyScene::Status::START:
       _hostlobby.setActive(false, nullptr);
       _level_loading.init(_assets, _hostlobby.getSeed());
-      _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership
       _level_loading.setConnection(_hostgame.getConnection());
@@ -250,7 +249,6 @@ void GameApp::updateClientLobbyScene(float timestep) {
     case ClientLobbyScene::Status::START:
       _joinlobby.setActive(false, nullptr);
       _level_loading.init(_assets, _joinlobby.getSeed());
-      _level_loading.setActive(true);
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership
       _level_loading.setConnection(_joingame.getConnection());
@@ -277,26 +275,21 @@ void GameApp::updateLevelLoadingScene(float timestep) {
     return;
   }
 
-  _level_loading.cugl::Scene2::removeChild(
-      _level_loading.getLevelGenerator()->getMap());
-
   // Transfer connection ownership
   _gameplay.setConnection(_level_loading.getConnection());
   _level_loading.disconnect();
   _gameplay.setHost(_level_loading.getIsHost());
 
-  if (_level_loading.getIsHost()) {
-    _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _hostlobby.isBetrayer(), _hostlobby.getPlayerName());
-  } else {
-    _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                   _joinlobby.isBetrayer(), _joinlobby.getPlayerName());
-  }
+  bool betrayer = (_level_loading.getIsHost()) ? _hostlobby.isBetrayer()
+                                               : _joinlobby.isBetrayer();
+  std::string name = (_level_loading.getIsHost()) ? _hostlobby.getPlayerName()
+                                                  : _joinlobby.getPlayerName();
 
-  _level_loading.setActive(false);
-  _gameplay.setActive(true);
-
+  _level_loading.removeChild(_level_loading.getMap());
+  _gameplay.init(_assets, _level_loading.getLevelGenerator(),
+                 _level_loading.getMap(), betrayer, name);
   _level_loading.dispose();
+
   _scene = State::GAME;
 }
 

@@ -322,6 +322,13 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "map-background": {
+      "file": "textures/ui/mapbg.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
   },
   "jsons": {

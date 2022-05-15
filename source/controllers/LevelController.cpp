@@ -12,18 +12,24 @@
 
 #define TILE_SCALE cugl::Vec2(1, 1)
 #define TILE_SIZE cugl::Vec2(48, 48)
+#define ACTIVATE_MAP_COLOR cugl::Color4(56, 140, 192, 200)
+#define CORRUPT_MAP_COLOR cugl::Color4(172, 50, 50, 200)
 
 bool LevelController::init(
     const std::shared_ptr<cugl::AssetManager> &assets,
     const std::shared_ptr<cugl::scene2::SceneNode> &world_node,
     const std::shared_ptr<cugl::scene2::SceneNode> &debug_node,
-    const std::shared_ptr<level_gen::LevelGenerator> &level_gen) {
+    const std::shared_ptr<level_gen::LevelGenerator> &level_gen,
+    const std::shared_ptr<cugl::scene2::SceneNode> &map, bool is_betrayer) {
   _assets = assets;
   _world_node = world_node;
   _debug_node = debug_node;
+  _map = map;
   _level_gen = level_gen;
   _next_enemy_id = 0;
   populate();
+  setupMap(is_betrayer);
+
   return true;
 }
 
@@ -68,6 +74,19 @@ void LevelController::update(float timestep) {
       }
     }
   }
+
+  for (auto it : _level_model->getRooms()) {
+    std::shared_ptr<RoomModel> room = it.second;
+
+    if (room->getType() == RoomType::TERMINAL) {
+      if (room->getEnergy() >= room->getEnergyToActivate()) {
+        room->getMapNode()->setColor(ACTIVATE_MAP_COLOR);
+      } else if (room->getCorruptedEnergy() >=
+                 room->getCorruptedEnergyToActivate()) {
+        room->getMapNode()->setColor(CORRUPT_MAP_COLOR);
+      }
+    }
+  }
 }
 
 std::shared_ptr<EnemyModel> LevelController::getEnemy(int enemy_id) {
@@ -97,22 +116,7 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 
   cugl::Vec2 door_pos = current->getPosOfDestinationDoor(door_sensor_name);
 
-  // Update the map SceneNodes.
-  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
-    if (room->_key == current->getKey()) {
-      room->_node->setColor(room->getRoomNodeColor());
-    }
-    if (room->_key == destination_room_id) {
-      room->_node->setColor(cugl::Color4(255, 0, 0, 127));
-      room->_node->setVisible(true);
-
-      for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
-        if (edge->_source->_node->isVisible() &&
-            edge->_neighbor->_node->isVisible())
-          edge->_node->setVisible(true);
-      }
-    }
-  }
+  updateMapCurrentRoom(destination_room_id);
 
   if (_room_on_chopping_block != nullptr)
     _room_on_chopping_block->setVisible(false);
@@ -133,22 +137,7 @@ void LevelController::changeRoom(std::string &door_sensor_name) {
 void LevelController::moveToCenterOfRoom(int destination_room_id) {
   std::shared_ptr<RoomModel> current = _level_model->getCurrentRoom();
 
-  // Update the map SceneNodes.
-  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
-    if (room->_key == current->getKey()) {
-      room->_node->setColor(room->getRoomNodeColor());
-    }
-    if (room->_key == destination_room_id) {
-      room->_node->setColor(cugl::Color4(255, 0, 0, 127));
-      room->_node->setVisible(true);
-
-      for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
-        if (edge->_source->_node->isVisible() &&
-            edge->_neighbor->_node->isVisible())
-          edge->_node->setVisible(true);
-      }
-    }
-  }
+  updateMapCurrentRoom(destination_room_id);
 
   if (_room_on_chopping_block != nullptr)
     _room_on_chopping_block->setVisible(false);
@@ -163,6 +152,25 @@ void LevelController::moveToCenterOfRoom(int destination_room_id) {
   _player_controller->getMyPlayer()->setPosPromise(
       new_current->getNode()->getPosition() +
       new_current->getGridSize().width / 2 * (TILE_SIZE * TILE_SCALE));
+}
+
+void LevelController::updateMapCurrentRoom(int room_id) {
+  // Update the map SceneNodes.
+  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
+    if (room->_key == _level_model->getCurrentRoom()->getKey()) {
+      room->_node->getChildByName("border")->setVisible(false);
+    }
+    if (room->_key == room_id) {
+      room->_node->setVisible(true);
+      room->_node->getChildByName("border")->setVisible(true);
+
+      for (std::shared_ptr<level_gen::Edge> edge : room->_edges) {
+        if (edge->_source->_node->isVisible() &&
+            edge->_neighbor->_node->isVisible())
+          edge->_node->setVisible(true);
+      }
+    }
+  }
 }
 
 void LevelController::populate() {
@@ -180,7 +188,7 @@ void LevelController::populate() {
     room_node->setVisible(false);
     room_node->doLayout();
 
-    auto room_model = RoomModel::alloc(room_node, room->_key);
+    auto room_model = RoomModel::alloc(room_node, room->_node, room->_key);
     room_model->setType(room->_type);
     if (room->_type == RoomType::TERMINAL) {
       room_model->setNumPlayersRequired(room->_num_players_for_terminal);
@@ -206,6 +214,84 @@ void LevelController::populate() {
 
     _world_node->addChild(room_node);
   }
+}
+
+void LevelController::setupMap(bool is_betrayer) {
+  if (_map == nullptr) return;
+
+  for (std::shared_ptr<level_gen::Room> &room : _level_gen->getRooms()) {
+    room->_node->setColor(room->getRoomNodeColor());
+
+    auto border = cugl::scene2::PathNode::allocWithRect(
+        room->_node->getBoundingBox(), 1.5f, cugl::poly2::Joint::MITRE,
+        cugl::poly2::EndCap::SQUARE);
+    border->setRelativeColor(false);
+    border->setColor(cugl::Color4(255, 255, 255, 200));
+    border->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_LEFT);
+    border->setPosition(cugl::Vec2::ZERO);
+    border->setName("border");
+    border->setVisible(false);
+    room->_node->addChild(border);
+
+    // This is a scale that is used to make the PolyFactory create circles with
+    // a higher definition. The node is then scaled back to 1/scale to return it
+    // to normal.
+    float higher_def_scale = 20.0f;
+
+    if (room->_type == RoomType::TERMINAL) {
+      float circle_radius = 4.0f;
+      cugl::PolyFactory poly_factory;
+      auto circle_poly = poly_factory.makeCircle(
+          cugl::Vec2::ZERO, circle_radius * higher_def_scale);
+      auto circle = cugl::scene2::PolygonNode::allocWithPoly(circle_poly);
+      circle->setAnchor(cugl::Vec2::ANCHOR_CENTER);
+      circle->setPosition(room->_node->getBoundingBox().size / 2);
+      circle->setRelativeColor(false);
+      circle->setColor(cugl::Color4(255, 255, 255, 200));
+      circle->setScale(1 / higher_def_scale);
+      room->_node->addChild(circle);
+    } else if (room->_type == RoomType::SPAWN) {
+      int number_of_circles = 4;
+      float radius = 3.0f;
+      float circle_radius = 1.5f;
+      for (int i = 0; i < number_of_circles; i++) {
+        cugl::PolyFactory poly_factory;
+        auto circle_poly = poly_factory.makeCircle(
+            cugl::Vec2::ZERO, circle_radius * higher_def_scale);
+        auto circle = cugl::scene2::PolygonNode::allocWithPoly(circle_poly);
+        circle->setAnchor(cugl::Vec2::ANCHOR_CENTER);
+        float angle = i * (2 * M_PI / number_of_circles);
+        cugl::Vec2 pos(radius * cosf(angle), radius * sinf(angle));
+        pos += room->_node->getBoundingBox().size / 2;
+        circle->setPosition(pos);
+        circle->setRelativeColor(false);
+        circle->setColor(cugl::Color4(255, 255, 255, 200));
+        circle->setScale(1 / higher_def_scale);
+        room->_node->addChild(circle);
+      }
+    }
+
+    for (std::shared_ptr<level_gen::Edge> &edge : room->_edges) {
+      edge->_node->setVisible(is_betrayer);
+      edge->_node->setColor(cugl::Color4(255, 255, 255, 200));
+      if (!edge->_active) {
+        auto parent = edge->_node->getParent();
+        if (parent) parent->removeChild(edge->_node);
+      }
+    }
+    room->_node->setVisible(is_betrayer);
+  }
+
+  auto spawn_room_node = _level_gen->getSpawnRoom()->_node;
+  spawn_room_node->setVisible(true);
+  spawn_room_node->getChildByName("border")->setVisible(true);
+
+  auto map_bkg = cugl::scene2::PolygonNode::allocWithTexture(
+      _assets->get<cugl::Texture>("map-background"));
+  map_bkg->setAnchor(cugl::Vec2::ANCHOR_CENTER);
+  map_bkg->setPosition(cugl::Vec2::ZERO);
+
+  _map->swapChild(_map->getChildByName("background"), map_bkg);
 }
 
 void LevelController::instantiateWorld() {

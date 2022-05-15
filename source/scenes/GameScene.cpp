@@ -30,7 +30,8 @@
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
-    bool is_betrayer, std::string display_name) {
+    const std::shared_ptr<cugl::scene2::SceneNode>& map, bool is_betrayer,
+    std::string display_name) {
   if (_active) return false;
   _active = true;
   _state = RUN;
@@ -62,29 +63,13 @@ bool GameScene::init(
   _debug_node = cugl::scene2::SceneNode::alloc();
   _debug_node->setContentSize(dim);
 
-  _level_controller =
-      LevelController::alloc(_assets, _world_node, _debug_node, level_gen);
-
-  _map = level_gen->getMap();
+  _map = map;
   _map->setContentSize(dim);
   _map->setPosition(dim / 2);
-  _map->doLayout();
   _map->setVisible(false);
 
-  for (std::shared_ptr<level_gen::Room>& room : level_gen->getRooms()) {
-    room->_node->setColor(room->getRoomNodeColor());
-    for (std::shared_ptr<level_gen::Edge>& edge : room->_edges) {
-      edge->_node->setVisible(false);
-      edge->_node->setColor(cugl::Color4(255, 255, 255, 127));
-      if (!edge->_active) {
-        auto parent = edge->_node->getParent();
-        if (parent) parent->removeChild(edge->_node);
-      }
-    }
-    room->_node->setVisible(false);
-  }
-
-  level_gen->getSpawnRoom()->_node->setVisible(true);
+  _level_controller = LevelController::alloc(_assets, _world_node, _debug_node,
+                                             level_gen, _map, is_betrayer);
 
   // Get the world from level controller and attach the listeners.
   _world = _level_controller->getWorld();
@@ -509,7 +494,7 @@ void GameScene::update(float timestep) {
 
   // hide role screen after a number of seconds
   cugl::Timestamp time;
-  if ((Uint32)time.ellapsedMillis(_time_started) > 5000 &&
+  if ((Uint32)time.ellapsedMillis(_time_started) > 200 &&
       _role_layer->isVisible()) {
     _role_layer->setVisible(false);
     InputController::get()->resume();

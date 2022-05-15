@@ -36,14 +36,6 @@ void LevelGenerator::init(LevelGeneratorConfig &config,
   _config = config;
   _map = map;
 
-  cugl::PolyFactory poly_factory;
-  auto circle_poly =
-      poly_factory.makeCircle(cugl::Vec2::ZERO, _config.getMapRadius());
-  auto circle = cugl::scene2::PolygonNode::allocWithPoly(circle_poly);
-  circle->setAnchor(cugl::Vec2::ANCHOR_CENTER);
-  circle->setPosition(cugl::Vec2::ZERO);
-  circle->setColor(cugl::Color4(0, 0, 0, 20));
-  _map->addChild(circle);
   _generator_step = [this]() { this->generateRooms(); };
   _generator = std::default_random_engine(static_cast<Uint32>(seed));
 }
