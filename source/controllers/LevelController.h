@@ -20,6 +20,8 @@ class LevelController : public Controller {
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
   /** A reference to the debug node. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
+  /** A reference to map of this world. */
+  std::shared_ptr<cugl::scene2::SceneNode> _map;
   /** A reference to the box2d world. */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
   /** A level generator. */
@@ -50,27 +52,38 @@ class LevelController : public Controller {
   /**
    * Initialize the level controller.
    * @param assets The assets for the game.
-   * @param world The scene2 node for the world.
+   * @param world_node The scene2 node for the world.
+   * @param debug_node The scene2 node for the debug.
    * @param level_gen The level generator.
+   * @param map The scene2 node for the map of this world.
+   * @param is_betrayer If my player is a betrayer.
    */
   bool init(const std::shared_ptr<cugl::AssetManager> &assets,
             const std::shared_ptr<cugl::scene2::SceneNode> &world_node,
             const std::shared_ptr<cugl::scene2::SceneNode> &debug_node,
-            const std::shared_ptr<level_gen::LevelGenerator> &level_gen);
+            const std::shared_ptr<level_gen::LevelGenerator> &level_gen,
+            const std::shared_ptr<cugl::scene2::SceneNode> &map,
+            bool is_betrayer);
 
   /**
    * This method allocated a new level controller.
    * @param assets The assets for the game.
-   * @param world The scene2 node for the world.
+   * @param world_node The scene2 node for the world.
+   * @param debug_node The scene2 node for the debug.
    * @param level_gen The level generator.
+   * @param map The scene2 node for the map of this world.
+   * @param is_betrayer If my player is a betrayer.
    */
   static std::shared_ptr<LevelController> alloc(
       const std::shared_ptr<cugl::AssetManager> &assets,
       const std::shared_ptr<cugl::scene2::SceneNode> &world_node,
       const std::shared_ptr<cugl::scene2::SceneNode> &debug_node,
-      const std::shared_ptr<level_gen::LevelGenerator> &level_gen) {
+      const std::shared_ptr<level_gen::LevelGenerator> &level_gen,
+      const std::shared_ptr<cugl::scene2::SceneNode> &map, bool is_betrayer) {
     auto result = std::make_shared<LevelController>();
-    if (result->init(assets, world_node, debug_node, level_gen)) return result;
+    if (result->init(assets, world_node, debug_node, level_gen, map,
+                     is_betrayer))
+      return result;
     return nullptr;
   }
 
@@ -123,8 +136,17 @@ class LevelController : public Controller {
   std::shared_ptr<EnemyModel> getEnemy(int enemy_id);
 
  private:
+  /**
+   * Change the current room in the map node.
+   * @param room_id The room id of the room to change to.
+   */
+  void updateMapCurrentRoom(int room_id);
+
   /** Populate the level. */
   void populate();
+
+  /** Set up map for gameplay. */
+  void setupMap(bool is_betrayer);
 
   /**
    * Loop through all the rooms and find the bounds of the world.

@@ -151,6 +151,11 @@ class LoadingLevelScene : public cugl::Scene2 {
    * fully disconnected when ALL scenes have been disconnected.
    */
   void disconnect() { _network = nullptr; }
+
+  /**
+   * Get the map scene2 node.
+   */
+  std::shared_ptr<cugl::scene2::SceneNode> getMap() { return _map; }
 };
 
 #endif /* SCENES_LEVEL_GENERATION_DEMO_SCENE_H */

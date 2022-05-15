@@ -92,16 +92,7 @@ class Room {
    * Returns the SceneNode color for the room type.
    * @return the color corresponding to the room type.
    */
-  cugl::Color4 getRoomNodeColor() {
-    switch (_type) {
-      case RoomType::TERMINAL:
-        return cugl::Color4(52, 205, 14, 127);
-      case RoomType::SPAWN:
-        return cugl::Color4(14, 14, 205, 127);
-      case RoomType::STANDARD:
-        return cugl::Color4(125, 94, 52, 127);
-    }
-  }
+  cugl::Color4 getRoomNodeColor() { return cugl::Color4(104, 67, 67, 200); }
 
   /**
    * Returns the SceneNode color for the room type while generating the room.
@@ -110,9 +101,7 @@ class Room {
   cugl::Color4 getRoomNodeColorGenerator() {
     switch (_type) {
       case RoomType::TERMINAL:
-        // return cugl::Color4(125, 94, 52, 127);
-        return cugl::Color4(52, 205, 14, 127);
-
+        return cugl::Color4(125, 94, 52, 127);
       case RoomType::SPAWN:
         return cugl::Color4(14, 14, 205, 127);
       case RoomType::STANDARD:

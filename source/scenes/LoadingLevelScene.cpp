@@ -26,8 +26,23 @@ bool LoadingLevelScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
 
   _map = cugl::scene2::SceneNode::alloc();
   _map->setPosition(dim / 2);
+
+  auto map_bkg = cugl::scene2::SceneNode::alloc();
+  map_bkg->setName("background");
+  _map->addChild(map_bkg);
+
+  auto map_rooms = cugl::scene2::SceneNode::alloc();
+  _map->addChild(map_rooms);
+
+  auto rooms = cugl::scene2::SceneNode::alloc();
+  rooms->setName("rooms");
+  auto edges = cugl::scene2::SceneNode::alloc();
+  edges->setName("edges");
+  map_rooms->addChild(edges);
+  map_rooms->addChild(rooms);
+
   _level_generator = std::make_shared<level_gen::LevelGenerator>();
-  _level_generator->init(_config, _map, seed);
+  _level_generator->init(_config, map_rooms, seed);
 
   _map->doLayout();
   cugl::Scene2::addChild(_map);

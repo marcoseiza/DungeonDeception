@@ -12,6 +12,10 @@ class RoomModel {
    * for the room. */
   std::shared_ptr<cugl::scene2::SceneNode> _node;
 
+  /** A reference to the scene2 map node for the room.
+   * This is used by the map.*/
+  std::shared_ptr<cugl::scene2::SceneNode> _map_node;
+
   /** A list of all the enemies inside of this room. */
   std::vector<std::shared_ptr<EnemyModel>> _enemies;
 
@@ -64,9 +68,11 @@ class RoomModel {
    * Initialize the room model with the given scene2 node and name.
    *
    * @param node The scene2 node with all the tiles and enemies for the room.
+   * @param map_node The scene2 node for displaying the room on the map.
    * @param key The key for the room.
    */
-  bool init(const std::shared_ptr<cugl::scene2::SceneNode>& node, int key);
+  bool init(const std::shared_ptr<cugl::scene2::SceneNode>& node,
+            const std::shared_ptr<cugl::scene2::SceneNode>& map_node, int key);
 
   /** Dispose of all the internal data in the room. */
   void dispose();
@@ -77,9 +83,10 @@ class RoomModel {
    * @return A smart pointer of the instantiated RoomModel.
    */
   static std::shared_ptr<RoomModel> alloc(
-      const std::shared_ptr<cugl::scene2::SceneNode>& node, int key) {
+      const std::shared_ptr<cugl::scene2::SceneNode>& node,
+      const std::shared_ptr<cugl::scene2::SceneNode>& map_node, int key) {
     std::shared_ptr<RoomModel> result = std::make_shared<RoomModel>();
-    return (result->init(node, key) ? result : nullptr);
+    return (result->init(node, map_node, key) ? result : nullptr);
   }
 
   /**
@@ -147,10 +154,17 @@ class RoomModel {
 
   /**
    * Get The scene2 node for the RoomModel.
-   *
    * @return The scene2 node.
    */
   std::shared_ptr<cugl::scene2::SceneNode> getNode() const { return _node; }
+
+  /**
+   * Get The scene2 map node for the RoomModel.
+   * @return The scene2 node.
+   */
+  std::shared_ptr<cugl::scene2::SceneNode> getMapNode() const {
+    return _map_node;
+  }
 
   /**
    * Get the key of this room, for debugging purposes.
