@@ -18,6 +18,14 @@ class LoadingScene : public cugl::Scene2 {
   /** The asset manager for loading. */
   std::shared_ptr<cugl::AssetManager> _assets;
 
+  /** A reference to the loading text for animation. */
+  std::shared_ptr<cugl::scene2::Label> _loading_text;
+
+  /** Num of dots currently appended to "loading..." on the screen. */
+  int _num_of_dots;
+  /** The frame cooldown for loading text animation. */
+  int _loading_text_frame_cooldown;
+
   /** The player sprites that moves accross the screen. */
   std::vector<std::shared_ptr<cugl::scene2::SpriteNode>> _players;
 
@@ -37,7 +45,9 @@ class LoadingScene : public cugl::Scene2 {
       : cugl::Scene2(),
         _progress(0.0f),
         _completed(false),
-        _frame_cooldown(0) {}
+        _frame_cooldown(0),
+        _loading_text_frame_cooldown(0),
+        _num_of_dots(1) {}
 
   /**
    * Disposes of all resources allocated to this mode.

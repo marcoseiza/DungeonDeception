@@ -6,7 +6,7 @@
 #define SCENE_SIZE 1024
 #define NUM_PLAYERS 6
 #define PLAYER_SEPARATION 200
-#define SPEED 15
+#define SPEED 5
 
 bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
   // Initialize the scene to a locked width.
@@ -33,6 +33,9 @@ bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
   auto layer = assets->get<cugl::scene2::SceneNode>("load");
   layer->setContentSize(_dim);
 
+  _loading_text = std::dynamic_pointer_cast<cugl::scene2::Label>(
+      layer->getChildByName("loading"));
+
   for (int i = 0; i < NUM_PLAYERS; i++) {
     auto player = cugl::scene2::SpriteNode::alloc(
         assets->get<cugl::Texture>("player-loading"), 1, 10);
@@ -42,7 +45,6 @@ bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
     player->setFrame(i % player->getSize());
     float pos_x = PLAYER_SEPARATION * i;
     player->setPosition(pos_x, _dim.height * 0.05f);
-
     _players.push_back(player);
     layer->addChild(player);
   }
@@ -64,6 +66,23 @@ void LoadingScene::update(float progress) {
   if (_progress < 1) {
     _progress = _assets->progress();
 
+    if (_loading_text->getText() == "loading...") {
+      _loading_text->setText("loading.");
+    }
+
+    std::stringstream ss;
+    ss << "loading";
+    if (_loading_text_frame_cooldown > 0) {
+      _loading_text_frame_cooldown--;
+    } else {
+      for (int i = 0; i < _num_of_dots; i++) ss << ".";
+      _loading_text->setText(ss.str());
+      _num_of_dots = (_num_of_dots + 1) % 3 + 1;
+      _loading_text_frame_cooldown =
+          cugl::Application::get()->getAverageFPS() / 5;
+      if (_num_of_dots == 3) _loading_text_frame_cooldown *= 2;
+    }
+
     for (int i = 0; i < _players.size(); i++) {
       auto player = _players[i];
       player->setPositionX(player->getPositionX() + SPEED);
@@ -72,12 +91,15 @@ void LoadingScene::update(float progress) {
         player->setPositionX(-PLAYER_SEPARATION);
       }
 
-      if (_frame_cooldown > 0) {
-        _frame_cooldown--;
-      } else {
-        _frame_cooldown = cugl::Application::get()->getAverageFPS() / 30;
+      if (_frame_cooldown <= 0) {
         player->setFrame((player->getFrame() + 1) % player->getSize());
       }
+    }
+
+    if (_frame_cooldown > 0) {
+      _frame_cooldown--;
+    } else {
+      _frame_cooldown = cugl::Application::get()->getAverageFPS() / 30;
     }
 
     if (_progress >= 1) {

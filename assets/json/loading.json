@@ -31,7 +31,7 @@
                         "scale": 0.7,
                         "font": "pixelmix-loading",
                         "text": "loading...",
-                        "halign": "hard right",
+                        "halign": "hard left",
                         "valign": "hard bottom",
                         "dropshadow": true
                     },
