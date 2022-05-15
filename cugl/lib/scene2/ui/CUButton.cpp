@@ -184,6 +184,15 @@ bool Button::init(const std::shared_ptr<SceneNode>& up, const std::shared_ptr<Sc
  *      "down":     A string referencing the name of a child node OR
  *                  a 4-element integer array with values from 0..255
  *      "pushable": An even array of polygon vertices (numbers)
+ * 
+ *      "click-sound": 
+ *                  A string reference to the sound effect name in the asset
+ *                  folder
+ *      "play-click-sound": 
+ *                  A boolean to define whether the click sound should be played
+ *      "play-click-sound-on-down": 
+ *                  A boolean to define wether the click sound 
+ *                  should be played when the button is down or released.
  *
  * The attribute 'up' is REQUIRED.  All other attributes are optional.
  *
