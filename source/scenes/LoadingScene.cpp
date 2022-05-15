@@ -4,17 +4,16 @@
 
 /** The ideal size of the logo. */
 #define SCENE_SIZE 1024
+#define NUM_PLAYERS 6
+#define PLAYER_SEPARATION 200
+#define SPEED 15
 
 bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
   // Initialize the scene to a locked width.
-  cugl::Size dim = cugl::Application::get()->getDisplaySize();
+  _dim = cugl::Application::get()->getDisplaySize();
   // Lock the scene to a reasonable resolution.
-  if (dim.width > dim.height) {
-    dim *= SCENE_SIZE / dim.width;
-  } else {
-    dim *= SCENE_SIZE / dim.height;
-  }
-  if (assets == nullptr || !cugl::Scene2::init(dim)) {
+  _dim *= SCENE_SIZE / ((_dim.width > _dim.height) ? _dim.width : _dim.height);
+  if (assets == nullptr || !cugl::Scene2::init(_dim)) {
     return false;
   }
 
@@ -32,18 +31,23 @@ bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
   _assets->loadDirectory("json/loading.json");
 
   auto layer = assets->get<cugl::scene2::SceneNode>("load");
-  layer->setContentSize(dim);
+  layer->setContentSize(_dim);
+
+  for (int i = 0; i < NUM_PLAYERS; i++) {
+    auto player = cugl::scene2::SpriteNode::alloc(
+        assets->get<cugl::Texture>("player-loading"), 1, 10);
+    player->setScale(1.2);
+    player->setRelativeColor(false);
+    player->setAnchor(cugl::Vec2::ANCHOR_BOTTOM_CENTER);
+    player->setFrame(i % player->getSize());
+    float pos_x = PLAYER_SEPARATION * i;
+    player->setPosition(pos_x, _dim.height * 0.05f);
+
+    _players.push_back(player);
+    layer->addChild(player);
+  }
+
   layer->doLayout();  // This rearranges the children to fit the screen.
-
-  _bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
-      assets->get<cugl::scene2::SceneNode>("load_bar"));
-
-  _brand = assets->get<cugl::scene2::SceneNode>("load_name");
-
-  _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      assets->get<cugl::scene2::SceneNode>("load_play"));
-  _button->addListener(
-      [=](const std::string &name, bool down) { this->_active = down; });
 
   cugl::Application::get()->setClearColor(cugl::Color4(192, 192, 192, 255));
   cugl::Scene2::addChild(layer);
@@ -52,13 +56,6 @@ bool LoadingScene::init(const std::shared_ptr<cugl::AssetManager> &assets) {
 }
 
 void LoadingScene::dispose() {
-  // Deactivate the button (platform dependent).
-  if (isPending()) {
-    _button->deactivate();
-  }
-  _button = nullptr;
-  _brand = nullptr;
-  _bar = nullptr;
   _assets = nullptr;
   _progress = 0.0f;
 }
@@ -66,17 +63,26 @@ void LoadingScene::dispose() {
 void LoadingScene::update(float progress) {
   if (_progress < 1) {
     _progress = _assets->progress();
+
+    for (int i = 0; i < _players.size(); i++) {
+      auto player = _players[i];
+      player->setPositionX(player->getPositionX() + SPEED);
+
+      if (player->getPositionX() > _dim.width) {
+        player->setPositionX(-PLAYER_SEPARATION);
+      }
+
+      if (_frame_cooldown > 0) {
+        _frame_cooldown--;
+      } else {
+        _frame_cooldown = cugl::Application::get()->getAverageFPS() / 30;
+        player->setFrame((player->getFrame() + 1) % player->getSize());
+      }
+    }
+
     if (_progress >= 1) {
       _progress = 1.0f;
-      _bar->setVisible(false);
-      _brand->setVisible(false);
-      _button->setVisible(true);
-      _button->activate();
+      _active = false;
     }
-    _bar->setProgress(_progress);
   }
-}
-
-bool LoadingScene::isPending() const {
-  return _button != nullptr && _button->isVisible();
 }
