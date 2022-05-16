@@ -215,9 +215,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @param value The current player energy.
    */
-  void setEnergy(float value) {
-    if (value <= 100) _energy = value;
-  }
+  void setEnergy(float value) { _energy = std::min(value, 100.0f); }
 
   /**
    * Returns the current corrupted energy of the player.
@@ -240,7 +238,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The value that is corrupted.
    */
   void setCorruptedEnergy(float value) {
-    if (value <= 100) _corrupted_energy = value;
+    _corrupted_energy = std::min(value, 100.0f);
   }
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
