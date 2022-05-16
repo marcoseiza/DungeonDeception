@@ -26,6 +26,7 @@
 #define CAMERA_LARGEST_DIFF 200.0f
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
+#define ENERGY_BAR_UPDATE_SIZE 0.02f
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -276,8 +277,11 @@ void GameScene::populate(cugl::Size dim) {
   for (std::shared_ptr<Terminal> terminal :
        TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
+    _world->addObstacle(terminal->initSensor());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
+    terminal->getSensor()->setDebugColor(cugl::Color4::BLACK);
+    terminal->getSensor()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
 
@@ -309,10 +313,21 @@ void GameScene::update(float timestep) {
     NetworkController::get()->update();
   }
 
-  _health_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getHealth()) / 100);
-  _energy_bar->setProgress(
-      static_cast<float>(_player_controller->getMyPlayer()->getEnergy()) / 100);
+  _health_bar->setProgress(_player_controller->getMyPlayer()->getHealth() /
+                           100.0f);
+
+  // Animate energy update.
+  float target_energy_amt =
+      _player_controller->getMyPlayer()->getEnergy() / 100.0f;
+  if (_energy_bar->getProgress() < target_energy_amt) {
+    (_energy_bar->setProgress(
+        std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                 target_energy_amt)));
+  } else if (_energy_bar->getProgress() > target_energy_amt) {
+    (_energy_bar->setProgress(
+        std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                 target_energy_amt)));
+  }
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
     _player_controller->getMyPlayer()->setRespawning(false);
@@ -456,11 +471,13 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
     updateEnemies(timestep, room_to_update);
   }
-  
+
   // Also update the adjacent room enemies if is host.
-  // Must check here or weird interactions occur with clients updating adjacent rooms.
+  // Must check here or weird interactions occur with clients updating adjacent
+  // rooms.
   if (_ishost) {
-    std::unordered_set<int> adj_enemy_update_rooms = getAdjacentRoomIdsWithoutPlayers();
+    std::unordered_set<int> adj_enemy_update_rooms =
+        getAdjacentRoomIdsWithoutPlayers();
     for (auto room_id_to_update : adj_enemy_update_rooms) {
       auto room_to_update =
           _level_controller->getLevelModel()->getRoom(room_id_to_update);
@@ -902,7 +919,7 @@ void GameScene::processData(
         if (info->direction != -1) enemy->knockback(info->direction);
 
         auto player = _player_controller->getPlayer(info->player_id);
-        player->setEnergy(player->getEnergy() + 1);
+        player->setEnergy(player->getEnergy() + 0.3f);
       }
     } break;
 
@@ -1077,9 +1094,9 @@ void GameScene::beginContact(b2Contact* contact) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->setActive(room->getKey(),
-                                      dynamic_cast<TerminalSensor*>(ob1),
-                                      _player_controller->getMyPlayer());
+      _terminal_controller->depositEnergy(room->getKey());
+      CULog("%f",
+            _player_controller->getMyPlayer()->getPlayerNode()->getPriority());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1087,9 +1104,9 @@ void GameScene::beginContact(b2Contact* contact) {
       std::shared_ptr<RoomModel> room =
           _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->setActive(room->getKey(),
-                                      dynamic_cast<TerminalSensor*>(ob2),
-                                      _player_controller->getMyPlayer());
+      _terminal_controller->depositEnergy(room->getKey());
+      CULog("%f",
+            _player_controller->getMyPlayer()->getPlayerNode()->getPriority());
     }
   }
 }

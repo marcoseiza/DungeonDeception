@@ -49,6 +49,11 @@ class RoomModel {
   /** The current corrupted energy count. */
   int _corrupted_energy;
 
+  /** A reference to the energy bar for the terminal. */
+  std::shared_ptr<cugl::scene2::ProgressBar> _reg_bar;
+  /** A reference to the corruption bar for the terminal. */
+  std::shared_ptr<cugl::scene2::ProgressBar> _cor_bar;
+
  public:
   /**
    * Construct an empty RoomModel, please never use this. Instead use alloc().
@@ -88,6 +93,10 @@ class RoomModel {
     std::shared_ptr<RoomModel> result = std::make_shared<RoomModel>();
     return (result->init(node, map_node, key) ? result : nullptr);
   }
+
+  /** Set the energy bars above the terminal tile. */
+  void setEnergyBars(const std::shared_ptr<cugl::scene2::ProgressBar>& reg_bar,
+                     const std::shared_ptr<cugl::scene2::ProgressBar>& cor_bar);
 
   /**
    * Add a connection to another room using the door sensor ID that activates
@@ -228,7 +237,7 @@ class RoomModel {
    * Set the energy level of this terminal room
    * @param energy the amount of energy.
    */
-  void setEnergy(int energy) { _energy = energy; }
+  void setEnergy(int energy);
 
   /**
    * Get the corrupted energy level of this terminal room.
@@ -239,7 +248,7 @@ class RoomModel {
    * Set the corrupted energy level of this terminal room
    * @param energy the amount of corrupted energy.
    */
-  void setCorruptedEnergy(int energy) { _corrupted_energy = energy; }
+  void setCorruptedEnergy(int energy);
 
   /**
    * Get the amount of energy needed to activate the terminal.

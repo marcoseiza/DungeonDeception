@@ -5,15 +5,26 @@
 
 #include "BasicTile.h"
 #include "TerminalSensor.h"
+#include "Wall.h"
 
 /**
  * This class implements the BasicTile class and adds a physics object that the
  * player can collide with.
  */
-class Terminal : public BasicTile {
+class Terminal : public Wall {
  protected:
   /** A reference to the physics object of the tile. */
-  std::shared_ptr<TerminalSensor> _obstacle;
+  std::shared_ptr<cugl::physics2::PolygonObstacle> _obstacle;
+  /** A reference to the physics object of the tile. */
+  std::shared_ptr<TerminalSensor> _terminal_sensor;
+
+  /** A terminal radius texture when the terminal is neither activated nor
+   * corrupted. */
+  std::shared_ptr<cugl::Texture> _reg;
+  /** A terminal radius texture when the terminal is activated. */
+  std::shared_ptr<cugl::Texture> _actv;
+  /** A terminal radius texture when the terminal is corrupted. */
+  std::shared_ptr<cugl::Texture> _corr;
 
  public:
   /**
@@ -22,7 +33,7 @@ class Terminal : public BasicTile {
    * This constructor should never be called directly, as this is an abstract
    * class.
    */
-  Terminal() : BasicTile() { _classname = "Terminal"; }
+  Terminal() : Wall() { _classname = "Terminal"; }
 
   /**
    * Deletes this node, releasing all resources.
@@ -87,17 +98,37 @@ class Terminal : public BasicTile {
   }
 
   /**
-   * Initializes the box 2d object for the tile including setting the position
-   * and size.
+   * Initializes the box 2d terminal sensor
    *
    * @return The obstacle it created for easy chaining.
    */
-  virtual std::shared_ptr<TerminalSensor> initBox2d();
+  virtual std::shared_ptr<TerminalSensor> initSensor();
 
   /**
    * @return Returns the physics object for the tile.
    */
-  std::shared_ptr<TerminalSensor> getObstacle() { return _obstacle; }
+  std::shared_ptr<TerminalSensor> getSensor() { return _terminal_sensor; }
+
+  /**
+   * Set the terminal to the activated state.
+   */
+  void setActivated() {
+    if (_actv != nullptr) setTexture(_actv);
+  }
+
+  /**
+   * Set the terminal to the corrupted state.
+   */
+  void setCorrupted() {
+    if (_corr != nullptr) setTexture(_corr);
+  }
+
+  /**
+   * Set the terminal to the neutral state.
+   */
+  void setRegular() {
+    if (_reg != nullptr) setTexture(_reg);
+  }
 };
 
 #endif  // MODELS_TILES_TERMINAL_H_#pragma once

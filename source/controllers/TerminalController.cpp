@@ -74,6 +74,7 @@ void TerminalController::processNetworkData(
       int cor_energy_to_deposit = std::min(cor_energy_needed, cor_energy);
       terminal->setCorruptedEnergy(terminal->getCorruptedEnergy() +
                                    cor_energy_to_deposit);
+
       if (player->isBetrayer()) {
         player->setEnergy(cor_energy - cor_energy_to_deposit);
 
