@@ -231,9 +231,27 @@ void LevelController::populate() {
 
     auto room_model = RoomModel::alloc(room_node, room->_node, room->_key);
     room_model->setType(room->_type);
+
     if (room->_type == RoomType::TERMINAL) {
       room_model->setNumPlayersRequired(room->_num_players_for_terminal);
+
+      auto energy_fill = _assets->get<cugl::Texture>("energy-fill-small");
+      auto energy_bar = _assets->get<cugl::Texture>("energy-bar-small");
+      auto energy_outline = _assets->get<cugl::Texture>("energy-outline-small");
+
+      auto reg_bar = cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+      reg_bar->addChild(
+          cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
+      reg_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+
+      auto cor_bar = cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
+      cor_bar->addChild(
+          cugl::scene2::PolygonNode::allocWithTexture(energy_outline));
+      cor_bar->setForegroundColor(cugl::Color4("#df7126"));
+
+      room_model->setEnergyBars(reg_bar, cor_bar);
     }
+
     _level_model->addRoom(room->_key, room_model);
 
     // Make spawn the starting point.
