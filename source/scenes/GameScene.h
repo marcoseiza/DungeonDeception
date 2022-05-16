@@ -46,6 +46,9 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
+  /** Reference to the particle root of the scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _particle_world;
+
   /** Reference to the debug root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
@@ -113,7 +116,7 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
-  
+
   /** List of blocked X's. 6 for maximum number of runners .*/
   std::array<std::shared_ptr<cugl::scene2::SceneNode>, 6> _block_x_nodes;
 

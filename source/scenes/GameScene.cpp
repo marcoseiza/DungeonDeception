@@ -202,10 +202,11 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
-  auto particle_world = cugl::scene2::OrderedNode::allocWithOrder(
-      cugl::scene2::OrderedNode::Order::ASCEND);
-  _particle_controller = ParticleController::alloc(particle_world);
+  _particle_world = cugl::scene2::SceneNode::alloc();
+  _particle_world->setContentSize(dim);
+  _particle_controller = ParticleController::alloc(_particle_world);
 
+  _controllers.push_back(_particle_controller->getHook());
   _controllers.push_back(_player_controller->getHook());
   _controllers.push_back(_terminal_controller->getHook());
   _controllers.push_back(_level_controller->getHook());
@@ -213,6 +214,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
+  cugl::Scene2::addChild(_particle_world);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(energy_layer);
@@ -1216,5 +1218,6 @@ void GameScene::updateCamera(float timestep) {
                    &smoothed_position);
 
   _world_node->setPosition(smoothed_position);
+  _particle_world->setPosition(smoothed_position);
   _debug_node->setPosition(smoothed_position);
 }
