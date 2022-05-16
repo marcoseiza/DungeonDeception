@@ -1095,8 +1095,6 @@ void GameScene::beginContact(b2Contact* contact) {
           _level_controller->getLevelModel()->getCurrentRoom();
 
       _terminal_controller->depositEnergy(room->getKey());
-      CULog("%f",
-            _player_controller->getMyPlayer()->getPlayerNode()->getPriority());
     }
   } else if (fx2_name == "terminal_range" &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1105,8 +1103,6 @@ void GameScene::beginContact(b2Contact* contact) {
           _level_controller->getLevelModel()->getCurrentRoom();
 
       _terminal_controller->depositEnergy(room->getKey());
-      CULog("%f",
-            _player_controller->getMyPlayer()->getPlayerNode()->getPriority());
     }
   }
 }
