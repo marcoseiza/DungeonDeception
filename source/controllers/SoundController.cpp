@@ -142,7 +142,9 @@ void SoundController::playPlayerEnergyCharge() {
 }
 
 void SoundController::stopPlayerEnergyCharge() {
-  cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
+  if (cugl::AudioEngine::get()->isActive(_player_energy_charge.name)) {
+    cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
+  }
 }
 
 void SoundController::playPlayerFootstep(const FootstepType& type) {
