@@ -16,18 +16,19 @@
 
 EnemyController::EnemyController(){};
 
-void EnemyController::idling(std::shared_ptr<EnemyModel> enemy) {
+void EnemyController::idling(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 p) {
   enemy->move(0, 0);
+  enemy->setAttackDir(p);
 }
 
 void EnemyController::chasePlayer(std::shared_ptr<EnemyModel> enemy,
                                   const cugl::Vec2 p) {
   // Using steering behavior for smooth movement.
+  enemy->setAttackDir(p);
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
   diff.scale(enemy->getSpeed());
-
   enemy->move(diff.x, diff.y);
 }
 
@@ -37,7 +38,7 @@ void EnemyController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->addBullet(p);
     enemy->setAttackCooldown(120);
   }
-
+  enemy->setAttackDir(p);
   cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
   diff.normalize();
   diff.add(_direction);
@@ -61,7 +62,7 @@ void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
 void EnemyController::moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy) {
   if ((enemy->getPosition() - enemy->getInitPos()).length() <= 50) {
     // If the enemy is close enough to the original spot, stop moving.
-    idling(enemy);
+    enemy->move(0, 0);
   } else {
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
@@ -88,14 +89,24 @@ bool EnemyController::init(
   return true;
 }
 
+void EnemyController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
+  // nothing
+}
+
+void EnemyController::updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy, int room_id) {
+  // Update enemy & projectiles
+  updateProjectiles(timestep, enemy);
+  enemy->update(timestep);
+  clientUpdateAttackPlayer(enemy);
+  animate(enemy);
+}
+
 void EnemyController::update(bool is_host, float timestep,
                              std::shared_ptr<EnemyModel> enemy,
                              std::vector<std::shared_ptr<Player>> _players,
                              int room_id) {
   if (!is_host) {
-    // Update enemy & projectiles
-    updateProjectiles(timestep, enemy);
-    enemy->update(timestep);
+    updateIfClient(timestep, enemy, room_id);
     return;
   }
 
@@ -119,7 +130,7 @@ void EnemyController::update(bool is_host, float timestep,
     moveBackToOriginalSpot(enemy);
     return;
   }
-
+  
   // Change state if applicable
   float distance =
       (enemy->getPosition()).subtract(min_player->getPosition()).length();
@@ -145,7 +156,7 @@ void EnemyController::update(bool is_host, float timestep,
   updateProjectiles(timestep, enemy);
   enemy->update(timestep);
 
-  animate(enemy, p);
+  animate(enemy);
 }
 
 void EnemyController::findWeights(std::shared_ptr<EnemyModel> enemy,

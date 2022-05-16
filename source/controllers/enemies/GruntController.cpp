@@ -14,29 +14,54 @@
 
 #pragma mark GruntController
 
-void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
-                                   cugl::Vec2 p) {
-  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
+void GruntController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
+  if (enemy->didAttack()) {
+    // Begin holding.
+    enemy->setAttackCooldown(STOP_ATTACK_FRAMES);
+    enemy->setAttack(false);
+  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+    // Whether the enemy is attacking
+    if (enemy->getAttackCooldown() == 0) {
+      // Attack done.
+      enemy->resetSensors();
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
+    }
     if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
-      enemy->setSensor(true);
+      // Begin actual dash.
+      enemy->setAttackingFilter();
       _sound_controller->playEnemySwing();
     }
-    if (enemy->getAttackCooldown() <= 0) {
-      std::uniform_int_distribution<int> dist(0.0f, 50.0f);
-      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
-      enemy->resetSensors();
-    } else {
-      cugl::Vec2 dir = enemy->_attack_dir;
-      dir.scale(3.5);
-      enemy->move(dir.x, dir.y);
-    }
-  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    enemy->reduceAttackCooldown(1);
+  }
+}
+
+void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
+                                   cugl::Vec2 p) {
+  if (enemy->getAttackCooldown() <= 0) {
+    // Just finished attack, reset attack cooldown.
+    std::uniform_int_distribution<int> dist(0.0f, 50.0f);
+    enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
+    enemy->resetSensors();
+  } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
+    // Currently attacking player.
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
+    dir.normalize();
+    dir.scale(3.5);
+    enemy->move(dir.x, dir.y);
+  } else if (enemy->getAttackCooldown() == ATTACK_FRAMES) {
+    // Begin attack.
+    enemy->setAttackingFilter();
+    _sound_controller->playEnemySwing();
+  } else if (enemy->getAttackCooldown() < STOP_ATTACK_FRAMES) {
+    // Stops in place to wind up attack.
     enemy->move(0, 0);
-    if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
-      enemy->_attack_dir = p - enemy->getPosition();
-      enemy->_attack_dir.normalize();
-    }
+  } else if (enemy->getAttackCooldown() == STOP_ATTACK_FRAMES) {
+    // Determine attack position.
+    enemy->setAttack(true);
+    enemy->setAttackDir(p);
   } else {
+    // Circle the player.
+    enemy->setAttackDir(p);
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
@@ -103,7 +128,7 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
                                     cugl::Vec2 p) {
   switch (enemy->getCurrentState()) {
     case EnemyModel::State::IDLE: {
-      idling(enemy);
+      idling(enemy, p);
       break;
     }
     case EnemyModel::State::CHASING: {
@@ -129,57 +154,46 @@ void GruntController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void GruntController::animate(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) {
+void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   auto node =
       std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  switch (enemy->getCurrentState()) {
-    case EnemyModel::State::ATTACKING: {
-      if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
-        // Play the next animation frame.
-        if (fc >= 4) {
-          enemy->_frame_count = 0;
-          node->setFrame(node->getFrame() + 1);
-        }
-        enemy->_frame_count++;
-      } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
-        // Depending on direction, set the frame.
-        float frame_angle = enemy->_attack_dir.getAngle();
-        if (frame_angle <= -M_PI / 2) {
-          node->setFrame(60);  // Bottom left
-        } else if (frame_angle <= 0) {
-          node->setFrame(40);  // Bottom right
-        } else if (frame_angle <= M_PI / 2) {
-          node->setFrame(30);  // Top right
-        } else {
-          node->setFrame(50);  // Top left
-        }
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
+    // Play the next animation frame for the dash attack.
+    if (fc >= 4) {
+      if (node->getFrame() + 1 < 69) {
         enemy->_frame_count = 0;
+        node->setFrame(node->getFrame() + 1);
       } else {
-        // Look at the direction of the player when circling
-        float direc_angle =
-            abs(cugl::Vec2(p - enemy->getPosition()).getAngle());
-        enemy->setFacingLeft(direc_angle > M_PI / 2);
         animateChase(enemy);
       }
-      break;
     }
-    case EnemyModel::State::WANDER:
-    case EnemyModel::State::MOVING_BACK:
-    case EnemyModel::State::CHASING: {
-      if (enemy->getVX() != 0) {
-        if (enemy->getVX() < 0 != enemy->getFacingLeft()) {
-          enemy->_frame_count = 0;
-          enemy->setFacingLeft(enemy->getVX() < 0);
-        }
-      }
+    enemy->_frame_count++;
+  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    // Hold in the first wind up attack frame depending on direction.
+    float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
+    if (frame_angle <= -M_PI / 2) {
+      node->setFrame(60);  // Bottom left
+    } else if (frame_angle <= 0) {
+      node->setFrame(40);  // Bottom right
+    } else if (frame_angle <= M_PI / 2) {
+      node->setFrame(30);  // Top right
+    } else {
+      node->setFrame(50);  // Top left
+    }
+    enemy->_frame_count = 0;
+  } else {
+    // Moving animation in all other cases.
+    float length = (enemy->getAttackDir() - enemy->getPosition()).length();
+    if (length <= MIN_DISTANCE) {
+      // Face left or right, depending on direction of player from grunt.
+      float direc_angle = abs((enemy->getAttackDir() - enemy->getPosition()).getAngle());
+      enemy->setFacingLeft(direc_angle > M_PI / 2);
       animateChase(enemy);
-      break;
-    }
-    default: {
+    } else {
+      // Idle
       node->setFrame(0);
       enemy->_frame_count = 0;
-      break;
     }
   }
 }
