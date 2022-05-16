@@ -26,7 +26,7 @@
 #define CAMERA_LARGEST_DIFF 200.0f
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
-#define ENERGY_BAR_UPDATE_SIZE 0.02f
+#define ENERGY_BAR_UPDATE_SIZE 0.01f
 /** Set cloud wrap x position based on width and scale of cloud layer **/
 #define CLOUD_WRAP -960
 
@@ -203,8 +203,12 @@ bool GameScene::init(
   role_text->setText(role_msg);
 
   _particle_world = cugl::scene2::SceneNode::alloc();
+  _particle_screen = cugl::scene2::SceneNode::alloc();
   _particle_world->setContentSize(dim);
-  _particle_controller = ParticleController::alloc(_particle_world);
+  _particle_screen->setContentSize(dim);
+  _particle_screen->setName("particle_screen");
+  _particle_controller =
+      ParticleController::alloc(_particle_world, _particle_screen);
   _player_controller->setParticleController(_particle_controller);
   _level_controller->setParticleController(_particle_controller);
 
@@ -225,6 +229,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
   _world_node->addChild(_particle_world);
+  cugl::Scene2::addChild(_particle_screen);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(energy_layer);
@@ -238,6 +243,19 @@ bool GameScene::init(
   InputController::get()->init(_assets, cugl::Scene2::getBounds(), is_betrayer);
 
   InputController::get()->pause();
+
+  _energy_particle = ParticleProps(ParticleProps::Type::PATH);
+  _energy_particle.setLifeTime(0.3f)
+      ->setScreenCoord(true)
+      ->setColorStart(cugl::Color4(158, 193, 222, 200))
+      ->setColorEnd(cugl::Color4(158, 193, 222, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunction(cugl::EasingFunction::quadInOut)
+      ->setPathVariation(100.f)
+      ->setOrder(true)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(5.0f, 5.0f);
 
   return true;
 }
@@ -345,13 +363,11 @@ void GameScene::update(float timestep) {
   float target_energy_amt =
       _player_controller->getMyPlayer()->getEnergy() / 100.0f;
   if (_energy_bar->getProgress() < target_energy_amt) {
-    (_energy_bar->setProgress(
-        std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                 target_energy_amt)));
+    float diff = _energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+    _energy_bar->setProgress(std::min(diff, target_energy_amt));
   } else if (_energy_bar->getProgress() > target_energy_amt) {
-    (_energy_bar->setProgress(
-        std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                 target_energy_amt)));
+    float diff = _energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+    _energy_bar->setProgress(std::max(diff, target_energy_amt));
   }
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
@@ -596,15 +612,33 @@ void GameScene::update(float timestep) {
         _world->removeObstacle(enemy.get());
         enemies.erase(it--);
 
+        // Send particles if there's things to send.
+        if (_player_controller->getMyPlayer()->getEnergy() < 100) {
+          cugl::Rect bounds = cugl::Scene2::getBounds();
+          _energy_particle.setPosStart(enemy->getNode()->getWorldPosition())
+              ->setPosEnd(bounds.size.width * 0.3f, bounds.size.height * 0.8f);
+          _particle_controller->emit(_energy_particle, 5, 0.03f);
+        }
+
+        // Update player eneregies.
         if (NetworkController::get()->isHost()) {
-          // Give all players in the same room some energy if an enemy dies.
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
             if (player->getRoomId() == room_id) {
+              // Give all players in the same room some energy if an enemy dies.
               player->setEnergy(player->getEnergy() + 5);
             }
           }
         }
+
+        if (NetworkController::get()->isHost()) {
+          _dead_enemy_cache.push_back(enemy->getEnemyId());
+        }
+        enemy->deleteAllProjectiles(_world, _world_node);
+        enemy->deactivatePhysics(*_world->getWorld());
+        room->getNode()->removeChild(enemy->getNode());
+        _world->removeObstacle(enemy.get());
+        enemies.erase(it--);
       } else {
         enemy->deleteProjectile(_world, _world_node);
       }

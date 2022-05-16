@@ -26,11 +26,11 @@ class ParticleProps {
  private:
   Type _type;
 
-  bool _force, _is_world_coord, _order;
+  bool _force, _is_screen_coord, _order;
   int _room_id;
 
   // Emit particle properties
-  cugl::Vec2 _position, _velocity, _velocity_variation;
+  cugl::Vec2 _position, _position_variation, _velocity, _velocity_variation;
 
   // Path particle properties
   cugl::Vec2 _pos_start, _pos_end;
@@ -38,7 +38,7 @@ class ParticleProps {
   std::function<float(float)> _easing;
 
   // Shared values between state
-  float _scale_start, _scale_end, _angular_speed, _life_time;
+  float _scale_start, _scale_end, _angular_speed, _life_time, _wait_time;
   float _clockwise;
   cugl::Color4 _color_start, _color_end;
 
@@ -50,7 +50,7 @@ class ParticleProps {
   ParticleProps(Type type)
       : _type(type),
         _force(true),
-        _is_world_coord(false),
+        _is_screen_coord(false),
         _order(false),
         _room_id(0),
         _scale_start(1.0f),
@@ -59,7 +59,7 @@ class ParticleProps {
         _angular_speed(1.0f),
         _clockwise(true),
         _path_variation(1.0f),
-        _easing(cugl::EasingFunction::linear),
+        _easing(nullptr),
         _color_start(cugl::Color4::WHITE),
         _color_end(cugl::Color4::WHITE) {}
 
@@ -81,13 +81,13 @@ class ParticleProps {
   bool getForce() const { return _force; }
 
   /**
-   * Set whether this particle will be drawn in world coordinates. World
+   * Set whether this particle will be drawn in screen coordinates. Screen
    * coordinates in this case are OpenGL coordinates.
-   * @param val Wether to draw in WorldCoords.
+   * @param val Wether to draw in screen coords.
    */
-  ParticleProps* setWorldCoord(bool val);
-  /** @return Whether this particle is drawn in WorldCoords */
-  bool isWorldCoord() const { return _is_world_coord; }
+  ParticleProps* setScreenCoord(bool val);
+  /** @return Whether this particle is drawn in screen coords */
+  bool isWorldCoord() const { return _is_screen_coord; }
 
   /**
    * Set if this particle should be given a priority for orderend rendering.
@@ -121,7 +121,7 @@ class ParticleProps {
    * Set the starting position of an EMIT particle. If this particle isn't an
    * EMIT type, this function will not do anything.
    * @param x The x value of the position.
-   * @param y The x value of the position.
+   * @param y The y value of the position.
    */
   ParticleProps* setPosition(float x, float y);
   /**
@@ -129,6 +129,27 @@ class ParticleProps {
    * @return The starting position.
    */
   cugl::Vec2 getPosition() const { return _position; }
+
+  /**
+   * Set the starting position variation of the particle. If it is an EMIT
+   * particle, it is only applied to the starting position. If it is a PATH
+   * particle, it is also applied to the end position.
+   * @param pos The vector position.
+   */
+  ParticleProps* setPositionVariation(const cugl::Vec2& var);
+  /**
+   * Set the starting position variation of the particle. If it is an EMIT
+   * particle, it is only applied to the starting position. If it is a PATH
+   * particle, it is also applied to the end position.
+   * @param var_x The x value of the position variation.
+   * @param var_y The y value of the position variation.
+   */
+  ParticleProps* setPositionVariation(float var_x, float var_y);
+  /**
+   * Get the starting position variation of the particle.
+   * @return The starting position variation.
+   */
+  cugl::Vec2 getPositionVariation() const { return _position_variation; }
 
   /**
    * Set the velocity of an EMIT particle. If this particle isn't an
@@ -178,7 +199,7 @@ class ParticleProps {
    * Set the starting position of an PATH particle. If this particle isn't an
    * PATH type, this function will not do anything.
    * @param x The x value of the position.
-   * @param y The x value of the position.
+   * @param y The y value of the position.
    */
   ParticleProps* setPosStart(float x, float y);
   /**
@@ -197,7 +218,7 @@ class ParticleProps {
    * Set the ending position of an PATH particle. If this particle isn't an
    * PATH type, this function will not do anything.
    * @param x The x value of the position.
-   * @param y The x value of the position.
+   * @param y The y value of the position.
    */
   ParticleProps* setPosEnd(float x, float y);
   /**
@@ -263,6 +284,17 @@ class ParticleProps {
    * @return The lifetime in seconds.
    */
   float getLifeTime() const { return _life_time; }
+
+  /**
+   * Set the wait time of the particle in seconds.
+   * @param wait_time The wait time in seconds.
+   */
+  ParticleProps* setWaitTime(float wait_time);
+  /**
+   * Get the wait time of the particle in seconds.
+   * @return The wait time in seconds.
+   */
+  float getWaitTime() const { return _wait_time; }
 
   /**
    * Set the starting color of the particle.
@@ -335,7 +367,9 @@ class ParticleController : public Controller {
     /** The node for displaying the particle. */
     std::shared_ptr<cugl::scene2::PolygonNode> node = nullptr;
     /** The life remaining in the particle. */
-    float life_remaining = 1.0f;
+    float life_remaining = 0.0f;
+    /** The wait remaining in the particle. */
+    float wait_remaining = 0.0f;
     /** Weather the particle is active. */
     bool active = false;
     /** The distance from the path, used by PATH particles.*/
@@ -346,18 +380,31 @@ class ParticleController : public Controller {
   /** A reference to the scene2 world for particles.*/
   std::shared_ptr<cugl::scene2::SceneNode> _particle_world;
 
-  /** A pool of all the particles. */
+  /** A reference to the scene2 screen for particles.*/
+  std::shared_ptr<cugl::scene2::SceneNode> _particle_screen;
+
+  /**
+   * A pool of all the particles.
+   * [ World Particles | Screen Particles]
+   * */
   std::vector<Particle> _particle_pool;
 
-  /** The max number of particles on screen. */
-  const int kMaxNumOfParticles = 1000;
+  /** The max number of particles in world. */
+  const int kMaxNumOfParticles = 800;
+  /** The max number of particles in screen. */
+  const int kMaxNumOfParticlesScreen = 200;
 
   /** The current pool index. */
   int _pool_index;
 
+  /** The current pool index screen. */
+  int _pool_index_screen;
+
  public:
   /** Construct an empty particle controller, use alloc instead */
-  ParticleController() : _pool_index(kMaxNumOfParticles - 1) {}
+  ParticleController()
+      : _pool_index(kMaxNumOfParticles - 1),
+        _pool_index_screen(kMaxNumOfParticlesScreen + kMaxNumOfParticles - 1) {}
   /** Destroy the particle controller */
   ~ParticleController() { dispose(); }
 
@@ -365,8 +412,10 @@ class ParticleController : public Controller {
    * Initialize the particle controller with the given particle world scene2
    * node.
    * @param particle_world The world to draw particles to.
+   * @param particle_screen The screen to draw particles to.
    */
-  bool init(const std::shared_ptr<cugl::scene2::SceneNode>& particle_world);
+  bool init(const std::shared_ptr<cugl::scene2::SceneNode>& particle_world,
+            const std::shared_ptr<cugl::scene2::SceneNode>& particle_screen);
 
   /** Dispose of all internal resources/references in the class. */
   void dispose() override;
@@ -374,12 +423,14 @@ class ParticleController : public Controller {
   /**
    * Allocate a new particle controller in a shared_ptr.
    * @param particle_world The world to draw particles to.
+   * @param particle_screen The screen to draw particles to.
    * @return A shared pointer holding the new ParticleController.
    */
   static std::shared_ptr<ParticleController> alloc(
-      const std::shared_ptr<cugl::scene2::SceneNode>& particle_world) {
+      const std::shared_ptr<cugl::scene2::SceneNode>& particle_world,
+      const std::shared_ptr<cugl::scene2::SceneNode>& particle_screen) {
     auto res = std::make_shared<ParticleController>();
-    return (res->init(particle_world)) ? res : nullptr;
+    return (res->init(particle_world, particle_screen)) ? res : nullptr;
   }
 
   /**
@@ -391,15 +442,10 @@ class ParticleController : public Controller {
   /**
    * Emit one particle with the given props.
    * @param props The particle props to define the particle.
-   */
-  void emit(const ParticleProps& props) { emit(1, props); }
-
-  /**
-   * Emit multiple particle with the given props.
    * @param num The number of particles to emit.
-   * @param props The particle props to define the particle.
+   * @param buff_time The time in seconds between emits.
    */
-  void emit(int num, const ParticleProps& props);
+  void emit(const ParticleProps& props, int num = 1, float buff_time = 0.0f);
 
   /**
    * Get the pool of particles.

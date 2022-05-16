@@ -46,8 +46,10 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
-  /** Reference to the particle root of the scene graph. */
+  /** Reference to the particle root in world of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _particle_world;
+  /** Reference to the particle root in screen of the scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _particle_screen;
 
   /** Reference to the debug root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
@@ -132,6 +134,9 @@ class GameScene : public cugl::Scene2 {
   cugl::Timestamp _time_of_last_player_other_info_update;
   /** If the has sent play basic_info to all clients. */
   bool _has_sent_player_basic_info;
+
+  /** Energy particle for when enemies die. */
+  ParticleProps _energy_particle;
 
  public:
   GameScene() : cugl::Scene2() {}

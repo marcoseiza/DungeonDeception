@@ -10,8 +10,8 @@ ParticleProps* ParticleProps::setForce(bool force) {
   return this;
 }
 
-ParticleProps* ParticleProps::setWorldCoord(bool val) {
-  _is_world_coord = val;
+ParticleProps* ParticleProps::setScreenCoord(bool val) {
+  _is_screen_coord = val;
   return this;
 }
 
@@ -35,6 +35,16 @@ ParticleProps* ParticleProps::setPosition(float x, float y) {
   if (_type == EMIT) _position.set(x, y);
   return this;
 };
+
+ParticleProps* ParticleProps::setPositionVariation(const cugl::Vec2& var) {
+  _position_variation.set(var);
+  return this;
+}
+
+ParticleProps* ParticleProps::setPositionVariation(float var_x, float var_y) {
+  _position_variation.set(var_x, var_y);
+  return this;
+}
 
 ParticleProps* ParticleProps::setVelocity(const cugl::Vec2& vel) {
   if (_type == EMIT) _velocity.set(vel);
@@ -104,6 +114,11 @@ ParticleProps* ParticleProps::setLifeTime(float life_time) {
   return this;
 }
 
+ParticleProps* ParticleProps::setWaitTime(float wait_time) {
+  _wait_time = wait_time;
+  return this;
+}
+
 #pragma mark Color
 ParticleProps* ParticleProps::setColorStart(const cugl::Color4& color) {
   _color_start = color;
@@ -135,18 +150,32 @@ ParticleProps* ParticleProps::setRotateClockwise(bool clockwise) {
 #pragma mark Particle Controller
 
 bool ParticleController::init(
-    const std::shared_ptr<cugl::scene2::SceneNode>& particle_world) {
+    const std::shared_ptr<cugl::scene2::SceneNode>& particle_world,
+    const std::shared_ptr<cugl::scene2::SceneNode>& particle_screen) {
   _particle_world = particle_world;
+  _particle_screen = particle_screen;
 
-  _particle_pool.resize(kMaxNumOfParticles);
+  _particle_pool.resize(kMaxNumOfParticles + kMaxNumOfParticlesScreen);
 
   // Add children backwards to render oldest first.
-  for (int i = (int)_particle_pool.size() - 1; i >= 0; i--) {
+  for (int i = kMaxNumOfParticles - 1; i >= 0; i--) {
     using namespace cugl;
     Particle& particle = _particle_pool[i];
     particle.node = scene2::PolygonNode::allocWithPoly(Rect(0, 0, 1, 1));
     particle.node->setVisible(false);
+    particle.active = false;
     _particle_world->addChild(particle.node);
+  }
+
+  // Add children backwards to render oldest first.
+  for (int i = (int)_particle_pool.size() - 1; i >= kMaxNumOfParticles; i--) {
+    using namespace cugl;
+    Particle& particle = _particle_pool[i];
+    particle.node = scene2::PolygonNode::allocWithPoly(Rect(0, 0, 1, 1));
+    particle.node->setVisible(true);
+    particle.active = false;
+    particle.node->setPosition(_particle_screen->getContentSize() / 2);
+    _particle_screen->addChild(particle.node);
   }
 
   return true;
@@ -159,17 +188,25 @@ void ParticleController::dispose() {
 
 void ParticleController::update(float timestep) {
   for (Particle& particle : _particle_pool) {
-    if (!particle.active) {
+    if (!particle.active) continue;
+
+    if (particle.wait_remaining > 0) {
+      particle.wait_remaining -= timestep;
+      continue;
+    }
+
+    if (particle.life_remaining <= 0) {
+      particle.active = false;
       particle.node->setVisible(false);
       continue;
     }
-    particle.active = (particle.life_remaining > 0);
+
     particle.life_remaining -= timestep;
     float life = 1.0f - particle.life_remaining / particle.props._life_time;
 
     if (particle.props._type == ParticleProps::Type::EMIT) {
-      particle.node->setPosition(particle.node->getPosition() +
-                                 particle.props._velocity * timestep);
+      cugl::Vec2 diff = particle.props._velocity * timestep;
+      particle.node->setPosition(particle.node->getPosition() + diff);
 
     } else if (particle.props._type == ParticleProps::Type::PATH) {
       float a = particle.props._easing(life);
@@ -189,10 +226,7 @@ void ParticleController::update(float timestep) {
       particle.dist_from_path +=
           (perp * diff * timestep) * (Random::Float() - a);
 
-      cugl::Vec2 pos = path_pos + particle.dist_from_path;
-      if (particle.props._is_world_coord)
-        pos = particle.node->nodeToWorldCoords(pos);
-      particle.node->setPosition(pos);
+      particle.node->setPosition(path_pos + particle.dist_from_path);
     }
 
     particle.node->setAngle(particle.node->getAngle() +
@@ -206,34 +240,55 @@ void ParticleController::update(float timestep) {
   }
 }
 
-void ParticleController::emit(int num, const ParticleProps& props) {
+void ParticleController::emit(const ParticleProps& props, int num,
+                              float buff_time) {
   for (int i = 0; i < num; i++) {
-    Particle& particle = _particle_pool[_pool_index];
-    if (!props._force && particle.active) return;
-
-    particle.props = ParticleProps(props);
-    particle.active = true;
-    particle.node->setVisible(true);
-    particle.life_remaining = props._life_time;
-
-    if (props._type == ParticleProps::Type::EMIT) {
-      cugl::Vec2 pos = props._position;
-      if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
-      particle.node->setPosition(pos);
-
-      particle.props._velocity +=
-          particle.props._velocity_variation *
-          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
-    } else if (props._type == ParticleProps::Type::PATH) {
-      cugl::Vec2 pos = props._pos_start;
-      if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
-      particle.node->setPosition(pos);
+    Particle* particle = &_particle_pool[_pool_index];
+    if (props._is_screen_coord) {
+      particle = &_particle_pool[_pool_index_screen];
     }
 
-    particle.node->setColor(props._color_start);
-    particle.node->setScale(props._scale_start);
-    particle.node->setPriority(-0.9);
+    if (!props._force && particle->active) {
+      return;
+    }
 
-    _pool_index = --_pool_index % _particle_pool.size();
+    if (props._is_screen_coord) {
+      _pool_index_screen = --_pool_index_screen;
+      if (_pool_index_screen == kMaxNumOfParticles - 1)
+        _pool_index_screen = (int)_particle_pool.size() - 1;
+    } else {
+      _pool_index = --_pool_index;
+      if (_pool_index == -1) _pool_index = kMaxNumOfParticles - 1;
+    }
+
+    particle->props = props;
+    particle->active = true;
+    particle->node->setVisible(true);
+    particle->life_remaining = props._life_time;
+    particle->wait_remaining = props._wait_time + (buff_time * i);
+
+    if (props._type == ParticleProps::Type::EMIT) {
+      particle->props._position +=
+          particle->props._position_variation *
+          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
+      particle->node->setPosition(props._position);
+
+      particle->props._velocity +=
+          particle->props._velocity_variation *
+          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
+    } else if (props._type == ParticleProps::Type::PATH) {
+      particle->props._pos_start +=
+          particle->props._position_variation *
+          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
+      particle->props._pos_end +=
+          particle->props._position_variation *
+          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
+
+      particle->node->setPosition(props._pos_start);
+    }
+
+    particle->node->setColor(props._color_start);
+    particle->node->setScale(props._scale_start);
+    if (!props._is_screen_coord) particle->node->setPriority(-0.9);
   }
 }

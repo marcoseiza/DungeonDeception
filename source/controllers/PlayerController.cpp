@@ -95,7 +95,7 @@ void PlayerController::update(float timestep) {
       _grass_particle.setPosition(it.second->getPosition());
       _grass_particle.setVelocity(it.second->getLinearVelocity() * 0.08f);
       _grass_particle.setRoomId(it.second->getRoomId());
-      _particle_controller->emit(4, _grass_particle);
+      _particle_controller->emit(_grass_particle, 4);
     }
 
     if (it.second->isHit()) _sound_controller->playPlayerHit();
