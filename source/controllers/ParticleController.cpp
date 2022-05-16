@@ -88,13 +88,13 @@ ParticleProps* ParticleProps::setEasingFunction(
 }
 
 #pragma mark Scale
-ParticleProps* ParticleProps::setSizeStart(float scale) {
-  _scale_start = scale;
+ParticleProps* ParticleProps::setSizeStart(float size) {
+  _scale_start = size;
   return this;
 }
 
-ParticleProps* ParticleProps::setSizeEnd(float scale) {
-  _scale_end = scale;
+ParticleProps* ParticleProps::setSizeEnd(float size) {
+  _scale_end = size;
   return this;
 }
 
