@@ -6,6 +6,7 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
+#include "../controllers/ParticleController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/SoundController.h"
 #include "../controllers/TerminalController.h"
@@ -69,6 +70,9 @@ class GameScene : public cugl::Scene2 {
   std::shared_ptr<TankController> _tank_controller;
   /** The turtle controller for the game. */
   std::shared_ptr<TurtleController> _turtle_controller;
+
+  /** A reference to the particle controller. */
+  std::shared_ptr<ParticleController> _particle_controller;
 
   /** The level controller for the game*/
   std::shared_ptr<LevelController> _level_controller;

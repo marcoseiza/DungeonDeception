@@ -202,6 +202,10 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
+  auto particle_world = cugl::scene2::OrderedNode::allocWithOrder(
+      cugl::scene2::OrderedNode::Order::ASCEND);
+  _particle_controller = ParticleController::alloc(particle_world);
+
   _controllers.push_back(_player_controller->getHook());
   _controllers.push_back(_terminal_controller->getHook());
   _controllers.push_back(_level_controller->getHook());
