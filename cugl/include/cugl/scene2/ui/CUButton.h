@@ -46,6 +46,7 @@
 //
 #ifndef __CU_BUTTON_H__
 #define __CU_BUTTON_H__
+#include <cugl/audio/cu_audio.h>
 #include <cugl/assets/CUJsonValue.h>
 #include <cugl/scene2/graph/CUSceneNode.h>
 #include <cugl/scene2/graph/CUPolygonNode.h>
@@ -112,11 +113,22 @@ public:
      */
     typedef std::function<void(const std::string& name, bool down)> Listener;
 
+     /** The default click sound for buttons. */
+    static std::shared_ptr<cugl::Sound> DEFAULT_CLICK_SOUND;
+
 protected:
     /** Whether or not the button is currently down */
     bool _down;
     /** Whether or not the button is a toggle switch */
     bool _toggle;
+
+    /** The click sound for this button. */
+    std::shared_ptr<cugl::Sound> _click_sound;
+    /** Wether to play the click sound.  */
+    bool _play_click_sound;
+    /** Wether or not to play the click sound when the button is down. 
+     * Alternatively, play when button is released. */
+    bool _play_click_sound_on_down;
 
     /** The node representing the button when it is up (cannot be null) */
     std::shared_ptr<SceneNode> _upnode;
@@ -248,6 +260,14 @@ public:
      *      "down":     A string referencing the name of a child node OR
      *                  a 4-element integer array with values from 0..255
      *      "pushable": An even array of polygon vertices (numbers)
+     *      "click-sound": 
+     *                  A string reference to the sound effect name in the asset
+     *                  folder
+     *      "play-click-sound": 
+     *                  A boolean to define whether the click sound should be played
+     *      "play-click-sound-on-down": 
+     *                  A boolean to define wether the click sound 
+     *                  should be played when the button is down or released.
      *
      * The attribute 'up' is REQUIRED.  All other attributes are optional.
      *
@@ -419,6 +439,49 @@ public:
      * @return The touch ids.
      */
     std::unordered_set<Sint64> getTouchIds() { return _touch_ids; }
+
+    /**
+     * Set the button click sound.
+     * @param sound The button click sound.
+     */
+    void setClickSound(const std::shared_ptr<cugl::Sound>& sound) { _click_sound = sound; }
+
+
+    /**
+     * Get the button click sound
+     * @return The button click sound.
+     */
+    std::shared_ptr<cugl::Sound> getClickSound() { return _click_sound; }
+
+    /**
+     * Set whether the button should play a click sound.
+     * @param play Wether to play the click sound.
+     */
+    void setPlayClickSound(bool play) { _play_click_sound = play; }
+
+
+    /**
+     * Get whether the button should play a click sound.
+     * @return Wether to play the click sound.
+     */
+    bool getPlayClickSound() { return _play_click_sound; }
+
+    /**
+     * Set whether the button should play a click sound on the down state. 
+     * If set to false, the click sound will play on the up (release) state.
+     * 
+     * @param down To play when down.
+     */
+    void setPlayClickSoundOnDown(bool down) { _play_click_sound_on_down = down; }
+
+
+    /**
+     * Get whether the button should play a click sound on the down state. 
+     * If set to false, the click sound will play on the up (release) state.
+     * 
+     * @return If the sound will play on button down.
+     */
+    bool getPlayClickSoundOnDown() { return _play_click_sound_on_down; }
     
 #pragma mark Button State
     /**

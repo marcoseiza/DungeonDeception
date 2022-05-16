@@ -194,7 +194,8 @@
         "data": {
           "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1
+          "scale": 1,
+          "play-click-sound-on-down": false
         },
         "layout": {
           "x_anchor": "right",
@@ -221,7 +222,8 @@
         "data": {
           "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1
+          "scale": 1,
+          "play-click-sound-on-down": false
         },
         "layout": {
           "x_anchor": "right",
@@ -261,7 +263,8 @@
         "data": {
           "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1
+          "scale": 1,
+          "play-click-sound": false
         },
         "layout": {
           "x_anchor": "right",
@@ -285,7 +288,8 @@
         "data": {
           "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1
+          "scale": 1,
+          "play-click-sound": false
         },
         "layout": {
           "x_anchor": "right",

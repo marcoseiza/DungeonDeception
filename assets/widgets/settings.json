@@ -96,7 +96,8 @@
                             "size": [400, 133],
                             "color": "#efebe3",
                             "font": "pixelmix_extra_large",
-                            "texture": "button_white"
+                            "texture": "button_white",
+                            "play-click-sound-on-down": false
                           }
                         }
                       }
@@ -174,7 +175,8 @@
                             "size": [400, 133],
                             "color": "#A65454",
                             "font": "pixelmix_extra_large",
-                            "texture": "button_white"
+                            "texture": "button_white",
+                            "play-click-sound-on-down": false
                           }
                         }
                       }
@@ -204,7 +206,8 @@
                             "size": [250, 133],
                             "color": "#4C7953",
                             "font": "pixelmix_extra_large",
-                            "texture": "button_white"
+                            "texture": "button_white",
+                            "play-click-sound-on-down": false
                           }
                         }
                       }
@@ -234,7 +237,8 @@
                             "size": [250, 133],
                             "color": "#A65454",
                             "font": "pixelmix_extra_large",
-                            "texture": "button_white"
+                            "texture": "button_white",
+                            "play-click-sound-on-down": false
                           }
                         }
                       }

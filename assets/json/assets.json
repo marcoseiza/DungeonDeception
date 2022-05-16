@@ -663,6 +663,12 @@
     }
   },
   "sounds": {
+    "button-click": {
+      "type": "sample",
+      "file": "sounds/sfx_menu_click.wav",
+      "stream": true,
+      "volume": 0.4
+    },
     "music-main": {
       "type": "sample",
       "file": "sounds/music-main.ogg",

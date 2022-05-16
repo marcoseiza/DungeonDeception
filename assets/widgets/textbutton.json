@@ -2,6 +2,9 @@
     "variables": {
         "size": ["data", "size"],
         "anchor": ["data", "anchor"],
+        "click-sound": ["data", "click-sound"],
+        "play-click-sound": ["data", "play-click-sound"],
+        "play-click-sound-on-down": ["data", "play-click-sound-on-down"],
         "text": ["children", "up", "children", "label", "data", "text"],
         "font": ["children", "up", "children", "label", "data", "font"],
         "color": ["children", "up", "children", "patch", "data", "color"],
@@ -16,7 +19,10 @@
         "data": {
             "upnode": "up",
             "anchor": [0.5, 0.5],
-            "size": [300, 75]
+            "size": [300, 75],
+            "click-sound": "",
+            "play-click-sound": true,
+            "play-click-sound-on-down": false
         },
         "children": {
             "up": {

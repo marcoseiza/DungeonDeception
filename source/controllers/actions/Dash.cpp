@@ -21,6 +21,7 @@ bool Dash::init(const std::shared_ptr<cugl::AssetManager> &assets,
       assets->get<cugl::Texture>("dash"), 5, 6, DASH_ANIM_LIMIT);
   _button_node->setFrame(0);
   _button = cugl::scene2::Button::alloc(_button_node);
+  _button->setPlayClickSound(false);
 
   assets->get<cugl::scene2::SceneNode>("ui-scene_dash")->addChild(_button);
 
