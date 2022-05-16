@@ -15,10 +15,8 @@ void EnemyInfo::serialize(cugl::NetworkSerializer* serializer) {
 
   serializer->writeBool(has_target);
 
-  if (has_target) {
-    serializer->writeDouble(target.x);
-    serializer->writeDouble(target.y);
-  }
+  serializer->writeDouble(target.x);
+  serializer->writeDouble(target.y);
 }
 
 void EnemyInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
@@ -26,10 +24,8 @@ void EnemyInfo::deserialize(cugl::NetworkDeserializer* deserializer) {
   pos.x = std::get<double>(deserializer->read());
   pos.y = std::get<double>(deserializer->read());
   has_target = std::get<bool>(deserializer->read());
-  if (has_target) {
-    target.x = std::get<double>(deserializer->read());
-    target.y = std::get<double>(deserializer->read());
-  }
+  target.x = std::get<double>(deserializer->read());
+  target.y = std::get<double>(deserializer->read());
 }
 
 #pragma mark -
