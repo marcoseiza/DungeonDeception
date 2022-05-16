@@ -919,7 +919,7 @@ void GameScene::processData(
         if (info->direction != -1) enemy->knockback(info->direction);
 
         auto player = _player_controller->getPlayer(info->player_id);
-        player->setEnergy(player->getEnergy() + 0.3f);
+        player->setEnergy(player->getEnergy() + 0.8f);
       }
     } break;
 
