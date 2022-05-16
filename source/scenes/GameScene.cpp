@@ -471,11 +471,13 @@ void GameScene::update(float timestep) {
         _level_controller->getLevelModel()->getRoom(room_id_to_update);
     updateEnemies(timestep, room_to_update);
   }
-  
+
   // Also update the adjacent room enemies if is host.
-  // Must check here or weird interactions occur with clients updating adjacent rooms.
+  // Must check here or weird interactions occur with clients updating adjacent
+  // rooms.
   if (_ishost) {
-    std::unordered_set<int> adj_enemy_update_rooms = getAdjacentRoomIdsWithoutPlayers();
+    std::unordered_set<int> adj_enemy_update_rooms =
+        getAdjacentRoomIdsWithoutPlayers();
     for (auto room_id_to_update : adj_enemy_update_rooms) {
       auto room_to_update =
           _level_controller->getLevelModel()->getRoom(room_id_to_update);
@@ -917,7 +919,7 @@ void GameScene::processData(
         if (info->direction != -1) enemy->knockback(info->direction);
 
         auto player = _player_controller->getPlayer(info->player_id);
-        player->setEnergy(player->getEnergy() + 1);
+        player->setEnergy(player->getEnergy() + 0.3f);
       }
     } break;
 

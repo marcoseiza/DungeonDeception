@@ -62,10 +62,10 @@ class Player : public cugl::physics2::CapsuleObstacle {
   bool _can_corrupt;
 
   /** Player energy. */
-  int _energy;
+  float _energy;
 
   /** Amount of player energy that has been corrupted. */
-  int _corrupted_energy;
+  float _corrupted_energy;
 
   /** Force to be applied to the player. */
   cugl::Vec2 _force;
@@ -208,14 +208,14 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @return the current energy.
    */
-  int getEnergy() const { return _energy; }
+  float getEnergy() const { return _energy; }
 
   /**
    * Sets the current player's energy.
    *
    * @param value The current player energy.
    */
-  void setEnergy(int value) {
+  void setEnergy(float value) {
     if (value <= 100) _energy = value;
   }
 
@@ -224,14 +224,14 @@ class Player : public cugl::physics2::CapsuleObstacle {
    *
    * @return the current energy.
    */
-  int getCorruptedEnergy() const { return _corrupted_energy; }
+  float getCorruptedEnergy() const { return _corrupted_energy; }
 
   /**
    * Turns regular energy into corrupted energy.
    *
    * @param value The amount of energy to be corrupted.
    */
-  void turnEnergyCorrupted(int value) {
+  void turnEnergyCorrupted(float value) {
     _corrupted_energy += std::min(value, _energy);
   }
 
@@ -239,7 +239,7 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * Manually set the corruption value.
    * @param value The value that is corrupted.
    */
-  void setCorruptedEnergy(int value) {
+  void setCorruptedEnergy(float value) {
     if (value <= 100) _corrupted_energy = value;
   }
 
