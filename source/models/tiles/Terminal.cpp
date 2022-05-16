@@ -7,8 +7,8 @@ bool Terminal::initWithData(const cugl::Scene2Loader* loader,
     return false;
   }
 
-  if (!data) return BasicTile::init();
-  if (!BasicTile::initWithData(loader, data)) return false;
+  if (!data) return Wall::init();
+  if (!Wall::initWithData(loader, data)) return false;
 
   const cugl::AssetManager* assets = loader->getManager();
 
@@ -16,20 +16,21 @@ bool Terminal::initWithData(const cugl::Scene2Loader* loader,
   _corr = assets->get<cugl::Texture>(data->getString("texture-corrupted", ""));
 
   _reg = _texture;
+
   return true;
 }
 
-std::shared_ptr<TerminalSensor> Terminal::initBox2d() {
+std::shared_ptr<TerminalSensor> Terminal::initSensor() {
   cugl::Vec2 pos = getWorldPosition() - getPosition() + getSize() / 2.0f;
   pos.y -= getSize().height / 4.0f;
 
-  _obstacle = TerminalSensor::alloc(pos, getSize());
+  _terminal_sensor = TerminalSensor::alloc(pos, getSize());
 
-  if (_obstacle != nullptr) {
-    _obstacle->setPosition(pos);
-    _obstacle->setName(_classname.c_str());
-    _obstacle->setBodyType(b2BodyType::b2_staticBody);
+  if (_terminal_sensor != nullptr) {
+    _terminal_sensor->setPosition(pos);
+    _terminal_sensor->setName(_classname.c_str());
+    _terminal_sensor->setBodyType(b2BodyType::b2_staticBody);
   }
 
-  return _obstacle;
+  return _terminal_sensor;
 }

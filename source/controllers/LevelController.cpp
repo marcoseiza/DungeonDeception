@@ -44,7 +44,7 @@ void LevelController::update(float timestep) {
     if (body != nullptr) {
       float rel_player_y =
           body->GetPosition().y - room->getNode()->getPosition().y;
-      float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y);
+      float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
       player->getPlayerNode()->setPriority(room->getGridSize().height - row);
     }
   }
@@ -59,7 +59,7 @@ void LevelController::update(float timestep) {
       if (enemy_body != nullptr) {
         float rel_enemy_y =
             enemy_body->GetPosition().y - current->getNode()->getPosition().y;
-        float row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y);
+        float row = rel_enemy_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
         enemy->getNode()->setPriority(current->getGridSize().height - row);
 
         for (std::shared_ptr<Projectile> projectile : enemy->getProjectiles()) {
@@ -68,7 +68,7 @@ void LevelController::update(float timestep) {
           }
           float rel_projectile_y = projectile->getBody()->GetPosition().y -
                                    current->getNode()->getPosition().y;
-          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y);
+          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
           player->getPlayerNode()->setPriority(current->getGridSize().height -
                                                row);
         }

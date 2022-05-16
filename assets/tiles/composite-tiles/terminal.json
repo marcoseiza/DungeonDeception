@@ -8,7 +8,8 @@
       "type": "Anchored"
     },
     "data": {
-      "anchor": [0, 0]
+      "anchor": [0, 0],
+      "size": [48, 48]
     },
     "layout": {
       "x_anchor": "left",
@@ -18,22 +19,28 @@
       "tile": {
         "type": "Terminal",
         "data": {
-          "texture": "tile-generator-radius",
-          "anchor": [0.5, 0.5],
+          "texture": "tile-generator",
+          "anchor": [0, 0],
           "priority": 0,
-          "texture-activated": "tile-generator-radius-activated",
-          "texture-corrupted": "tile-generator-radius-corrupted"
+          "texture-activated": "tile-generator-activated",
+          "texture-corrupted": "tile-generator-corrupted",
+          "obstacle": [7, 7, 40, 7, 40, 38, 7, 38]
+        },
+        "layout": {
+          "x_anchor": "bottom",
+          "y_anchor": "left"
+        }
+      },
+      "floor": {
+        "type": "BasicTile",
+        "data": {
+          "texture": "tile-generator-bottom",
+          "anchor": [0.5, 0.5],
+          "priority": -0.9
         },
         "layout": {
           "x_anchor": "center",
           "y_anchor": "middle"
-        }
-      },
-      "floor": {
-        "type": "Widget",
-        "data": {
-          "key": "tile-1",
-          "variables": {}
         }
       }
     }

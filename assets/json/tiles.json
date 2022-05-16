@@ -302,22 +302,29 @@
       "minfilter": "nearest",
       "magfilter": "nearest"
     },
-    "tile-generator-radius": {
-      "file": "textures/generator_radius.png",
+    "tile-generator": {
+      "file": "textures/tile-objects/generator.png",
       "wrapS": "clamp",
       "wrapT": "clamp",
       "minfilter": "nearest",
       "magfilter": "nearest"
     },
-    "tile-generator-radius-activated": {
-      "file": "textures/generator_radius_full.png",
+    "tile-generator-activated": {
+      "file": "textures/tile-objects/generator_activated.png",
       "wrapS": "clamp",
       "wrapT": "clamp",
       "minfilter": "nearest",
       "magfilter": "nearest"
     },
-    "tile-generator-radius-corrupted": {
-      "file": "textures/generator_radius_corrupted.png",
+    "tile-generator-corrupted": {
+      "file": "textures/tile-objects/generator_corrupted.png",
+      "wrapS": "clamp",
+      "wrapT": "clamp",
+      "minfilter": "nearest",
+      "magfilter": "nearest"
+    },
+    "tile-generator-bottom": {
+      "file": "textures/tile-objects/generator_bottom.png",
       "wrapS": "clamp",
       "wrapT": "clamp",
       "minfilter": "nearest",
