@@ -18,13 +18,15 @@
       "tile": {
         "type": "Terminal",
         "data": {
-          "texture": "tile-set_63",
-          "anchor": [0, 0],
-          "priority": 0
+          "texture": "tile-generator-radius",
+          "anchor": [0.5, 0.5],
+          "priority": 0,
+          "texture-activated": "tile-generator-radius-activated",
+          "texture-corrupted": "tile-generator-radius-corrupted"
         },
         "layout": {
-          "x_anchor": "left",
-          "y_anchor": "bottom"
+          "x_anchor": "center",
+          "y_anchor": "middle"
         }
       },
       "floor": {

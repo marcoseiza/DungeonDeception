@@ -8,7 +8,15 @@ bool Terminal::initWithData(const cugl::Scene2Loader* loader,
   }
 
   if (!data) return BasicTile::init();
-  return BasicTile::initWithData(loader, data);
+  if (!BasicTile::initWithData(loader, data)) return false;
+
+  const cugl::AssetManager* assets = loader->getManager();
+
+  _actv = assets->get<cugl::Texture>(data->getString("texture-activated", ""));
+  _corr = assets->get<cugl::Texture>(data->getString("texture-corrupted", ""));
+
+  _reg = _texture;
+  return true;
 }
 
 std::shared_ptr<TerminalSensor> Terminal::initBox2d() {

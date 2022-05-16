@@ -15,6 +15,14 @@ class Terminal : public BasicTile {
   /** A reference to the physics object of the tile. */
   std::shared_ptr<TerminalSensor> _obstacle;
 
+  /** A terminal radius texture when the terminal is neither activated nor
+   * corrupted. */
+  std::shared_ptr<cugl::Texture> _reg;
+  /** A terminal radius texture when the terminal is activated. */
+  std::shared_ptr<cugl::Texture> _actv;
+  /** A terminal radius texture when the terminal is corrupted. */
+  std::shared_ptr<cugl::Texture> _corr;
+
  public:
   /**
    * Creates an empty scene graph node with the degenerate texture.
@@ -98,6 +106,27 @@ class Terminal : public BasicTile {
    * @return Returns the physics object for the tile.
    */
   std::shared_ptr<TerminalSensor> getObstacle() { return _obstacle; }
+
+  /**
+   * Set the terminal to the activated state.
+   */
+  void setActivated() {
+    if (_actv != nullptr) setTexture(_actv);
+  }
+
+  /**
+   * Set the terminal to the corrupted state.
+   */
+  void setCorrupted() {
+    if (_corr != nullptr) setTexture(_corr);
+  }
+
+  /**
+   * Set the terminal to the neutral state.
+   */
+  void setRegular() {
+    if (_reg != nullptr) setTexture(_reg);
+  }
 };
 
 #endif  // MODELS_TILES_TERMINAL_H_#pragma once

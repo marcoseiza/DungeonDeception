@@ -3,7 +3,7 @@
 #include "tiles/Terminal.h"
 #include "tiles/TileHelper.h"
 
-#define SPACE_BETWEEN_BAR_AND_TERMINAL 4
+#define SPACE_BETWEEN_BAR_AND_TERMINAL 10
 #define SPACE_BETWEEN_BARS 5
 
 bool RoomModel::init(const std::shared_ptr<cugl::scene2::SceneNode>& node,
@@ -62,9 +62,23 @@ void RoomModel::dispose() { _node = nullptr; }
 void RoomModel::setEnergy(int energy) {
   _energy = energy;
   _reg_bar->setProgress(_energy / 100.0f);
+
+  if (_energy >= _energy_to_activate) {
+    auto terminals = TileHelper::getTile<Terminal>(_node);
+    if (terminals.size() != 1) return;
+    auto terminal = terminals[0];
+    terminal->setActivated();
+  }
 }
 
 void RoomModel::setCorruptedEnergy(int energy) {
   _corrupted_energy = energy;
   _cor_bar->setProgress(_corrupted_energy / 100.0f);
+
+  if (_corrupted_energy >= _corrupted_energy_to_activate) {
+    auto terminals = TileHelper::getTile<Terminal>(_node);
+    if (terminals.size() != 1) return;
+    auto terminal = terminals[0];
+    terminal->setCorrupted();
+  }
 }

@@ -105,13 +105,6 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "terminal-activated": {
-      "file": "textures/terminal-activated.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
     "projectile-red-large": {
       "file": "textures/projectile-red-large.png",
       "minfilter": "nearest",
