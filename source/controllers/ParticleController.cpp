@@ -15,6 +15,16 @@ ParticleProps* ParticleProps::setWorldCoord(bool val) {
   return this;
 }
 
+ParticleProps* ParticleProps::setOrder(bool val) {
+  _order = val;
+  return this;
+}
+
+ParticleProps* ParticleProps::setRoomId(int id) {
+  _room_id = id;
+  return this;
+}
+
 #pragma mark Emit Particle Properties
 ParticleProps* ParticleProps::setPosition(const cugl::Vec2& pos) {
   if (_type == EMIT) _position.set(pos);
@@ -158,11 +168,8 @@ void ParticleController::update(float timestep) {
     float life = 1.0f - particle.life_remaining / particle.props._life_time;
 
     if (particle.props._type == ParticleProps::Type::EMIT) {
-      cugl::Vec2 diff = particle.props._velocity * timestep;
-      if (particle.props._is_world_coord)
-        diff = particle.node->nodeToWorldCoords(diff);
-
-      particle.node->setPosition(particle.node->getPosition() + diff);
+      particle.node->setPosition(particle.node->getPosition() +
+                                 particle.props._velocity * timestep);
 
     } else if (particle.props._type == ParticleProps::Type::PATH) {
       float a = particle.props._easing(life);
@@ -199,31 +206,34 @@ void ParticleController::update(float timestep) {
   }
 }
 
-void ParticleController::emit(const ParticleProps& props) {
-  Particle& particle = _particle_pool[_pool_index];
-  if (!props._force && particle.active) return;
+void ParticleController::emit(int num, const ParticleProps& props) {
+  for (int i = 0; i < num; i++) {
+    Particle& particle = _particle_pool[_pool_index];
+    if (!props._force && particle.active) return;
 
-  particle.props = props;
-  particle.active = true;
-  particle.node->setVisible(true);
-  particle.life_remaining = props._life_time;
+    particle.props = ParticleProps(props);
+    particle.active = true;
+    particle.node->setVisible(true);
+    particle.life_remaining = props._life_time;
 
-  if (props._type == ParticleProps::Type::EMIT) {
-    cugl::Vec2 pos = props._position;
-    if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
-    particle.node->setPosition(pos);
+    if (props._type == ParticleProps::Type::EMIT) {
+      cugl::Vec2 pos = props._position;
+      if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
+      particle.node->setPosition(pos);
 
-    particle.props._velocity +=
-        particle.props._velocity_variation *
-        cugl::Vec2(Random::Float() - 0.5f, Random::Float() - 0.5f);
-  } else if (props._type == ParticleProps::Type::PATH) {
-    cugl::Vec2 pos = props._pos_start;
-    if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
-    particle.node->setPosition(pos);
+      particle.props._velocity +=
+          particle.props._velocity_variation *
+          cugl::Vec2(Random::Float() * 2 - 1, Random::Float() * 2 - 1);
+    } else if (props._type == ParticleProps::Type::PATH) {
+      cugl::Vec2 pos = props._pos_start;
+      if (props._is_world_coord) pos = particle.node->nodeToWorldCoords(pos);
+      particle.node->setPosition(pos);
+    }
+
+    particle.node->setColor(props._color_start);
+    particle.node->setScale(props._scale_start);
+    particle.node->setPriority(-0.9);
+
+    _pool_index = --_pool_index % _particle_pool.size();
   }
-
-  particle.node->setColor(props._color_start);
-  particle.node->setScale(props._scale_start);
-
-  _pool_index = --_pool_index % _particle_pool.size();
 }

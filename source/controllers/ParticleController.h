@@ -15,9 +15,8 @@ class ParticleProps {
  private:
   Type _type;
 
-  bool _force;
-
-  bool _is_world_coord;
+  bool _force, _is_world_coord, _order;
+  int _room_id;
 
   // Emit particle properties
   cugl::Vec2 _position, _velocity, _velocity_variation;
@@ -37,6 +36,8 @@ class ParticleProps {
       : _type(type),
         _force(true),
         _is_world_coord(false),
+        _order(false),
+        _room_id(0),
         _scale_start(1.0f),
         _scale_end(1.0f),
         _life_time(1.0f),
@@ -51,58 +52,64 @@ class ParticleProps {
   ~ParticleProps() {}
 
   ParticleProps* setForce(bool force);
-  bool getForce() { return _force; }
+  bool getForce() const { return _force; }
 
   ParticleProps* setWorldCoord(bool val);
-  bool isWorldCoord() { return _is_world_coord; }
+  bool isWorldCoord() const { return _is_world_coord; }
+
+  ParticleProps* setOrder(bool val);
+  bool isOrder() const { return _order; }
+
+  ParticleProps* setRoomId(int id);
+  int getRoomId() const { return _room_id; }
 
   ParticleProps* setPosition(const cugl::Vec2& pos);
   ParticleProps* setPosition(float x, float y);
-  cugl::Vec2 getPosition() { return _position; }
+  cugl::Vec2 getPosition() const { return _position; }
 
   ParticleProps* setVelocity(const cugl::Vec2& vel);
   ParticleProps* setVelocity(float vx, float vy);
-  cugl::Vec2 getVelocity() { return _velocity; }
+  cugl::Vec2 getVelocity() const { return _velocity; }
 
   ParticleProps* setVelocityVariation(const cugl::Vec2& var);
   ParticleProps* setVelocityVariation(float vx_var, float vy_var);
-  cugl::Vec2 getVelocityVariation() { return _velocity_variation; }
+  cugl::Vec2 getVelocityVariation() const { return _velocity_variation; }
 
   ParticleProps* setPosStart(const cugl::Vec2& pos);
   ParticleProps* setPosStart(float x, float y);
-  cugl::Vec2 getPosStart() { return _position; }
+  cugl::Vec2 getPosStart() const { return _position; }
 
   ParticleProps* setPosEnd(const cugl::Vec2& pos);
   ParticleProps* setPosEnd(float x, float y);
-  cugl::Vec2 getPosEnd() { return _position; }
+  cugl::Vec2 getPosEnd() const { return _position; }
 
   ParticleProps* setPathVariation(float var);
-  float getPathVariation() { return _path_variation; }
+  float getPathVariation() const { return _path_variation; }
 
   ParticleProps* setEasingFunction(
       const std::function<float(float)>& easing_function);
-  std::function<float(float)> getEasingFunction() { return _easing; }
+  std::function<float(float)> getEasingFunction() const { return _easing; }
 
   ParticleProps* setSizeStart(float scale);
-  float getScaleStart() { return _scale_start; }
+  float getScaleStart() const { return _scale_start; }
 
   ParticleProps* setSizeEnd(float scale);
-  float getScaleEnd() { return _scale_end; }
+  float getScaleEnd() const { return _scale_end; }
 
   ParticleProps* setLifeTime(float life_time);
-  float getLifeTime() { return _life_time; }
+  float getLifeTime() const { return _life_time; }
 
   ParticleProps* setColorStart(const cugl::Color4& color);
-  cugl::Color4 getColorStart() { return _color_start; }
+  cugl::Color4 getColorStart() const { return _color_start; }
 
   ParticleProps* setColorEnd(const cugl::Color4& color);
-  cugl::Color4 getColorEnd() { return _color_end; }
+  cugl::Color4 getColorEnd() const { return _color_end; }
 
   ParticleProps* setAngularSpeed(float speed);
-  float getAngularSpeed() { return _angular_speed; }
+  float getAngularSpeed() const { return _angular_speed; }
 
   ParticleProps* setRotateClockwise(bool clockwise);
-  bool getRotateClockwise() { return _clockwise == 1.0f; }
+  bool getRotateClockwise() const { return _clockwise == 1.0f; }
 
   friend class ParticleController;
 };
@@ -117,6 +124,7 @@ class ParticleProps {
 #pragma mark ParticleController
 
 class ParticleController : public Controller {
+ public:
   struct Particle {
     ParticleProps props;
     std::shared_ptr<cugl::scene2::PolygonNode> node = nullptr;
@@ -125,6 +133,7 @@ class ParticleController : public Controller {
     cugl::Vec2 dist_from_path;
   };
 
+ private:
   std::shared_ptr<cugl::scene2::SceneNode> _particle_world;
 
   std::vector<Particle> _particle_pool;
@@ -149,7 +158,11 @@ class ParticleController : public Controller {
 
   void update(float timestep) override;
 
-  void emit(const ParticleProps& props);
+  void emit(const ParticleProps& props) { emit(1, props); }
+
+  void emit(int num, const ParticleProps& props);
+
+  std::vector<Particle>& getParticles() { return _particle_pool; }
 };
 
 #endif  // CONTROLLERS_PARTICLE_CONTROLLER_H_

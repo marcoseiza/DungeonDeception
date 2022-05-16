@@ -8,6 +8,7 @@
 #include "../network/CustomNetworkSerializer.h"
 #include "Controller.h"
 #include "InputController.h"
+#include "ParticleController.h"
 #include "SoundController.h"
 #include "TrailManager.h"
 
@@ -37,6 +38,11 @@ class PlayerController : public Controller {
   std::shared_ptr<cugl::AssetManager> _assets;
   /** A reference to the sound controller. */
   std::shared_ptr<SoundController> _sound_controller;
+  /** A reference to the particle controller. */
+  std::shared_ptr<ParticleController> _particle_controller;
+
+  /** A grass particle prop. */
+  ParticleProps _grass_particle;
 
   /** A map from player id to color id. */
   std::unordered_map<int, int> _color_ids;
@@ -83,6 +89,15 @@ class PlayerController : public Controller {
    */
   void setSoundController(const std::shared_ptr<SoundController>& controller) {
     _sound_controller = controller;
+  }
+
+  /**
+   * Set the particle controller for particles.
+   * @param controller The particle controller.
+   */
+  void setParticleController(
+      const std::shared_ptr<ParticleController>& controller) {
+    _particle_controller = controller;
   }
 
 #pragma mark Static Constructors
