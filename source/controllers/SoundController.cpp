@@ -17,7 +17,7 @@ void SoundController::update(float timestep) {}
 
 void SoundController::dispose() { _assets = nullptr; }
 
-void SoundController::stop() { cugl::AudioEngine::get()->pause(); }
+void SoundController::stop() { cugl::AudioEngine::get()->clear(); }
 
 void SoundController::initMusic() {
   _music_state = MusicState::MAIN;
@@ -142,9 +142,10 @@ void SoundController::playPlayerEnergyCharge() {
 }
 
 void SoundController::stopPlayerEnergyCharge() {
-  if (cugl::AudioEngine::get()->isActive(_player_energy_charge.name)) {
-    cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
-  }
+  // !!CRASHES!!
+  // if (cugl::AudioEngine::get()->isActive(_player_energy_charge.name)) {
+  //   cugl::AudioEngine::get()->setVolume(_player_energy_charge.name, 0);
+  // }
 }
 
 void SoundController::playPlayerFootstep(const FootstepType& type) {
