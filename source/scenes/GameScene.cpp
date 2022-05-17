@@ -26,7 +26,7 @@
 #define CAMERA_LARGEST_DIFF 200.0f
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
-#define ENERGY_BAR_UPDATE_SIZE 0.01f
+#define ENERGY_BAR_UPDATE_SIZE 0.02f
 /** Set cloud wrap x position based on width and scale of cloud layer **/
 #define CLOUD_WRAP -960
 
