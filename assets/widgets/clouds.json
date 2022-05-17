@@ -1,7 +1,7 @@
 {
   "variables": {},
   "contents": {
-    "comments": "This is the root node for the background scene",
+    "comments": "This is the root node for the clouds scene",
     "type": "Node",
     "format": {
       "type": "Anchored"
@@ -16,8 +16,8 @@
           "y_alignment": "middle"
         },
         "data": {
-          "texture": "sky",
-          "scale": 0.5
+          "texture": "cloud-layer",
+          "scale": 0.2
         }
       }
     }

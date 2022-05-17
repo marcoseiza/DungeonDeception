@@ -111,6 +111,10 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  auto cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds");
+  cloud_layer->setContentSize(dim);
+  cloud_layer->doLayout();
+
   _settings_scene = SettingsScene::alloc(_assets);
   _settings_scene->setPlayerController(_player_controller);
   _settings_scene->getNode()->setContentSize(dim);
@@ -185,6 +189,7 @@ bool GameScene::init(
   _controllers.push_back(_level_controller->getHook());
 
   cugl::Scene2::addChild(background_layer);
+  cugl::Scene2::addChild(cloud_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
