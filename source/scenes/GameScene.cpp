@@ -492,7 +492,7 @@ void GameScene::update(float timestep) {
   }
 
   // update cloud background layer
-  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + 1);
+  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
   if (_cloud_layer->getPositionX() >= 0) {
     // half the width of the cloud layer, adjusted for scale
     _cloud_layer->setPositionX(-960);
