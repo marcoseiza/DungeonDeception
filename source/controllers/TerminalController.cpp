@@ -61,7 +61,7 @@ void TerminalController::processNetworkData(
 
       auto player = _player_controller->getPlayer(info->player_id);
       int cor_energy = player->getCorruptedEnergy();
-      int energy = player->getEnergy();
+      int energy = player->getEnergy() - cor_energy;
       // A betrayer's energy is corrupted energy.
       if (player->isBetrayer()) cor_energy = player->getEnergy();
 
