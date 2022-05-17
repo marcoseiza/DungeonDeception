@@ -171,6 +171,10 @@ bool GameScene::init(
       ->setVisible(!is_betrayer);
   assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player")
       ->setVisible(is_betrayer);
+
+  _energy_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+  if (is_betrayer) _energy_bar->setForegroundColor(cugl::Color4("#df7126"));
+
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
   win_layer->doLayout();
@@ -178,7 +182,6 @@ bool GameScene::init(
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
-
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
   std::string corrupted_msg =
@@ -229,13 +232,13 @@ bool GameScene::init(
   cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
   _world_node->addChild(_particle_world);
-  cugl::Scene2::addChild(_particle_screen);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(energy_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
+  cugl::Scene2::addChild(_particle_screen);
   cugl::Scene2::addChild(_debug_node);
   cugl::Scene2::addChild(_settings_scene->getNode());
   _debug_node->setVisible(false);
@@ -245,17 +248,45 @@ bool GameScene::init(
   InputController::get()->pause();
 
   _energy_particle = ParticleProps(ParticleProps::Type::PATH);
-  _energy_particle.setLifeTime(0.3f)
+  _energy_particle.setLifeTime(0.7f)
       ->setScreenCoord(true)
-      ->setColorStart(cugl::Color4(158, 193, 222, 200))
-      ->setColorEnd(cugl::Color4(158, 193, 222, 120))
+      ->setColorStart(cugl::Color4(148, 183, 212, 200))
+      ->setColorEnd(cugl::Color4(148, 183, 212, 120))
       ->setAngularSpeed(0.5f)
-      ->setEasingFunction(cugl::EasingFunction::quadInOut)
-      ->setPathVariation(100.f)
-      ->setOrder(true)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineIn)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineOut)
+      ->setPathVariation(50.f)
       ->setSizeStart(5.0f)
       ->setSizeEnd(5.0f)
-      ->setPositionVariation(5.0f, 5.0f);
+      ->setPositionVariation(2.0f, 2.0f);
+
+  _deposit_particle_regular = ParticleProps(ParticleProps::Type::PATH);
+  _deposit_particle_regular.setLifeTime(0.7f)
+      ->setColorStart(cugl::Color4(148, 183, 212, 200))
+      ->setColorEnd(cugl::Color4(148, 183, 212, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineOut)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineIn)
+      ->setPathVariation(50.f)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(2.0f, 2.0f);
+  if (is_betrayer) {
+    _energy_particle.setColorStart(cugl::Color4(223, 113, 38, 200))
+        ->setColorEnd(cugl::Color4(223, 113, 38, 120));
+  }
+
+  _deposit_particle_corrupted = ParticleProps(ParticleProps::Type::PATH);
+  _deposit_particle_corrupted.setLifeTime(0.7f)
+      ->setColorStart(cugl::Color4(223, 113, 38, 200))
+      ->setColorEnd(cugl::Color4(223, 113, 38, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineOut)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineIn)
+      ->setPathVariation(50.f)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(2.0f, 2.0f);
 
   return true;
 }
@@ -322,9 +353,6 @@ void GameScene::populate(cugl::Size dim) {
   _num_terminals = 0;
   for (std::shared_ptr<Terminal> terminal :
        TileHelper::getTile<Terminal>(_world_node)) {
-    _world->addObstacle(terminal->initBox2d());
-    terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
-    terminal->getObstacle()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
 
@@ -614,9 +642,11 @@ void GameScene::update(float timestep) {
 
         // Send particles if there's things to send.
         if (_player_controller->getMyPlayer()->getEnergy() < 100) {
-          cugl::Rect bounds = cugl::Scene2::getBounds();
+          cugl::Vec2 end_pos = _energy_bar->getWorldPosition();
+          end_pos.x += _energy_bar->getContentWidth() *
+                       _energy_bar->getProgress() * 1.2f;
           _energy_particle.setPosStart(enemy->getNode()->getWorldPosition())
-              ->setPosEnd(bounds.size.width * 0.3f, bounds.size.height * 0.8f);
+              ->setPosEnd(end_pos);
           _particle_controller->emit(_energy_particle, 5, 0.03f);
         }
 
@@ -1213,17 +1243,72 @@ void GameScene::beginContact(b2Contact* contact) {
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
 
+    cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
+    start_pos.x +=
+        _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
+    start_pos = _world_node->worldToNodeCoords(start_pos);
+
+    Terminal* terminal =
+        static_cast<Terminal*>((void*)ob1->getUserDataPointer());
+    cugl::Vec2 end_pos = ob1->getPosition() + terminal->getContentSize() / 2;
+
+    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+
+    if (!terminal->isFilled()) {
+      if (player->getEnergy() > 0) {
+        int num = 10 * player->getEnergy() / 100.0f + 1;
+        if (player->isBetrayer()) {
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+        } else {
+          _particle_controller->emit(_deposit_particle_regular, num, 0.03f);
+        }
+      }
+
+      if (player->getCorruptedEnergy() > 0) {
+        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+      }
+    }
+
     _terminal_controller->depositEnergy(room->getKey());
+
   } else if (fx2_name == "terminal-sensor" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
 
+    cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
+
+    Terminal* terminal =
+        static_cast<Terminal*>((void*)ob2->getUserDataPointer());
+    cugl::Vec2 end_pos = ob2->getPosition() + terminal->getContentSize() / 2;
+
+    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+
+    if (!terminal->isFilled()) {
+      if (player->getEnergy() > 0) {
+        int num = 10 * player->getEnergy() / 100.0f + 1;
+        if (player->isBetrayer()) {
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+        } else {
+          _particle_controller->emit(_deposit_particle_regular, num, 0.03f);
+        }
+      }
+
+      if (player->getCorruptedEnergy() > 0) {
+        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+      }
+    }
+
     _terminal_controller->depositEnergy(room->getKey());
   }
-}
-
-void GameScene::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold) {
 }
 
 void GameScene::render(const std::shared_ptr<cugl::SpriteBatch>& batch) {

@@ -22,7 +22,7 @@
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
-#define ENERGY_BAR_UPDATE_SIZE 0.03f
+#define ENERGY_BAR_UPDATE_SIZE 0.005f
 
 #define FLASH_BLOCK_ICON_LENGTH 30
 
@@ -62,13 +62,13 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   setFriction(0.0f);
   setRestitution(0.01f);
   setFixedRotation(true);
-  
+
   _projectile_sensor = nullptr;
   _projectile_sensor_name = nullptr;
 
   _fixture.filter.categoryBits = CATEGORY_PLAYER;
   _fixture.filter.maskBits = MASK_PLAYER;
-  
+
   _projectile_sensor_def.filter.categoryBits = CATEGORY_PLAYER;
   _projectile_sensor_def.filter.maskBits = MASK_PLAYER_PROJECTILE;
 
@@ -205,11 +205,12 @@ void Player::createFixtures() {
   if (_body == nullptr) return;
 
   CapsuleObstacle::createFixtures();
-  
+
   if (_projectile_sensor == nullptr) {
     _projectile_sensor_def.density = 0.0f;
     _projectile_sensor_def.isSensor = true;
-    _projectile_sensor_name = std::make_shared<std::string>("player_projectile_sensor");
+    _projectile_sensor_name =
+        std::make_shared<std::string>("player_projectile_sensor");
     _projectile_sensor_def.userData.pointer =
         reinterpret_cast<uintptr_t>(_projectile_sensor_name.get());
 
@@ -236,7 +237,7 @@ void Player::releaseFixtures() {
   if (_body == nullptr) return;
 
   CapsuleObstacle::releaseFixtures();
-  
+
   if (_projectile_sensor != nullptr) {
     _body->DestroyFixture(_projectile_sensor);
     _projectile_sensor = nullptr;

@@ -93,7 +93,28 @@ ParticleProps* ParticleProps::setPathVariation(float var) {
 
 ParticleProps* ParticleProps::setEasingFunction(
     const std::function<float(float)>& easing_function) {
-  if (_type == PATH) _easing = easing_function;
+  if (_type == PATH) {
+    _easing = easing_function;
+    _easing_separate = false;
+  }
+  return this;
+}
+
+ParticleProps* ParticleProps::setEasingFunctionPosX(
+    const std::function<float(float)>& easing_function) {
+  if (_type == PATH) {
+    _easing_pos_x = easing_function;
+    _easing_separate = true;
+  }
+  return this;
+}
+
+ParticleProps* ParticleProps::setEasingFunctionPosY(
+    const std::function<float(float)>& easing_function) {
+  if (_type == PATH) {
+    _easing_pos_y = easing_function;
+    _easing_separate = true;
+  }
   return this;
 }
 
@@ -172,7 +193,7 @@ bool ParticleController::init(
     using namespace cugl;
     Particle& particle = _particle_pool[i];
     particle.node = scene2::PolygonNode::allocWithPoly(Rect(0, 0, 1, 1));
-    particle.node->setVisible(true);
+    particle.node->setVisible(false);
     particle.active = false;
     particle.node->setPosition(_particle_screen->getContentSize() / 2);
     _particle_screen->addChild(particle.node);
@@ -212,9 +233,22 @@ void ParticleController::update(float timestep) {
       float a = particle.props._easing(life);
 
       // Variate path pos from path slightly.
-      cugl::Vec2 dist = particle.props._pos_end - particle.props._pos_start;
-      cugl::Vec2 path_pos = dist * a + particle.props._pos_start;
-      cugl::Vec2 perp = dist.getNormalization().getPerp();
+      cugl::Vec2 path_pos;
+
+      if (particle.props._easing_separate) {
+        float a_x = particle.props._easing_pos_x(life);
+        path_pos.x = particle.props._pos_end.x * a_x +
+                     particle.props._pos_start.x * (1 - a_x);
+        float a_y = particle.props._easing_pos_y(life);
+        path_pos.y = particle.props._pos_end.y * a_y +
+                     particle.props._pos_start.y * (1 - a_y);
+      } else {
+        cugl::Vec2 dist = particle.props._pos_end - particle.props._pos_start;
+        path_pos = dist * a + particle.props._pos_start;
+      }
+
+      cugl::Vec2 dS = path_pos - particle.node->getPosition();
+      cugl::Vec2 perp = (dS).getNormalization().getPerp();
 
       // Quadratic function, max at a = 0.5.
       // So max variation on middle of path.
@@ -289,6 +323,7 @@ void ParticleController::emit(const ParticleProps& props, int num,
 
     particle->node->setColor(props._color_start);
     particle->node->setScale(props._scale_start);
-    if (!props._is_screen_coord) particle->node->setPriority(-0.9);
+    if (!props._is_screen_coord)
+      particle->node->setPriority(std::numeric_limits<float>::max());
   }
 }

@@ -35,7 +35,8 @@ class ParticleProps {
   // Path particle properties
   cugl::Vec2 _pos_start, _pos_end;
   float _path_variation;
-  std::function<float(float)> _easing;
+  std::function<float(float)> _easing, _easing_pos_x, _easing_pos_y;
+  bool _easing_separate;
 
   // Shared values between state
   float _scale_start, _scale_end, _angular_speed, _life_time, _wait_time;
@@ -59,7 +60,10 @@ class ParticleProps {
         _angular_speed(1.0f),
         _clockwise(true),
         _path_variation(1.0f),
-        _easing(nullptr),
+        _easing_separate(false),
+        _easing(cugl::EasingFunction::linear),
+        _easing_pos_x(cugl::EasingFunction::linear),
+        _easing_pos_y(cugl::EasingFunction::linear),
         _color_start(cugl::Color4::WHITE),
         _color_end(cugl::Color4::WHITE) {}
 
@@ -251,6 +255,40 @@ class ParticleProps {
    * @return The easing function.
    */
   std::function<float(float)> getEasingFunction() const { return _easing; }
+
+  /**
+   * Set the easing function for the x position while traversing the path of a
+   * PATH particle. If this particle isn't an PATH type, this function will not
+   * do anything.
+   * @param easing_function The easing function cugl::EasingFunction::...
+   */
+  ParticleProps* setEasingFunctionPosX(
+      const std::function<float(float)>& easing_function);
+  /**
+   * Get the easing function for the x position traversing the path of a PATH
+   * particle.
+   * @return The easing function.
+   */
+  std::function<float(float)> getEasingFunctionPosX() const {
+    return _easing_pos_x;
+  }
+
+  /**
+   * Set the easing function for the y position while traversing the path of a
+   * PATH particle. If this particle isn't an PATH type, this function will not
+   * do anything.
+   * @param easing_function The easing function cugl::EasingFunction::...
+   */
+  ParticleProps* setEasingFunctionPosY(
+      const std::function<float(float)>& easing_function);
+  /**
+   * Get the easing function for the y position traversing the path of a PATH
+   * particle.
+   * @return The easing function.
+   */
+  std::function<float(float)> getEasingFunctionPosY() const {
+    return _easing_pos_y;
+  }
 
   /**
    * Set the starting size of the particle.

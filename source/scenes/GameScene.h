@@ -137,6 +137,8 @@ class GameScene : public cugl::Scene2 {
 
   /** Energy particle for when enemies die. */
   ParticleProps _energy_particle;
+  /** Energy particle for when player deposits energy. */
+  ParticleProps _deposit_particle_regular, _deposit_particle_corrupted;
 
  public:
   GameScene() : cugl::Scene2() {}
