@@ -70,8 +70,113 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "player": {
-      "file": "textures/player.png",
+    "player-1": {
+      "file": "textures/player/player-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-2": {
+      "file": "textures/player/player-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-3": {
+      "file": "textures/player/player-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-4": {
+      "file": "textures/player/player-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-5": {
+      "file": "textures/player/player-5.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-6": {
+      "file": "textures/player/player-6.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-7": {
+      "file": "textures/player/player-7.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-8": {
+      "file": "textures/player/player-8.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-1": {
+      "file": "textures/player/player-head-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-2": {
+      "file": "textures/player/player-head-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-3": {
+      "file": "textures/player/player-head-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-4": {
+      "file": "textures/player/player-head-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-5": {
+      "file": "textures/player/player-head-5.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-6": {
+      "file": "textures/player/player-head-6.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-7": {
+      "file": "textures/player/player-head-7.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-8": {
+      "file": "textures/player/player-head-8.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -289,13 +394,6 @@
     },
     "timer": {
       "file": "textures/timer.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "player-cropped": {
-      "file": "textures/player-cropped.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",

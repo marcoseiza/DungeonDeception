@@ -286,10 +286,13 @@ void GameApp::updateLevelLoadingScene(float timestep) {
                                                : _joinlobby.isBetrayer();
   std::string name = (_level_loading.getIsHost()) ? _hostlobby.getPlayerName()
                                                   : _joinlobby.getPlayerName();
+  std::unordered_map<int, int> color_ids = (_level_loading.getIsHost())
+                                               ? _hostlobby.getColorIds()
+                                               : _joinlobby.getColorIds();
 
   _level_loading.removeChild(_level_loading.getMap());
   _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                 _level_loading.getMap(), betrayer, name);
+                 _level_loading.getMap(), betrayer, name, color_ids);
   _level_loading.dispose();
 
   _scene = State::GAME;

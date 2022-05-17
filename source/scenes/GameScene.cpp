@@ -32,7 +32,7 @@ bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
     const std::shared_ptr<cugl::scene2::SceneNode>& map, bool is_betrayer,
-    std::string display_name) {
+    std::string display_name, std::unordered_map<int, int> color_ids) {
   if (_active) return false;
   _active = true;
   _state = RUN;
@@ -98,6 +98,8 @@ bool GameScene::init(
 
   _terminal_controller = TerminalController::alloc(_assets);
 
+  _player_controller = PlayerController::alloc(_assets, _world, _world_node,
+                                               _debug_node, color_ids);
   populate(dim);
 
   _world_node->doLayout();
@@ -127,6 +129,12 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
+
+  auto player_head = std::dynamic_pointer_cast<cugl::scene2::TexturedNode>(
+      assets->get<cugl::scene2::SceneNode>("ui-scene_player-head"));
+  int player_id = *(NetworkController::get()->getConnection()->getPlayerID());
+  player_head->setTexture(assets->get<cugl::Texture>(
+      "player-head-" + std::to_string(color_ids[player_id])));
 
   auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
   health_layer->setContentSize(dim);
@@ -248,9 +256,6 @@ void GameScene::dispose() {
 }
 
 void GameScene::populate(cugl::Size dim) {
-  _player_controller =
-      PlayerController::alloc(_assets, _world, _world_node, _debug_node);
-
   if (auto id = NetworkController::get()->getConnection()->getPlayerID()) {
     auto player = _player_controller->makePlayer(*id);
     _player_controller->setMyPlayer(player);

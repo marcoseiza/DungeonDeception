@@ -144,6 +144,7 @@ class GameScene : public cugl::Scene2 {
    * @param map           The world map.
    * @param is_betrayer   True if the game is being played by a betrayer.
    * @param display_name  Name the player input in lobby.
+   * @param color_ids     A map from player id to color id.
 
    *
    * @return true if the controller is initialized properly, false otherwise.
@@ -151,7 +152,8 @@ class GameScene : public cugl::Scene2 {
   bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
             const std::shared_ptr<cugl::scene2::SceneNode>& map,
-            bool is_betrayer, std::string display_name);
+            bool is_betrayer, std::string display_name,
+            std::unordered_map<int, int> color_ids);
 
   /**
    * Sets whether debug mode is active.
@@ -212,9 +214,10 @@ class GameScene : public cugl::Scene2 {
     }
     return room_ids_with_players;
   }
-  
+
   /**
-   * Returns an unordered set of all the room ids players are in, and adjacent rooms.
+   * Returns an unordered set of all the room ids players are in, and adjacent
+   * rooms.
    */
   std::unordered_set<int> getAdjacentRoomIdsWithPlayers() {
     std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
@@ -225,7 +228,8 @@ class GameScene : public cugl::Scene2 {
         all_enemy_update_rooms.emplace(room_id_to_update);
       }
       // Add the adjacent player rooms.
-      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto room =
+          _level_controller->getLevelModel()->getRoom(room_id_to_update);
       auto rooms = room->getAllConnectedRooms();
       for (auto room_map : rooms) {
         all_enemy_update_rooms.emplace(room_map.second);
@@ -233,16 +237,18 @@ class GameScene : public cugl::Scene2 {
     }
     return all_enemy_update_rooms;
   }
-  
+
   /**
-   * Returns an unordered set of all the player adjacent room ids without the player rooms.
+   * Returns an unordered set of all the player adjacent room ids without the
+   * player rooms.
    */
   std::unordered_set<int> getAdjacentRoomIdsWithoutPlayers() {
     std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
     std::unordered_set<int> all_enemy_update_rooms;
     for (auto room_id_to_update : room_ids_with_players) {
       // Add the adjacent player rooms.
-      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto room =
+          _level_controller->getLevelModel()->getRoom(room_id_to_update);
       auto rooms = room->getAllConnectedRooms();
       for (auto room_map : rooms) {
         if (room_ids_with_players.count(room_map.second) == 0) {

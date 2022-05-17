@@ -98,6 +98,14 @@ class HostLobbyScene : public PeerLobbyScene {
    * Assignment algorithm assumes that the number of betrayers is [1, 2].
    */
   void determineAndSendRoles();
+
+  /**
+   * Determine the colors of all the players before the game starts.
+   * Afterwards, send the color to the clients.
+   *
+   * Assignment algorithm assumes that the number of player is [1, 8].
+   */
+  void determineAndSendColors();
 };
 
 #endif /* SCENES_HOST_LOBBY_SCENE_H_ */
