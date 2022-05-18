@@ -46,12 +46,22 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _backout = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _assets->get<cugl::scene2::SceneNode>("host_back"));
 
+  _names_in_use = _assets->get<cugl::scene2::SceneNode>(
+      "client-lobby-scene_center_menu-status_already-in-use");
+  _names_set = _assets->get<cugl::scene2::SceneNode>(
+      "client-lobby-scene_center_menu-status_successfully-set");
+
   _backout->addListener([this](const std::string& name, bool down) {
     if (down) {
       disconnect();
       _status = Status::ABORT;
     }
   });
+
+  _name->addExitListener(
+      [this](const std::string& name, const std::string& current) {
+        if (current != "") this->sendPlayerName(current);
+      });
 
   _status = Status::WAIT;
 
@@ -90,16 +100,19 @@ void ClientLobbyScene::setActive(
       _status = WAIT;
       _network = network;
       _name->activate();
+      _name->setText("");
       _backout->activate();
 
-      auto x = *(_network->getPlayerID());
-      _name->setText("runner_" + to_string(x));
+      _names_set->setVisible(false);
+      _names_in_use->setVisible(false);
       _cloud_layer->setPositionX(_cloud_x_pos);
     } else {
       // TODO deactivate things as necessary
       _name->deactivate();
       _backout->deactivate();
       _backout->setDown(false);
+      _names_set->setVisible(false);
+      _names_in_use->setVisible(false);
     }
   }
 }
@@ -132,6 +145,30 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
     }
   }
 
+  switch (code) {
+    case HOST_ACCEPT_PLAYER_NAME: {
+      cugl::NetworkDeserializer::Message msg = _deserializer.read();
+      auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+      if (info->getInt("id") == *_network->getPlayerID()) {
+        _names_in_use->setVisible(false);
+        _names_set->setVisible(true);
+      }
+    } break;
+
+    case HOST_DENY_PLAYER_NAME: {
+      cugl::NetworkDeserializer::Message msg = _deserializer.read();
+      auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+      if (info->getInt("id") == *_network->getPlayerID()) {
+        _names_in_use->setVisible(true);
+        _names_set->setVisible(false);
+      }
+    } break;
+
+    case HOST_REMOVED_PLAYER_NAME:
+    case HOST_NAME_NO_OP:
+      break;
+  }
+
   if (code == 254) {
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     std::shared_ptr<cugl::JsonValue> betrayer_info =
@@ -154,6 +191,26 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
     _seed = std::get<Uint64>(_deserializer.read());
     _status = Status::START;
   }
+}
+
+void ClientLobbyScene::sendPlayerName(const std::string& name) {
+  if (!_network) return;
+  _names_in_use->setVisible(false);
+
+  auto info = cugl::JsonValue::allocObject();
+
+  auto player_id = cugl::JsonValue::alloc((long)*_network->getPlayerID());
+  info->appendChild(player_id);
+  player_id->setKey("id");
+
+  auto name_info = cugl::JsonValue::alloc(name);
+  info->appendChild(name_info);
+  name_info->setKey("name");
+
+  _serializer.writeSint32(CLIENT_SEND_PLAYER_NAME);
+  _serializer.writeJson(info);
+  _network->sendOnlyToHost(_serializer.serialize());
+  _serializer.reset();
 }
 
 bool ClientLobbyScene::checkConnection() {
@@ -180,6 +237,7 @@ bool ClientLobbyScene::checkConnection() {
       disconnect();
       _status = ABORT;
       break;
+    case cugl::NetworkConnection::NetStatus::NoInternetError:
     case cugl::NetworkConnection::NetStatus::GenericError:
       disconnect();
       _status = ABORT;

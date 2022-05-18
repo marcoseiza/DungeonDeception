@@ -11,10 +11,10 @@
           "type": "Float",
           "orientation": "vertical",
           "x_alignment": "center",
-          "y_alignment": "middle"
+          "y_alignment": "top"
         },
         "data": {
-          "anchor": [0.5, 0.0],
+          "anchor": [0.5, 1.0],
           "size": [1000, 1100]
         },
         "children": {
@@ -68,10 +68,13 @@
                   "key": "textfield",
                   "variables": {
                     "size": [235, 90],
-                    "text": "runner_id",
+                    "text": "",
                     "halign": "center",
                     "foreground": "#ffffff",
-                    "background": [70, 70, 70, 179]
+                    "background": [70, 70, 70, 179],
+                    "cursorcolor": [255, 255, 255, 255],
+                    "placeholder": "enter name",
+                    "placeholder-color": [180, 180, 180, 255]
                   }
                 },
                 "layout": {
@@ -83,11 +86,51 @@
               "priority": 2,
               "padding": [0, 25, 0, 55]
             }
+          },
+          "menu-status": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "size": [465, 60],
+              "anchor": [0.5, 0.5]
+            },
+            "children": {
+              "already-in-use": {
+                "type": "Widget",
+                "data": {
+                  "key": "menu-status-tooltip",
+                  "variables": {
+                    "text": "That name is already in use",
+                    "icon": "warning",
+                    "size": [480, 60]
+                  }
+                }
+              },
+              "successfully-set": {
+                "type": "Widget",
+                "data": {
+                  "key": "menu-status-tooltip",
+                  "variables": {
+                    "text": "Name successfully set",
+                    "icon": "checkmark",
+                    "size": [400, 60]
+                  }
+                }
+              }
+            },
+            "layout": {
+              "priority": 3,
+              "padding": [50, 0, 0, 25]
+            }
           }
         },
         "layout": {
           "x_anchor": "center",
-          "y_anchor": "bottom"
+          "y_anchor": "top",
+          "y_offset": -48,
+          "absolute": true
         }
       },
       "back": {
@@ -179,7 +222,7 @@
         },
         "data": {
           "anchor": [0.5, 0.5],
-          "size": [70, 70]
+          "size": [300, 70]
         },
         "children": {
           "icon": {
@@ -189,7 +232,7 @@
             },
             "data": {
               "texture": "player-head-1",
-              "anchor": [0, 0.5],
+              "anchor": [0.5, 0.5],
               "scale": 2
             },
             "layout": {

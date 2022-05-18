@@ -53,6 +53,15 @@ class PeerLobbyScene : public cugl::Scene2 {
   /** The map from player id to color id. */
   std::unordered_map<int, int> _color_ids;
 
+  enum HostResponse : Sint32 {
+    HOST_ACCEPT_PLAYER_NAME = 2,
+    HOST_DENY_PLAYER_NAME = 3,
+    HOST_REMOVED_PLAYER_NAME = 4,
+    HOST_NAME_NO_OP = 5
+  };
+
+  const Sint32 CLIENT_SEND_PLAYER_NAME = 1;
+
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -169,6 +178,12 @@ class PeerLobbyScene : public cugl::Scene2 {
    * @param data  The data received
    */
   virtual void processData(const std::vector<uint8_t>& data){};
+
+  /**
+   * Send submitted player name over the network.
+   * @param name The name to send.
+   */
+  virtual void sendPlayerName(const std::string& name) {}
 };
 
 #endif /* SCENES_PEER_LOBBY_SCENE_H_ */

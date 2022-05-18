@@ -182,6 +182,8 @@ public:
          * If you are using the demo server for the game lab, the minimum is 0.
          */
         ApiMismatch,
+        /** The peer is potentially not connected to the internet */
+        NoInternetError,
         /** Something unknown went wrong */
         GenericError
     };

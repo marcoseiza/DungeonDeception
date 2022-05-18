@@ -41,11 +41,16 @@ class PeerScene : public cugl::Scene2 {
   /** The x position of the cloud. */
   float _cloud_x_pos = 0;
 
+  /** A reference to the clipboard button. */
+  std::shared_ptr<cugl::scene2::Button> _clipboard;
+
   /** The network configuration */
   cugl::NetworkConnection::ConnectionConfig _config;
 
   /** The current status */
   Status _status;
+
+  const uint8_t HOST_OPENED_UP_LOBBY_CODE = 0;
 
  public:
 #pragma mark -

@@ -1,0 +1,59 @@
+{
+  "variables": {
+    "size": ["data", "size"],
+    "text": ["children", "label", "data", "text"],
+    "font": ["children", "label", "data", "font"],
+    "icon": ["children", "icon", "data", "texture"],
+    "icon-visible": ["children", "icon", "data", "visible"],
+    "icon-padding": ["children", "icon", "layout", "padding"]
+  },
+  "contents": {
+    "type": "Polygon",
+    "format": {
+      "type": "Float",
+      "orientation": "horizontal",
+      "x_alignment": "center",
+      "y_alignment": "middle"
+    },
+    "data": {
+      "anchor": [0.5, 0.5],
+      "size": [300, 60],
+      "color": [50, 50, 50, 50],
+      "visible": false
+    },
+    "children": {
+      "icon": {
+        "type": "Image",
+        "data": {
+          "texture": "checkmark",
+          "scale": 2.5,
+          "has-parent-color": false,
+          "visible": true
+        },
+        "layout": {
+          "priority": 1,
+          "padding": [0, 0, 15, 0]
+        }
+      },
+      "label": {
+        "type": "Label",
+        "data": {
+          "font": "pixelmix_medium",
+          "text": "Game Found",
+          "padding": [0, 0, 0, 0],
+          "halign": "left",
+          "valign": "middle",
+          "foreground": "#FFFFFF",
+          "has-parent-color": false
+        },
+        "layout": {
+          "priority": 2
+        }
+      }
+    },
+    "layout": {
+      "x_anchor": "center",
+      "y_anchor": "middle"
+    }
+  }
+}

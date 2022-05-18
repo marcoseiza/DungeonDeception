@@ -981,6 +981,7 @@ void GameScene::setConnection(
           const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
         this->processData(code, msg);
       });
+  NetworkController::get()->setDisconnectListener([=]() { _state = LEAVE; });
 }
 
 void GameScene::beginContact(b2Contact* contact) {

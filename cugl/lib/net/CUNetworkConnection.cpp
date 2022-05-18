@@ -846,6 +846,7 @@ void NetworkConnection::receive(
     break;
   case NetStatus::Disconnected:
   case NetStatus::GenericError:
+  case NetStatus::NoInternetError:
   case NetStatus::ApiMismatch:
   case NetStatus::RoomNotFound:
     return;
@@ -954,6 +955,7 @@ void NetworkConnection::receive(
             case NetStatus::RoomNotFound:
             case NetStatus::ApiMismatch:
             case NetStatus::GenericError:
+            case NetStatus::NoInternetError:
               return;
             }
           }
@@ -965,7 +967,7 @@ void NetworkConnection::receive(
     case ID_NAT_TARGET_UNRESPONSIVE: {
       CULogError("Punchthrough failure %d", packet->data[0]);
 
-      _status = NetStatus::GenericError;
+      _status = NetStatus::NoInternetError;
       bts.IgnoreBytes(sizeof(SLNet::MessageID));
       SLNet::RakNetGUID recipientGuid;
       bts.Read(recipientGuid);
