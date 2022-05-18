@@ -182,8 +182,8 @@
       "wrapS": "repeat",
       "wrapT": "repeat"
     },
-    "clouds": {
-      "file": "textures/ui/cloud-layer.png",
+    "cloud-layer": {
+      "file": "textures/ui/large_cloud_layer.png",
       "minfilter": "nearest",
       "magfilter": "linear",
       "wrapS": "repeat",
@@ -334,7 +334,10 @@
     "server": "json/server.json"
   },
   "widgets": {
-    "background": "widgets/background.json",
+    "background": "widgets/backgrounds/background.json",
+    "background-menu": "widgets/backgrounds/background-menu.json",
+    "clouds": "widgets/backgrounds/clouds.json",
+    "clouds-menu": "widgets/backgrounds/clouds-menu.json",
     "runner-scene": "widgets/runner-scene.json",
     "betrayer-scene": "widgets/betrayer-scene.json",
     "ui-scene": "widgets/ui-scene.json",
@@ -361,6 +364,83 @@
       "type": "Widget",
       "data": {
         "key": "background",
+        "variables": {}
+      }
+    },
+    "background-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-host-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-client-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-host-lobby": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-client-lobby": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "clouds": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds",
+        "variables": {}
+      }
+    },
+    "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-host-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-client-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-host-lobby": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-client-lobby": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
         "variables": {}
       }
     },
@@ -435,29 +515,26 @@
       }
     },
     "menu": {
-      "type": "Image",
+      "type": "Node",
       "format": {
         "type": "Float",
         "orientation": "vertical",
         "x_alignment": "center",
         "y_alignment": "middle"
       },
-      "data": {
-        "texture": "background"
-      },
       "children": {
         "title": {
           "type": "Image",
           "data": {
             "texture": "logo_title",
-            "anchor": [0.5, 0.5],
+            "anchor": [ 0.5, 0.5 ],
             "scale": 1.2
           },
           "layout": {
             "priority": 1,
             "x_alignment": "center",
             "y_alignment": "top",
-            "padding": [0, 0, 0, 50]
+            "padding": [ 0, 0, 0, 50 ]
           }
         },
         "play": {
@@ -469,8 +546,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [0.5, 0.5],
-            "size": [600, 80]
+            "anchor": [ 0.5, 0.5 ],
+            "size": [ 600, 80 ]
           },
           "children": {
             "host": {
@@ -478,14 +555,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [260, 80],
+                  "size": [ 260, 80 ],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 25, 0]
+                "padding": [ 0, 0, 25, 0 ]
               }
             },
             "join": {
@@ -493,20 +570,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [260, 80],
+                  "size": [ 260, 80 ],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [0, 0, 0, 0]
+                "padding": [ 0, 0, 0, 0 ]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 50, 0, 40]
+            "padding": [ 0, 50, 0, 40 ]
           }
         },
         "instructions": {
@@ -514,7 +591,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [260, 60],
+              "size": [ 260, 60 ],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -522,7 +599,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 30, 0, 0]
+            "padding": [ 0, 30, 0, 0 ]
           }
         },
         "settings": {
@@ -530,7 +607,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [220, 60],
+              "size": [ 220, 60 ],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -538,7 +615,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [0, 115, 0, 0]
+            "padding": [ 0, 115, 0, 0 ]
           }
         }
       }
@@ -552,7 +629,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0, 1.0],
+            "anchor": [ 0, 1.0 ],
             "background": "health-bar",
             "foreground": "health-fill"
           },
@@ -570,7 +647,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [0, 1.0]
+            "anchor": [ 0, 1.0 ]
           },
           "layout": {
             "x_anchor": "left",
@@ -590,7 +667,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [0.0, 1.0],
+            "anchor": [ 0.0, 1.0 ],
             "background": "energy-bar",
             "foreground": "energy-fill"
           },
@@ -608,7 +685,7 @@
           },
           "data": {
             "texture": "energy-outline",
-            "anchor": [0.0, 1.0]
+            "anchor": [ 0.0, 1.0 ]
           },
           "layout": {
             "x_anchor": "left",

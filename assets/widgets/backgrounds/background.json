@@ -18,21 +18,6 @@
         "data": {
           "texture": "sky",
           "scale": 0.5
-        },
-        "children": {
-          "clouds": {
-            "type": "Image",
-            "format": {
-              "type": "Float",
-              "orientation": "vertical",
-              "x_alignment": "center",
-              "y_alignment": "middle"
-            },
-            "data": {
-              "texture": "clouds",
-              "scale": 1
-            }
-          }
         }
       }
     }

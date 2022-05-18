@@ -1,0 +1,25 @@
+{
+  "variables": {},
+  "contents": {
+    "comments": "This is the root node for the clouds scene",
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "children": {
+      "background": {
+        "type": "Image",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "texture": "cloud-layer",
+          "scale": 0.88
+        }
+      }
+    }
+  }
+}

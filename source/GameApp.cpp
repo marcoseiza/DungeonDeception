@@ -154,20 +154,16 @@ void GameApp::updateMenuScene(float timestep) {
   _menu.update(timestep);
   switch (_menu.getChoice()) {
     case MenuScene::Choice::HOST:
+      _hostgame.setCloudXPosition(_menu.getCloudXPosition());
       _menu.setActive(false);
       _hostgame.setActive(true);
       _scene = State::HOST;
       break;
     case MenuScene::Choice::JOIN:
+      _joingame.setCloudXPosition(_menu.getCloudXPosition());
       _menu.setActive(false);
       _joingame.setActive(true);
       _scene = State::CLIENT;
-      break;
-    case MenuScene::Choice::JOIN_LOBBY:
-      // TODO does menu scene ever make this choice?
-      _joingame.setActive(false);
-      _joinlobby.setActive(true, _joingame.getConnection());
-      _scene = State::CLIENT_LOBBY;
       break;
     case MenuScene::Choice::NONE:
       // DO NOTHING
@@ -179,11 +175,13 @@ void GameApp::updateHostMenuScene(float timestep) {
   _hostgame.update(timestep);
   switch (_hostgame.getStatus()) {
     case HostMenuScene::Status::ABORT:
+      _menu.setCloudXPosition(_hostgame.getCloudXPosition());
       _hostgame.setActive(false);
       _menu.setActive(true);
       _scene = State::MENU;
       break;
     case HostMenuScene::Status::JOIN:
+      _hostlobby.setCloudXPosition(_hostgame.getCloudXPosition());
       _hostgame.setActive(false);
       _hostlobby.setActive(true, _hostgame.getConnection());
       _scene = State::HOST_LOBBY;
@@ -200,11 +198,13 @@ void GameApp::updateClientMenuScene(float timestep) {
   _joingame.update(timestep);
   switch (_joingame.getStatus()) {
     case ClientMenuScene::Status::ABORT:
+      _menu.setCloudXPosition(_joingame.getCloudXPosition());
       _joingame.setActive(false);
       _menu.setActive(true);
       _scene = State::MENU;
       break;
     case ClientMenuScene::Status::WAIT:
+      _joinlobby.setCloudXPosition(_joingame.getCloudXPosition());
       _joingame.setActive(false);
       _joinlobby.setGameId(_joingame.getGameId());
       _joinlobby.setActive(true, _joingame.getConnection());
@@ -221,6 +221,7 @@ void GameApp::updateHostLobbyScene(float timestep) {
   _hostlobby.update(timestep);
   switch (_hostlobby.getStatus()) {
     case ClientLobbyScene::Status::ABORT:
+      _hostgame.setCloudXPosition(_hostlobby.getCloudXPosition());
       _hostlobby.setActive(false, nullptr);
       _hostgame.setActive(true);
       _scene = State::HOST;
@@ -244,6 +245,7 @@ void GameApp::updateClientLobbyScene(float timestep) {
   _joinlobby.update(timestep);
   switch (_joinlobby.getStatus()) {
     case ClientLobbyScene::Status::ABORT:
+      _joingame.setCloudXPosition(_joinlobby.getCloudXPosition());
       _joinlobby.setActive(false, nullptr);
       _joingame.setActive(true);
       _scene = State::CLIENT;

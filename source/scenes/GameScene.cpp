@@ -27,6 +27,8 @@
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
 #define ENERGY_BAR_UPDATE_SIZE 0.02f
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -960
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -111,6 +113,10 @@ bool GameScene::init(
   background_layer->setContentSize(dim);
   background_layer->doLayout();
 
+  _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds");
+  _cloud_layer->setContentSize(dim);
+  _cloud_layer->doLayout();
+
   _settings_scene = SettingsScene::alloc(_assets);
   _settings_scene->setPlayerController(_player_controller);
   _settings_scene->getNode()->setContentSize(dim);
@@ -185,6 +191,7 @@ bool GameScene::init(
   _controllers.push_back(_level_controller->getHook());
 
   cugl::Scene2::addChild(background_layer);
+  cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
@@ -235,6 +242,7 @@ void GameScene::dispose() {
   _world_node = nullptr;
   _debug_node = nullptr;
   _role_layer = nullptr;
+  _cloud_layer = nullptr;
 
   _settings_scene = nullptr;
   _terminal_controller = nullptr;
@@ -483,6 +491,12 @@ void GameScene::update(float timestep) {
           _level_controller->getLevelModel()->getRoom(room_id_to_update);
       updateEnemies(timestep, room_to_update);
     }
+  }
+
+  // update cloud background layer
+  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
+  if (_cloud_layer->getPositionX() >= 0) {
+    _cloud_layer->setPositionX(CLOUD_WRAP);
   }
 
   updateCamera(timestep);

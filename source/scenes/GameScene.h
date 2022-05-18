@@ -51,6 +51,9 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the role screen scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _role_layer;
 
+  /** Reference to the cloud layer scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
+
   /** The Box2d world */
   std::shared_ptr<cugl::physics2::ObstacleWorld> _world;
 
@@ -212,9 +215,10 @@ class GameScene : public cugl::Scene2 {
     }
     return room_ids_with_players;
   }
-  
+
   /**
-   * Returns an unordered set of all the room ids players are in, and adjacent rooms.
+   * Returns an unordered set of all the room ids players are in, and adjacent
+   * rooms.
    */
   std::unordered_set<int> getAdjacentRoomIdsWithPlayers() {
     std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
@@ -225,7 +229,8 @@ class GameScene : public cugl::Scene2 {
         all_enemy_update_rooms.emplace(room_id_to_update);
       }
       // Add the adjacent player rooms.
-      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto room =
+          _level_controller->getLevelModel()->getRoom(room_id_to_update);
       auto rooms = room->getAllConnectedRooms();
       for (auto room_map : rooms) {
         all_enemy_update_rooms.emplace(room_map.second);
@@ -233,16 +238,18 @@ class GameScene : public cugl::Scene2 {
     }
     return all_enemy_update_rooms;
   }
-  
+
   /**
-   * Returns an unordered set of all the player adjacent room ids without the player rooms.
+   * Returns an unordered set of all the player adjacent room ids without the
+   * player rooms.
    */
   std::unordered_set<int> getAdjacentRoomIdsWithoutPlayers() {
     std::unordered_set<int> room_ids_with_players = getRoomIdsWithPlayers();
     std::unordered_set<int> all_enemy_update_rooms;
     for (auto room_id_to_update : room_ids_with_players) {
       // Add the adjacent player rooms.
-      auto room = _level_controller->getLevelModel()->getRoom(room_id_to_update);
+      auto room =
+          _level_controller->getLevelModel()->getRoom(room_id_to_update);
       auto rooms = room->getAllConnectedRooms();
       for (auto room_map : rooms) {
         if (room_ids_with_players.count(room_map.second) == 0) {
