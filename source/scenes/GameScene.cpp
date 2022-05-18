@@ -27,6 +27,8 @@
 #define MIN_PLAYERS 4
 #define MIN_BETRAYERS 1
 #define ENERGY_BAR_UPDATE_SIZE 0.02f
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -960
 
 bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
@@ -494,8 +496,7 @@ void GameScene::update(float timestep) {
   // update cloud background layer
   _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
   if (_cloud_layer->getPositionX() >= 0) {
-    // half the width of the cloud layer, adjusted for scale
-    _cloud_layer->setPositionX(-960);
+    _cloud_layer->setPositionX(CLOUD_WRAP);
   }
 
   updateCamera(timestep);

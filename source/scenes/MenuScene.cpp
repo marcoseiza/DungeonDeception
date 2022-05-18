@@ -10,6 +10,8 @@
 
 /** Regardless of logo, lock the height to this */
 #define SCENE_HEIGHT 720
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -1689.6
 
 #pragma mark -
 #pragma mark Constructors
@@ -27,9 +29,10 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _assets = assets;
 
   // Acquire the scene built by the asset loader and resize it the scene
-  _scene = _assets->get<cugl::scene2::SceneNode>("menu");
-  _scene->setContentSize(dimen);
-  _scene->doLayout();  // Repositions the HUD
+  std::shared_ptr<cugl::scene2::SceneNode> scene =
+      _assets->get<cugl::scene2::SceneNode>("menu");
+  scene->setContentSize(dimen);
+  scene->doLayout();  // Repositions the HUD
   _choice = Choice::NONE;
   _hostbutton = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _assets->get<cugl::scene2::SceneNode>("menu_play_host"));
@@ -37,9 +40,10 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       _assets->get<cugl::scene2::SceneNode>("menu_play_join"));
 
   // handle background and cloud layers
-  _background_layer = assets->get<cugl::scene2::SceneNode>("background-menu");
-  _background_layer->setContentSize(dimen);
-  _background_layer->doLayout();
+  auto background_layer =
+      assets->get<cugl::scene2::SceneNode>("background-menu");
+  background_layer->setContentSize(dimen);
+  background_layer->doLayout();
 
   _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-menu");
   _cloud_layer->setContentSize(dimen);
@@ -53,9 +57,9 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     if (down) _choice = Choice::JOIN;
   });
 
-  addChild(_background_layer);
+  addChild(background_layer);
   addChild(_cloud_layer);
-  addChild(_scene);
+  addChild(scene);
 
   _choice = NONE;
   _hostbutton->activate();
@@ -68,8 +72,7 @@ void MenuScene::update(float timestep) {
   // update cloud background layer
   _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
   if (_cloud_layer->getPositionX() >= 0) {
-    // half the width of the cloud layer, adjusted for scale
-    _cloud_layer->setPositionX(-1689.6);
+    _cloud_layer->setPositionX(CLOUD_WRAP);
   }
 }
 
@@ -79,12 +82,8 @@ void MenuScene::dispose() {
   removeAllChildren();
   _hostbutton->deactivate();
   _joinbutton->deactivate();
-  _scene->dispose();
-  _scene = nullptr;
   _cloud_layer->dispose();
   _cloud_layer = nullptr;
-  _background_layer->dispose();
-  _background_layer = nullptr;
   // If any were pressed, reset them.
   _hostbutton->setDown(false);
   _joinbutton->setDown(false);
@@ -106,17 +105,12 @@ void MenuScene::setActive(bool value) {
       _choice = NONE;
       _hostbutton->activate();
       _joinbutton->activate();
-
-      addChild(_background_layer);
-      addChild(_cloud_layer);
-      addChild(_scene);
     } else {
       _hostbutton->deactivate();
       _joinbutton->deactivate();
       // If any were pressed, reset them
       _hostbutton->setDown(false);
       _joinbutton->setDown(false);
-      removeAllChildren();
     }
   }
 }

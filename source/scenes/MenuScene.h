@@ -30,10 +30,6 @@ class MenuScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _hostbutton;
   /** The menu button for joining a game */
   std::shared_ptr<cugl::scene2::Button> _joinbutton;
-  /** Reference to the scene. */
-  std::shared_ptr<cugl::scene2::SceneNode> _scene;
-  /** Reference to the background layer scene graph. */
-  std::shared_ptr<cugl::scene2::SceneNode> _background_layer;
   /** Reference to the cloud layer scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
   /** The player menu choice */
