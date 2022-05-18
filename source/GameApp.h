@@ -11,6 +11,7 @@
 #include "scenes/LoadingScene.h"
 #include "scenes/MenuScene.h"
 #include "scenes/WinScene.h"
+#include "scenes/HowToPlayScene.h"
 
 /**
  * This class represents the application root for the game.
@@ -27,6 +28,8 @@ class GameApp : public cugl::Application {
     MENU,
     /** The scene to host a game */
     HOST,
+    /** The scene for how to play */
+    HTP,
     /** The scene for host to wait in a lobby */
     HOST_LOBBY,
     /** The scene to join a game */
@@ -51,8 +54,12 @@ class GameApp : public cugl::Application {
 
   /** The controller for the loading screen */
   LoadingScene _loading;
+
   /** The controller for the main menu */
   MenuScene _menu;
+
+  /** The controller for the how to play menu */
+  HowToPlayScene _howtoplay;
 
   /** The scene to host a game */
   HostMenuScene _hostgame;
@@ -154,6 +161,16 @@ class GameApp : public cugl::Application {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   void updateMenuScene(float timestep);
+
+   /**
+   * Individualized update method for the how to play scene.
+   *
+   * This method keeps the primary {@link #update} from being a mess of switch
+   * statements. It also handles the transition logic from the how to play scene.
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame
+   */
+  void updateHowToPlayScene(float timestep);
 
   /**
    * Individualized update method for the host scene.

@@ -46,6 +46,9 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _joinbutton->addListener([this](const std::string& name, bool down) {
     if (down) _choice = Choice::JOIN;
   });
+  _htpbutton->addListener([this](const std::string& name, bool down) {
+    if (down) _choice = Choice::HTP;
+  });
 
   addChild(scene);
   _choice = NONE;

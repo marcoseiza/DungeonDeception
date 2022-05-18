@@ -44,6 +44,7 @@ void GameApp::onShutdown() {
   _joingame.dispose();
   _joinlobby.dispose();
   _hostlobby.dispose();
+  _howtoplay.dispose();
   _menu.dispose();
   _win.dispose();
   _level_loading.dispose();
@@ -68,6 +69,9 @@ void GameApp::update(float timestep) {
       break;
     case MENU:
       updateMenuScene(timestep);
+      break;
+    case HTP:
+      updateHowToPlayScene(timestep);
       break;
     case HOST:
       updateHostMenuScene(timestep);
@@ -134,6 +138,7 @@ void GameApp::updateLoadingScene(float timestep) {
     cugl::scene2::Button::DEFAULT_CLICK_SOUND =
         _assets->get<cugl::Sound>("button-click");
     _menu.init(_assets);
+    _howtoplay.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
     _joinlobby.init(_assets);
@@ -163,6 +168,11 @@ void GameApp::updateMenuScene(float timestep) {
       _joingame.setActive(true);
       _scene = State::CLIENT;
       break;
+    case MenuScene::Choice::HTP:
+      _menu.setActive(false);
+      _howtoplay.setActive(true);
+      _scene = State::HTP;
+      break;
     case MenuScene::Choice::JOIN_LOBBY:
       // TODO does menu scene ever make this choice?
       _joingame.setActive(false);
@@ -173,6 +183,10 @@ void GameApp::updateMenuScene(float timestep) {
       // DO NOTHING
       break;
   }
+}
+
+void GameApp::updateHowToPlayScene(float timestep) {
+  _howtoplay.update(timestep);
 }
 
 void GameApp::updateHostMenuScene(float timestep) {
