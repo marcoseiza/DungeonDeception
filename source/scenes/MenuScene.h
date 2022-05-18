@@ -19,8 +19,6 @@ class MenuScene : public cugl::Scene2 {
     HOST,
     /** User wants to join a game */
     JOIN,
-    /** User is in a lobby waiting to join a game */
-    JOIN_LOBBY
   };
 
  protected:
@@ -32,6 +30,8 @@ class MenuScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _joinbutton;
   /** Reference to the cloud layer scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
+  /** The x position of the cloud. */
+  float _cloud_x_pos = 0;
   /** The player menu choice */
   Choice _choice;
 
@@ -86,6 +86,20 @@ class MenuScene : public cugl::Scene2 {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   virtual void update(float timestep) override;
+
+  /**
+   * Get the cloud X position in the scene
+   *
+   * @return the x position of the cloud layer
+   */
+  float getCloudXPosition() { return _cloud_x_pos; };
+
+  /**
+   * Sets the cloud X position in the scene
+   *
+   * @param x the x position to set the cloud to.
+   */
+  void setCloudXPosition(float x) { _cloud_x_pos = x; };
 };
 
 #endif /* SCENES_MENU_SCENE_H_ */

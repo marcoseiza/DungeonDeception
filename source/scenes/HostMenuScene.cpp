@@ -68,6 +68,7 @@ bool HostMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   auto background_layer =
       assets->get<cugl::scene2::SceneNode>("background-host-menu");
   background_layer->setContentSize(dimen);
+  background_layer->setPositionX(getCloudXPosition());
   background_layer->doLayout();
 
   _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-host-menu");
@@ -98,6 +99,7 @@ void HostMenuScene::setActive(bool value) {
       configureStartButton();
       _backout->activate();
       connect();
+      _cloud_layer->setPositionX(_cloud_x_pos);
     } else {
       _startgame->deactivate();
       _backout->deactivate();
@@ -126,10 +128,11 @@ void HostMenuScene::update(float timestep) {
   }
 
   // update cloud background layer
-  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
-  if (_cloud_layer->getPositionX() >= 0) {
-    _cloud_layer->setPositionX(CLOUD_WRAP);
+  _cloud_x_pos = _cloud_x_pos + .3;
+  if (_cloud_x_pos >= 0) {
+    _cloud_x_pos = CLOUD_WRAP;
   }
+  _cloud_layer->setPositionX(_cloud_x_pos);
 }
 
 void HostMenuScene::processData(const std::vector<uint8_t>& data) {

@@ -38,6 +38,8 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Label> _gameid;
   /** Reference to the cloud layer scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
+  /** The x position of the cloud. */
+  float _cloud_x_pos = 0;
 
   /** The network configuration */
   cugl::NetworkConnection::ConnectionConfig _config;
@@ -121,6 +123,20 @@ class PeerScene : public cugl::Scene2 {
    * fully disconnected when ALL scenes have been disconnected.
    */
   void disconnect() { _network = nullptr; }
+
+  /**
+   * Get the cloud X position in the scene
+   *
+   * @return the x position of the cloud layer
+   */
+  float getCloudXPosition() { return _cloud_x_pos; };
+
+  /**
+   * Sets the cloud X position in the scene
+   *
+   * @param x the x position to set the cloud to.
+   */
+  void setCloudXPosition(float x) { _cloud_x_pos = x; };
 
  private:
   /**

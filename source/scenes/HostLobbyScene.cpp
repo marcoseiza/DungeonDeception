@@ -67,6 +67,7 @@ bool HostLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   auto background_layer =
       assets->get<cugl::scene2::SceneNode>("background-host-lobby");
   background_layer->setContentSize(dimen);
+  background_layer->setPositionX(getCloudXPosition());
   background_layer->doLayout();
 
   _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-host-lobby");
@@ -104,6 +105,7 @@ void HostLobbyScene::setActive(
 
       auto x = *(_network->getPlayerID());
       _name->setText("runner_" + to_string(x));
+      _cloud_layer->setPositionX(_cloud_x_pos);
     } else {
       // TODO deactivate things as necessary
       _name->deactivate();
@@ -140,10 +142,11 @@ void HostLobbyScene::update(float timestep) {
   }
 
   // update cloud background layer
-  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
-  if (_cloud_layer->getPositionX() >= 0) {
-    _cloud_layer->setPositionX(CLOUD_WRAP);
+  _cloud_x_pos = _cloud_x_pos + .3;
+  if (_cloud_x_pos >= 0) {
+    _cloud_x_pos = CLOUD_WRAP;
   }
+  _cloud_layer->setPositionX(_cloud_x_pos);
 }
 
 void HostLobbyScene::processData(const std::vector<uint8_t>& data){};
