@@ -41,6 +41,13 @@ class PeerLobbyScene : public cugl::Scene2 {
   /** The x position of the cloud. */
   float _cloud_x_pos = 0;
 
+  /** The copy for the game id */
+  std::shared_ptr<cugl::scene2::Button> _copy;
+  /** The copy tooltip for the game id */
+  std::shared_ptr<cugl::scene2::SceneNode> _copy_tooltip;
+  /** The copy tooltip lifetime. */
+  float _copy_tooltip_lifetime;
+
   /** The current status */
   Status _status;
 

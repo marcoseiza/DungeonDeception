@@ -35,6 +35,9 @@ class HostLobbyScene : public PeerLobbyScene {
   /** A map from the player id to the name. */
   std::unordered_map<int, std::string> _player_id_to_name;
 
+  /** The number of players in the game. */
+  int _num_of_players;
+
  public:
 #pragma mark -
 #pragma mark Constructors

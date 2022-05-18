@@ -51,6 +51,19 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _names_set = _assets->get<cugl::scene2::SceneNode>(
       "client-lobby-scene_center_menu-status_successfully-set");
 
+  _copy = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_game_copy"));
+  _copy_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client-lobby-scene_game_copy_tooltip-wrapper_copied");
+  _copy_tooltip_lifetime = 0;
+  _copy->addListener([this](const std::string& name, bool down) {
+    if (down) {
+      SDL_SetClipboardText(this->_gameid->getText().c_str());
+      _copy_tooltip->setVisible(true);
+      _copy_tooltip_lifetime = 0;
+    }
+  });
+
   _backout->addListener([this](const std::string& name, bool down) {
     if (down) {
       disconnect();
@@ -103,6 +116,10 @@ void ClientLobbyScene::setActive(
       _name->setText("");
       _backout->activate();
 
+      _copy->activate();
+      _copy_tooltip->setVisible(false);
+      _copy_tooltip_lifetime = 0;
+
       _names_set->setVisible(false);
       _names_in_use->setVisible(false);
       _cloud_layer->setPositionX(_cloud_x_pos);
@@ -110,6 +127,8 @@ void ClientLobbyScene::setActive(
       // TODO deactivate things as necessary
       _name->deactivate();
       _backout->deactivate();
+      _copy->deactivate();
+      _copy->setDown(false);
       _backout->setDown(false);
       _names_set->setVisible(false);
       _names_in_use->setVisible(false);
@@ -130,6 +149,13 @@ void ClientLobbyScene::update(float timestep) {
     _cloud_x_pos = CLOUD_WRAP;
   }
   _cloud_layer->setPositionX(_cloud_x_pos);
+
+  if (_copy_tooltip->isVisible()) {
+    _copy_tooltip_lifetime += timestep;
+    if (_copy_tooltip_lifetime >= 1.0f /* seconds */) {
+      _copy_tooltip->setVisible(false);
+    }
+  }
 }
 
 void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {

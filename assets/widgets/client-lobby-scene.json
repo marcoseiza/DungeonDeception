@@ -179,6 +179,9 @@
       },
       "game": {
         "type": "Label",
+        "format": {
+          "type": "Anchored"
+        },
         "data": {
           "size": [300, 70],
           "text": "",
@@ -194,6 +197,108 @@
           "absolute": true,
           "x_offset": 145,
           "y_offset": 40
+        },
+        "children": {
+          "copy": {
+            "type": "Button",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "upnode": "up",
+              "anchor": [1.0, 0.5],
+              "size": [70, 70],
+              "play-click-sound": true,
+              "play-click-sound-on-down": true
+            },
+            "layout": {
+              "x_anchor": "right",
+              "y_anchor": "middle",
+              "x_offset": -17,
+              "y_offset": 20,
+              "absolute": true
+            },
+            "children": {
+              "up": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "layout": {
+                  "x_anchor": "fill",
+                  "y_anchor": "fill"
+                },
+                "children": {
+                  "image": {
+                    "type": "Image",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "texture": "copy",
+                      "scale": 3,
+                      "anchor": [0.5, 0.5]
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle",
+                      "y_offset": 5,
+                      "absolute": true
+                    }
+                  },
+                  "tooltip": {
+                    "type": "Label",
+                    "data": {
+                      "anchor": [0.5, 0.0],
+                      "text": "COPY",
+                      "font": "pixelmix_extra_small",
+                      "halign": "center",
+                      "valign": "bottom",
+                      "dropshadow": true,
+                      "foreground": "#ffffff"
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "bottom",
+                      "absolute": true
+                    }
+                  }
+                }
+              },
+              "tooltip-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "size": [105, 30],
+                  "anchor": [0.5, 1.0]
+                },
+                "children": {
+                  "copied": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "menu-status-tooltip",
+                      "variables": {
+                        "text": "Copied!",
+                        "font": "pixelmix_small_tooltip",
+                        "icon": "",
+                        "icon-visible": false,
+                        "icon-padding": [0, 0, 0, 0],
+                        "size": [105, 30]
+                      }
+                    }
+                  }
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "bottom",
+                  "y_offset": -10,
+                  "absolute": true
+                }
+              }
+            }
+          }
         }
       },
       "countdown": {
