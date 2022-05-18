@@ -26,7 +26,7 @@
             "data": {
               "key": "menutitle",
               "variables": {
-                "text": "LOBBY"
+                "text": "HOW TO PLAY"
               },
               "anchor": [ 0.5, 1.0 ]
             },

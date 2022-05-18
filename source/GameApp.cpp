@@ -105,6 +105,9 @@ void GameApp::draw() {
     case MENU:
       _menu.render(_batch);
       break;
+    case HTP:
+      _howtoplay.render(_batch);
+      break;
     case HOST:
       _hostgame.render(_batch);
       break;
@@ -145,6 +148,7 @@ void GameApp::updateLoadingScene(float timestep) {
     _hostlobby.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
+    _howtoplay.setActive(false);
     _joingame.setActive(false);
     _hostlobby.setActive(false, nullptr);
     _joinlobby.setActive(false, nullptr);
@@ -356,6 +360,7 @@ void GameApp::updateWinScene(float timestep) {
     case WinScene::Choice::GOTOMENU:
       _win.dispose();
       _menu.setActive(true);
+      _howtoplay.setActive(false);
       _hostgame.setActive(false);
       _joingame.setActive(false);
       _hostlobby.setActive(false, nullptr);
