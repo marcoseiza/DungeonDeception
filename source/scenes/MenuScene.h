@@ -30,6 +30,12 @@ class MenuScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _hostbutton;
   /** The menu button for joining a game */
   std::shared_ptr<cugl::scene2::Button> _joinbutton;
+  /** Reference to the scene. */
+  std::shared_ptr<cugl::scene2::SceneNode> _scene;
+  /** Reference to the background layer scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _background_layer;
+  /** Reference to the cloud layer scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
   /** The player menu choice */
   Choice _choice;
 
@@ -77,6 +83,13 @@ class MenuScene : public cugl::Scene2 {
    * @param value whether the scene is currently active
    */
   virtual void setActive(bool value) override;
+
+  /**
+   * The method called to update the scene
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame
+   */
+  virtual void update(float timestep) override;
 };
 
 #endif /* SCENES_MENU_SCENE_H_ */

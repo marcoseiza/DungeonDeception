@@ -335,7 +335,9 @@
   },
   "widgets": {
     "background": "widgets/background.json",
+    "background-menu": "widgets/background-menu.json",
     "clouds": "widgets/clouds.json",
+    "clouds-menu": "widgets/clouds-menu.json",
     "runner-scene": "widgets/runner-scene.json",
     "betrayer-scene": "widgets/betrayer-scene.json",
     "ui-scene": "widgets/ui-scene.json",
@@ -365,10 +367,24 @@
         "variables": {}
       }
     },
+    "background-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
     "clouds": {
       "type": "Widget",
       "data": {
         "key": "clouds",
+        "variables": {}
+      }
+    },
+    "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
         "variables": {}
       }
     },
@@ -443,15 +459,12 @@
       }
     },
     "menu": {
-      "type": "Image",
+      "type": "Node",
       "format": {
         "type": "Float",
         "orientation": "vertical",
         "x_alignment": "center",
         "y_alignment": "middle"
-      },
-      "data": {
-        "texture": "background"
       },
       "children": {
         "title": {
