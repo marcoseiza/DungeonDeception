@@ -82,6 +82,9 @@ class TankController : public EnemyController {
    */
   void animate(std::shared_ptr<EnemyModel> enemy) override;
   
+  /** Animate when chasing. */
+  void animateChase(std::shared_ptr<EnemyModel> enemy);
+  
   /** Update and attack the player if a client.
    *
    * @param enemy the enemy.
