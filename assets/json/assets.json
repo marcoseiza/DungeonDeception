@@ -334,10 +334,12 @@
     "server": "json/server.json"
   },
   "widgets": {
-    "background": "widgets/background.json",
-    "background-menu": "widgets/background-menu.json",
-    "clouds": "widgets/clouds.json",
-    "clouds-menu": "widgets/clouds-menu.json",
+    "background": "widgets/backgrounds/background.json",
+    "background-menu": "widgets/backgrounds/background-menu.json",
+    "background-host-menu": "widgets/backgrounds/background-menu.json",
+    "clouds": "widgets/backgrounds/clouds.json",
+    "clouds-menu": "widgets/backgrounds/clouds-menu.json",
+    "clouds-host-menu": "widgets/backgrounds/clouds-menu.json",
     "runner-scene": "widgets/runner-scene.json",
     "betrayer-scene": "widgets/betrayer-scene.json",
     "ui-scene": "widgets/ui-scene.json",
@@ -374,6 +376,13 @@
         "variables": {}
       }
     },
+    "background-host-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
     "clouds": {
       "type": "Widget",
       "data": {
@@ -382,6 +391,13 @@
       }
     },
     "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-host-menu": {
       "type": "Widget",
       "data": {
         "key": "clouds-menu",
