@@ -8,10 +8,24 @@
  * This class presents the menu to the player.
  */
 class HowToPlayScene : public cugl::Scene2 {
+ public:
+  /**
+   * The menu choice made by the user.
+   */
+  enum Choice {
+    /** User has not yet made a choice */
+    NONE,
+    /** User goes back to menu */
+    GOTOMENU
+  };
 
  protected:
   /** The asset manager for this scene. */
   std::shared_ptr<cugl::AssetManager> _assets;
+  /** The back button for the menu scene */
+  std::shared_ptr<cugl::scene2::Button> _backout;
+  /** The player menu choice */
+  Choice _choice;
 
  public:
 #pragma mark -
@@ -30,6 +44,13 @@ class HowToPlayScene : public cugl::Scene2 {
    * Disposes of all (non-static) resources allocated to this mode.
    */
   void dispose() override;
+
+  /**
+   * Returns the user's menu choice.
+   *
+   * @return the user's menu choice.
+   */
+  Choice getChoice() const { return _choice; }
 
   /**
    * Initializes the controller contents, i.e. the scene user interface.

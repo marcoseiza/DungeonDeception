@@ -191,6 +191,16 @@ void GameApp::updateMenuScene(float timestep) {
 
 void GameApp::updateHowToPlayScene(float timestep) {
   _howtoplay.update(timestep);
+  switch (_howtoplay.getChoice()) {
+    case HowToPlayScene::Choice::GOTOMENU:
+      _howtoplay.setActive(false);
+      _menu.setActive(true);
+      _scene = State::MENU;
+      break;
+    case HowToPlayScene::Choice::NONE:
+      // DO NOTHING
+      break;
+  }
 }
 
 void GameApp::updateHostMenuScene(float timestep) {

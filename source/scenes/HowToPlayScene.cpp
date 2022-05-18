@@ -32,7 +32,16 @@ bool HowToPlayScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   scene->setContentSize(dimen);
   scene->doLayout();  // Repositions the HUD
 
+  _backout = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("how-to-play_back"));
+
+  _backout->addListener([this](const std::string& name, bool down) {
+    if (down) _choice = Choice::GOTOMENU;
+  });
+
   addChild(scene);
+  _choice = NONE;
+  _backout->activate();
   return true;
 }
 
@@ -40,6 +49,9 @@ void HowToPlayScene::dispose() {
   if (!_active) return;
   _active = false;
   removeAllChildren();
+  _backout->deactivate();
+  // If any were pressed, reset them.
+  _backout->setDown(false);
 
 }
 
@@ -55,5 +67,12 @@ void HowToPlayScene::dispose() {
 void HowToPlayScene::setActive(bool value) {
   if (isActive() != value) {
     Scene2::setActive(value);
+    if (value) {
+      _choice = NONE;
+      _backout->activate();
+    } else {
+      _backout->deactivate();
+      _backout->setDown(false);
+    }
   }
 }
