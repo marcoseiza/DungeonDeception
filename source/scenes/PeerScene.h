@@ -36,6 +36,8 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _backout;
   /** The game id label (for updating) */
   std::shared_ptr<cugl::scene2::Label> _gameid;
+  /** Reference to the cloud layer scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
 
   /** The network configuration */
   cugl::NetworkConnection::ConnectionConfig _config;

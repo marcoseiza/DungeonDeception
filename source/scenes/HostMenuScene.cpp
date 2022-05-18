@@ -10,6 +10,8 @@
 
 /** Regardless of logo, lock the height to this */
 #define SCENE_HEIGHT 720
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -1689.6
 
 #pragma mark -
 #pragma mark Host Methods
@@ -62,6 +64,18 @@ bool HostMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _config.maxNumPlayers = json->getInt("maximum", 0);
   _config.apiVersion = json->getInt("version", 0);
 
+  // handle background and cloud layers
+  auto background_layer =
+      assets->get<cugl::scene2::SceneNode>("background-host-menu");
+  background_layer->setContentSize(dimen);
+  background_layer->doLayout();
+
+  _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-host-menu");
+  _cloud_layer->setContentSize(dimen);
+  _cloud_layer->doLayout();
+
+  addChild(background_layer);
+  addChild(_cloud_layer);
   addChild(scene);
   setActive(false);
   return true;
@@ -71,6 +85,8 @@ void HostMenuScene::dispose() {
   if (_active) {
     removeAllChildren();
     _active = false;
+    _cloud_layer->dispose();
+    _cloud_layer = nullptr;
   }
 }
 
@@ -107,6 +123,12 @@ void HostMenuScene::update(float timestep) {
     checkConnection();
     // Do this last for button safety
     configureStartButton();
+  }
+
+  // update cloud background layer
+  _cloud_layer->setPositionX(_cloud_layer->getPositionX() + .3);
+  if (_cloud_layer->getPositionX() >= 0) {
+    _cloud_layer->setPositionX(CLOUD_WRAP);
   }
 }
 
