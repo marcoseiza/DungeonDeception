@@ -30,6 +30,8 @@ class MenuScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _hostbutton;
   /** The menu button for joining a game */
   std::shared_ptr<cugl::scene2::Button> _joinbutton;
+  /** The menu button for how to play */
+  std::shared_ptr<cugl::scene2::Button> _htpbutton;
   /** The player menu choice */
   Choice _choice;
 
