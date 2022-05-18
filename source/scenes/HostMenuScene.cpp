@@ -209,5 +209,7 @@ void HostMenuScene::configureStartButton() {
 
 void HostMenuScene::moveToLobby() {
   _status = JOIN;
-  _network->send(std::vector<uint8_t>{HOST_OPENED_UP_LOBBY_CODE});
+  _serializer.writeSint32(HOST_SEND_THAT_LOBBY_IS_OPEN);
+  _network->send(_serializer.serialize());
+  _serializer.reset();
 }

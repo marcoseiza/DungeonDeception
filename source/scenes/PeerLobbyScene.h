@@ -23,6 +23,13 @@ class PeerLobbyScene : public cugl::Scene2 {
   };
 
  protected:
+  /** The serializer used to serialize complex data to send through the network.
+   */
+  cugl::NetworkSerializer _serializer;
+  /** The deserializer used to deserialize complex data that was sent through
+   * the network. */
+  cugl::NetworkDeserializer _deserializer;
+
   /** The asset manager for this scene. */
   std::shared_ptr<cugl::AssetManager> _assets;
   /** The network connection (as made by this scene) */
@@ -68,6 +75,7 @@ class PeerLobbyScene : public cugl::Scene2 {
   };
 
   const Sint32 CLIENT_SEND_PLAYER_NAME = 1;
+  const Sint32 HOST_SEND_THAT_LOBBY_IS_OPEN = 0;
 
  public:
 #pragma mark -

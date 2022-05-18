@@ -200,7 +200,9 @@ void HostLobbyScene::update(float timestep) {
     // Number of players has changed, resend that lobby is open.
     if (_num_of_players != _network->getNumPlayers()) {
       // This message will make sense to ClientMenuScene.cpp
-      _network->send(std::vector<uint8_t>{0});
+      _serializer.writeSint32(HOST_SEND_THAT_LOBBY_IS_OPEN);
+      _network->send(_serializer.serialize());
+      _serializer.reset();
       _num_of_players = _network->getNumPlayers();
     }
   }

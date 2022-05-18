@@ -251,7 +251,9 @@ void ClientMenuScene::update(float timestep) {
 }
 
 void ClientMenuScene::processData(const std::vector<uint8_t>& data) {
-  if (data[0] == HOST_OPENED_UP_LOBBY_CODE) _move_to_lobby = true;
+  _deserializer.receive(data);
+  Sint32 code = std::get<Sint32>(_deserializer.read());
+  if (code == HOST_SEND_THAT_LOBBY_IS_OPEN) _move_to_lobby = true;
 };
 
 bool ClientMenuScene::connect(const std::string room) {

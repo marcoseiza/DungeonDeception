@@ -12,13 +12,6 @@
  */
 class ClientLobbyScene : public PeerLobbyScene {
  protected:
-  /** The serializer used to serialize complex data to send through the
-   * network. */
-  cugl::NetworkSerializer _serializer;
-  /** The deserializer used to deserialize complex data sent through the
-   * network. */
-  cugl::NetworkDeserializer _deserializer;
-
   /** Tooltip for when name is already in use. */
   std::shared_ptr<cugl::scene2::SceneNode> _names_in_use;
   /** Tooltip for when name is set. */
