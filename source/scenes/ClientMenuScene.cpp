@@ -308,7 +308,7 @@ bool ClientMenuScene::checkConnection() {
 void ClientMenuScene::configureStartButton() {
   if (_status == Status::IDLE) {
     _startgame->activate();
-    updateText(_startgame, "JOIN GAME");
+    updateText(_startgame, "JOIN LOBBY");
   } else if (_status == Status::JOIN) {
     _startgame->deactivate();
     _startgame->setDown(false);
@@ -316,7 +316,7 @@ void ClientMenuScene::configureStartButton() {
   } else if (_status == Status::WAIT) {
     _startgame->deactivate();
     _startgame->setDown(false);
-    updateText(_startgame, "WAITING ON LOBBY");
+    updateText(_startgame, "WAITING ON HOST");
     _startgame->setContentWidth(360);
     _startgame->getParent()->doLayout();
   }
