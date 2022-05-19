@@ -8,7 +8,7 @@
       "texture": "background"
     },
     "children": {
-      "center": {
+      "title": {
         "type": "Node",
         "format": {
           "type": "Float",
@@ -21,7 +21,7 @@
           "size": [ 1000, 1100 ]
         },
         "children": {
-          "title": {
+          "menutitle": {
             "type": "Widget",
             "data": {
               "key": "menutitle",
@@ -39,7 +39,133 @@
         },
         "layout": {
           "x_anchor": "center",
-          "y_anchor": "bottom"
+          "y_anchor": "center",
+          "y_offset": -0.355
+        }
+      },
+      "slide1": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 1100 ]
+        },
+        "children": {
+          "runner-info": {
+            "type": "Image",
+            "data": {
+              "texture": "runner-info"
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "middle"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "y_offset": -0.35
+        }
+      },
+      "slide2": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 1100 ]
+        },
+        "children": {
+          "runner-info": {
+            "type": "Image",
+            "data": {
+              "texture": "runner-ui-info"
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "middle",
+              "y_offset": -100
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "y_offset": -0.35
+        }
+      },
+      "slide3": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 1100 ]
+        },
+        "children": {
+          "runner-info": {
+            "type": "Image",
+            "data": {
+              "texture": "betrayer-info"
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "middle"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "y_offset": -0.35
+        }
+      },
+      "slide4": {
+        "type": "Node",
+        "format": {
+          "type": "Float",
+          "orientation": "vertical",
+          "x_alignment": "center",
+          "y_alignment": "middle"
+        },
+        "data": {
+          "anchor": [ 0.5, 0.0 ],
+          "size": [ 1000, 1100 ]
+        },
+        "children": {
+          "runner-info": {
+            "type": "Image",
+            "data": {
+              "texture": "betrayer-ui-info"
+            },
+            "layout": {
+              "priority": 1,
+              "x_anchor": "top",
+              "y_anchor": "bottom"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "y_offset": -0.35
         }
       },
       "back": {
@@ -64,6 +190,56 @@
           "y_anchor": "top",
           "y_offset": -135,
           "x_offset": 45,
+          "absolute": true
+        }
+      },
+      "left": {
+        "type": "Button",
+        "data": {
+          "upnode": "up",
+          "anchor": [ 0.0, 0.0 ],
+          "size": [ 60, 60 ]
+        },
+        "children": {
+          "up": {
+            "type": "Image",
+            "data": {
+              "texture": "left",
+              "scale": 4,
+              "color": "#222222"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "y_offset": -420,
+          "x_offset": 150,
+          "absolute": true
+        }
+      },
+      "right": {
+        "type": "Button",
+        "data": {
+          "upnode": "up",
+          "anchor": [ 0.0, 0.0 ],
+          "size": [ 60, 60 ]
+        },
+        "children": {
+          "up": {
+            "type": "Image",
+            "data": {
+              "texture": "right",
+              "scale": 4,
+              "color": "#222222"
+            }
+          }
+        },
+        "layout": {
+          "x_anchor": "right",
+          "y_anchor": "top",
+          "y_offset": -420,
+          "x_offset": -210,
           "absolute": true
         }
       }

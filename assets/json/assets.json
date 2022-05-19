@@ -161,6 +161,13 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "right": {
+      "file": "textures/right_arrow.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "frame": {
       "file": "textures/frame.png",
       "minfilter": "nearest",
@@ -328,7 +335,36 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "runner-info": {
+      "file": "textures/how-to-play-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "runner-ui-info": {
+      "file": "textures/how-to-play-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-info": {
+      "file": "textures/how-to-play-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-ui-info": {
+      "file": "textures/how-to-play-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
+
   },
   "jsons": {
     "server": "json/server.json"

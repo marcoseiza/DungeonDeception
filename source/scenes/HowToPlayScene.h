@@ -16,16 +16,35 @@ class HowToPlayScene : public cugl::Scene2 {
     /** User has not yet made a choice */
     NONE,
     /** User goes back to menu */
-    GOTOMENU
+    GOTOMENU, 
+  };
+
+  enum Change {
+    /** User has not changed slides */
+    NO,
+    /** User goes left on how to play */
+    LEFT,
+    /** User goes left on how to play */
+    RIGHT, 
   };
 
  protected:
   /** The asset manager for this scene. */
   std::shared_ptr<cugl::AssetManager> _assets;
+  /** The scene node for this scene. */
+  std::shared_ptr<cugl::scene2::SceneNode> _scene;
   /** The back button for the menu scene */
   std::shared_ptr<cugl::scene2::Button> _backout;
+  /** The left button for the how to play scene */
+  std::shared_ptr<cugl::scene2::Button> _left;
+  /** The right button for the how to play scene */
+  std::shared_ptr<cugl::scene2::Button> _right;
   /** The player menu choice */
   Choice _choice;
+  /** The player slide change */
+  Change _change;
+  /** The current slide the player is on */
+  int _current_slide;
 
  public:
 #pragma mark -
@@ -62,6 +81,13 @@ class HowToPlayScene : public cugl::Scene2 {
   bool init(const std::shared_ptr<cugl::AssetManager>& assets);
 
   /**
+   * The method called to update the how to play menu.
+   *
+   * @param timestep  The amount of time (in seconds) since the last frame.
+   */
+  void update(float timestep) override;
+
+  /**
    * Sets whether the scene is currently active
    *
    * This method should be used to toggle all the UI elements.  Buttons
@@ -71,6 +97,20 @@ class HowToPlayScene : public cugl::Scene2 {
    * @param value whether the scene is currently active
    */
   virtual void setActive(bool value) override;
+
+  /**
+   * Sets what slide the how to play scene is on
+
+   * @param value what slide the scene is on
+   */
+  void setCurrentSlide(int value) { _current_slide = value; }
+
+  /**
+   * Returns the current slide.
+   *
+   * @return the current slide.
+   */
+  int getCurrentSlide() { return _current_slide; }
 };
 
 #endif /* SCENES_HOW_TO_PLAY_SCENE_H_ */
