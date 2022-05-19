@@ -23,7 +23,7 @@
 // MAX_LIVE_FRAMES in projectile.cpp MUST be SLASH_FRAMES * 6
 #define SLASH_FRAMES 7
 
-#define HEALTH 100
+#define HEALTH 25
 
 #define MIN_POS_CHANGE 0.5f
 
@@ -114,6 +114,7 @@ void PlayerController::update(float timestep) {
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
     _player->dies();
+    _player->setEnergy(0);
   }
 
   // CHECK IF HAS BEEN DEAD FOR LONG ENOUGH TO REVIVE
