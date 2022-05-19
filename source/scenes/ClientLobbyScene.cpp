@@ -249,7 +249,7 @@ bool ClientLobbyScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       // Set the text from the network
-      _player->setText(": " + std::to_string(_network->getNumPlayers()), true);
+      _player->setText(": " + std::to_string(_network->getNumPlayers()));
       if (_status != START) {
         _status = WAIT;
       }

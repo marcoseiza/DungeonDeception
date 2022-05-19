@@ -190,7 +190,7 @@
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#000000"
+          "foreground": "#ffffff"
         },
         "layout": {
           "priority": 1,
