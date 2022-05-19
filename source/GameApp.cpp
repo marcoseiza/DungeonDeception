@@ -190,6 +190,7 @@ void GameApp::updateHowToPlayScene(float timestep) {
   _howtoplay.update(timestep);
   switch (_howtoplay.getChoice()) {
     case HowToPlayScene::Choice::GOTOMENU:
+      _howtoplay.setCurrentSlide(0);
       _menu.setCloudXPosition(_howtoplay.getCloudXPosition());
       _howtoplay.setActive(false);
       _menu.setActive(true);

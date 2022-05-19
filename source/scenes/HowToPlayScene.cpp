@@ -108,6 +108,8 @@ void HowToPlayScene::update(float timestep) {
       slide4->setVisible(false);
       _left->setVisible(false);
       _left->deactivate();
+      _right->setVisible(true);
+      _right->activate();
       break;
     case 1:
       slide2->setVisible(true);
@@ -116,12 +118,16 @@ void HowToPlayScene::update(float timestep) {
       slide4->setVisible(false);
       _left->setVisible(true);
       _left->activate();
+      _right->setVisible(true);
+      _right->activate();
       break;
     case 2:
       slide3->setVisible(true);
       slide1->setVisible(false);
       slide2->setVisible(false);
       slide4->setVisible(false);
+      _left->setVisible(true);
+      _left->activate();
       _right->setVisible(true);
       _right->activate();
       break;
@@ -130,6 +136,8 @@ void HowToPlayScene::update(float timestep) {
       slide1->setVisible(false);
       slide2->setVisible(false);
       slide3->setVisible(false);
+      _left->setVisible(true);
+      _left->activate();
       _right->setVisible(false);
       _right->deactivate();
       break;
@@ -140,6 +148,8 @@ void HowToPlayScene::update(float timestep) {
       slide4->setVisible(false);
       _left->setVisible(false);
       _left->deactivate();
+      _right->setVisible(true);
+      _right->activate();
       break;
   }
 
