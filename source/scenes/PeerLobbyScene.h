@@ -23,6 +23,13 @@ class PeerLobbyScene : public cugl::Scene2 {
   };
 
  protected:
+  /** The serializer used to serialize complex data to send through the network.
+   */
+  cugl::NetworkSerializer _serializer;
+  /** The deserializer used to deserialize complex data that was sent through
+   * the network. */
+  cugl::NetworkDeserializer _deserializer;
+
   /** The asset manager for this scene. */
   std::shared_ptr<cugl::AssetManager> _assets;
   /** The network connection (as made by this scene) */
@@ -41,6 +48,13 @@ class PeerLobbyScene : public cugl::Scene2 {
   /** The x position of the cloud. */
   float _cloud_x_pos = 0;
 
+  /** The copy for the game id */
+  std::shared_ptr<cugl::scene2::Button> _copy;
+  /** The copy tooltip for the game id */
+  std::shared_ptr<cugl::scene2::SceneNode> _copy_tooltip;
+  /** The copy tooltip lifetime. */
+  float _copy_tooltip_lifetime;
+
   /** The current status */
   Status _status;
 
@@ -52,6 +66,16 @@ class PeerLobbyScene : public cugl::Scene2 {
 
   /** The map from player id to color id. */
   std::unordered_map<int, int> _color_ids;
+
+  enum HostResponse : Sint32 {
+    HOST_ACCEPT_PLAYER_NAME = 2,
+    HOST_DENY_PLAYER_NAME = 3,
+    HOST_REMOVED_PLAYER_NAME = 4,
+    HOST_NAME_NO_OP = 5
+  };
+
+  const Sint32 CLIENT_SEND_PLAYER_NAME = 1;
+  const Sint32 HOST_SEND_THAT_LOBBY_IS_OPEN = 0;
 
  public:
 #pragma mark -
@@ -169,6 +193,12 @@ class PeerLobbyScene : public cugl::Scene2 {
    * @param data  The data received
    */
   virtual void processData(const std::vector<uint8_t>& data){};
+
+  /**
+   * Send submitted player name over the network.
+   * @param name The name to send.
+   */
+  virtual void sendPlayerName(const std::string& name) {}
 };
 
 #endif /* SCENES_PEER_LOBBY_SCENE_H_ */

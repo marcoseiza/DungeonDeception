@@ -235,11 +235,13 @@ void GameApp::updateClientMenuScene(float timestep) {
       _scene = State::MENU;
       break;
     case ClientMenuScene::Status::WAIT:
-      _joinlobby.setCloudXPosition(_joingame.getCloudXPosition());
-      _joingame.setActive(false);
-      _joinlobby.setGameId(_joingame.getGameId());
-      _joinlobby.setActive(true, _joingame.getConnection());
-      _scene = State::CLIENT_LOBBY;
+      if (_joingame.shouldMoveToLobby()) {
+        _joinlobby.setCloudXPosition(_joingame.getCloudXPosition());
+        _joingame.setActive(false);
+        _joinlobby.setGameId(_joingame.getGameId());
+        _joinlobby.setActive(true, _joingame.getConnection());
+        _scene = State::CLIENT_LOBBY;
+      }
       break;
     case ClientMenuScene::Status::JOIN:
     case ClientMenuScene::Status::IDLE:

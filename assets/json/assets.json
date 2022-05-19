@@ -461,6 +461,34 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "copy": {
+      "file": "textures/ui/copy.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "warning": {
+      "file": "textures/ui/warning.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "erase": {
+      "file": "textures/ui/erase.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "checkmark": {
+      "file": "textures/ui/checkmark.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
 
   },
@@ -492,7 +520,8 @@
     "menutitle": "widgets/menutitle.json",
     "settings": "widgets/settings.json",
     "keypad": "widgets/keypad.json",
-    "keypad-button": "widgets/keypad-button.json"
+    "keypad-button": "widgets/keypad-button.json",
+    "menu-status-tooltip": "widgets/menu-status-tooltip.json"
   },
   "scene2s": {
     "background": {
@@ -690,7 +719,7 @@
             "priority": 1,
             "x_alignment": "center",
             "y_alignment": "top",
-            "padding": [ 0, 0, 0, 50 ]
+            "padding": [0, 0, 0, 50]
           }
         },
         "play": {
@@ -702,8 +731,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [ 0.5, 0.5 ],
-            "size": [ 600, 80 ]
+            "anchor": [0.5, 0.5],
+            "size": [600, 80]
           },
           "children": {
             "host": {
@@ -711,14 +740,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 260, 80 ],
+                  "size": [260, 80],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 25, 0 ]
+                "padding": [0, 0, 25, 0]
               }
             },
             "join": {
@@ -726,20 +755,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 260, 80 ],
+                  "size": [260, 80],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 0, 0 ]
+                "padding": [0, 0, 0, 0]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 50, 0, 40 ]
+            "padding": [0, 50, 0, 40]
           }
         },
         "instructions": {
@@ -747,7 +776,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 260, 60 ],
+              "size": [260, 60],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -755,7 +784,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 30, 0, 0 ]
+            "padding": [0, 30, 0, 0]
           }
         },
         "settings": {
@@ -763,7 +792,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 220, 60 ],
+              "size": [220, 60],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -771,7 +800,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 115, 0, 0 ]
+            "padding": [0, 115, 0, 0]
           }
         }
       }
@@ -785,7 +814,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0, 1.0 ],
+            "anchor": [0, 1.0],
             "background": "health-bar",
             "foreground": "health-fill"
           },
@@ -803,7 +832,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [ 0, 1.0 ]
+            "anchor": [0, 1.0]
           },
           "layout": {
             "x_anchor": "left",
@@ -823,7 +852,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0.0, 1.0 ],
+            "anchor": [0.0, 1.0],
             "background": "energy-bar",
             "foreground": "energy-fill"
           },
@@ -841,7 +870,7 @@
           },
           "data": {
             "texture": "energy-outline",
-            "anchor": [ 0.0, 1.0 ]
+            "anchor": [0.0, 1.0]
           },
           "layout": {
             "x_anchor": "left",
@@ -869,6 +898,10 @@
     "pixelmix_medium": {
       "file": "fonts/pixelmix.ttf",
       "size": 20
+    },
+    "pixelmix_small_tooltip": {
+      "file": "fonts/pixelmix.ttf",
+      "size": 18
     },
     "pixelmix_small": {
       "file": "fonts/pixelmix.ttf",

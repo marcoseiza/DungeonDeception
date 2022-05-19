@@ -29,6 +29,12 @@ class PeerScene : public cugl::Scene2 {
   std::shared_ptr<cugl::AssetManager> _assets;
   /** The network connection (as made by this scene) */
   std::shared_ptr<cugl::NetworkConnection> _network;
+  /** The serializer used to serialize complex data to send through the network.
+   */
+  cugl::NetworkSerializer _serializer;
+  /** The deserializer used to deserialize complex data that was sent through
+   * the network. */
+  cugl::NetworkDeserializer _deserializer;
 
   /** The menu button for starting a game */
   std::shared_ptr<cugl::scene2::Button> _startgame;
@@ -41,11 +47,16 @@ class PeerScene : public cugl::Scene2 {
   /** The x position of the cloud. */
   float _cloud_x_pos = 0;
 
+  /** A reference to the clipboard button. */
+  std::shared_ptr<cugl::scene2::Button> _clipboard;
+
   /** The network configuration */
   cugl::NetworkConnection::ConnectionConfig _config;
 
   /** The current status */
   Status _status;
+
+  const Sint32 HOST_SEND_THAT_LOBBY_IS_OPEN = 0;
 
  public:
 #pragma mark -

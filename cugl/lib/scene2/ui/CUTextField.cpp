@@ -126,7 +126,11 @@ _cursorColor(Color4::BLACK),
 _tkey(0),
 _kkey(0),
 _fkey(0),
-_nextKey(1) {
+_nextKey(1), 
+_placeholder(""),
+_placeholder_return_text(""),
+_placeholder_color(70, 70, 70, 255),
+_place_holder_is_active(false) {
     _classname = "TextField";
 }
 
@@ -189,6 +193,25 @@ bool TextField::initWithData(const Scene2Loader* loader, const std::shared_ptr<J
                 _cursorColor.a = col->get(3)->asInt(0);
             }
         }
+        _placeholder = data->getString("placeholder", "");
+        if (data->has("placeholder-color")) {
+            JsonValue* col = data->get("placeholder-color").get();
+            if (col->isString()) {
+                _placeholder_color.set(col->asString("#ffffff"));
+            } else {
+                CUAssertLog(col->size() >= 4, "'color' must be a four element number array");
+                _placeholder_color.r = col->get(0)->asInt(0);
+                _placeholder_color.g = col->get(1)->asInt(0);
+                _placeholder_color.b = col->get(2)->asInt(0);
+                _placeholder_color.a = col->get(3)->asInt(0);
+            }
+        }
+
+        if (_placeholder != "" && _layout->_text == "")  {
+            _place_holder_is_active = false;
+           placePlaceholder();
+        }
+        
         return true;
     }
     return false;
@@ -396,6 +419,10 @@ void TextField::clearExitListeners() {
  * @oaram resize    Whether to resize the label to fit the new text.
  */
 void TextField::setText(const std::string& text, bool resize) {
+    if (text == "") {
+        placePlaceholder();
+        return;
+    }
     Label::setText(text, resize);
     _cursorIndex = text.size();
     updateCursor();
@@ -559,6 +586,8 @@ bool TextField::requestFocus() {
     	textInput->releaseFocus();
     	return false;
     }
+
+    clearPlaceholder();
     
     textInput->begin();
 
@@ -603,6 +632,8 @@ bool TextField::releaseFocus() {
     if (keyBoard->currentFocus() == _kkey) {
 		keyBoard->releaseFocus();
     }
+
+    if (_layout->getText() == "") placePlaceholder();
     
     invokeListeners(true);
     _focused = false;
@@ -1351,12 +1382,38 @@ size_t TextField::getCharRow() const {
 void TextField::invokeListeners(bool exit) {
     if (exit) {
         for(auto it = _exitListeners.begin(); it != _exitListeners.end(); ++it) {
-            it->second(getName(), _layout->_text);
+            it->second(getName(), (_place_holder_is_active) ? _placeholder_return_text : _layout->_text);
         }
     } else {
         for(auto it = _typeListeners.begin(); it != _typeListeners.end(); ++it) {
-            it->second(getName(), _layout->_text);
+            it->second(getName(), (_place_holder_is_active) ? _placeholder_return_text : _layout->_text);
         }
     }
 }
 
+/**
+ * Replaces the current text with the placeholder text.
+ */
+void TextField::placePlaceholder() {
+    if (_place_holder_is_active) return;
+
+    Label::setText(_placeholder, false);
+    _cursorIndex = _placeholder.size();
+    updateCursor();
+    _foreground_prev = _foreground;
+    setForeground(_placeholder_color);
+    _place_holder_is_active = true;
+}
+
+/**
+ * Replaces the placeholder text with a blank slate.
+ */
+void TextField::clearPlaceholder() {
+    if (!_place_holder_is_active) return;
+
+    Label::setText("", false);
+    _cursorIndex = 0;
+    updateCursor();
+    setForeground(_foreground_prev);
+    _place_holder_is_active = false;
+}

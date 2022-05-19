@@ -12,6 +12,11 @@
  * This class is an implementation of PeerScene.
  */
 class HostMenuScene : public PeerScene {
+  /** A tooltip for when the player copies the game id. */
+  std::shared_ptr<cugl::scene2::SceneNode> _copy_tooltip;
+  /** The lifetime of this tooltip. */
+  float _copy_tooltip_lifetime;
+
  public:
 #pragma mark -
 #pragma mark Constructors

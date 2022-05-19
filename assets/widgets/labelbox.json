@@ -1,13 +1,14 @@
 {
     "variables": {
-        "size": [ "data", "size" ],
-        "anchor": [ "data", "anchor" ],
-        "text": [ "children", "text", "data", "text" ],
-        "font": [ "children", "text", "data", "font" ],
-        "halign": [ "children", "text", "data", "halign" ],
-        "valign": [ "children", "text", "data", "valign" ],
-        "foreground": [ "children", "text", "data", "foreground" ],
-        "background": [ "children", "text", "data", "background" ]
+        "size": ["data", "size"],
+        "anchor": ["data", "anchor"],
+        "text": ["children", "text", "data", "text"],
+        "font": ["children", "text", "data", "font"],
+        "halign": ["children", "text", "data", "halign"],
+        "valign": ["children", "text", "data", "valign"],
+        "foreground": ["children", "text", "data", "foreground"],
+        "background": ["children", "bkg", "data", "color"],
+        "padding": ["children", "text", "data", "padding"]
     },
     "contents": {
         "type": "Node",
@@ -15,27 +16,36 @@
             "type": "Anchored"
         },
         "data": {
-            "anchor": [ 0.5, 0.5 ],
-            "size": [ 170, 75 ]
+            "anchor": [0.5, 0.5],
+            "size": [170, 75]
         },
         "children": {
+            "bkg": {
+                "type": "Image",
+                "data": {
+                    "anchor": [0.5, 0.5],
+                    "color": "#ffffff"
+                },
+                "layout": {
+                    "x_anchor": "fill",
+                    "y_anchor": "fill",
+                    "absolute": true
+                }
+            },
             "text": {
                 "type": "Label",
                 "data": {
-                    "anchor": [ 0.5, 0.5 ],
+                    "anchor": [0.5, 0.5],
                     "font": "pixelmix",
                     "text": "Text",
-                    "padding": [ 20, 20, 20, 20 ],
+                    "padding": [20, 20, 20, 20],
                     "halign": "left",
                     "valign": "middle",
-                    "background": "#ffffff",
                     "foreground": "#000000"
                 },
                 "layout": {
                     "x_anchor": "fill",
                     "y_anchor": "fill",
-                    "x_offset": 2,
-                    "y_offset": 2,
                     "absolute": true
                 }
             }

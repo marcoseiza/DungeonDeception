@@ -47,7 +47,7 @@ class LoadingScene : public cugl::Scene2 {
         _completed(false),
         _frame_cooldown(0),
         _loading_text_frame_cooldown(0),
-        _num_of_dots(1) {}
+        _num_of_dots(3) {}
 
   /**
    * Disposes of all resources allocated to this mode.
