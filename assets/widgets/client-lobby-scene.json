@@ -161,20 +161,22 @@
       "id": {
         "type": "Label",
         "data": {
-          "size": [300, 70],
-          "text": "GAME ID: ",
-          "halign": "center",
+          "size": [240, 110],
+          "text": "GAME ID:",
+          "halign": "left",
           "font": "pixelmix",
-          "valign": "middle",
-          "foreground": "#000000"
+          "valign": "top",
+          "foreground": "#ffffff",
+          "background": [50, 50, 50, 50],
+          "padding": [25, 0, 0, 20]
         },
         "layout": {
           "priority": 1,
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 150,
-          "y_offset": 80
+          "x_offset": 160,
+          "y_offset": 40
         }
       },
       "game": {
@@ -183,7 +185,7 @@
           "type": "Anchored"
         },
         "data": {
-          "size": [300, 70],
+          "size": [320, 70],
           "text": "",
           "halign": "center",
           "font": "pixelmix",
@@ -195,7 +197,7 @@
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 145,
+          "x_offset": 95,
           "y_offset": 40
         },
         "children": {
@@ -214,7 +216,7 @@
             "layout": {
               "x_anchor": "right",
               "y_anchor": "middle",
-              "x_offset": -17,
+              "x_offset": -15,
               "y_offset": 20,
               "absolute": true
             },
@@ -309,7 +311,8 @@
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#000000"
+          "foreground": "#ffffff",
+          "background": [50, 50, 50, 50]
         },
         "layout": {
           "priority": 2,
@@ -321,13 +324,14 @@
         }
       },
       "players": {
-        "type": "Node",
+        "type": "Polygon",
         "format": {
           "type": "Anchored"
         },
         "data": {
           "anchor": [0.5, 0.5],
-          "size": [300, 70]
+          "size": [120, 70],
+          "color": [50, 50, 50, 50]
         },
         "children": {
           "icon": {
@@ -337,27 +341,34 @@
             },
             "data": {
               "texture": "player-head-1",
-              "anchor": [0.5, 0.5],
-              "scale": 2
+              "anchor": [0, 0.5],
+              "scale": 1.5,
+              "has-parent-color": false
             },
             "layout": {
               "x_anchor": "left",
-              "y_anchor": "middle"
+              "y_anchor": "middle",
+              "x_offset": 10,
+              "absolute": true
             }
           },
           "field": {
             "type": "Label",
             "data": {
               "font": "pixelmix",
-              "size": [40, 70],
+              "size": [50, 70],
+              "anchor": [1.0, 0.5],
               "text": ": 1",
               "halign": "center",
               "valign": "middle",
-              "foreground": "#000000"
+              "foreground": "#ffffff",
+              "has-parent-color": false
             },
             "layout": {
               "x_anchor": "right",
-              "y_anchor": "bottom"
+              "y_anchor": "middle",
+              "x_offset": -10,
+              "absolute": true
             }
           }
         },
