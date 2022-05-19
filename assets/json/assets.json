@@ -411,6 +411,13 @@
         "variables": {}
       }
     },
+    "background-htp": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
     "background-host-menu": {
       "type": "Widget",
       "data": {
@@ -447,6 +454,13 @@
       }
     },
     "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-htp": {
       "type": "Widget",
       "data": {
         "key": "clouds-menu",

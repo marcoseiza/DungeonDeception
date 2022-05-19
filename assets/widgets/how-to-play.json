@@ -1,11 +1,8 @@
 {
   "contents": {
-    "type": "Image",
+    "type": "Node",
     "format": {
       "type": "Anchored"
-    },
-    "data": {
-      "texture": "background"
     },
     "children": {
       "title": {

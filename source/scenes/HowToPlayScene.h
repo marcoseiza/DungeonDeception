@@ -16,7 +16,7 @@ class HowToPlayScene : public cugl::Scene2 {
     /** User has not yet made a choice */
     NONE,
     /** User goes back to menu */
-    GOTOMENU, 
+    GOTOMENU,
   };
 
   enum Change {
@@ -25,7 +25,7 @@ class HowToPlayScene : public cugl::Scene2 {
     /** User goes left on how to play */
     LEFT,
     /** User goes left on how to play */
-    RIGHT, 
+    RIGHT,
   };
 
  protected:
@@ -39,6 +39,10 @@ class HowToPlayScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _left;
   /** The right button for the how to play scene */
   std::shared_ptr<cugl::scene2::Button> _right;
+  /** Reference to the cloud layer scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
+  /** The x position of the cloud. */
+  float _cloud_x_pos = 0;
   /** The player menu choice */
   Choice _choice;
   /** The player slide change */
@@ -111,6 +115,20 @@ class HowToPlayScene : public cugl::Scene2 {
    * @return the current slide.
    */
   int getCurrentSlide() { return _current_slide; }
+
+  /**
+   * Get the cloud X position in the scene
+   *
+   * @return the x position of the cloud layer
+   */
+  float getCloudXPosition() { return _cloud_x_pos; };
+
+  /**
+   * Sets the cloud X position in the scene
+   *
+   * @param x the x position to set the cloud to.
+   */
+  void setCloudXPosition(float x) { _cloud_x_pos = x; };
 };
 
 #endif /* SCENES_HOW_TO_PLAY_SCENE_H_ */

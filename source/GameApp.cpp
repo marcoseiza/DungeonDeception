@@ -175,6 +175,7 @@ void GameApp::updateMenuScene(float timestep) {
       _scene = State::CLIENT;
       break;
     case MenuScene::Choice::HTP:
+      _howtoplay.setCloudXPosition(_menu.getCloudXPosition());
       _menu.setActive(false);
       _howtoplay.setActive(true);
       _scene = State::HTP;
@@ -189,6 +190,7 @@ void GameApp::updateHowToPlayScene(float timestep) {
   _howtoplay.update(timestep);
   switch (_howtoplay.getChoice()) {
     case HowToPlayScene::Choice::GOTOMENU:
+      _menu.setCloudXPosition(_howtoplay.getCloudXPosition());
       _howtoplay.setActive(false);
       _menu.setActive(true);
       _scene = State::MENU;
