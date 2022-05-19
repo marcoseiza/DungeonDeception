@@ -43,9 +43,6 @@
 		57FEE3F627F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
 		57FEE3F727F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
 		57FEE3F827F69C7800D7EF23 /* ShotgunnerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FEE3E927F69C7800D7EF23 /* ShotgunnerController.cpp */; };
-		CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
-		CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
-		CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */; };
 		CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
@@ -291,8 +288,6 @@
 		57FEE3EA27F69C7800D7EF23 /* ShotgunnerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShotgunnerController.h; sourceTree = "<group>"; };
 		57FEE3EB27F69C7800D7EF23 /* GruntController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GruntController.h; sourceTree = "<group>"; };
 		57FEE3EC27F69C7800D7EF23 /* TurtleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TurtleController.h; sourceTree = "<group>"; };
-		CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DepositEnergyScene.cpp; sourceTree = "<group>"; };
-		CA2DE0B9281BC772009C7117 /* DepositEnergyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositEnergyScene.h; sourceTree = "<group>"; };
 		CA53F11727ED96E800F2699C /* OpenMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenMap.cpp; sourceTree = "<group>"; };
 		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
@@ -539,15 +534,6 @@
 			path = enemies;
 			sourceTree = "<group>";
 		};
-		CA2DE0AB281BC461009C7117 /* terminal_scenes */ = {
-			isa = PBXGroup;
-			children = (
-				CA2DE0B4281BC69D009C7117 /* DepositEnergyScene.cpp */,
-				CA2DE0B9281BC772009C7117 /* DepositEnergyScene.h */,
-			);
-			path = terminal_scenes;
-			sourceTree = "<group>";
-		};
 		D5073C8527CFEF2C0000426E /* tiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -573,7 +559,6 @@
 				D5556B7A282951780033ADBF /* SettingsScene.cpp */,
 				D5E3B3BF2822E0E000298611 /* WinScene.cpp */,
 				D5E3B3C32822E0E000298611 /* WinScene.h */,
-				CA2DE0AB281BC461009C7117 /* terminal_scenes */,
 				D56377802818F2B8001C4D45 /* HostLobbyScene.cpp */,
 				D563777F2818F2B8001C4D45 /* HostLobbyScene.h */,
 				D563777B2818F2B8001C4D45 /* PeerLobbyScene.h */,
@@ -1044,7 +1029,6 @@
 				57FEE3EF27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7F27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB745027C335C7007D157D /* Movement.cpp in Sources */,
-				CA2DE0B7281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D5E3B3C62822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -1103,7 +1087,6 @@
 				57FEE3EE27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7E27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744F27C335C7007D157D /* Movement.cpp in Sources */,
-				CA2DE0B6281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D5E3B3C52822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
@@ -1162,7 +1145,6 @@
 				57FEE3ED27F69C7800D7EF23 /* TurtleController.cpp in Sources */,
 				D5B8BE7D27F50ED300A4A836 /* NetworkController.cpp in Sources */,
 				D5EB744E27C335C7007D157D /* Movement.cpp in Sources */,
-				CA2DE0B5281BC69D009C7117 /* DepositEnergyScene.cpp in Sources */,
 				D5E3B3C42822E0E000298611 /* WinScene.cpp in Sources */,
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,

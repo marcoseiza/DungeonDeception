@@ -523,6 +523,21 @@ void GameScene::update(float timestep) {
       cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
   corrupted_text->setForeground(cugl::Color4::BLACK);
+  
+  auto player_count_text = ui_layer->getChildByName<cugl::scene2::Label>("players-in-room");
+  int other_players_in_room_count = 0;
+  for (auto it : _player_controller->getPlayers()) {
+    std::shared_ptr<Player> player = it.second;
+    if (player->getRoomId() == _player_controller->getMyPlayer()->getRoomId()) {
+      other_players_in_room_count++;
+    }
+  }
+  
+  std::stringstream player_count_msg;
+  player_count_msg << "x" << other_players_in_room_count;
+  
+  player_count_text->setText(player_count_msg.str());
+  player_count_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
