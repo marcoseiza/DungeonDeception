@@ -1,11 +1,8 @@
 {
   "contents": {
-    "type": "Image",
+    "type": "Node",
     "format": {
       "type": "Anchored"
-    },
-    "data": {
-      "texture": "background"
     },
     "children": {
       "center": {
@@ -126,7 +123,7 @@
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#ffffff"
+          "foreground": "#000000"
         },
         "layout": {
           "priority": 1,
@@ -145,7 +142,7 @@
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#ffffff"
+          "foreground": "#000000"
         },
         "layout": {
           "priority": 1,
@@ -164,7 +161,7 @@
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#ffffff"
+          "foreground": "#000000"
         },
         "layout": {
           "priority": 2,
@@ -212,7 +209,7 @@
               "text": ": 1",
               "halign": "center",
               "valign": "middle",
-              "foreground": "#ffffff"
+              "foreground": "#000000"
             },
             "layout": {
               "priority": 2,

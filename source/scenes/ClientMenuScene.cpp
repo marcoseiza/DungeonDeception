@@ -10,6 +10,8 @@
 
 /** Regardless of logo, lock the height to this */
 #define SCENE_HEIGHT 720
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -1689.6
 
 #pragma mark -
 #pragma mark Client Methods
@@ -95,6 +97,19 @@ bool ClientMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _config.maxNumPlayers = json->getInt("maximum", 0);
   _config.apiVersion = json->getInt("version", 0);
 
+  // handle background and cloud layers
+  auto background_layer =
+      assets->get<cugl::scene2::SceneNode>("background-client-menu");
+  background_layer->setContentSize(dimen);
+  background_layer->setPositionX(getCloudXPosition());
+  background_layer->doLayout();
+
+  _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-client-menu");
+  _cloud_layer->setContentSize(dimen);
+  _cloud_layer->doLayout();
+
+  addChild(background_layer);
+  addChild(_cloud_layer);
   addChild(scene);
   setActive(false);
   return true;
@@ -104,6 +119,8 @@ void ClientMenuScene::dispose() {
   if (_active) {
     removeAllChildren();
     _active = false;
+    _cloud_layer->dispose();
+    _cloud_layer = nullptr;
   }
 }
 
@@ -111,6 +128,7 @@ void ClientMenuScene::setActive(bool value) {
   if (isActive() != value) {
     Scene2::setActive(value);
     if (value) {
+      _cloud_layer->setPositionX(_cloud_x_pos);
       _status = IDLE;
       _backout->activate();
       _x_button->activate();
@@ -160,6 +178,13 @@ void ClientMenuScene::update(float timestep) {
     // Do this last for button safety
     configureStartButton();
   }
+
+  // update cloud background layer
+  _cloud_x_pos = _cloud_x_pos + .3;
+  if (_cloud_x_pos >= 0) {
+    _cloud_x_pos = CLOUD_WRAP;
+  }
+  _cloud_layer->setPositionX(_cloud_x_pos);
 }
 
 void ClientMenuScene::processData(const std::vector<uint8_t>& data){};

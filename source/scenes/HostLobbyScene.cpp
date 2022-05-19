@@ -10,6 +10,8 @@
 
 /** Regardless of logo, lock the height to this */
 #define SCENE_HEIGHT 720
+/** Set cloud wrap x position based on width and scale of cloud layer **/
+#define CLOUD_WRAP -1689.6
 
 #pragma mark -
 #pragma mark Host Methods
@@ -61,6 +63,19 @@ bool HostLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   _status = Status::WAIT;
 
+  // handle background and cloud layers
+  auto background_layer =
+      assets->get<cugl::scene2::SceneNode>("background-host-lobby");
+  background_layer->setContentSize(dimen);
+  background_layer->setPositionX(getCloudXPosition());
+  background_layer->doLayout();
+
+  _cloud_layer = assets->get<cugl::scene2::SceneNode>("clouds-host-lobby");
+  _cloud_layer->setContentSize(dimen);
+  _cloud_layer->doLayout();
+
+  addChild(background_layer);
+  addChild(_cloud_layer);
   addChild(scene);
   setActive(false, nullptr);
   return true;
@@ -70,6 +85,8 @@ void HostLobbyScene::dispose() {
   if (_active) {
     removeAllChildren();
     _active = false;
+    _cloud_layer->dispose();
+    _cloud_layer = nullptr;
   }
 }
 
@@ -88,6 +105,7 @@ void HostLobbyScene::setActive(
 
       auto x = *(_network->getPlayerID());
       _name->setText("runner_" + to_string(x));
+      _cloud_layer->setPositionX(_cloud_x_pos);
     } else {
       // TODO deactivate things as necessary
       _name->deactivate();
@@ -122,6 +140,13 @@ void HostLobbyScene::update(float timestep) {
         [this](const std::vector<uint8_t>& data) { processData(data); });
     checkConnection();
   }
+
+  // update cloud background layer
+  _cloud_x_pos = _cloud_x_pos + .3;
+  if (_cloud_x_pos >= 0) {
+    _cloud_x_pos = CLOUD_WRAP;
+  }
+  _cloud_layer->setPositionX(_cloud_x_pos);
 }
 
 void HostLobbyScene::processData(const std::vector<uint8_t>& data){};
