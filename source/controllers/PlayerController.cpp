@@ -118,12 +118,6 @@ void PlayerController::update(float timestep) {
   _player->animate();
 }
 
-void PlayerController::blockCorrupt() {
-  if (_player->isBetrayer()) {
-    InputController::get<Corrupt>()->setActive(false);
-  }
-}
-
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
   if (_color_ids.find(player_id) == _color_ids.end()) _color_ids[player_id] = 1;
   std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>(

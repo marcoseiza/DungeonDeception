@@ -159,6 +159,25 @@ void Player::setCorrupted() {
   }
 }
 
+void Player::setBlockPlayerOnBetrayer(int runner_id) {
+  if (_is_betrayer) {
+    _blocked_players.insert(runner_id, 3600);  // 1 minute
+  }
+}
+
+void Player::updateBlockedPlayers() {
+  for (auto it = _blocked_players.begin(); it != _blocked_players.end();) {
+    int player_id = it->first;
+    int cd = it->second;
+    _blocked_players[player_id] = cd--;
+    if (_blocked_players[player_id] <= 0) {
+      it = _blocked_players.erase(it);
+    } else {
+      it++;
+    }
+  }
+}
+
 #pragma mark Animation & Drawing
 
 void Player::createFixtures() {

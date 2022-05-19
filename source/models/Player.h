@@ -58,6 +58,10 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Amount of player luminance that has been corrupted. */
   int _corrupted_luminance;
 
+  /** The list of players that have blocked this betrayer, mapped from the
+   * player id to their countdown. */
+  std::unordered_map<int, int> _blocked_players;
+
   /** Player energy. */
   float _energy;
 
@@ -321,6 +325,26 @@ class Player : public cugl::physics2::CapsuleObstacle {
   std::unordered_set<std::shared_ptr<Projectile>> getSlashes() {
     return _slashes;
   }
+
+  /**
+   * Returns the betrayer's players that have blocked this betrayer.
+   *
+   * @return the players that blocked this betrayer.
+   */
+  std::unordered_map<int, int> getBetrayersBlockedPlayers() {
+    return _blocked_players;
+  }
+
+  /**
+   * Add a player that blocked this betrayer.
+   */
+  void setBlockPlayerOnBetrayer(int runner_id);
+
+  /**
+   * Update the countdowns on the players that blocked this betrayer and remove
+   * if needed.
+   */
+  void updateBlockedPlayers();
 
   /**
    * Internal method for getting the correct run high limit.

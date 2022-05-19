@@ -455,7 +455,8 @@ void GameScene::update(float timestep) {
     }
 
     if (target_player->isActivatingTargetAction()) {
-      sendBetrayalTargetInfo(target_player->getTarget());
+      sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                             target_player->getTarget());
     }
   }
 
@@ -464,16 +465,23 @@ void GameScene::update(float timestep) {
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (InputController::get<Corrupt>()->pressCorrupt()) {
         // 2000 milliseconds to hold down the corrupt button
-        // Send to the host to corrupt half a bar of luminance from everyone
-        // in the room.
+        // Send to the host to corrupt half a bar of luminance from everyone in
+        // the room.
+        auto blocked_ps =
+            _player_controller->getMyPlayer()->getBetrayersBlockedPlayers();
         for (auto p : _player_controller->getPlayerList()) {
           if (p->getRoomId() ==
                   _player_controller->getMyPlayer()->getRoomId() &&
-              !p->isBetrayer()) {
+              !p->isBetrayer() &&
+              blocked_ps.find(p->getPlayerId()) != blocked_ps.end()) {
             sendBetrayalCorruptInfo(p->getPlayerId());
             _player_controller->getMyPlayer()->setCorrupted();
           }
         }
+      }
+
+      if (time_held_down >= 1) {
+        // display the blocked players.
       }
     }
   }
@@ -809,8 +817,12 @@ void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, int dir,
                                                     info);
 }
 
-void GameScene::sendBetrayalTargetInfo(int target_player_id) {
+void GameScene::sendBetrayalTargetInfo(int runner_id, int target_player_id) {
   auto betrayal_info = cugl::JsonValue::allocObject();
+
+  auto action_player_info = cugl::JsonValue::alloc((long)(runner_id));
+  betrayal_info->appendChild(action_player_info);
+  action_player_info->setKey("runner_id");
 
   auto target_player_info = cugl::JsonValue::alloc((long)(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -824,8 +836,12 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
  * This simply passes on the disable message on from the host to clients for
  * now. In the future the host can do server-side logic
  */
-void GameScene::sendDisablePlayerInfo(int target_player_id) {
+void GameScene::sendDisablePlayerInfo(int runner_id, int target_player_id) {
   auto betrayal_info = cugl::JsonValue::allocObject();
+
+  auto action_player_info = cugl::JsonValue::alloc((long)(runner_id));
+  betrayal_info->appendChild(action_player_info);
+  action_player_info->setKey("runner_id");
 
   auto target_player_info = cugl::JsonValue::alloc((long)(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -941,19 +957,21 @@ void GameScene::processData(
     case NC_BETRAYAL_TARGET_INFO: {
       if (NetworkController::get()->isHost()) {
         auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+        int runner_id = target_data->getInt("runner_id");
         int player_id = target_data->getInt("target_player_id");
-        sendDisablePlayerInfo(player_id);
+        sendDisablePlayerInfo(runner_id, player_id);
       }
     } break;
 
     case NC_SEND_DISABLE_PLAYER_INFO: {
       auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
+      int runner_id = target_data->getInt("runner_id");
       int player_id = target_data->getInt("target_player_id");
 
       if (player_id == _player_controller->getMyPlayer()->getPlayerId()) {
         // Blocks the player from corrupting for 1 minute.
-        _player_controller->blockCorrupt();
+        _player_controller->getMyPlayer()->setBlockPlayerOnBetrayer(runner_id);
       }
     } break;
 
