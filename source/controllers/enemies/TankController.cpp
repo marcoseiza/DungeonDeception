@@ -8,6 +8,8 @@
 #define ATTACK_COOLDOWN 120
 #define MOVE_BACK_COOLDOWN 60
 #define WANDER_COOLDOWN 500
+#define MAX_ATTACK_FRAME 69
+#define MIN_ATTACK_FRAME 30
 
 #define STATE_CHANGE_LIM 10
 
@@ -154,10 +156,10 @@ void TankController::animate(std::shared_ptr<EnemyModel> enemy) {
   auto node =
       std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     // Play the next animation frame for the dash attack.
     if (fc >= 4) {
-      if (node->getFrame() + 1 < 69) {
+      if (node->getFrame() + 1 < MAX_ATTACK_FRAME && node->getFrame() + 1 > MIN_ATTACK_FRAME) {
         enemy->_frame_count = 0;
         node->setFrame(node->getFrame() + 1);
       } else {
@@ -212,7 +214,7 @@ void TankController::animateChase(std::shared_ptr<EnemyModel> enemy) {
   // Play the next animation frame.
   if (enemy->_frame_count >= 4) {
     enemy->_frame_count = 0;
-    if (node->getFrame() >= run_high_lim) {
+    if (node->getFrame() >= run_high_lim || node->getFrame() < run_low_lim) {
       node->setFrame(run_low_lim);
     } else {
       node->setFrame(node->getFrame() + 1);
