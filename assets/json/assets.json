@@ -266,6 +266,13 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "right": {
+      "file": "textures/right_arrow.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "frame": {
       "file": "textures/frame.png",
       "minfilter": "nearest",
@@ -426,7 +433,36 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "runner-info": {
+      "file": "textures/how-to-play-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "runner-ui-info": {
+      "file": "textures/how-to-play-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-info": {
+      "file": "textures/how-to-play-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-ui-info": {
+      "file": "textures/how-to-play-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
+
   },
   "jsons": {
     "server": "json/server.json"
@@ -448,6 +484,7 @@
     "textfield": "widgets/textfield.json",
     "labelbox": "widgets/labelbox.json",
     "menu": "widgets/menu.json",
+    "how-to-play": "widgets/how-to-play.json",
     "client": "widgets/client.json",
     "host": "widgets/host.json",
     "client-lobby-scene": "widgets/client-lobby-scene.json",
@@ -466,6 +503,13 @@
       }
     },
     "background-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-htp": {
       "type": "Widget",
       "data": {
         "key": "background-menu",
@@ -508,6 +552,13 @@
       }
     },
     "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-htp": {
       "type": "Widget",
       "data": {
         "key": "clouds-menu",
@@ -560,6 +611,13 @@
       "type": "Widget",
       "data": {
         "key": "ui-scene",
+        "variables": {}
+      }
+    },
+    "how-to-play": {
+      "type": "Widget",
+      "data": {
+        "key": "how-to-play",
         "variables": {}
       }
     },
