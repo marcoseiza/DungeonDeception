@@ -1,14 +1,17 @@
 {
   "variables": {
-    "size": [ "data", "size" ],
-    "anchor": [ "data", "anchor" ],
-    "text": [ "children", "text", "data", "text" ],
-    "font": [ "children", "text", "data", "font" ],
-    "halign": [ "children", "text", "data", "halign" ],
-    "valign": [ "children", "text", "data", "valign" ],
-    "foreground": [ "children", "text", "data", "foreground" ],
-    "background": [ "children", "text", "data", "background" ],
-    "framecolor": [ "children", "frame", "data", "color" ]
+    "size": ["data", "size"],
+    "anchor": ["data", "anchor"],
+    "text": ["children", "text", "data", "text"],
+    "font": ["children", "text", "data", "font"],
+    "halign": ["children", "text", "data", "halign"],
+    "valign": ["children", "text", "data", "valign"],
+    "foreground": ["children", "text", "data", "foreground"],
+    "background": ["children", "text", "data", "background"],
+    "framecolor": ["children", "frame", "data", "color"],
+    "cursorcolor": ["children", "text", "data", "cursorcolor"],
+    "placeholder": ["children", "text", "data", "placeholder"],
+    "placeholder-color": ["children", "text", "data", "placeholder-color"]
   },
   "contents": {
     "type": "Node",
@@ -16,22 +19,25 @@
       "type": "Anchored"
     },
     "data": {
-      "anchor": [ 0.5, 0.5 ],
-      "size": [ 300, 75 ]
+      "anchor": [0.5, 0.5],
+      "size": [300, 75]
     },
     "children": {
       "text": {
         "type": "TextField",
         "data": {
-          "anchor": [ 0.5, 0.5 ],
+          "anchor": [0.5, 0.5],
           "font": "pixelmix",
           "text": "Text",
-          "padding": [ 5, 5, 5, 5 ],
+          "padding": [5, 5, 5, 5],
           "halign": "left",
           "valign": "middle",
           "background": "#ffffff",
           "foreground": "#000000",
-          "cursor": true
+          "cursor": true,
+          "cursorcolor": [255, 255, 255, 255],
+          "placeholder": "",
+          "placeholder-color": [180, 180, 180, 255]
         },
         "layout": {
           "x_anchor": "fill",

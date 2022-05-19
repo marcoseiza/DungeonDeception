@@ -28,7 +28,14 @@ void NetworkController::update() {
 
 bool NetworkController::dispose() {
   _network = nullptr;
+  _disconnect_listener = nullptr;
+  _listeners.clear();
   return true;
+}
+
+void NetworkController::disconnect() {
+  _disconnect_listener();
+  _network = nullptr;
 }
 
 bool NetworkController::checkConnection() {
@@ -43,6 +50,7 @@ bool NetworkController::checkConnection() {
     case cugl::NetworkConnection::NetStatus::ApiMismatch:
     case cugl::NetworkConnection::NetStatus::GenericError:
     case cugl::NetworkConnection::NetStatus::Disconnected:
+    case cugl::NetworkConnection::NetStatus::NoInternetError:
       disconnect();
       return false;
   }

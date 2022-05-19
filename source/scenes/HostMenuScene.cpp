@@ -41,7 +41,25 @@ bool HostMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       _assets->get<cugl::scene2::SceneNode>("host_back"));
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>("host_center_game_field_text"));
+  _clipboard = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("host_center_game_copy"));
+
+  _copy_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "host_center_game_copy_tooltip-wrapper_copied");
+  _copy_tooltip->setVisible(false);
+
   _status = Status::WAIT;
+
+  _copy_tooltip_lifetime = 0;
+  _clipboard->addListener([this](const std::string& name, bool down) {
+    if (down) {
+      int success = SDL_SetClipboardText(this->_gameid->getText().c_str());
+      if (success == 0) {
+        _copy_tooltip->setVisible(true);
+        _copy_tooltip_lifetime = 0;
+      }
+    }
+  });
 
   // Program the buttons
   _backout->addListener([this](const std::string& name, bool down) {
@@ -98,14 +116,19 @@ void HostMenuScene::setActive(bool value) {
       _status = WAIT;
       configureStartButton();
       _backout->activate();
+      _clipboard->activate();
+      _copy_tooltip_lifetime = 0;
+      _copy_tooltip->setVisible(false);
       connect();
       _cloud_layer->setPositionX(_cloud_x_pos);
     } else {
       _startgame->deactivate();
       _backout->deactivate();
+      _clipboard->deactivate();
       // If any were pressed, reset them
       _startgame->setDown(false);
       _backout->setDown(false);
+      _clipboard->setDown(false);
     }
   }
 }
@@ -133,6 +156,13 @@ void HostMenuScene::update(float timestep) {
     _cloud_x_pos = CLOUD_WRAP;
   }
   _cloud_layer->setPositionX(_cloud_x_pos);
+
+  if (_copy_tooltip->isVisible()) {
+    _copy_tooltip_lifetime += timestep;
+    if (_copy_tooltip_lifetime >= 1.0f /* seconds */) {
+      _copy_tooltip->setVisible(false);
+    }
+  }
 }
 
 void HostMenuScene::processData(const std::vector<uint8_t>& data) {
@@ -162,6 +192,7 @@ bool HostMenuScene::checkConnection() {
     case cugl::NetworkConnection::NetStatus::ApiMismatch:
     case cugl::NetworkConnection::NetStatus::GenericError:
     case cugl::NetworkConnection::NetStatus::Disconnected:
+    case cugl::NetworkConnection::NetStatus::NoInternetError:
       _status = WAIT;
       return false;
   }
@@ -178,4 +209,9 @@ void HostMenuScene::configureStartButton() {
   }
 }
 
-void HostMenuScene::moveToLobby() { _status = JOIN; }
+void HostMenuScene::moveToLobby() {
+  _status = JOIN;
+  _serializer.writeSint32(HOST_SEND_THAT_LOBBY_IS_OPEN);
+  _network->send(_serializer.serialize());
+  _serializer.reset();
+}

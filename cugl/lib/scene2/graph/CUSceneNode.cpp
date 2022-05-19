@@ -204,6 +204,7 @@ bool SceneNode::initWithData(const Scene2Loader* loader, const std::shared_ptr<J
         }
     }
     
+    _hasParentColor = data->getBool("has-parent-color", true);
     _isVisible = data->getBool("visible",true);
 
     bool transform = false;
