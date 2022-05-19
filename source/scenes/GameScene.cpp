@@ -201,7 +201,7 @@ bool GameScene::init(
   cugl::Scene2::addChild(_role_layer);
   cugl::Scene2::addChild(_debug_node);
   cugl::Scene2::addChild(_settings_scene->getNode());
-  _debug_node->setVisible(true);
+  _debug_node->setVisible(false);
 
   _sound_controller = SoundController::alloc(_assets);
   _controllers.push_back(_sound_controller);
