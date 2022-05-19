@@ -123,6 +123,15 @@ void ClientLobbyScene::processData(const std::vector<uint8_t>& data) {
   _deserializer.receive(data);
   Sint32 code = std::get<Sint32>(_deserializer.read());
 
+  if (code == 253) {
+    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+
+    for (auto player_info : info->children()) {
+      _color_ids[player_info->getInt("id")] = player_info->getInt("clr");
+    }
+  }
+
   if (code == 254) {
     cugl::NetworkDeserializer::Message msg = _deserializer.read();
     std::shared_ptr<cugl::JsonValue> betrayer_info =
@@ -155,7 +164,7 @@ bool ClientLobbyScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       // Set the text from the network
-      _player->setText(": " + std::to_string(_network->getNumPlayers()));
+      _player->setText(": " + std::to_string(_network->getNumPlayers()), true);
       if (_status != START) {
         _status = WAIT;
       }

@@ -14,8 +14,8 @@
           "y_alignment": "middle"
         },
         "data": {
-          "anchor": [ 0.5, 0.0 ],
-          "size": [ 1000, 1100 ]
+          "anchor": [0.5, 0.0],
+          "size": [1000, 1100]
         },
         "children": {
           "title": {
@@ -25,7 +25,7 @@
               "variables": {
                 "text": "LOBBY"
               },
-              "anchor": [ 0.5, 1.0 ]
+              "anchor": [0.5, 1.0]
             },
             "layout": {
               "priority": 1,
@@ -42,8 +42,8 @@
               "y_alignment": "middle"
             },
             "data": {
-              "anchor": [ 0.5, 0.5 ],
-              "size": [ 600, 50 ]
+              "anchor": [0.5, 0.5],
+              "size": [600, 50]
             },
             "children": {
               "label": {
@@ -51,15 +51,15 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 235, 90 ],
+                    "size": [235, 90],
                     "text": "NAME:",
                     "halign": "center",
-                    "background": [ 239, 235, 227, 179 ]
+                    "background": [239, 235, 227, 179]
                   }
                 },
                 "layout": {
                   "priority": 1,
-                  "padding": [ 0, 0, 35, 0 ]
+                  "padding": [0, 0, 35, 0]
                 }
               },
               "field": {
@@ -67,11 +67,11 @@
                 "data": {
                   "key": "textfield",
                   "variables": {
-                    "size": [ 235, 90 ],
+                    "size": [235, 90],
                     "text": "runner_id",
                     "halign": "center",
                     "foreground": "#ffffff",
-                    "background": [ 70, 70, 70, 179 ]
+                    "background": [70, 70, 70, 179]
                   }
                 },
                 "layout": {
@@ -81,7 +81,7 @@
             },
             "layout": {
               "priority": 2,
-              "padding": [ 0, 25, 0, 55 ]
+              "padding": [0, 25, 0, 55]
             }
           }
         },
@@ -94,8 +94,8 @@
         "type": "Button",
         "data": {
           "upnode": "up",
-          "anchor": [ 0.0, 0.0 ],
-          "size": [ 60, 60 ]
+          "anchor": [0.0, 0.0],
+          "size": [60, 60]
         },
         "children": {
           "up": {
@@ -118,7 +118,7 @@
       "id": {
         "type": "Label",
         "data": {
-          "size": [ 300, 70 ],
+          "size": [300, 70],
           "text": "GAME ID: ",
           "halign": "center",
           "font": "pixelmix",
@@ -137,7 +137,7 @@
       "game": {
         "type": "Label",
         "data": {
-          "size": [ 300, 70 ],
+          "size": [300, 70],
           "text": "",
           "halign": "center",
           "font": "pixelmix",
@@ -156,7 +156,7 @@
       "countdown": {
         "type": "Label",
         "data": {
-          "size": [ 170, 70 ],
+          "size": [170, 70],
           "text": "WAITING",
           "halign": "center",
           "font": "pixelmix",
@@ -175,14 +175,11 @@
       "players": {
         "type": "Node",
         "format": {
-          "type": "Float",
-          "orientation": "horizontal",
-          "x_alignment": "center",
-          "y_alignment": "middle"
+          "type": "Anchored"
         },
         "data": {
-          "anchor": [ 0.5, 0.5 ],
-          "size": [ 300, 70 ]
+          "anchor": [0.5, 0.5],
+          "size": [70, 70]
         },
         "children": {
           "icon": {
@@ -191,30 +188,28 @@
               "type": "Anchored"
             },
             "data": {
-              "texture": "player-cropped",
-              "anchor": [ 0.5, 0.5 ],
-              "scale": 1.5
+              "texture": "player-head-1",
+              "anchor": [0, 0.5],
+              "scale": 2
             },
             "layout": {
               "x_anchor": "left",
-              "y_anchor": "top",
-              "priority": 1
+              "y_anchor": "middle"
             }
           },
           "field": {
             "type": "Label",
             "data": {
               "font": "pixelmix",
-              "size": [ 40, 70 ],
+              "size": [40, 70],
               "text": ": 1",
               "halign": "center",
               "valign": "middle",
               "foreground": "#000000"
             },
             "layout": {
-              "priority": 2,
-              "x_anchor": "fill",
-              "y_anchor": "fill"
+              "x_anchor": "right",
+              "y_anchor": "bottom"
             }
           }
         },

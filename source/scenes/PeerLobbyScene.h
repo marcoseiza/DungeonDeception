@@ -50,6 +50,9 @@ class PeerLobbyScene : public cugl::Scene2 {
   /** If the user is a betrayer (true) or cooperator (false). */
   bool _is_betrayer;
 
+  /** The map from player id to color id. */
+  std::unordered_map<int, int> _color_ids;
+
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -112,6 +115,12 @@ class PeerLobbyScene : public cugl::Scene2 {
    * @return The player name
    */
   std::string getPlayerName() { return _name->getText(); }
+
+  /**
+   * Returns the color id for all player.
+   * @return A map from the player id to the color id.
+   */
+  std::unordered_map<int, int> getColorIds() { return _color_ids; }
 
   /**
    * The method called to update the scene.
