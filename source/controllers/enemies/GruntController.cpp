@@ -162,7 +162,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     // Play the next animation frame for the dash attack.
     if (fc >= 4) {
-      if (node->getFrame() + 1 < 69) {
+      if (node->getFrame() + 1 < 69 && node->getFrame() + 1 > 30) {
         enemy->_frame_count = 0;
         node->setFrame(node->getFrame() + 1);
       } else {
@@ -217,7 +217,7 @@ void GruntController::animateChase(std::shared_ptr<EnemyModel> enemy) {
   // Play the next animation frame.
   if (enemy->_frame_count >= 4) {
     enemy->_frame_count = 0;
-    if (node->getFrame() >= run_high_lim) {
+    if (node->getFrame() >= run_high_lim || node->getFrame() < run_low_lim) {
       node->setFrame(run_low_lim);
     } else {
       node->setFrame(node->getFrame() + 1);
