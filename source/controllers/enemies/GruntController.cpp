@@ -9,6 +9,8 @@
 #define ATTACK_COOLDOWN 120
 #define MOVE_BACK_COOLDOWN 60
 #define WANDER_COOLDOWN 500
+#define MAX_ATTACK_FRAME 69
+#define MIN_ATTACK_FRAME 30
 
 #define STATE_CHANGE_LIM 10
 
@@ -162,7 +164,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     // Play the next animation frame for the dash attack.
     if (fc >= 4) {
-      if (node->getFrame() + 1 < 69 && node->getFrame() + 1 > 30) {
+      if (node->getFrame() + 1 < MAX_ATTACK_FRAME && node->getFrame() + 1 > MIN_ATTACK_FRAME) {
         enemy->_frame_count = 0;
         node->setFrame(node->getFrame() + 1);
       } else {
