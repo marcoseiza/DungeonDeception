@@ -3,8 +3,8 @@
 #define MIN_DISTANCE 300
 #define HEALTH_LIM 25
 #define MOVE_BACK_RANGE 30
-#define ATTACK_RANGE 70
-#define ATTACK_FRAMES 24
+#define ATTACK_RANGE 60
+#define ATTACK_FRAMES 18
 #define STOP_ATTACK_FRAMES 80
 #define ATTACK_COOLDOWN 120
 #define MOVE_BACK_COOLDOWN 60
@@ -19,9 +19,9 @@ void GruntController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy
     // Begin holding.
     enemy->setAttackCooldown(STOP_ATTACK_FRAMES);
     enemy->setAttack(false);
-  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+  } else if (enemy->getAttackCooldown() >= -5 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
     // Whether the enemy is attacking
-    if (enemy->getAttackCooldown() == 0) {
+    if (enemy->getAttackCooldown() == -5) {
       // Attack done.
       enemy->resetSensors();
       enemy->setAttackCooldown(ATTACK_COOLDOWN);
@@ -44,7 +44,7 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->resetSensors();
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
     // Currently attacking player.
-    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getAttackInitPos();
     dir.normalize();
     dir.scale(3.5);
     enemy->move(dir.x, dir.y);
@@ -59,6 +59,7 @@ void GruntController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     // Determine attack position.
     enemy->setAttack(true);
     enemy->setAttackDir(p);
+    enemy->setAttackInitPos(enemy->getPosition());
   } else {
     // Circle the player.
     enemy->setAttackDir(p);
@@ -158,7 +159,7 @@ void GruntController::animate(std::shared_ptr<EnemyModel> enemy) {
   auto node =
       std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
   int fc = enemy->_frame_count;
-  if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
     // Play the next animation frame for the dash attack.
     if (fc >= 4) {
       if (node->getFrame() + 1 < 69) {

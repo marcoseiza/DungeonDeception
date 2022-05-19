@@ -89,6 +89,13 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   std::shared_ptr<std::string> _damage_sensor_name;
   /** The node for debugging the damage sensor */
   std::shared_ptr<cugl::scene2::WireNode> _damage_sensor_node;
+  
+  /** Another fixture def to ensure enemy doesn't go through walls when attacking. */
+  b2FixtureDef _wall_fixture_def;
+  /** Fixture for wall. */
+  b2Fixture* _wall_fixture;
+  /** The node for debugging the wall fixture */
+  std::shared_ptr<cugl::scene2::WireNode> _wall_fixture_node;
 
   /** The list of projectiles that have been shot by the enemy. */
   std::unordered_set<std::shared_ptr<Projectile>> _projectiles;
@@ -123,6 +130,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   
   /** Player position to attack in. */
   cugl::Vec2 _attack_dir;
+  
+  /** Attack position at the beginning of attack. */
+  cugl::Vec2 _attack_init_pos;
 
  public:
   /** The set of polygon nodes corresponding to the weights for the direction of
@@ -171,7 +181,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
         _hitbox_sensor(nullptr),
         _hitbox_sensor_name(nullptr),
         _damage_sensor(nullptr),
-        _damage_sensor_name(nullptr) {}
+        _damage_sensor_name(nullptr),
+        _wall_fixture(nullptr) {}
 
   /**
    * Disposes the grunt.
@@ -185,6 +196,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     _enemy_node = nullptr;
     _hitbox_sensor = nullptr;
     _damage_sensor = nullptr;
+    _wall_fixture = nullptr;
     _projectiles.clear();
   }
 
@@ -338,13 +350,22 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
     _did_attack = false;
   }
   
+  /**
+   * Set the direction of the attack.
+   */
   void setAttackDir(const cugl::Vec2 v) { _attack_dir = v; }
   
   /**
-   * Returns the direction of the attack, whether it be attack_dir.
+   * Returns the direction of the attack.
    */
   cugl::Vec2 getAttackDir() const { return _attack_dir; }
-
+  
+  /** Saves the enemy position at the start of an attack. */
+  void setAttackInitPos(const cugl::Vec2 v) { _attack_init_pos = v; }
+  
+  /** Returns the direction of the attack. */
+  cugl::Vec2 getAttackInitPos() const { return _attack_init_pos; }
+  
   /**
    * Add a bullet.
    *

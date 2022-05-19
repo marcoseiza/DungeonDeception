@@ -30,9 +30,9 @@ void TankController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy)
     // Begin holding.
     enemy->setAttackCooldown(STOP_ATTACK_FRAMES);
     enemy->setAttack(false);
-  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+  } else if (enemy->getAttackCooldown() >= -5 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
     // Whether the enemy is attacking
-    if (enemy->getAttackCooldown() == 0) {
+    if (enemy->getAttackCooldown() == -5) {
       // Attack done.
       enemy->resetSensors();
       enemy->setAttackCooldown(ATTACK_COOLDOWN);
@@ -55,7 +55,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->resetSensors();
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
     // Currently attacking player.
-    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getAttackInitPos();
     dir.normalize();
     dir.scale(3.5);
     enemy->move(dir.x, dir.y);
@@ -70,6 +70,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     // Determine attack position.
     enemy->setAttack(true);
     enemy->setAttackDir(p);
+    enemy->setAttackInitPos(enemy->getPosition());
   } else {
     // Circle the player.
     enemy->setAttackDir(p);
