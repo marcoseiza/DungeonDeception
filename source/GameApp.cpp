@@ -44,6 +44,7 @@ void GameApp::onShutdown() {
   _joingame.dispose();
   _joinlobby.dispose();
   _hostlobby.dispose();
+  _howtoplay.dispose();
   _menu.dispose();
   _win.dispose();
   _level_loading.dispose();
@@ -68,6 +69,9 @@ void GameApp::update(float timestep) {
       break;
     case MENU:
       updateMenuScene(timestep);
+      break;
+    case HTP:
+      updateHowToPlayScene(timestep);
       break;
     case HOST:
       updateHostMenuScene(timestep);
@@ -100,6 +104,9 @@ void GameApp::draw() {
       break;
     case MENU:
       _menu.render(_batch);
+      break;
+    case HTP:
+      _howtoplay.render(_batch);
       break;
     case HOST:
       _hostgame.render(_batch);
@@ -134,12 +141,14 @@ void GameApp::updateLoadingScene(float timestep) {
     cugl::scene2::Button::DEFAULT_CLICK_SOUND =
         _assets->get<cugl::Sound>("button-click");
     _menu.init(_assets);
+    _howtoplay.init(_assets);
     _hostgame.init(_assets);
     _joingame.init(_assets);
     _joinlobby.init(_assets);
     _hostlobby.init(_assets);
     _menu.setActive(true);
     _hostgame.setActive(false);
+    _howtoplay.setActive(false);
     _joingame.setActive(false);
     _hostlobby.setActive(false, nullptr);
     _joinlobby.setActive(false, nullptr);
@@ -165,7 +174,29 @@ void GameApp::updateMenuScene(float timestep) {
       _joingame.setActive(true);
       _scene = State::CLIENT;
       break;
+    case MenuScene::Choice::HTP:
+      _howtoplay.setCloudXPosition(_menu.getCloudXPosition());
+      _menu.setActive(false);
+      _howtoplay.setActive(true);
+      _scene = State::HTP;
+      break;
     case MenuScene::Choice::NONE:
+      // DO NOTHING
+      break;
+  }
+}
+
+void GameApp::updateHowToPlayScene(float timestep) {
+  _howtoplay.update(timestep);
+  switch (_howtoplay.getChoice()) {
+    case HowToPlayScene::Choice::GOTOMENU:
+      _howtoplay.setCurrentSlide(0);
+      _menu.setCloudXPosition(_howtoplay.getCloudXPosition());
+      _howtoplay.setActive(false);
+      _menu.setActive(true);
+      _scene = State::MENU;
+      break;
+    case HowToPlayScene::Choice::NONE:
       // DO NOTHING
       break;
   }
@@ -288,10 +319,13 @@ void GameApp::updateLevelLoadingScene(float timestep) {
                                                : _joinlobby.isBetrayer();
   std::string name = (_level_loading.getIsHost()) ? _hostlobby.getPlayerName()
                                                   : _joinlobby.getPlayerName();
+  std::unordered_map<int, int> color_ids = (_level_loading.getIsHost())
+                                               ? _hostlobby.getColorIds()
+                                               : _joinlobby.getColorIds();
 
   _level_loading.removeChild(_level_loading.getMap());
   _gameplay.init(_assets, _level_loading.getLevelGenerator(),
-                 _level_loading.getMap(), betrayer, name);
+                 _level_loading.getMap(), betrayer, name, color_ids);
   _level_loading.dispose();
 
   _scene = State::GAME;
@@ -344,6 +378,7 @@ void GameApp::updateWinScene(float timestep) {
     case WinScene::Choice::GOTOMENU:
       _win.dispose();
       _menu.setActive(true);
+      _howtoplay.setActive(false);
       _hostgame.setActive(false);
       _joingame.setActive(false);
       _hostlobby.setActive(false, nullptr);

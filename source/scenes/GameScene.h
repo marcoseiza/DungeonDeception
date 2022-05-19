@@ -147,6 +147,7 @@ class GameScene : public cugl::Scene2 {
    * @param map           The world map.
    * @param is_betrayer   True if the game is being played by a betrayer.
    * @param display_name  Name the player input in lobby.
+   * @param color_ids     A map from player id to color id.
 
    *
    * @return true if the controller is initialized properly, false otherwise.
@@ -154,7 +155,8 @@ class GameScene : public cugl::Scene2 {
   bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
             const std::shared_ptr<cugl::scene2::SceneNode>& map,
-            bool is_betrayer, std::string display_name);
+            bool is_betrayer, std::string display_name,
+            std::unordered_map<int, int> color_ids);
 
   /**
    * Sets whether debug mode is active.

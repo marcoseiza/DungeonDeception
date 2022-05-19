@@ -222,6 +222,9 @@
     <ClInclude Include="..\..\source\scenes\SettingsScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\scenes\HowToPlayScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\GameApp.cpp">
@@ -402,6 +405,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\scenes\SettingsScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scenes\HowToPlayScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

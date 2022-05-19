@@ -38,6 +38,9 @@ class PlayerController : public Controller {
   /** A reference to the sound controller. */
   std::shared_ptr<SoundController> _sound_controller;
 
+  /** A map from player id to color id. */
+  std::unordered_map<int, int> _color_ids;
+
  public:
 #pragma mark Constructors
   /** Creates a new enemy controller with the default settings. */
@@ -53,13 +56,15 @@ class PlayerController : public Controller {
    * @param world The asset manager for the game.
    * @param world_node The world node for drawing the game.
    * @param debug_node The debug node for drawing the debug tools.
+   * @param color_ids A map from player id to color id.
    *
    * @return true if the obstacle is initialized properly, false otherwise.
    */
   bool init(const std::shared_ptr<cugl::AssetManager>& assets,
             const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
             const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
-            const std::shared_ptr<cugl::scene2::SceneNode>& debug_node);
+            const std::shared_ptr<cugl::scene2::SceneNode>& debug_node,
+            const std::unordered_map<int, int>& color_ids);
 
   /**
    * Disposes the controller.
@@ -88,6 +93,7 @@ class PlayerController : public Controller {
    * @param world The asset manager for the game.
    * @param world_node The world node for drawing the game.
    * @param debug_node The debug node for drawing the debug tools.
+   * @param color_ids A map from player id to color id.
    *
    * @return a new capsule object at the given point with no size.
    */
@@ -95,11 +101,12 @@ class PlayerController : public Controller {
       const std::shared_ptr<cugl::AssetManager>& assets,
       const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
       const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
-      const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
+      const std::shared_ptr<cugl::scene2::SceneNode>& debug_node,
+      const std::unordered_map<int, int>& color_ids) {
     std::shared_ptr<PlayerController> result =
         std::make_shared<PlayerController>();
 
-    if (result->init(assets, world, world_node, debug_node)) {
+    if (result->init(assets, world, world_node, debug_node, color_ids)) {
       return result;
     }
     return nullptr;
@@ -181,6 +188,11 @@ class PlayerController : public Controller {
    */
   void removePlayer(int id);
 
+  /**
+   * Make a new player with given Id and color Id
+   * @param player_id The player id.
+   * @return The created palyer.
+   */
   std::shared_ptr<Player> makePlayer(int player_id);
 
   std::shared_ptr<Player> getMyPlayer() { return _player; }

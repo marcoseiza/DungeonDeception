@@ -118,6 +118,7 @@ void HostLobbyScene::setActive(
 }
 
 void HostLobbyScene::startGame() {
+  determineAndSendColors();
   determineAndSendRoles();
 
   std::random_device my_random_device;
@@ -159,7 +160,7 @@ bool HostLobbyScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       // Set the text from the network
-      _player->setText(": " + std::to_string(_network->getNumPlayers()));
+      _player->setText(": " + std::to_string(_network->getNumPlayers()), true);
       if (_status != START) {
         _status = WAIT;
       }
@@ -267,6 +268,43 @@ void HostLobbyScene::determineAndSendRoles() {
 
   _serializer.writeSint32(254);
   _serializer.writeJson(betrayer_info);
+  std::vector<uint8_t> msg = _serializer.serialize();
+  _serializer.reset();
+  _network->send(msg);
+}
+
+void HostLobbyScene::determineAndSendColors() {
+  int num_players = _network->getNumPlayers();
+
+  auto info = cugl::JsonValue::allocArray();
+
+  std::vector<int> colors{1, 2, 3, 4, 5, 6, 7, 8};
+
+  std::random_device rd;
+  std::default_random_engine generator(rd());
+  std::uniform_real_distribution<float> dist(0.f, 1.f);
+
+  for (int i = 0; i < num_players; i++) {
+    auto player_info = cugl::JsonValue::allocObject();
+
+    int color_ii = (int)(dist(generator) * colors.size() - 1.f);
+    _color_ids[i] = colors[color_ii];
+
+    auto player_id = cugl::JsonValue::alloc((long)i);
+    player_info->appendChild(player_id);
+    player_id->setKey("id");
+
+    auto color_ii_info = cugl::JsonValue::alloc((long)colors[color_ii]);
+    player_info->appendChild(color_ii_info);
+    color_ii_info->setKey("clr");
+
+    info->appendChild(player_info);
+
+    colors.erase(colors.begin() + color_ii);
+  }
+
+  _serializer.writeSint32(253);
+  _serializer.writeJson(info);
   std::vector<uint8_t> msg = _serializer.serialize();
   _serializer.reset();
   _network->send(msg);

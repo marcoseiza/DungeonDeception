@@ -77,7 +77,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
-    diff.scale(0.6 * enemy->getSpeed());
+    diff.scale(0.7 * enemy->getSpeed());
     enemy->move(diff.x, diff.y);
   }
 }
@@ -150,4 +150,74 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}
+void TankController::animate(std::shared_ptr<EnemyModel> enemy) {
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  int fc = enemy->_frame_count;
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES + 8) {
+    // Play the next animation frame for the dash attack.
+    if (fc >= 4) {
+      if (node->getFrame() + 1 < 69) {
+        enemy->_frame_count = 0;
+        node->setFrame(node->getFrame() + 1);
+      } else {
+        animateChase(enemy);
+      }
+    }
+    enemy->_frame_count++;
+  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    // Hold in the first wind up attack frame depending on direction.
+    float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
+    if (frame_angle <= -M_PI / 2) {
+      node->setFrame(60);  // Bottom left
+    } else if (frame_angle <= 0) {
+      node->setFrame(40);  // Bottom right
+    } else if (frame_angle <= M_PI / 2) {
+      node->setFrame(30);  // Top right
+    } else {
+      node->setFrame(50);  // Top left
+    }
+    enemy->_frame_count = 0;
+  } else {
+    // Moving animation in all other cases.
+    float length = (enemy->getAttackDir() - enemy->getPosition()).length();
+    if (length <= MIN_DISTANCE) {
+      // Face left or right, depending on direction of player from grunt.
+      float direc_angle = abs((enemy->getAttackDir() - enemy->getPosition()).getAngle());
+      enemy->setFacingLeft(direc_angle > M_PI / 2);
+      animateChase(enemy);
+    } else {
+      // Idle
+      node->setFrame(0);
+      enemy->_frame_count = 0;
+    }
+  }
+}
+
+void TankController::animateChase(std::shared_ptr<EnemyModel> enemy) {
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+
+  int run_high_lim = 19;
+  int run_low_lim = 10;
+  if (enemy->getFacingLeft()) {
+    run_high_lim = 29;
+    run_low_lim = 20;
+  }
+
+  if (enemy->_frame_count == 0) {
+    node->setFrame(run_low_lim);
+  }
+
+  // Play the next animation frame.
+  if (enemy->_frame_count >= 4) {
+    enemy->_frame_count = 0;
+    if (node->getFrame() >= run_high_lim) {
+      node->setFrame(run_low_lim);
+    } else {
+      node->setFrame(node->getFrame() + 1);
+    }
+  }
+  enemy->_frame_count++;
+}
+

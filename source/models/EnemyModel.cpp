@@ -139,10 +139,10 @@ void EnemyModel::setType(std::string type) {
     _speed = 0.7;
   } else if (type == "shotgunner") {
     _enemy_type = SHOTGUNNER;
-    _speed = 0.6;
+    _speed = 0.65;
   } else if (type == "tank") {
     _enemy_type = TANK;
-    _speed = 0.6;
+    _speed = 0.75;
   } else if (type == "turtle") {
     _enemy_type = TURTLE;
     _speed = 0;
@@ -173,7 +173,7 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 1, 1);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
       break;
     }
     case GRUNT: {

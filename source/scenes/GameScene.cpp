@@ -34,7 +34,7 @@ bool GameScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<level_gen::LevelGenerator>& level_gen,
     const std::shared_ptr<cugl::scene2::SceneNode>& map, bool is_betrayer,
-    std::string display_name) {
+    std::string display_name, std::unordered_map<int, int> color_ids) {
   if (_active) return false;
   _active = true;
   _state = RUN;
@@ -100,6 +100,8 @@ bool GameScene::init(
 
   _terminal_controller = TerminalController::alloc(_assets);
 
+  _player_controller = PlayerController::alloc(_assets, _world, _world_node,
+                                               _debug_node, color_ids);
   populate(dim);
 
   _world_node->doLayout();
@@ -133,6 +135,12 @@ bool GameScene::init(
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
   ui_layer->doLayout();
+
+  auto player_head = std::dynamic_pointer_cast<cugl::scene2::TexturedNode>(
+      assets->get<cugl::scene2::SceneNode>("ui-scene_player-head"));
+  int player_id = *(NetworkController::get()->getConnection()->getPlayerID());
+  player_head->setTexture(assets->get<cugl::Texture>(
+      "player-head-" + std::to_string(color_ids[player_id])));
 
   auto health_layer = assets->get<cugl::scene2::SceneNode>("health");
   health_layer->setContentSize(dim);
@@ -256,9 +264,6 @@ void GameScene::dispose() {
 }
 
 void GameScene::populate(cugl::Size dim) {
-  _player_controller =
-      PlayerController::alloc(_assets, _world, _world_node, _debug_node);
-
   if (auto id = NetworkController::get()->getConnection()->getPlayerID()) {
     auto player = _player_controller->makePlayer(*id);
     _player_controller->setMyPlayer(player);
@@ -1009,6 +1014,8 @@ void GameScene::beginContact(b2Contact* contact) {
     float damage = 20;
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob1)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
+    // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+    _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())->takeDamage(0);
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
@@ -1019,6 +1026,8 @@ void GameScene::beginContact(b2Contact* contact) {
     float damage = 20;
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob2)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
+    // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+    _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())->takeDamage(0);
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
@@ -1030,6 +1039,8 @@ void GameScene::beginContact(b2Contact* contact) {
       ob2 == _player_controller->getMyPlayer().get()) {
     Player::State player_state = _player_controller->getMyPlayer()->getState();
     if (player_state == Player::State::DASHING) {
+      // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+      _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                               dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), -1,
                               5.0f);
@@ -1038,6 +1049,8 @@ void GameScene::beginContact(b2Contact* contact) {
              ob1 == _player_controller->getMyPlayer().get()) {
     Player::State player_state = _player_controller->getMyPlayer()->getState();
     if (player_state == Player::State::DASHING) {
+      // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+      _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                               dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), -1,
                               5.0f);
@@ -1066,12 +1079,16 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
+    // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+    _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),
                             20);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
+    // Show hit on client-side without potentially causing de-sync with host (0 dmg)
+    _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                             _player_controller->getMyPlayer()->getMoveDir(),

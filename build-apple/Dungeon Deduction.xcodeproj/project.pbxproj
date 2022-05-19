@@ -49,6 +49,9 @@
 		CA53F11827ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11927ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
 		CA53F11A27ED96E800F2699C /* OpenMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA53F11727ED96E800F2699C /* OpenMap.cpp */; };
+		CA5BAE082836C78C005A3BFE /* HowToPlayScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5BAE032836C78C005A3BFE /* HowToPlayScene.cpp */; };
+		CA5BAE092836C78C005A3BFE /* HowToPlayScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5BAE032836C78C005A3BFE /* HowToPlayScene.cpp */; };
+		CA5BAE0A2836C78C005A3BFE /* HowToPlayScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5BAE032836C78C005A3BFE /* HowToPlayScene.cpp */; };
 		CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
 		CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA5F188627DBC1B70077AEBB /* MenuScene.cpp */; };
@@ -295,6 +298,8 @@
 		CA2DE0B9281BC772009C7117 /* DepositEnergyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositEnergyScene.h; sourceTree = "<group>"; };
 		CA53F11727ED96E800F2699C /* OpenMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenMap.cpp; sourceTree = "<group>"; };
 		CA53F11B27ED970B00F2699C /* OpenMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenMap.h; sourceTree = "<group>"; };
+		CA5BAE032836C78C005A3BFE /* HowToPlayScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HowToPlayScene.cpp; sourceTree = "<group>"; };
+		CA5BAE072836C78C005A3BFE /* HowToPlayScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowToPlayScene.h; sourceTree = "<group>"; };
 		CA5F188627DBC1B70077AEBB /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuScene.cpp; sourceTree = "<group>"; };
 		CA5F188A27DBC1B70077AEBB /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		CA6B42B4281BE08D0029B796 /* TerminalController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerminalController.cpp; sourceTree = "<group>"; };
@@ -581,6 +586,8 @@
 				D57B34D1280FBEC5002DEBBA /* ClientLobbyScene.h */,
 				D52E672827BF305900F8E2B8 /* GameScene.h */,
 				D52E672B27BF305900F8E2B8 /* GameScene.cpp */,
+				CA5BAE032836C78C005A3BFE /* HowToPlayScene.cpp */,
+				CA5BAE072836C78C005A3BFE /* HowToPlayScene.h */,
 				CAAF4CEE27DCA79600024986 /* ClientMenuScene.h */,
 				CAAF4CE827DCA79600024986 /* ClientMenuScene.cpp */,
 				CAAF4CED27DCA79600024986 /* HostMenuScene.h */,
@@ -905,7 +912,7 @@
 					};
 					EB74548B1D74D75C002FBAE6 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = LR67JRR3TA;
+						DevelopmentTeam = 37AKFHT6H5;
 					};
 					EBBF18901D74904A008E2001 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1049,6 +1056,7 @@
 				D529AAEE27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEB27E13083006E3D5F /* Terminal.cpp in Sources */,
+				CA5BAE0A2836C78C005A3BFE /* HowToPlayScene.cpp in Sources */,
 				D56377832818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188D27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F227F69C7800D7EF23 /* TankController.cpp in Sources */,
@@ -1108,6 +1116,7 @@
 				D529AAED27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAEA27E13083006E3D5F /* Terminal.cpp in Sources */,
+				CA5BAE092836C78C005A3BFE /* HowToPlayScene.cpp in Sources */,
 				D56377822818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188C27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F127F69C7800D7EF23 /* TankController.cpp in Sources */,
@@ -1167,6 +1176,7 @@
 				D529AAEC27E13083006E3D5F /* TerminalSensor.cpp in Sources */,
 				D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */,
 				D529AAE927E13083006E3D5F /* Terminal.cpp in Sources */,
+				CA5BAE082836C78C005A3BFE /* HowToPlayScene.cpp in Sources */,
 				D56377812818F2B8001C4D45 /* HostLobbyScene.cpp in Sources */,
 				CA5F188B27DBC1B70077AEBB /* MenuScene.cpp in Sources */,
 				57FEE3F027F69C7800D7EF23 /* TankController.cpp in Sources */,
@@ -1260,13 +1270,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LR67JRR3TA;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.DungeonDeduction-marcos";
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1282,13 +1292,13 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = LR67JRR3TA;
+				DEVELOPMENT_TEAM = 37AKFHT6H5;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/iOS-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.oops.DungeonDeduction-marcos";
+				PRODUCT_BUNDLE_IDENTIFIER = com.oops.DungeonDeduction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

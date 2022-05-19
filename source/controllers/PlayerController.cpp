@@ -38,13 +38,15 @@ bool PlayerController::init(
     const std::shared_ptr<cugl::AssetManager>& assets,
     const std::shared_ptr<cugl::physics2::ObstacleWorld>& world,
     const std::shared_ptr<cugl::scene2::SceneNode>& world_node,
-    const std::shared_ptr<cugl::scene2::SceneNode>& debug_node) {
+    const std::shared_ptr<cugl::scene2::SceneNode>& debug_node,
+    const std::unordered_map<int, int>& color_ids) {
   _assets = assets;
 
   _slash_texture = _assets->get<cugl::Texture>("energy-slash");
   _world = world;
   _world_node = world_node;
   _debug_node = debug_node;
+  _color_ids = color_ids;
 
   _sword = Sword::alloc(cugl::Vec2::ZERO);
   _world->addObstacle(_sword);
@@ -66,13 +68,8 @@ void PlayerController::update(float timestep) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
 
-  if (_player->isBetrayer() && _player->canCorrupt() &&
-      InputController::get<Corrupt>()->holdCorrupt()) {
-    _player->move(cugl::Vec2(0, 0), 0.0f);
-  } else {
-    move(timestep);
-    attack();
-  }
+  move(timestep);
+  attack();
   updateSlashes(timestep);
 
   for (auto it : _players) {
@@ -135,12 +132,14 @@ void PlayerController::blockCorrupt() {
 }
 
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
-  std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>("player");
+  if (_color_ids.find(player_id) == _color_ids.end()) _color_ids[player_id] = 1;
+  std::shared_ptr<cugl::Texture> player = _assets->get<cugl::Texture>(
+      "player-" + std::to_string(_color_ids[player_id]));
 
   auto new_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
   new_player->setPlayerId(player_id);
 
-  auto player_node = cugl::scene2::SpriteNode::alloc(player, 9, 10);
+  auto player_node = cugl::scene2::SpriteNode::alloc(player, 15, 10);
   new_player->setPlayerNode(player_node);
   _world_node->addChild(player_node);
   _world->addObstacle(new_player);
