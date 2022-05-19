@@ -18,7 +18,7 @@
     "data": {
       "anchor": [0.5, 0.5],
       "size": [300, 60],
-      "color": [50, 50, 50, 50],
+      "color": [50, 50, 50, 100],
       "visible": false
     },
     "children": {

@@ -53,9 +53,11 @@ bool HostMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _copy_tooltip_lifetime = 0;
   _clipboard->addListener([this](const std::string& name, bool down) {
     if (down) {
-      SDL_SetClipboardText(this->_gameid->getText().c_str());
-      _copy_tooltip->setVisible(true);
-      _copy_tooltip_lifetime = 0;
+      int success = SDL_SetClipboardText(this->_gameid->getText().c_str());
+      if (success == 0) {
+        _copy_tooltip->setVisible(true);
+        _copy_tooltip_lifetime = 0;
+      }
     }
   });
 

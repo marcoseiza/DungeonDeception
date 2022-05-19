@@ -167,7 +167,7 @@
           "font": "pixelmix",
           "valign": "top",
           "foreground": "#ffffff",
-          "background": [50, 50, 50, 50],
+          "background": [50, 50, 50, 100],
           "padding": [25, 0, 0, 20]
         },
         "layout": {
@@ -374,7 +374,7 @@
         "data": {
           "anchor": [0.5, 0.5],
           "size": [120, 70],
-          "color": [50, 50, 50, 50]
+          "color": [50, 50, 50, 100]
         },
         "children": {
           "icon": {

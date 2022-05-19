@@ -52,15 +52,17 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       "client-lobby-scene_center_menu-status_successfully-set");
 
   _copy = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      _assets->get<cugl::scene2::SceneNode>("host-lobby-scene_game_copy"));
+      _assets->get<cugl::scene2::SceneNode>("client-lobby-scene_game_copy"));
   _copy_tooltip = _assets->get<cugl::scene2::SceneNode>(
       "client-lobby-scene_game_copy_tooltip-wrapper_copied");
   _copy_tooltip_lifetime = 0;
   _copy->addListener([this](const std::string& name, bool down) {
     if (down) {
-      SDL_SetClipboardText(this->_gameid->getText().c_str());
-      _copy_tooltip->setVisible(true);
-      _copy_tooltip_lifetime = 0;
+      int success = SDL_SetClipboardText(this->_gameid->getText().c_str());
+      if (success == 0) {
+        _copy_tooltip->setVisible(true);
+        _copy_tooltip_lifetime = 0;
+      }
     }
   });
 
