@@ -66,13 +66,8 @@ void PlayerController::update(float timestep) {
     if (it.first != _player->getPlayerId()) interpolate(timestep, it.second);
   }
 
-  if (_player->isBetrayer() && _player->canCorrupt() &&
-      InputController::get<Corrupt>()->holdCorrupt()) {
-    _player->move(cugl::Vec2(0, 0), 0.0f);
-  } else {
-    move(timestep);
-    attack();
-  }
+  move(timestep);
+  attack();
   updateSlashes(timestep);
 
   for (auto it : _players) {
