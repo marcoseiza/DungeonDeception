@@ -2,9 +2,12 @@
   "variables": {},
   "contents": {
     "comments": "This is the root node for the runner scene",
-    "type": "Node",
+    "type": "Button",
     "format": {
       "type": "Anchored"
+    },
+    "data": {
+      "upnode": "background"
     },
     "children": {
       "background": {
@@ -14,7 +17,7 @@
         },
         "data": {
           "texture": "runner-screen",
-          "anchor": [0.5, 0.5],
+          "anchor": [ 0.5, 0.5 ],
           "scale": 0.55
         },
         "layout": {
