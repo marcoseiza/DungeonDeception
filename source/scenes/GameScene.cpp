@@ -1069,13 +1069,15 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (ob1->getName() == "projectile" &&
-      ob2 == _player_controller->getMyPlayer().get()) {
+      fx2_name == "player_projectile_sensor") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     dynamic_cast<Player*>(ob2)->takeDamage();
+    CULog("hi");
   } else if (ob2->getName() == "projectile" &&
-             ob1 == _player_controller->getMyPlayer().get()) {
+             fx1_name == "player_projectile_sensor") {
     dynamic_cast<Player*>(ob1)->takeDamage();
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
+    CULog("hi");
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
