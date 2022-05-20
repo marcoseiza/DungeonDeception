@@ -94,10 +94,39 @@ void EnemyModel::takeDamage(float amount) {
 bool EnemyModel::isHit() const { return _damage_count == DAMAGE_COUNT - 1; }
 
 void EnemyModel::addBullet(const cugl::Vec2 p) {
+  int speed = 300; // Default speed
+  int live_frames = 42; // Default frames
+  
+  if (_enemy_type == SHOTGUNNER) {
+    speed = 200;
+    live_frames = 100;
+    // Shoot two more projectiles on the sides
+    cugl::Vec2 p2 = p - getPosition();
+    p2.normalize();
+    p2.rotate(M_PI/6);
+    auto proj2 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p2, speed, live_frames);
+    _projectiles.emplace(proj2);
+    proj2->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+    
+    cugl::Vec2 p3 = p - getPosition();
+    p3.normalize();
+    p3.rotate(-M_PI/6);
+    auto proj3 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p3, speed, live_frames);
+    _projectiles.emplace(proj3);
+    proj3->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+  }
+  
   cugl::Vec2 diff = p - getPosition();
+  diff.normalize();
   auto bullet = Projectile::alloc(
       cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
-      diff);
+      diff, speed, live_frames);
 
   _projectiles.emplace(bullet);
   bullet->setPosition(
@@ -157,18 +186,18 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
     case SHOTGUNNER: {
       _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(
           cugl::scene2::OrderedNode::Order::ASCEND);
-      auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 9, 10);
       enemy_node->setTag(0);
       enemy_node->setPriority(0);
       enemy_node->setPosition(0, 0);
       _enemy_node->addChild(enemy_node);
-      auto gun_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      auto gun_node = cugl::scene2::SpriteNode::alloc(texture, 9, 10);
       gun_node->setFrame(2);
       gun_node->setTag(1);
       gun_node->setPriority(1);
       gun_node->setPosition(0, 0);
       gun_node->setVisible(false);
-      gun_node->setAnchor(0.35, 0.65);
+      gun_node->setAnchor(0.42, 0.63);
       _enemy_node->addChild(gun_node);
       break;
     }
