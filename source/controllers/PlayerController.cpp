@@ -428,7 +428,8 @@ void PlayerController::updateSlashes(float timestep) {
     (*it)->decrementFrame(1);
     (*it)->getNode()->setPosition((*it)->getPosition());
     if ((*it)->getFrames() % SLASH_FRAMES == 0) {
-      (*it)->getNode()->setFrame((*it)->getNode()->getFrame() + 1);
+      (*it)->getNode()->setFrame(((*it)->getNode()->getFrame() + 1) %
+                                 (*it)->getNode()->getSize());
     }
     ++it;
   }

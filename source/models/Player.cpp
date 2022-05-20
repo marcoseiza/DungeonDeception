@@ -24,6 +24,9 @@
 
 #define ENERGY_BAR_UPDATE_SIZE 0.03f
 
+#define ENERGY_SLASH_SPEED 400
+#define ENERGY_SLASH_LIFE 60
+
 #pragma mark Init
 
 bool Player::init(const cugl::Vec2 pos, const std::string& name) {
@@ -60,13 +63,13 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   setFriction(0.0f);
   setRestitution(0.01f);
   setFixedRotation(true);
-  
+
   _projectile_sensor = nullptr;
   _projectile_sensor_name = nullptr;
 
   _fixture.filter.categoryBits = CATEGORY_PLAYER;
   _fixture.filter.maskBits = MASK_PLAYER;
-  
+
   _projectile_sensor_def.filter.categoryBits = CATEGORY_PLAYER;
   _projectile_sensor_def.filter.maskBits = MASK_PLAYER_PROJECTILE;
 
@@ -173,11 +176,12 @@ void Player::createFixtures() {
   if (_body == nullptr) return;
 
   CapsuleObstacle::createFixtures();
-  
+
   if (_projectile_sensor == nullptr) {
     _projectile_sensor_def.density = 0.0f;
     _projectile_sensor_def.isSensor = true;
-    _projectile_sensor_name = std::make_shared<std::string>("player_projectile_sensor");
+    _projectile_sensor_name =
+        std::make_shared<std::string>("player_projectile_sensor");
     _projectile_sensor_def.userData.pointer =
         reinterpret_cast<uintptr_t>(_projectile_sensor_name.get());
 
@@ -204,7 +208,7 @@ void Player::releaseFixtures() {
   if (_body == nullptr) return;
 
   CapsuleObstacle::releaseFixtures();
-  
+
   if (_projectile_sensor != nullptr) {
     _body->DestroyFixture(_projectile_sensor);
     _projectile_sensor = nullptr;
@@ -220,25 +224,30 @@ void Player::update(float delta) {
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
   }
-  
+
   // Animate the energy bars.
   if (_energy_bar != nullptr && _corrupted_energy_bar != nullptr) {
     float target_energy_amt = (_energy - _corrupted_energy) / 100.0f;
     float target_corrupt_energy_amt = _energy / 100.0f;
     if (_energy_bar->getProgress() < target_energy_amt) {
-      (_energy_bar->setProgress(std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                                         target_energy_amt)));
+      (_energy_bar->setProgress(
+          std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                   target_energy_amt)));
     } else if (_energy_bar->getProgress() > target_energy_amt) {
-      (_energy_bar->setProgress(std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                                         target_energy_amt)));
+      (_energy_bar->setProgress(
+          std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                   target_energy_amt)));
     }
-    
+
     if (_corrupted_energy_bar->getProgress() < target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::min(_corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                                         target_corrupt_energy_amt)));
-    } else if (_corrupted_energy_bar->getProgress() > target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::max(_corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                                         target_corrupt_energy_amt)));
+      (_corrupted_energy_bar->setProgress(std::min(
+          _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+          target_corrupt_energy_amt)));
+    } else if (_corrupted_energy_bar->getProgress() >
+               target_corrupt_energy_amt) {
+      (_corrupted_energy_bar->setProgress(std::max(
+          _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+          target_corrupt_energy_amt)));
     }
   }
 }
@@ -325,7 +334,8 @@ void Player::updateDirection(const cugl::Vec2& diff) {
 
 void Player::makeSlash(cugl::Vec2 attackDir, cugl::Vec2 swordPos) {
   // Make the sword slash projectile
-  auto slash = Projectile::alloc(swordPos, attackDir);
+  auto slash = Projectile::alloc(swordPos, attackDir, ENERGY_SLASH_SPEED,
+                                 ENERGY_SLASH_LIFE);
   _slashes.emplace(slash);
   slash->setPosition(swordPos);
 
