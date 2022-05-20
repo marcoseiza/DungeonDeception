@@ -60,9 +60,16 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   setFriction(0.0f);
   setRestitution(0.01f);
   setFixedRotation(true);
+  
+  _projectile_sensor = nullptr;
+  _projectile_sensor_name = nullptr;
+  _projectile_sensor_node = nullptr;
 
   _fixture.filter.categoryBits = CATEGORY_PLAYER;
   _fixture.filter.maskBits = MASK_PLAYER;
+  
+  _projectile_sensor_def.filter.categoryBits = CATEGORY_PLAYER;
+  _projectile_sensor_def.filter.maskBits = MASK_PLAYER_PROJECTILE;
 
   return true;
 }
@@ -162,6 +169,48 @@ void Player::setCanCorrupt(bool val) {
 }
 
 #pragma mark Animation & Drawing
+
+void Player::createFixtures() {
+  if (_body == nullptr) return;
+
+  CapsuleObstacle::createFixtures();
+  
+  if (_projectile_sensor == nullptr) {
+    _projectile_sensor_def.density = 0.0f;
+    _projectile_sensor_def.isSensor = true;
+    _projectile_sensor_name = std::make_shared<std::string>("player_projectile_sensor");
+    _projectile_sensor_def.userData.pointer =
+        reinterpret_cast<uintptr_t>(_projectile_sensor_name.get());
+
+    // Dimensions
+    b2Vec2 corners[4];
+    corners[0].x = -CapsuleObstacle::getWidth() / 1.5f;
+    corners[0].y = CapsuleObstacle::getHeight() / 1.5f;
+    corners[1].x = -CapsuleObstacle::getWidth() / 1.5f;
+    corners[1].y = -CapsuleObstacle::getHeight() / 1.5f;
+    corners[2].x = CapsuleObstacle::getWidth() / 1.5f;
+    corners[2].y = -CapsuleObstacle::getHeight() / 1.5f;
+    corners[3].x = CapsuleObstacle::getWidth() / 1.5f;
+    corners[3].y = CapsuleObstacle::getHeight() / 1.5f;
+
+    b2PolygonShape sensorShape;
+    sensorShape.Set(corners, 4);
+
+    _projectile_sensor_def.shape = &sensorShape;
+    _projectile_sensor = _body->CreateFixture(&_projectile_sensor_def);
+  }
+}
+
+void Player::releaseFixtures() {
+  if (_body == nullptr) return;
+
+  CapsuleObstacle::releaseFixtures();
+  
+  if (_projectile_sensor != nullptr) {
+    _body->DestroyFixture(_projectile_sensor);
+    _projectile_sensor = nullptr;
+  }
+}
 
 void Player::update(float delta) {
   CapsuleObstacle::update(delta);

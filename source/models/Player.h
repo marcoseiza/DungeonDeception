@@ -91,6 +91,15 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** If basic display name and betrayer info has been sent to host. */
   bool _basic_info_sent_to_host;
+  
+  /** Represents the def for the damage area for the enemy. */
+  b2FixtureDef _projectile_sensor_def;
+  /** Represents the hit area for the enemy. */
+  b2Fixture* _projectile_sensor;
+  /** Keeps an instance of the name alive for collision detection. */
+  std::shared_ptr<std::string> _projectile_sensor_name;
+  /** The node for debugging the damage sensor */
+  std::shared_ptr<cugl::scene2::WireNode> _projectile_sensor_node;
 
  public:
   /** Countdown to change animation frame. */
@@ -352,13 +361,31 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @return the attack high limit
    */
   int getAttackHighLim();
+  
+  /**
+   * Creates the physics Body(s) for this object, adding them to the world.
+   *
+   * This method overrides the base method to keep your ship from spinning.
+   *
+   * @param world Box2D world to store body
+   *
+   * @return true if object allocation succeeded
+   */
+  void createFixtures() override;
+
+  /**
+   * Release the fixtures for this body, reseting the shape
+   *
+   * This is the primary method to override for custom physics objects.
+   */
+  void releaseFixtures() override;
 
   /**
    * Update the scene graph.
    *
    * @param delta the timing value.
    */
-  void update(float delta);
+  void update(float delta) override;
 
   /**
    * Set a position promise for the player. The player will move to this
