@@ -44,17 +44,27 @@ void TurtleController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enem
   } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
     // Whether the enemy is attacking
     if (enemy->getAttackCooldown() == 0) {
-      // Do attack done.
-      cugl::Vec2 e = enemy->getPosition();
-      cugl::Vec2 p1 = enemy->getAttackDir();
-
-      // Attack in closest cardinal direction
-      if (abs(p1.x - e.x) > abs(p1.y - e.y)) {
-        int add = (p1.x - e.x > 0) ? 1 : -1;
-        enemy->addBullet(cugl::Vec2(e.x + add, e.y));
+      float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
+      // Rotate this vector accordingly
+      cugl::Vec2 att_vec = enemy->getPosition() + cugl::Vec2(1,0);
+      if (frame_angle < -(7.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate(M_PI, enemy->getPosition()));
+      } else if (frame_angle < -(5.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate(-(3.0/4.0)*M_PI, enemy->getPosition()));
+      } else if (frame_angle < -(3.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate(-(1.0/2.0)*M_PI, enemy->getPosition()));
+      } else if (frame_angle < -(1.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate(-(1.0/4.0)*M_PI, enemy->getPosition()));
+      } else if (frame_angle < (1.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate(0, enemy->getPosition()));
+      } else if (frame_angle < (3.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate((1.0/4.0)*M_PI, enemy->getPosition()));
+      } else if (frame_angle < (5.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate((1.0/2.0)*M_PI, enemy->getPosition()));
+      } else if (frame_angle < (7.0/8.0)*M_PI) {
+        enemy->addBullet(att_vec.rotate((3.0/4.0)*M_PI, enemy->getPosition()));
       } else {
-        int add = (p1.y - e.y > 0) ? 1 : -1;
-        enemy->addBullet(cugl::Vec2(e.x, e.y + add));
+        enemy->addBullet(att_vec.rotate(M_PI, enemy->getPosition()));
       }
       _sound_controller->playEnemyLargeGunshot();
       enemy->setAttackCooldown(ATTACK_COOLDOWN);
@@ -67,7 +77,6 @@ void TurtleController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
                                     const cugl::Vec2 p) {
   if (enemy->getAttackCooldown() <= 0) {
     float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
-
     // Rotate this vector accordingly
     cugl::Vec2 att_vec = enemy->getPosition() + cugl::Vec2(1,0);
     if (frame_angle < -(7.0/8.0)*M_PI) {
@@ -181,7 +190,7 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy) {
             node->setFrame(ATTACK_RIGHT);
           }
         } else if (enemy->getAttackCooldown() < ATTACK_FRAME_POS) {
-          if (fc >= 2 && enemy->_goal_frame != node->getFrame()) {
+          if (fc >= 1 && enemy->_goal_frame != node->getFrame()) {
             if (node->getFrame() == ATTACK_RIGHT &&
                 enemy->_goal_frame >= ATTACK_HALF) {
               node->setFrame(ATTACK_UP_LIM - 1);
