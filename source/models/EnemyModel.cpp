@@ -325,7 +325,7 @@ void EnemyModel::update(float delta) {
 
   if (_isKnockbacked) {
     _stunned_timer++;
-    if (_stunned_timer >= 10) {
+    if (_stunned_timer >= 15) {
       _isKnockbacked = false;
       _stunned_timer = 0;
     }
@@ -347,29 +347,9 @@ void EnemyModel::move(float forwardX, float forwardY) {
     setVX(80 * forwardX);
     setVY(80 * forwardY);
   }
-
-  if (forwardX == 0) {
-    setVX(0);
-  } else {
-    //    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
-  }
-
-  if (forwardY == 0) setVY(0);
 }
 
-void EnemyModel::knockback(int moveDir) {
+void EnemyModel::knockback(const cugl::Vec2 p) {
   _isKnockbacked = true;
-  if (moveDir == 0) {
-    _knockback_dir.x = -1;
-    _knockback_dir.y = 0;
-  } else if (moveDir == 1) {
-    _knockback_dir.x = 0;
-    _knockback_dir.y = -1;
-  } else if (moveDir == 2) {
-    _knockback_dir.x = 1;
-    _knockback_dir.y = 0;
-  } else {
-    _knockback_dir.x = 0;
-    _knockback_dir.y = 1;
-  }
+  _knockback_dir = getPosition() - p;
 }

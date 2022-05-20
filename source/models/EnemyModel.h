@@ -505,7 +505,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /**
    * Knocks back the enemy.
    */
-  void knockback(int moveDir);
+  void knockback(const cugl::Vec2 p);
 
   /**
    * Returns whether or not the enemy is knocked back.
