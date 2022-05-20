@@ -63,7 +63,6 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   
   _projectile_sensor = nullptr;
   _projectile_sensor_name = nullptr;
-  _projectile_sensor_node = nullptr;
 
   _fixture.filter.categoryBits = CATEGORY_PLAYER;
   _fixture.filter.maskBits = MASK_PLAYER;
