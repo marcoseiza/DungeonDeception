@@ -76,12 +76,15 @@ class ShotgunnerController : public EnemyController {
    */
   void animate(std::shared_ptr<EnemyModel> enemy) override;
 
+  /** Animate the enemy death animation. */
+  void animateDeath(std::shared_ptr<EnemyModel> enemy) override;
+
   /** Attack the player.
    *
    * @param p the player position.
    */
   void attackPlayer(std::shared_ptr<EnemyModel> enemy, cugl::Vec2 p) override;
-  
+
   /** Update and attack the player if a client.
    *
    * @param enemy the enemy.

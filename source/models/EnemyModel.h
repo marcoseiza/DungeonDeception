@@ -47,7 +47,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
  private:
   /** Initial position of the enemy. */
   cugl::Vec2 _init_pos;
-  
+
   /** The current state of the enemy. */
   State _current_state;
 
@@ -65,6 +65,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Enemy health. */
   int _health;
+
+  /** Ready to die. */
+  bool _ready_to_die;
 
   /** Enemy speed. */
   float _speed;
@@ -89,8 +92,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   std::shared_ptr<std::string> _damage_sensor_name;
   /** The node for debugging the damage sensor */
   std::shared_ptr<cugl::scene2::WireNode> _damage_sensor_node;
-  
-  /** Another fixture def to ensure enemy doesn't go through walls when attacking. */
+
+  /** Another fixture def to ensure enemy doesn't go through walls when
+   * attacking. */
   b2FixtureDef _wall_fixture_def;
   /** Fixture for wall. */
   b2Fixture* _wall_fixture;
@@ -124,13 +128,13 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** If the promise to change physics state should enable the body or
    * disable it */
   bool _promise_to_enable;
-  
+
   /** If the enemy attacked via dashing this update step. */
   bool _did_attack;
-  
+
   /** Player position to attack in. */
   cugl::Vec2 _attack_dir;
-  
+
   /** Attack position at the beginning of attack. */
   cugl::Vec2 _attack_init_pos;
 
@@ -156,16 +160,16 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
 
   /** Knockback direction. */
   cugl::Vec2 _knockback_dir;
-  
+
   /** The count for switching to the next frame. */
   int _frame_count;
 
   /** The goal frame for the turtle enemy*/
   int _goal_frame;
-  
+
   /** Timer for staying in the move back state. */
   int _move_back_timer;
-  
+
   /** Timer for attempting to return/wander to original position. */
   int _wander_timer;
 
@@ -182,7 +186,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
         _hitbox_sensor_name(nullptr),
         _damage_sensor(nullptr),
         _damage_sensor_name(nullptr),
-        _wall_fixture(nullptr) {}
+        _wall_fixture(nullptr),
+        _ready_to_die(false) {}
 
   /**
    * Disposes the grunt.
@@ -231,7 +236,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return If the enemy has been hit.
    */
   bool isHit() const;
-  
+
   /**
    * Returns the initial position of the enemy.
    */
@@ -283,6 +288,18 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
+
+  /**
+   * Sets that this enemy is ready to die
+   * @param val Wether the enemy is ready to die.
+   */
+  void setReadyToDie(bool val) { _ready_to_die = true; }
+
+  /**
+   * Returns wether the enemy is ready to die.
+   * @return wether the enemy is ready to die.
+   */
+  bool isReadyToDie() const { return _ready_to_die; }
   /**
    * Gets the current attack cooldown of the enemy.
    *
@@ -330,12 +347,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the enemy speed.
    */
   float getSpeed() const { return _speed; }
-  
+
   /**
    * Set whether the enemy attacked.
    */
   void setAttack(bool val) { _did_attack = val; }
-  
+
   /**
    * Returns whether the enemy attacked.
    *
@@ -346,33 +363,31 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /**
    * Resets info about whether an attack happened.
    */
-  void clearAttackState() {
-    _did_attack = false;
-  }
-  
+  void clearAttackState() { _did_attack = false; }
+
   /**
    * Set the direction of the attack.
    */
   void setAttackDir(const cugl::Vec2 v) { _attack_dir = v; }
-  
+
   /**
    * Returns the direction of the attack.
    */
   cugl::Vec2 getAttackDir() const { return _attack_dir; }
-  
+
   /** Saves the enemy position at the start of an attack. */
   void setAttackInitPos(const cugl::Vec2 v) { _attack_init_pos = v; }
-  
+
   /** Returns the direction of the attack. */
   cugl::Vec2 getAttackInitPos() const { return _attack_init_pos; }
-  
+
   /**
    * Add a bullet.
    *
    * @param p the position of the bullet to spawn in.
    */
   void addBullet(cugl::Vec2 p);
-  
+
   /**
    * Perform attack action according to enemy type.
    *
@@ -436,8 +451,9 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * Resets the sensors of the enemy.
    */
   void resetSensors();
-  
-  /** When grunt or tank attacking, set the filter to only perform collisions on walls. */
+
+  /** When grunt or tank attacking, set the filter to only perform collisions on
+   * walls. */
   void setAttackingFilter();
 
 #pragma mark -
@@ -482,7 +498,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /**
    * Gets the enemy scene graph node.
    *
-   * @return node the node that has been set.
+   * @return the node that has been set.
    */
   std::shared_ptr<cugl::scene2::SceneNode>& getNode();
 
