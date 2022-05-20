@@ -75,6 +75,7 @@ class PeerLobbyScene : public cugl::Scene2 {
   };
 
   const Sint32 CLIENT_SEND_PLAYER_NAME = 1;
+  const Sint32 CLIENT_REMOVE_PLAYER_NAME = 6;
   const Sint32 HOST_SEND_THAT_LOBBY_IS_OPEN = 0;
 
  public:
