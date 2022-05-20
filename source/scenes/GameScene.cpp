@@ -1060,11 +1060,11 @@ void GameScene::beginContact(b2Contact* contact) {
 
   if (fx1_name == "enemy_damage" &&
       ob2 == _player_controller->getMyPlayer().get() &&
-      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 24) {
+      dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob2)->takeDamage();
   } else if (fx2_name == "enemy_damage" &&
              ob1 == _player_controller->getMyPlayer().get() &&
-             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 24) {
+             dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
     dynamic_cast<Player*>(ob1)->takeDamage();
   }
 
