@@ -98,8 +98,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
   b2Fixture* _projectile_sensor;
   /** Keeps an instance of the name alive for collision detection. */
   std::shared_ptr<std::string> _projectile_sensor_name;
-  /** The node for debugging the damage sensor */
-  std::shared_ptr<cugl::scene2::WireNode> _projectile_sensor_node;
 
  public:
   /** Countdown to change animation frame. */

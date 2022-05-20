@@ -185,13 +185,13 @@ void Player::createFixtures() {
     // Dimensions
     b2Vec2 corners[4];
     corners[0].x = -CapsuleObstacle::getWidth() / 1.5f;
-    corners[0].y = CapsuleObstacle::getHeight() / 1.5f;
+    corners[0].y = CapsuleObstacle::getHeight() / 1.0f;
     corners[1].x = -CapsuleObstacle::getWidth() / 1.5f;
     corners[1].y = -CapsuleObstacle::getHeight() / 1.5f;
     corners[2].x = CapsuleObstacle::getWidth() / 1.5f;
     corners[2].y = -CapsuleObstacle::getHeight() / 1.5f;
     corners[3].x = CapsuleObstacle::getWidth() / 1.5f;
-    corners[3].y = CapsuleObstacle::getHeight() / 1.5f;
+    corners[3].y = CapsuleObstacle::getHeight() / 1.0f;
 
     b2PolygonShape sensorShape;
     sensorShape.Set(corners, 4);
