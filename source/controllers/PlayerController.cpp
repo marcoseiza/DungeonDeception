@@ -262,6 +262,12 @@ void PlayerController::processBasicPlayerInfo(int player_id,
       cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
   corrupted_bar->setForegroundColor(cugl::Color4("#df7126"));
 
+  auto block_icon = _assets->get<cugl::Texture>("blocked-player");
+  auto block_icon_node =
+      cugl::scene2::PolygonNode::allocWithTexture(block_icon);
+  player->setBlockIcon(block_icon_node);
+  block_icon_node->setVisible(false);
+
   if (_player->isBetrayer()) {
     // It's important that these be placed in this specific order.
     player->setCorruptedEnergyBar(corrupted_bar);

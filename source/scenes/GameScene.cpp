@@ -63,16 +63,6 @@ bool GameScene::init(
   target_icon_node->setVisible(false);
   _world_node->addChild(target_icon_node);
 
-  for (int i = 0; i < _block_x_nodes.size(); i++) {
-    std::shared_ptr<cugl::Texture> blocked_texture =
-        _assets->get<cugl::Texture>("blocked-player");
-    auto blocked_icon_node =
-        cugl::scene2::SpriteNode::alloc(blocked_texture, 1, 1);
-    blocked_icon_node->setVisible(false);
-    _world_node->addChild(blocked_icon_node);
-    _block_x_nodes[i] = blocked_icon_node;
-  }
-
   _debug_node = cugl::scene2::SceneNode::alloc();
   _debug_node->setContentSize(dim);
 
@@ -480,33 +470,26 @@ void GameScene::update(float timestep) {
         auto blocked_ps =
             _player_controller->getMyPlayer()->getBetrayersBlockedPlayers();
         for (auto p : _player_controller->getPlayerList()) {
-          if (p->getRoomId() ==
-                  _player_controller->getMyPlayer()->getRoomId() &&
-              !p->isBetrayer() &&
-              blocked_ps.find(p->getPlayerId()) != blocked_ps.end()) {
+          bool same_room =
+              p->getRoomId() == _player_controller->getMyPlayer()->getRoomId();
+          bool can_infect =
+              blocked_ps.find(p->getPlayerId()) == blocked_ps.end();
+
+          if (same_room && can_infect && !p->isBetrayer()) {
             sendBetrayalCorruptInfo(p->getPlayerId());
             _player_controller->getMyPlayer()->setCorrupted();
+          } else if (!can_infect) {
+            p->flashBlockIcon();
           }
         }
       }
 
       for (auto it :
            _player_controller->getMyPlayer()->getBetrayersBlockedPlayers()) {
-        auto blocked_icon_node = _block_x_nodes[it.first];
-        if (InputController::get<Corrupt>()->pressCorrupt()) {
-          // display the x on the blocked players.
-          auto player = _player_controller->getPlayer(it.first);
-          auto v = player->getPlayerNode()->getPosition();
-          v.y += 27;
-          blocked_icon_node->setPosition(v);
-          blocked_icon_node->setPriority(std::numeric_limits<float>::max());
-          blocked_icon_node->setVisible(true);
-        } else {
-          blocked_icon_node->setVisible(false);
-        }
-
         // If done, set visibility to be false also.
         if (it.second <= 1) {
+          auto player = _player_controller->getPlayer(it.first);
+          auto blocked_icon_node = player->getBlockIcon();
           blocked_icon_node->setVisible(false);
         }
       }
@@ -999,6 +982,8 @@ void GameScene::processData(
       if (player_id == _player_controller->getMyPlayer()->getPlayerId()) {
         // Blocks the player from corrupting for 1 minute.
         _player_controller->getMyPlayer()->setBlockPlayerOnBetrayer(runner_id);
+        _player_controller->getPlayer(runner_id)->getBlockIcon()->setVisible(
+            true);
       }
     } break;
 

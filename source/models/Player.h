@@ -25,6 +25,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The corrupted energy bar for the player name (moving). */
   std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
 
+  /** The block icon for the player (moving). */
+  std::shared_ptr<cugl::scene2::SceneNode> _block_icon;
+  /** A counter for flashing the block icon. */
+  int _flash_block_icon_counter;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -495,6 +500,24 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setCorruptedEnergyBar(
       const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
+
+  /**
+   * Sets the scene graph node representing the floating block icon.
+   * @param node The scene graph node representing the block icon.
+   */
+  void setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon);
+
+  /**
+   * Returns the scene graph node representing the floating block icon.
+   * @return The scene graph node representing the block icon.
+   */
+  std::shared_ptr<cugl::scene2::SceneNode> getBlockIcon() {
+    return _block_icon;
+  }
+
+  /** Flash the block icon red to make it clear to betrayers they can't infect
+   * them. */
+  void flashBlockIcon();
 
   /**
    * Gets the scene graph node representing this player's name.
