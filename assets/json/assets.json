@@ -786,22 +786,6 @@
             "priority": 1,
             "padding": [0, 30, 0, 0]
           }
-        },
-        "settings": {
-          "type": "Widget",
-          "data": {
-            "key": "textbutton",
-            "variables": {
-              "size": [220, 60],
-              "text": "SETTINGS",
-              "font": "pixelmix_small",
-              "color": "#efebe3"
-            }
-          },
-          "layout": {
-            "priority": 1,
-            "padding": [0, 115, 0, 0]
-          }
         }
       }
     },
