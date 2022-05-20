@@ -1,0 +1,54 @@
+{
+  "variables": {
+    "priority": ["children", "tile", "data", "priority"]
+  },
+  "contents": {
+    "type": "Node",
+    "format": {
+      "type": "Anchored"
+    },
+    "data": {
+      "anchor": [0, 0],
+      "size": [48, 48]
+    },
+    "layout": {
+      "x_anchor": "left",
+      "y_anchor": "bottom"
+    },
+    "children": {
+      "tile": {
+        "type": "Wall",
+        "data": {
+          "texture": "tile-tree",
+          "anchor": [0.5, 0.5],
+          "priority": 0,
+          "obstacle": [0, 0, 48, 0, 48, 48, 0, 48]
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle",
+          "absolute": true
+        }
+      },
+      "shadow": {
+        "type": "Image",
+        "data": {
+          "texture": "tile-tree-shadow",
+          "anchor": [0.5, 0.5],
+          "priority": -0.9
+        },
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "middle"
+        }
+      },
+      "floor": {
+        "type": "Widget",
+        "data": {
+          "key": "tile-1",
+          "variables": {}
+        }
+      }
+    }
+  }
+}
