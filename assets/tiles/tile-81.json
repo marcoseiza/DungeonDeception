@@ -22,11 +22,12 @@
           "texture": "tile-tree",
           "anchor": [0.5, 0.5],
           "priority": 0,
-          "obstacle": [0, 0, 48, 0, 48, 48, 0, 48]
+          "obstacle": [6, 6, 42, 6, 42, 42, 6, 42]
         },
         "layout": {
           "x_anchor": "center",
           "y_anchor": "middle",
+          "y_offset": 15,
           "absolute": true
         }
       },
@@ -39,7 +40,9 @@
         },
         "layout": {
           "x_anchor": "center",
-          "y_anchor": "middle"
+          "y_anchor": "middle",
+          "y_offset": 15,
+          "absolute": true
         }
       },
       "floor": {
