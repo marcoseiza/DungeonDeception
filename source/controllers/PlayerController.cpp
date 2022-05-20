@@ -102,12 +102,6 @@ void PlayerController::update(float timestep) {
   }
   _player->_corrupt_count--;
 
-  if (_player->_blocked_corrupt_count == 0) {
-    _player->setCanCorrupt(true);
-    InputController::get<Corrupt>()->setActive(true);
-  }
-  _player->_blocked_corrupt_count--;
-
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
     _player->dies();
@@ -126,7 +120,6 @@ void PlayerController::update(float timestep) {
 
 void PlayerController::blockCorrupt() {
   if (_player->isBetrayer()) {
-    _player->setCanCorrupt(false);
     InputController::get<Corrupt>()->setActive(false);
   }
 }

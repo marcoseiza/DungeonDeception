@@ -6,6 +6,7 @@ TargetPlayer::TargetPlayer()
     : _curr_down(false),
       _prev_down(false),
       _button(nullptr),
+      _is_activating_action(false),
       _target_player_hang_frames(150),
       _target_player_counter(0),
       _target_player_id(-1),
@@ -16,7 +17,7 @@ bool TargetPlayer::init(const std::shared_ptr<cugl::AssetManager> &assets,
   Action::init(assets, bounds);
 
   _button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player"));
+      assets->get<cugl::scene2::SceneNode>("ui-scene_block-player"));
 
   _button->addListener(
       [=](const std::string &name, bool down) { _butt_down = down; });
@@ -72,12 +73,6 @@ bool TargetPlayer::update() {
 
 bool TargetPlayer::dispose() {
   _button = nullptr;
-
-#ifdef CU_TOUCH_SCREEN
-  cugl::Touchscreen *touch = cugl::Input::get<cugl::Touchscreen>();
-  touch->removeMotionListener(_listener_key);
-#endif
-
   return true;
 }
 
@@ -90,13 +85,3 @@ void TargetPlayer::setActive(bool value) {
     _button->setColor(cugl::Color4::GRAY);
   }
 }
-
-#ifdef CU_TOUCH_SCREEN
-
-void TargetPlayer::touchMoved(const cugl::TouchEvent &event,
-                              const cugl::Vec2 &previous, bool focus) {
-  if (_button->getTouchIds().find(event.touch) !=
-      _button->getTouchIds().end()) {
-  }
-}
-#endif  // CU_TOUCH_SCREEN

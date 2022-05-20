@@ -167,14 +167,10 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
-  auto block_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("block-player");
-  block_player_button->setVisible(!is_betrayer);
-
-  auto infect_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
-  infect_player_button->setVisible(is_betrayer);
-
+  assets->get<cugl::scene2::SceneNode>("ui-scene_block-player")
+      ->setVisible(!is_betrayer);
+  assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player")
+      ->setVisible(is_betrayer);
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
   win_layer->doLayout();
@@ -231,8 +227,7 @@ bool GameScene::init(
   _tank_controller->setSoundController(_sound_controller);
   _turtle_controller->setSoundController(_sound_controller);
 
-  InputController::get()->init(_assets, cugl::Scene2::getBounds());
-  InputController::get<TargetPlayer>()->setActive(is_betrayer);
+  InputController::get()->init(_assets, cugl::Scene2::getBounds(), is_betrayer);
 
   InputController::get()->pause();
 
@@ -465,11 +460,9 @@ void GameScene::update(float timestep) {
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer() &&
-      _player_controller->getMyPlayer()->canCorrupt()) {
-    int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
+  if (_player_controller->getMyPlayer()->isBetrayer()) {
     if (!_player_controller->getMyPlayer()->getDead()) {
-      if (time_held_down >= 2000) {
+      if (InputController::get<Corrupt>()->pressCorrupt()) {
         // 2000 milliseconds to hold down the corrupt button
         // Send to the host to corrupt half a bar of luminance from everyone
         // in the room.
@@ -481,7 +474,6 @@ void GameScene::update(float timestep) {
             _player_controller->getMyPlayer()->setCorrupted();
           }
         }
-        InputController::get<Corrupt>()->resetTimeDown();
       }
     }
   }
@@ -971,7 +963,7 @@ void GameScene::processData(
         int player_id = corrupt_data->getInt("corrupt_player_id");
         auto corrupt_player = _player_controller->getPlayer(player_id);
 
-        corrupt_player->turnEnergyCorrupted(10);
+        corrupt_player->turnEnergyCorrupted(20);
       }
     }
   }

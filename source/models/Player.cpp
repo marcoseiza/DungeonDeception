@@ -54,7 +54,6 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _is_respawning = false;
   _mv_direc = IDLE_LEFT;
   _room_id = -1;
-  _can_corrupt = true;
 
   setDensity(0.01f);
   setFriction(0.0f);
@@ -154,16 +153,9 @@ void Player::dies() {
 }
 
 void Player::setCorrupted() {
-  if (_is_betrayer && _can_corrupt) {
+  if (_is_betrayer) {
     _corrupt_count = 10;
     _player_node->setColor(cugl::Color4::ORANGE);
-  }
-}
-
-void Player::setCanCorrupt(bool val) {
-  _can_corrupt = val;
-  if (!val) {
-    _blocked_corrupt_count = 3600;  // 1 minute
   }
 }
 
@@ -220,25 +212,30 @@ void Player::update(float delta) {
     }
     _player_node->setPosition(getPosition() + _offset_from_center);
   }
-  
+
   // Animate the energy bars.
   if (_energy_bar != nullptr && _corrupted_energy_bar != nullptr) {
     float target_energy_amt = (_energy - _corrupted_energy) / 100.0f;
     float target_corrupt_energy_amt = _energy / 100.0f;
     if (_energy_bar->getProgress() < target_energy_amt) {
-      (_energy_bar->setProgress(std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                                         target_energy_amt)));
+      (_energy_bar->setProgress(
+          std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+                   target_energy_amt)));
     } else if (_energy_bar->getProgress() > target_energy_amt) {
-      (_energy_bar->setProgress(std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                                         target_energy_amt)));
+      (_energy_bar->setProgress(
+          std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+                   target_energy_amt)));
     }
-    
+
     if (_corrupted_energy_bar->getProgress() < target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::min(_corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                                         target_corrupt_energy_amt)));
-    } else if (_corrupted_energy_bar->getProgress() > target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::max(_corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                                         target_corrupt_energy_amt)));
+      (_corrupted_energy_bar->setProgress(std::min(
+          _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
+          target_corrupt_energy_amt)));
+    } else if (_corrupted_energy_bar->getProgress() >
+               target_corrupt_energy_amt) {
+      (_corrupted_energy_bar->setProgress(std::max(
+          _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
+          target_corrupt_energy_amt)));
     }
   }
 }
