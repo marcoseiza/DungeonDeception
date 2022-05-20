@@ -20,17 +20,32 @@ bool Terminal::initWithData(const cugl::Scene2Loader* loader,
   return true;
 }
 
-std::shared_ptr<TerminalSensor> Terminal::initSensor() {
+std::shared_ptr<cugl::physics2::PolygonObstacle> Terminal::initBox2d() {
+  _obstacle = Wall::initBox2d();
+
   cugl::Vec2 pos = getWorldPosition() - getPosition() + getSize() / 2.0f;
   pos.y -= getSize().height / 4.0f;
 
-  _terminal_sensor = TerminalSensor::alloc(pos, getSize());
+  if (_obstacle != nullptr) {
+    _obstacle->setUserDataPointer(reinterpret_cast<uintptr_t>(this));
+    auto sensor = std::make_shared<b2FixtureDef>();
+    sensor->density = 0.0f;
+    sensor->isSensor = true;
+    _terminal_sensor_name = std::make_shared<std::string>("terminal-sensor");
+    sensor->userData.pointer =
+        reinterpret_cast<uintptr_t>(_terminal_sensor_name.get());
 
-  if (_terminal_sensor != nullptr) {
-    _terminal_sensor->setPosition(pos);
-    _terminal_sensor->setName(_classname.c_str());
-    _terminal_sensor->setBodyType(b2BodyType::b2_staticBody);
+    b2Vec2 sensor_pos(_obstacle->getSize().width / 2 + 5,
+                      _obstacle->getSize().height * 2 / 3 + 5);
+
+    _sensor_shape.m_p = sensor_pos;
+    _sensor_shape.m_radius = _obstacle->getSize().width * 4 / 2;
+
+    sensor->shape = &_sensor_shape;
+
+    std::vector<std::shared_ptr<b2FixtureDef>> sensors{sensor};
+    _obstacle->addSensors(sensors);
   }
 
-  return _terminal_sensor;
+  return _obstacle;
 }
