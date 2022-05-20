@@ -85,12 +85,15 @@ class TurtleController : public EnemyController {
   /** Animate the turtle.  */
   void animate(std::shared_ptr<EnemyModel> enemy) override;
 
+  /** Animate the enemy death animation. */
+  void animateDeath(std::shared_ptr<EnemyModel> enemy) override;
+
   /** Animate the closing animation for the turtle. */
   void animateClose(std::shared_ptr<EnemyModel> enemy);
 
   /** Animate the opening animation for the turtle. */
   void animateOpen(std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Update and attack the player if a client.
    *
    * @param enemy the enemy.

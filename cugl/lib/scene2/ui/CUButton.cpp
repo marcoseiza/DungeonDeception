@@ -598,8 +598,9 @@ void Button::setPushable(const std::vector<Vec2>& vertices) {
  * currently attached.
  *
  * @param down  Whether this button is currently down.
+ * @param propagate Whether this button should propagate its change to the listeners.
  */
-void Button::setDown(bool down) {
+void Button::setDown(bool down, bool propagate) {
     if (_down == down) {
         return;
     }
@@ -619,8 +620,10 @@ void Button::setDown(bool down) {
         _tintColor = _upcolor;
     }
     
-    for(auto it = _listeners.begin(); it != _listeners.end(); ++it) {
-        it->second(getName(),down);
+    if (propagate) {
+        for(auto it = _listeners.begin(); it != _listeners.end(); ++it) {
+            it->second(getName(),down);
+        }
     }
 
     if (_play_click_sound && _play_click_sound_on_down == down) {

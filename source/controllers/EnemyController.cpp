@@ -16,7 +16,8 @@
 
 EnemyController::EnemyController(){};
 
-void EnemyController::idling(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 p) {
+void EnemyController::idling(std::shared_ptr<EnemyModel> enemy,
+                             const cugl::Vec2 p) {
   enemy->move(0, 0);
   enemy->setAttackDir(p);
 }
@@ -59,7 +60,8 @@ void EnemyController::stunned(std::shared_ptr<EnemyModel> enemy) {
   enemy->move(10, 10);
 }
 
-void EnemyController::moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy) {
+void EnemyController::moveBackToOriginalSpot(
+    std::shared_ptr<EnemyModel> enemy) {
   if ((enemy->getPosition() - enemy->getInitPos()).length() <= 50) {
     // If the enemy is close enough to the original spot, stop moving.
     enemy->move(0, 0);
@@ -89,13 +91,22 @@ bool EnemyController::init(
   return true;
 }
 
-void EnemyController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
+void EnemyController::clientUpdateAttackPlayer(
+    std::shared_ptr<EnemyModel> enemy) {
   // nothing
 }
 
-void EnemyController::updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy, int room_id) {
-  // Update enemy & projectiles
+void EnemyController::updateIfClient(float timestep,
+                                     std::shared_ptr<EnemyModel> enemy,
+                                     int room_id) {
   updateProjectiles(timestep, enemy);
+  // Update enemy & projectiles
+  if (enemy->getHealth() < 0) {
+    enemy->setSensor(true);
+    enemy->setLinearVelocity(0, 0);
+    animateDeath(enemy);
+    return;
+  }
   enemy->update(timestep);
   clientUpdateAttackPlayer(enemy);
   animate(enemy);
@@ -107,6 +118,16 @@ void EnemyController::update(bool is_host, float timestep,
                              int room_id) {
   if (!is_host) {
     updateIfClient(timestep, enemy, room_id);
+    return;
+  }
+
+  updateProjectiles(timestep, enemy);
+
+  if (enemy->getHealth() < 0) {
+    enemy->setSensor(true);
+    enemy->setLinearVelocity(0, 0);
+    animateDeath(enemy);
+    // Update enemy & projectiles
     return;
   }
 
@@ -130,7 +151,7 @@ void EnemyController::update(bool is_host, float timestep,
     moveBackToOriginalSpot(enemy);
     return;
   }
-  
+
   // Change state if applicable
   float distance =
       (enemy->getPosition()).subtract(min_player->getPosition()).length();
@@ -152,8 +173,6 @@ void EnemyController::update(bool is_host, float timestep,
     _sound_controller->playEnemyHit();
   }
 
-  // Update enemy & projectiles
-  updateProjectiles(timestep, enemy);
   enemy->update(timestep);
 
   animate(enemy);

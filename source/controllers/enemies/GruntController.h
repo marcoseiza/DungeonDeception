@@ -80,11 +80,14 @@ class GruntController : public EnemyController {
    */
   void animate(std::shared_ptr<EnemyModel> enemy) override;
 
+  /** Animate the enemy death animation. */
+  void animateDeath(std::shared_ptr<EnemyModel> enemy) override;
+
   /**
    * Animate the grunt when chasing.
    */
   void animateChase(std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Update and attack the player if a client.
    *
    * @param enemy the enemy.

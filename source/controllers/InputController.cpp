@@ -17,7 +17,7 @@ std::shared_ptr<InputController> InputController::_singleton = nullptr;
 InputController::InputController() : _active(false) {}
 
 bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
-                           cugl::Rect bounds) {
+                           cugl::Rect bounds, bool is_betrayer) {
 #ifdef CU_TOUCH_SCREEN
   cugl::Touchscreen *input = cugl::Input::get<cugl::Touchscreen>();
 #else
@@ -42,14 +42,18 @@ bool InputController::init(const std::shared_ptr<cugl::AssetManager> &assets,
     _active = InputController::attachAction<Settings>(
         Settings::alloc(assets, bounds)->getHook());
 
-    _active = InputController::attachAction<TargetPlayer>(
-        TargetPlayer::alloc(assets, bounds)->getHook());
+    if (!is_betrayer) {
+      _active = InputController::attachAction<TargetPlayer>(
+          TargetPlayer::alloc(assets, bounds)->getHook());
+    }
 
     _active = InputController::attachAction<Dash>(
         Dash::alloc(assets, bounds)->getHook());
 
-    _active = InputController::attachAction<Corrupt>(
-        Corrupt::alloc(assets, bounds)->getHook());
+    if (is_betrayer) {
+      _active = InputController::attachAction<Corrupt>(
+          Corrupt::alloc(assets, bounds)->getHook());
+    }
   }
   return _active;
 }

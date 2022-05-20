@@ -15,10 +15,13 @@
  */
 class Corrupt : public Action {
  protected:
-  /* Reference to scene2 attack joystick base for updating position. */
-  std::shared_ptr<cugl::scene2::PolygonNode> _attack_base;
   /* Reference to attack button for registering listeners to press event. */
   std::shared_ptr<cugl::scene2::Button> _button;
+  /* Reference to button node for animation. */
+  std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
+
+  /** The animation buffer for the charge animation. */
+  int _anim_buffer;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -27,27 +30,14 @@ class Corrupt : public Action {
   /* Scene2 button is pressed. */
   bool _butt_down;
 
+  /** Whether to start the corruption cooldown. */
+  bool _start_cooldown;
+
   /* Key for all the input listeners, for disposal. */
   Uint32 _listener_key;
 
-  /** A timestamp for the time the button was first held down. */
-  cugl::Timestamp _time_down_start;
-  /** Time the button has been held down in milliseconds. */
-  int _time_held_down;
-
-  // The screen is divided into two zones: Left, Right
-  // These are all shown in the diagram below.
-  //
-  //   |-----------------|
-  //   |        |        |
-  //   | L      |      R |
-  //   |        |        |
-  //   |-----------------|
-  //
-  // Attacking with attack joystick happens on the right side.
-
-  /* Bounds of the right side of screen, for processing input. */
-  cugl::Rect _right_screen_bounds;
+  /** Time since the start of the cooldown. */
+  cugl::Timestamp _time_cooldown_start;
 
  public:
   /**
@@ -94,26 +84,14 @@ class Corrupt : public Action {
   }
 
   /**
-   * @return If player is currently corrupting.
+   * @return Whether the player currently pressed corrupt.
    */
-  bool isCorrupt() const { return _prev_down && !_curr_down; }
+  bool pressCorrupt() const { return _prev_down && !_curr_down; }
 
   /**
    * @return If player is holding corrupt button.
    */
   bool holdCorrupt() const { return _prev_down && _curr_down; }
-
-  /**
-   * @return The time the player held down the button.
-   */
-  int timeHeldDown() const {
-    if (!_butt_down) return 0;
-    cugl::Timestamp time;
-    return (Uint32)time.ellapsedMillis(_time_down_start);
-  }
-
-  /** Reset the time down. */
-  void resetTimeDown() { _time_down_start.mark(); }
 
   /**
    * Toggels activation on corrupt button. When deactivated, the button

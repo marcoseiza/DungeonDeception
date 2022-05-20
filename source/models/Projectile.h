@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #define MAX_LIFETIME 300
+#define MAX_LIVE_FRAMES 42  // Must match player slash animation frames
 
 class Projectile : public cugl::physics2::CapsuleObstacle {
  private:
@@ -43,7 +44,7 @@ class Projectile : public cugl::physics2::CapsuleObstacle {
    *
    * @return  true if the obstacle is initialized properly, false otherwise.
    */
-  bool init(const cugl::Vec2 pos, const cugl::Vec2 v);
+  bool init(const cugl::Vec2 pos, const cugl::Vec2 v, int speed, int live_frames);
 
   /**
    * Disposes the projectile.
@@ -60,9 +61,9 @@ class Projectile : public cugl::physics2::CapsuleObstacle {
    * @return a new capsule object at the given point with no size.
    */
   static std::shared_ptr<Projectile> alloc(const cugl::Vec2 pos,
-                                           const cugl::Vec2 v) {
+                                           const cugl::Vec2 v, int speed = 300, int live_frames = MAX_LIVE_FRAMES) {
     std::shared_ptr<Projectile> result = std::make_shared<Projectile>();
-    return (result->init(pos, v) ? result : nullptr);
+    return (result->init(pos, v, speed, live_frames) ? result : nullptr);
   }
 
 #pragma mark Properties

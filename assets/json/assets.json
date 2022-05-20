@@ -49,6 +49,13 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "blocked-player": {
+      "file": "textures/ui/block-mini.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "target-player": {
       "file": "textures/target-player.png",
       "minfilter": "nearest",
@@ -712,7 +719,7 @@
           "type": "Image",
           "data": {
             "texture": "logo_title",
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "scale": 0.6
           },
           "layout": {
@@ -785,22 +792,6 @@
           "layout": {
             "priority": 1,
             "padding": [0, 30, 0, 0]
-          }
-        },
-        "settings": {
-          "type": "Widget",
-          "data": {
-            "key": "textbutton",
-            "variables": {
-              "size": [220, 60],
-              "text": "SETTINGS",
-              "font": "pixelmix_small",
-              "color": "#efebe3"
-            }
-          },
-          "layout": {
-            "priority": 1,
-            "padding": [0, 115, 0, 0]
           }
         }
       }

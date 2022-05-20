@@ -41,7 +41,8 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   pos_ -= _offset_from_center;
 
   CapsuleObstacle::init(pos_, _size);
-  
+
+  _ready_to_die = false;
   _init_pos = pos;
   _enemy_node = nullptr;
   _health = 100;
@@ -68,7 +69,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   _damage_sensor_def.filter.categoryBits = CATEGORY_ENEMY_DAMAGE;
   _damage_sensor_def.filter.maskBits = MASK_ENEMY_DAMAGE;
-  
+
   _wall_fixture_def.filter.categoryBits = CATEGORY_ENEMY;
   _wall_fixture_def.filter.maskBits = MASK_ENEMY_WALL;
 
@@ -87,17 +88,46 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
 void EnemyModel::takeDamage(float amount) {
   reduceHealth(amount);
-  _enemy_node->setColor(cugl::Color4::RED);
+  if (_health > 0) _enemy_node->setColor(cugl::Color4::RED);
   _damage_count = DAMAGE_COUNT;
 }
 
 bool EnemyModel::isHit() const { return _damage_count == DAMAGE_COUNT - 1; }
 
 void EnemyModel::addBullet(const cugl::Vec2 p) {
+  int speed = 300;       // Default speed
+  int live_frames = 42;  // Default frames
+
+  if (_enemy_type == SHOTGUNNER) {
+    speed = 200;
+    live_frames = 100;
+    // Shoot two more projectiles on the sides
+    cugl::Vec2 p2 = p - getPosition();
+    p2.normalize();
+    p2.rotate(M_PI / 6);
+    auto proj2 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p2, speed, live_frames);
+    _projectiles.emplace(proj2);
+    proj2->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+
+    cugl::Vec2 p3 = p - getPosition();
+    p3.normalize();
+    p3.rotate(-M_PI / 6);
+    auto proj3 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p3, speed, live_frames);
+    _projectiles.emplace(proj3);
+    proj3->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+  }
+
   cugl::Vec2 diff = p - getPosition();
+  diff.normalize();
   auto bullet = Projectile::alloc(
       cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
-      diff);
+      diff, speed, live_frames);
 
   _projectiles.emplace(bullet);
   bullet->setPosition(
@@ -157,35 +187,37 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
     case SHOTGUNNER: {
       _enemy_node = cugl::scene2::OrderedNode::allocWithOrder(
           cugl::scene2::OrderedNode::Order::ASCEND);
-      auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 9, 10);
       enemy_node->setTag(0);
       enemy_node->setPriority(0);
       enemy_node->setPosition(0, 0);
       _enemy_node->addChild(enemy_node);
-      auto gun_node = cugl::scene2::SpriteNode::alloc(texture, 2, 10);
+      auto gun_node = cugl::scene2::SpriteNode::alloc(texture, 9, 10);
       gun_node->setFrame(2);
       gun_node->setTag(1);
       gun_node->setPriority(1);
       gun_node->setPosition(0, 0);
       gun_node->setVisible(false);
-      gun_node->setAnchor(0.35, 0.65);
+      gun_node->setAnchor(0.42, 0.63);
       _enemy_node->addChild(gun_node);
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
-    default: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
+    case TURTLE: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 16);
       auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
       node->setFrame(23);  // Initial closed frame
       break;
     }
+    default:
+      break;
   }
 
   // Add the ray cast weights to the debug node.
@@ -255,7 +287,7 @@ void EnemyModel::createFixtures() {
     _damage_sensor_def.shape = &sensorShape;
     _damage_sensor = _body->CreateFixture(&_damage_sensor_def);
   }
-  
+
   if (_wall_fixture == nullptr) {
     _wall_fixture_def.density = 0.0f;
     _wall_fixture_def.isSensor = false;
@@ -292,7 +324,7 @@ void EnemyModel::releaseFixtures() {
     _body->DestroyFixture(_damage_sensor);
     _damage_sensor = nullptr;
   }
-  
+
   if (_wall_fixture != nullptr) {
     _body->DestroyFixture(_wall_fixture);
     _wall_fixture = nullptr;
@@ -330,8 +362,8 @@ void EnemyModel::update(float delta) {
       _stunned_timer = 0;
     }
   }
-  
-  for (auto projectile: _projectiles) {
+
+  for (auto projectile : _projectiles) {
     projectile->setLifetime(projectile->getLifetime() + 1);
   }
 }
