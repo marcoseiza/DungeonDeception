@@ -105,6 +105,9 @@ class Obstacle {
   /** A tag for debugging purposes */
   std::string _tag;
 
+  /** User data to store whatever information you'd like.*/
+  uintptr_t _user_data_pointer;
+
   /** (Singular) callback function for state updates */
   std::function<void(Obstacle* obstacle)> _listener;
 
@@ -600,6 +603,19 @@ class Obstacle {
    * removing it from the world.
    */
   void setBodyState(const b2Body& body);
+
+  /**
+   * Sets user data as a pointer. Can then be cast back into whatever the data
+   * was.
+   * @param data The pointer to the data.
+   */
+  void setUserDataPointer(uintptr_t data) { _user_data_pointer = data; }
+
+  /**
+   * Gets user data as a pointer. Can be cast back into whatever the data was.
+   * @return The pointer to the data.
+   */
+  uintptr_t getUserDataPointer() { return _user_data_pointer; }
 
 #pragma mark -
 #pragma mark FixtureDef Methods

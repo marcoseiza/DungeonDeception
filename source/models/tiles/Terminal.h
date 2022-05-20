@@ -15,8 +15,10 @@ class Terminal : public Wall {
  protected:
   /** A reference to the physics object of the tile. */
   std::shared_ptr<cugl::physics2::PolygonObstacle> _obstacle;
-  /** A reference to the physics object of the tile. */
-  std::shared_ptr<TerminalSensor> _terminal_sensor;
+  /** A reference to the physics object name of the tile. */
+  std::shared_ptr<std::string> _terminal_sensor_name;
+  /** A reference to the sensor shape to keep it alive for instantiation. */
+  b2CircleShape _sensor_shape;
 
   /** A terminal radius texture when the terminal is neither activated nor
    * corrupted. */
@@ -102,12 +104,7 @@ class Terminal : public Wall {
    *
    * @return The obstacle it created for easy chaining.
    */
-  virtual std::shared_ptr<TerminalSensor> initSensor();
-
-  /**
-   * @return Returns the physics object for the tile.
-   */
-  std::shared_ptr<TerminalSensor> getSensor() { return _terminal_sensor; }
+  virtual std::shared_ptr<cugl::physics2::PolygonObstacle> initBox2d() override;
 
   /**
    * Set the terminal to the activated state.

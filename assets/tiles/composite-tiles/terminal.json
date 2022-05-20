@@ -35,7 +35,7 @@
         "type": "BasicTile",
         "data": {
           "texture": "tile-generator-bottom",
-          "anchor": [0.5, 0.5],
+          "anchor": [0.5, 0.52],
           "priority": -0.9
         },
         "layout": {
