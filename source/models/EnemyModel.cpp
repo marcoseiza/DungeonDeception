@@ -88,7 +88,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
 void EnemyModel::takeDamage(float amount) {
   reduceHealth(amount);
-  _enemy_node->setColor(cugl::Color4::RED);
+  if (_health > 0) _enemy_node->setColor(cugl::Color4::RED);
   _damage_count = DAMAGE_COUNT;
 }
 

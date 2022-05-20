@@ -99,12 +99,14 @@ void EnemyController::clientUpdateAttackPlayer(
 void EnemyController::updateIfClient(float timestep,
                                      std::shared_ptr<EnemyModel> enemy,
                                      int room_id) {
+  updateProjectiles(timestep, enemy);
   // Update enemy & projectiles
   if (enemy->getHealth() < 0) {
+    enemy->setSensor(true);
+    enemy->setLinearVelocity(0, 0);
     animateDeath(enemy);
     return;
   }
-  updateProjectiles(timestep, enemy);
   enemy->update(timestep);
   clientUpdateAttackPlayer(enemy);
   animate(enemy);
@@ -119,10 +121,13 @@ void EnemyController::update(bool is_host, float timestep,
     return;
   }
 
+  updateProjectiles(timestep, enemy);
+
   if (enemy->getHealth() < 0) {
     enemy->setSensor(true);
     enemy->setLinearVelocity(0, 0);
     animateDeath(enemy);
+    // Update enemy & projectiles
     return;
   }
 
@@ -168,8 +173,6 @@ void EnemyController::update(bool is_host, float timestep,
     _sound_controller->playEnemyHit();
   }
 
-  // Update enemy & projectiles
-  updateProjectiles(timestep, enemy);
   enemy->update(timestep);
 
   animate(enemy);
