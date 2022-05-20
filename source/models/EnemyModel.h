@@ -283,12 +283,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
-  /**
-   * Gets the current attack cooldown of the enemy.
-   *
-   * @return the current health.
-   */
-  int getAttackCooldown() const { return _attack_cooldown; }
 
   /**
    * Sets the current enemy's health.
@@ -296,6 +290,13 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param value The current enemy health.
    */
   void setHealth(int value) { _health = value; }
+  
+  /**
+   * Gets the current attack cooldown of the enemy.
+   *
+   * @return the current health.
+   */
+  int getAttackCooldown() const { return _attack_cooldown; }
 
   /**
    * Sets the attack cooldown.
@@ -323,6 +324,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    */
   void takeDamage(float amount = 20);
+  
+  /**
+   * The enemy took damage.
+   *
+   */
+  void takeDamageWithKnockback(const cugl::Vec2 p, float amount = 20);
 
   /**
    * Returns the speed of the enemy.

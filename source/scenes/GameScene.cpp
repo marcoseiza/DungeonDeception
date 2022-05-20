@@ -932,10 +932,10 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-        enemy->takeDamage(info->amount);
+//        enemy->takeDamage(info->amount);
 
         auto player = _player_controller->getPlayer(info->player_id);
-        enemy->knockback(player->getPosition());
+        enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
         player->setEnergy(player->getEnergy() + 0.8f);
       }
     } break;
