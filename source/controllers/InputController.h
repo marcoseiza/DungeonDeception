@@ -70,10 +70,11 @@ class InputController {
    *
    * @param assets The loaded assets for this game mode.
    * @param bounds The scene2 game bounds.
+   * @param is_betrayer If the player is a betrayer.
    * @return If all actions and cugl input classes initialize correctly.
    */
   bool init(const std::shared_ptr<cugl::AssetManager> &assets,
-            cugl::Rect bounds);
+            cugl::Rect bounds, bool is_betrayer);
 
   /**
    * Call dispose on all the actions and clear the action cache.

@@ -49,6 +49,13 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "blocked-player": {
+      "file": "textures/ui/block-mini.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "target-player": {
       "file": "textures/target-player.png",
       "minfilter": "nearest",
@@ -712,7 +719,7 @@
           "type": "Image",
           "data": {
             "texture": "logo_title",
-            "anchor": [ 0.5, 0.5 ],
+            "anchor": [0.5, 0.5],
             "scale": 0.6
           },
           "layout": {

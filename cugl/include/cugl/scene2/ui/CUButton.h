@@ -536,8 +536,9 @@ public:
      * currently attached.
      *
      * @param down  Whether this button is currently down.
+     * @param propagate Whether this button should propagate its change to the listeners.
      */
-    void setDown(bool down);
+    void setDown(bool down, bool propagate = true);
 
     /**
      * Returns true if this is a toggle button

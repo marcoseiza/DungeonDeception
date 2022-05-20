@@ -25,6 +25,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** The corrupted energy bar for the player name (moving). */
   std::shared_ptr<cugl::scene2::ProgressBar> _corrupted_energy_bar;
 
+  /** The block icon for the player (moving). */
+  std::shared_ptr<cugl::scene2::SceneNode> _block_icon;
+  /** A counter for flashing the block icon. */
+  int _flash_block_icon_counter;
+
   /** Promise to move to this position in next update. */
   std::optional<cugl::Vec2> _promise_pos_cache;
 
@@ -58,8 +63,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /** Amount of player luminance that has been corrupted. */
   int _corrupted_luminance;
 
-  /** Whether the player (if a betrayer) can corrupt. */
-  bool _can_corrupt;
+  /** The list of players that have blocked this betrayer. */
+  std::unordered_set<int> _blocked_players;
 
   /** Player energy. */
   float _energy;
@@ -112,8 +117,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
   bool _can_make_slash;
   /** Countdown for betrayer corrupt feedback. */
   int _corrupt_count;
-  /** Countdown for betrayer blocked corruption. */
-  int _blocked_corrupt_count;
 
 #pragma mark Constructors
   /**
@@ -237,7 +240,8 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @param value The amount of energy to be corrupted.
    */
   void turnEnergyCorrupted(float value) {
-    _corrupted_energy += std::min(value, _energy);
+    _corrupted_energy += value;
+    _corrupted_energy = std::min(_corrupted_energy, _energy);
   }
 
   /**
@@ -250,12 +254,6 @@ class Player : public cugl::physics2::CapsuleObstacle {
 
   /** Sets the frames for player to turn orange to indicate corrupting. */
   void setCorrupted();
-
-  /** Gets whether the player can corrupt or not. */
-  bool canCorrupt() { return _can_corrupt; }
-
-  /** Blocks or unblocks the player from corrupting. */
-  void setCanCorrupt(bool val);
 
   /**
    * Reduce health by value.
@@ -331,6 +329,18 @@ class Player : public cugl::physics2::CapsuleObstacle {
   std::unordered_set<std::shared_ptr<Projectile>> getSlashes() {
     return _slashes;
   }
+
+  /**
+   * Returns the players that have blocked this player.
+   * @return the players that blocked this player.
+   */
+  std::unordered_set<int> getBlockedPlayers() { return _blocked_players; }
+
+  /**
+   * Toggle a player that blocked this betrayer. If not in the list, will add.
+   * If it is already in the list, will remove.
+   */
+  void toggleBlockPlayerOnBetrayer(int runner_id);
 
   /**
    * Internal method for getting the correct run high limit.
@@ -481,6 +491,26 @@ class Player : public cugl::physics2::CapsuleObstacle {
    */
   void setCorruptedEnergyBar(
       const std::shared_ptr<cugl::scene2::ProgressBar>& bar);
+
+  /**
+   * Sets the scene graph node representing the floating block icon.
+   * @param node The scene graph node representing the block icon.
+   * @param center Whether to center the block icon above the name.
+   */
+  void setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon,
+                    bool center);
+
+  /**
+   * Returns the scene graph node representing the floating block icon.
+   * @return The scene graph node representing the block icon.
+   */
+  std::shared_ptr<cugl::scene2::SceneNode> getBlockIcon() {
+    return _block_icon;
+  }
+
+  /** Flash the block icon red to make it clear to betrayers they can't infect
+   * them. */
+  void flashBlockIcon();
 
   /**
    * Gets the scene graph node representing this player's name.

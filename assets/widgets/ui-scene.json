@@ -256,54 +256,51 @@
         }
       },
       "infect-player": {
-        "type": "Button",
-        "format": {
-          "type": "Anchored"
-        },
+        "type": "Node",
         "data": {
-          "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1,
-          "play-click-sound": false
+          "size": [144, 144]
         },
         "layout": {
           "x_anchor": "right",
           "y_anchor": "bottom",
           "x_offset": -0.20,
           "y_offset": 0.34
-        },
-        "children": {
-          "up": {
-            "type": "Image",
-            "data": {
-              "texture": "infect-player",
-              "anchor": [0.5, 0.5],
-              "scale": 1
-            }
-          }
         }
       },
       "block-player": {
-        "type": "Button",
+        "type": "Node",
         "data": {
-          "upnode": "up",
           "anchor": [0.5, 0.5],
-          "scale": 1,
-          "play-click-sound": false
+          "size": [144, 144]
         },
         "layout": {
           "x_anchor": "right",
           "y_anchor": "bottom",
           "x_offset": -0.20,
           "y_offset": 0.34
+        }
+      },
+      "target-player-tooltip": {
+        "type": "Label",
+        "data": {
+          "font": "pixelmix_small_tooltip",
+          "text": "TAP to change selection, HOLD to confirm",
+          "scale": 0.6,
+          "size": [540, 50],
+          "anchor": [0.5, 0],
+          "padding": [10, 5, 10, 5],
+          "halign": "center",
+          "valign": "middle",
+          "foreground": "#FFFFFF",
+          "background": [50, 50, 50, 100],
+          "visible": false
         },
-        "children": {
-          "up": {
-            "type": "Image",
-            "data": {
-              "texture": "block-player"
-            }
-          }
+        "layout": {
+          "x_anchor": "center",
+          "y_anchor": "bottom",
+          "y_offset": 15,
+          "absolute": true
         }
       }
     }

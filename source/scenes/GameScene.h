@@ -109,6 +109,9 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
+  
+  /** List of blocked X's. 6 for maximum number of runners .*/
+  std::array<std::shared_ptr<cugl::scene2::SceneNode>, 6> _block_x_nodes;
 
   /** The display name of my player. */
   std::string _display_name;
@@ -367,18 +370,20 @@ class GameScene : public cugl::Scene2 {
                                float amount = 20);
 
   /**
-   * Broadcast a player being targeted by the betrayer target player ability.
+   * Broadcast a player being targeted by the runner block player ability.
    *
+   * @param runner_id The runner who hit the button.
    * @param target_player_id The player being targeted.
    */
-  void sendBetrayalTargetInfo(int target_player_id);
+  void sendBetrayalTargetInfo(int runner_id, int target_player_id);
 
   /**
    * Broadcast a player being disabled by a betrayer ability.
    *
+   * @param runner_id The runner who hit the button.
    * @param target_player_id The player being targeted.
    */
-  void sendDisablePlayerInfo(int target_player_id);
+  void sendDisablePlayerInfo(int runner_id, int target_player_id);
 
   /**
    *
