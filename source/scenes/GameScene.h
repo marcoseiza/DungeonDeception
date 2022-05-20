@@ -49,7 +49,7 @@ class GameScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
   /** Reference to the role screen scene graph. */
-  std::shared_ptr<cugl::scene2::SceneNode> _role_layer;
+  std::shared_ptr<cugl::scene2::Button> _role_layer;
 
   /** Reference to the cloud layer scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
@@ -112,9 +112,6 @@ class GameScene : public cugl::Scene2 {
 
   /** The display name of my player. */
   std::string _display_name;
-
-  /** The time the game started. */
-  cugl::Timestamp _time_started;
 
   /** Timestamp so unimportant enemy info isn't sent. */
   cugl::Timestamp _time_of_last_enemy_other_info_update;

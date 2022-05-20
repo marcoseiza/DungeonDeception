@@ -68,6 +68,18 @@ bool ClientLobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
   _backout->addListener([this](const std::string& name, bool down) {
     if (down) {
+      if (_network) {
+        auto info = cugl::JsonValue::allocObject();
+
+        auto player_id = cugl::JsonValue::alloc((long)*_network->getPlayerID());
+        info->appendChild(player_id);
+        player_id->setKey("id");
+
+        _serializer.writeSint32(CLIENT_REMOVE_PLAYER_NAME);
+        _serializer.writeJson(info);
+        _network->sendOnlyToHost(_serializer.serialize());
+        _serializer.reset();
+      }
       disconnect();
       _status = Status::ABORT;
     }

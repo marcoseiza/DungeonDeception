@@ -125,12 +125,24 @@ bool GameScene::init(
   _settings_scene->getNode()->doLayout();
 
   // assign role screen depending on player role
-  _role_layer = assets->get<cugl::scene2::SceneNode>("runner-scene");
   if (is_betrayer) {
-    _role_layer = assets->get<cugl::scene2::SceneNode>("betrayer-scene");
+    _role_layer = std::dynamic_pointer_cast<cugl::scene2::Button>(
+        _assets->get<cugl::scene2::SceneNode>("betrayer-scene"));
+  } else {
+    _role_layer = std::dynamic_pointer_cast<cugl::scene2::Button>(
+        _assets->get<cugl::scene2::SceneNode>("runner-scene"));
   }
   _role_layer->setContentSize(dim);
   _role_layer->doLayout();
+
+  // wait for button click, then hide role screen
+  _role_layer->addListener([this](const std::string& name, bool down) {
+    if (down && _role_layer->isVisible()) {
+      _role_layer->setVisible(false);
+      InputController::get()->resume();
+    }
+  });
+  _role_layer->activate();
 
   auto ui_layer = assets->get<cugl::scene2::SceneNode>("ui-scene");
   ui_layer->setContentSize(dim);
@@ -224,8 +236,6 @@ bool GameScene::init(
 
   InputController::get()->pause();
 
-  _time_started.mark();
-
   return true;
 }
 
@@ -244,6 +254,8 @@ void GameScene::dispose() {
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
   _role_layer->setVisible(true);
+  _role_layer->deactivate();
+  _role_layer->setDown(false);
   _settings_scene->dispose();
   removeAllChildren();
 
@@ -459,8 +471,8 @@ void GameScene::update(float timestep) {
     if (!_player_controller->getMyPlayer()->getDead()) {
       if (time_held_down >= 2000) {
         // 2000 milliseconds to hold down the corrupt button
-        // Send to the host to corrupt half a bar of luminance from everyone in
-        // the room.
+        // Send to the host to corrupt half a bar of luminance from everyone
+        // in the room.
         for (auto p : _player_controller->getPlayerList()) {
           if (p->getRoomId() ==
                   _player_controller->getMyPlayer()->getRoomId() &&
@@ -486,8 +498,8 @@ void GameScene::update(float timestep) {
   }
 
   // Also update the adjacent room enemies if is host.
-  // Must check here or weird interactions occur with clients updating adjacent
-  // rooms.
+  // Must check here or weird interactions occur with clients updating
+  // adjacent rooms.
   if (_ishost) {
     std::unordered_set<int> adj_enemy_update_rooms =
         getAdjacentRoomIdsWithoutPlayers();
@@ -538,14 +550,6 @@ void GameScene::update(float timestep) {
   } else {
     role_msg = "(RUNNER)";
     role_text->setForeground(cugl::Color4::BLACK);
-  }
-
-  // hide role screen after a number of seconds
-  cugl::Timestamp time;
-  if ((Uint32)time.ellapsedMillis(_time_started) > 5000 &&
-      _role_layer->isVisible()) {
-    _role_layer->setVisible(false);
-    InputController::get()->resume();
   }
 
   // POST-UPDATE
@@ -1013,8 +1017,8 @@ void GameScene::beginContact(b2Contact* contact) {
     float damage = 20;
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob1)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
-    // Show hit on client-side without potentially causing de-sync with host (0
-    // dmg)
+    // Show hit on client-side without potentially causing de-sync with host
+    // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
         ->takeDamage(0);
 
@@ -1026,8 +1030,8 @@ void GameScene::beginContact(b2Contact* contact) {
     float damage = 20;
     EnemyModel::EnemyType type = dynamic_cast<EnemyModel*>(ob2)->getType();
     if (type == EnemyModel::EnemyType::TURTLE) damage = 3;
-    // Show hit on client-side without potentially causing de-sync with host (0
-    // dmg)
+    // Show hit on client-side without potentially causing de-sync with host
+    // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
         ->takeDamage(0);
 
@@ -1083,6 +1087,7 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
+    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     // Show hit on client-side without potentially causing de-sync with host
     // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
@@ -1090,8 +1095,9 @@ void GameScene::beginContact(b2Contact* contact) {
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), 30);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
-    // Show hit on client-side without potentially causing de-sync with host (0
-    // dmg)
+    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
+    // Show hit on client-side without potentially causing de-sync with host
+    // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
