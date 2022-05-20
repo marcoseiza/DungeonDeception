@@ -5,8 +5,8 @@
 #define MOVE_BACK_RANGE 50
 #define ATTACK_RANGE 150
 #define ATTACK_FRAMES 20
-#define STOP_ATTACK_FRAMES 40
-#define ATTACK_COOLDOWN 100
+#define STOP_ATTACK_FRAMES 80
+#define ATTACK_COOLDOWN 120
 #define MOVE_BACK_COOLDOWN 60
 #define WANDER_COOLDOWN 500
 
@@ -162,7 +162,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
       gun_node->setAngle(0);
       gun_node->setVisible(false);
     }
-  } else if (enemy->getAttackCooldown() >= ATTACK_FRAMES + 5 &&
+  } else if (enemy->getAttackCooldown() >= STOP_ATTACK_FRAMES - 15 &&
              enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
     // Here, move up to the desired position
     node->setFrame(1);
@@ -173,7 +173,7 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
     gun_node->setAngle(angle_inc *
                        (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 &&
-             enemy->getAttackCooldown() > ATTACK_FRAMES - 5) {
+             enemy->getAttackCooldown() > STOP_ATTACK_FRAMES - 15) {
   } else if (enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
     float length = (enemy->getAttackDir() - enemy->getPosition()).length();
     if (length <= MIN_DISTANCE) {

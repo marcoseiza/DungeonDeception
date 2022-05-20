@@ -102,6 +102,27 @@ void EnemyModel::addBullet(const cugl::Vec2 p) {
   _projectiles.emplace(bullet);
   bullet->setPosition(
       cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+  
+  if (_enemy_type == SHOTGUNNER) {
+    // Shoot two more projectiles on the sides
+    cugl::Vec2 p2 = p - getPosition();
+    p2.rotate(M_PI/6);
+    auto proj2 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p2);
+    _projectiles.emplace(proj2);
+    proj2->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+    
+    cugl::Vec2 p3 = p - getPosition();
+    p3.rotate(-M_PI/6);
+    auto proj3 = Projectile::alloc(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y),
+        p3);
+    _projectiles.emplace(proj3);
+    proj3->setPosition(
+        cugl::Vec2(getPosition().x, getPosition().y + _offset_from_center.y));
+  }
 }
 
 void EnemyModel::deleteProjectile(
