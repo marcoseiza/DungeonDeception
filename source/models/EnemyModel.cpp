@@ -367,7 +367,7 @@ void EnemyModel::update(float delta) {
 
   if (_isKnockbacked) {
     _stunned_timer++;
-    if (_stunned_timer >= 20) {
+    if (_stunned_timer >= 15) {
       _isKnockbacked = false;
       _stunned_timer = 0;
     }

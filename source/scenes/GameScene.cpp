@@ -1088,16 +1088,14 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            30);
+                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), 30);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     // Show hit on client-side without potentially causing de-sync with host (0
     // dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            30);
+                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), 30);
   }
 
   if (ob1->getName() == "projectile" &&
