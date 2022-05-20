@@ -30,7 +30,7 @@ class Corrupt : public Action {
   /* Scene2 button is pressed. */
   bool _butt_down;
 
-  /** Wether to start the corruption cooldown. */
+  /** Whether to start the corruption cooldown. */
   bool _start_cooldown;
 
   /* Key for all the input listeners, for disposal. */
@@ -84,7 +84,7 @@ class Corrupt : public Action {
   }
 
   /**
-   * @return Wether the player currently pressed corrupt.
+   * @return Whether the player currently pressed corrupt.
    */
   bool pressCorrupt() const { return _prev_down && !_curr_down; }
 

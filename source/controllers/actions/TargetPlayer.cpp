@@ -93,6 +93,7 @@ bool TargetPlayer::update() {
       _start_cooldown = false;
       _cooldown_finished = true;
       _button->resetDownColor();
+      _button->setDown(false, false);
     }
     _anim_buffer++;
   } else {
@@ -165,6 +166,7 @@ void TargetPlayer::touchBegan(const cugl::TouchEvent &event, bool focus) {
   _target_player_counter = -1;
   _target_player_id = -1;
   _tooltip->setVisible(false);
+  _button->setDown(false, false);
 }
 
 #else
@@ -177,5 +179,6 @@ void TargetPlayer::mouseBegan(const cugl::MouseEvent &event, Uint8 clicks,
   _target_player_counter = -1;
   _target_player_id = -1;
   _tooltip->setVisible(false);
+  _button->setDown(false, false);
 }
 #endif  // CU_TOUCH_SCREEN

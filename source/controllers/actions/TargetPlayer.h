@@ -25,9 +25,9 @@ class TargetPlayer : public Action {
 
   /** The animation buffer for the charge animation. */
   int _anim_buffer;
-  /** Wether to start the corruption cooldown. */
+  /** Whether to start the corruption cooldown. */
   bool _start_cooldown;
-  /** Wether the cooldown timer has just finished. */
+  /** Whether the cooldown timer has just finished. */
   bool _cooldown_finished;
   /** Time since the start of the cooldown. */
   cugl::Timestamp _time_cooldown_start;
@@ -149,7 +149,7 @@ class TargetPlayer : public Action {
    */
   bool isActivatingTargetAction() { return _is_activating_action; }
 
-  /** @return Wether the cooldown timer has just finished. */
+  /** @return Whether the cooldown timer has just finished. */
   bool isCooldownFinished() {
     bool tmp = _cooldown_finished;
     _cooldown_finished = false;
