@@ -10,7 +10,7 @@
 #define ATTACK_LIM_GAP 8
 #define ATTACK_SETUP_LIM_GAP 7
 #define ATTACK_FRAMES 25
-#define HEALTH 25
+#define HEALTH 50
 
 #define WIDTH 24.0f
 #define HEIGHT 48.0f

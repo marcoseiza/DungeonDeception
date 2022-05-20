@@ -334,7 +334,7 @@ void GameScene::update(float timestep) {
   }
 
   _health_bar->setProgress(_player_controller->getMyPlayer()->getHealth() /
-                           25.0f);
+                           50.0f);
 
   // Animate energy update.
   float target_energy_amt =
@@ -613,14 +613,13 @@ void GameScene::update(float timestep) {
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
             int player_count = room_id_player_count_map[room_id];
-            float multiplier = 1.0f;
-            multiplier = player_count;
+            float betrayer_multiplier = player_count == 1 ? 3.0f : 1.0f;
             
             if (player->getRoomId() == room_id) {
               if (player->isBetrayer()) {
-                player->setEnergy(player->getEnergy() + 2 * multiplier);
+                player->setEnergy(player->getEnergy() + 5 * betrayer_multiplier);
               } else {
-                player->setEnergy(player->getEnergy() + 5 * multiplier);
+                player->setEnergy(player->getEnergy() + 5);
               }
             }
           }
