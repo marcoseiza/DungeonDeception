@@ -1,6 +1,6 @@
 #include "Corrupt.h"
 
-#define CORRUPT_ANIM_LIMIT 30
+#define CORRUPT_ANIM_LIMIT 25
 #define CORRUPT_ANIM_LENGTH 10000 /* ms (i.e. cooldown) */
 
 Corrupt::Corrupt() : _curr_down(false), _prev_down(false), _button(nullptr) {}

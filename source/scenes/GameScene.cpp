@@ -458,17 +458,18 @@ void GameScene::update(float timestep) {
       sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
                              target_player->getTarget());
     }
+
+    if (target_player->isCooldownFinished()) {
+      sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                             target_player->getPrevTarget());
+    }
   }
 
   // Betrayer corrupt ability.
   if (_player_controller->getMyPlayer()->isBetrayer()) {
     if (!_player_controller->getMyPlayer()->getDead()) {
+      auto blocked_ps = _player_controller->getMyPlayer()->getBlockedPlayers();
       if (InputController::get<Corrupt>()->pressCorrupt()) {
-        // 2000 milliseconds to hold down the corrupt button
-        // Send to the host to corrupt half a bar of luminance from everyone in
-        // the room.
-        auto blocked_ps =
-            _player_controller->getMyPlayer()->getBetrayersBlockedPlayers();
         for (auto p : _player_controller->getPlayerList()) {
           bool same_room =
               p->getRoomId() == _player_controller->getMyPlayer()->getRoomId();
@@ -484,13 +485,12 @@ void GameScene::update(float timestep) {
         }
       }
 
-      for (auto it :
-           _player_controller->getMyPlayer()->getBetrayersBlockedPlayers()) {
-        // If done, set visibility to be false also.
-        if (it.second <= 1) {
-          auto player = _player_controller->getPlayer(it.first);
-          auto blocked_icon_node = player->getBlockIcon();
-          blocked_icon_node->setVisible(false);
+      // Show all the block icons of the players that have blocked my player.
+      for (auto it : _player_controller->getPlayers()) {
+        if (it.first != _player_controller->getMyPlayer()->getPlayerId()) {
+          bool has_blocked = blocked_ps.find(it.first) != blocked_ps.end();
+          auto icon = it.second->getBlockIcon();
+          if (icon) icon->setVisible(has_blocked);
         }
       }
     }
@@ -981,9 +981,8 @@ void GameScene::processData(
 
       if (player_id == _player_controller->getMyPlayer()->getPlayerId()) {
         // Blocks the player from corrupting for 1 minute.
-        _player_controller->getMyPlayer()->setBlockPlayerOnBetrayer(runner_id);
-        _player_controller->getPlayer(runner_id)->getBlockIcon()->setVisible(
-            true);
+        _player_controller->getMyPlayer()->toggleBlockPlayerOnBetrayer(
+            runner_id);
       }
     } break;
 

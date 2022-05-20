@@ -15,8 +15,19 @@
  */
 class TargetPlayer : public Action {
  protected:
-  /* Reference to map button for registering listeners to press event. */
+  /* Reference to button for registering listeners to press event. */
   std::shared_ptr<cugl::scene2::Button> _button;
+  /* Reference to button node for animation. */
+  std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
+
+  /** The animation buffer for the charge animation. */
+  int _anim_buffer;
+  /** Wether to start the corruption cooldown. */
+  bool _start_cooldown;
+  /** Wether the cooldown timer has just finished. */
+  bool _cooldown_finished;
+  /** Time since the start of the cooldown. */
+  cugl::Timestamp _time_cooldown_start;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -33,6 +44,8 @@ class TargetPlayer : public Action {
 
   /* The player being targeted. -1 if no target. */
   int _target_player_id;
+  /* The player that was targeted. -1 if no target. */
+  int _prev_target_player_id;
 
   /* Whether the betrayer action is being activated */
   bool _is_activating_action;
@@ -75,6 +88,7 @@ class TargetPlayer : public Action {
     _butt_down = false;
     _target_player_counter = 0;
     _target_player_id = -1;
+    _prev_target_player_id = -1;
     _dirty_players.clear();
   }
 
@@ -120,6 +134,13 @@ class TargetPlayer : public Action {
    */
   bool isActivatingTargetAction() { return _is_activating_action; }
 
+  /** @return Wether the cooldown timer has just finished. */
+  bool isCooldownFinished() {
+    bool tmp = _cooldown_finished;
+    _cooldown_finished = false;
+    return tmp;
+  }
+
   /**
    * Sets the target of the betrayer action to a specific player.
    * @param player_id The player to target.
@@ -134,6 +155,12 @@ class TargetPlayer : public Action {
    * @return The target player id of the betrayer action
    */
   int getTarget() { return _target_player_id; }
+
+  /**
+   * Returns the previous target player id of the betrayer action.
+   * @return The previous target player id of the betrayer action
+   */
+  int getPrevTarget() { return _prev_target_player_id; }
 
   /**
    * Toggles the activation of the map button. When deactivated, the button
