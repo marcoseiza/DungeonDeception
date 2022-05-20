@@ -78,39 +78,29 @@ void ShotgunnerController::changeStateIfApplicable(
   // Change state if applicable
   if (distance <= ATTACK_RANGE) {
     std::uniform_int_distribution<int> dist(0, 50);
-    if (enemy->getCurrentState() == EnemyModel::State::CHASING) {
-      enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
-      enemy->_cta_timer++;
-    }
-    // When timer is over
-    if (enemy->_cta_timer == 0 || enemy->_cta_timer == STATE_CHANGE_LIM) {
-      enemy->_cta_timer = 0;
-      if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
-        enemy->_move_back_timer--;
-        if (enemy->_move_back_timer <= 0) {
-          enemy->setAttackCooldown(dist(_generator) + ATTACK_COOLDOWN);
-          enemy->setCurrentState(EnemyModel::State::ATTACKING);
-        }
+    if (enemy->getCurrentState() == EnemyModel::State::MOVING_BACK) {
+      enemy->_move_back_timer--;
+      if (enemy->_move_back_timer <= 0) {
+        enemy->setAttackCooldown(STOP_ATTACK_FRAMES + 10);
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
+      }
+    } else {
+      // Chance for the enemy to move backwards, away from the player.
+      int chance = dist(_generator);
+      // Chance is 1/25 for every tick, +10 to attack frames to ensure does not attack in backwards direction
+      if (distance <= MOVE_BACK_RANGE && chance <= 1 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
+        enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
+        enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
+        enemy->setAttackCooldown(ATTACK_COOLDOWN);
       } else {
-        // Chance for the enemy to move backwards, away from the player.
-        int chance = dist(_generator);
-        // Chance is 1/25 for every tick, +10 to attack frames to ensure does not attack in backwards direction
-        if (distance <= MOVE_BACK_RANGE && chance <= 1 && enemy->getAttackCooldown() > STOP_ATTACK_FRAMES + 10) {
-          enemy->setCurrentState(EnemyModel::State::MOVING_BACK);
-          enemy->_move_back_timer = MOVE_BACK_COOLDOWN;
-          enemy->setAttackCooldown(ATTACK_COOLDOWN);
-        } else {
-          enemy->setCurrentState(EnemyModel::State::ATTACKING);
-        }
+        enemy->setCurrentState(EnemyModel::State::ATTACKING);
       }
     }
   } else if (distance <= MIN_DISTANCE) {
-    if (enemy->getCurrentState() != EnemyModel::State::CHASING) {
-      enemy->_atc_timer++;
-    }
-    if (enemy->_atc_timer == 0 || enemy->_atc_timer == STATE_CHANGE_LIM) {
+    // Only change to chasing if not currently attacking.
+    if (enemy->getCurrentState() != EnemyModel::State::ATTACKING || enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
       enemy->setCurrentState(EnemyModel::State::CHASING);
-      enemy->_atc_timer = 0;
+      enemy->setAttackCooldown(ATTACK_COOLDOWN);
     }
   } else {
     // Enemy first wanders back to spawn position until it changes to be idle.
@@ -121,6 +111,7 @@ void ShotgunnerController::changeStateIfApplicable(
       enemy->setCurrentState(EnemyModel::State::WANDER);
       enemy->_wander_timer = WANDER_COOLDOWN; // Spends 6 seconds trying to return to original position
     }
+    enemy->setAttackCooldown(ATTACK_COOLDOWN);
     enemy->_wander_timer--;
   }
 }
@@ -172,8 +163,8 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
         15;
     gun_node->setAngle(angle_inc *
                        (STOP_ATTACK_FRAMES - enemy->getAttackCooldown()));
-  } else if (enemy->getAttackCooldown() < ATTACK_FRAMES + 5 &&
-             enemy->getAttackCooldown() > STOP_ATTACK_FRAMES - 15) {
+  } else if (enemy->getAttackCooldown() > ATTACK_FRAMES - 5 &&
+             enemy->getAttackCooldown() < STOP_ATTACK_FRAMES - 15) {
   } else if (enemy->getAttackCooldown() > STOP_ATTACK_FRAMES) {
     float length = (enemy->getAttackDir() - enemy->getPosition()).length();
     if (length <= MIN_DISTANCE) {
