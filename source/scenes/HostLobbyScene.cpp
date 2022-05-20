@@ -206,6 +206,8 @@ void HostLobbyScene::update(float timestep) {
       _network->send(_serializer.serialize());
       _serializer.reset();
       _num_of_players = _network->getNumPlayers();
+      _names_waiting->setVisible(false);
+      _names_success->setVisible(false);
     }
   }
 
