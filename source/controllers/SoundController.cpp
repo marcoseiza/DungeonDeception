@@ -15,7 +15,15 @@ bool SoundController::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 void SoundController::update(float timestep) {}
 
-void SoundController::dispose() { _assets = nullptr; }
+void SoundController::dispose() {
+  _assets = nullptr;
+
+  _player_swing.clear();
+  _player_footsteps_grass.clear();
+  _player_footsteps_stone.clear();
+
+  _enemy_swing.clear();
+}
 
 void SoundController::stop() { cugl::AudioEngine::get()->clear(); }
 
@@ -136,9 +144,9 @@ void SoundController::playPlayerEnergyWave() {
 }
 
 void SoundController::playPlayerEnergyCharge() {
-  cugl::AudioEngine::get()->play(_player_energy_charge.name,
-                                 _player_energy_charge.sound, false,
-                                 _player_energy_charge.volume, true);
+  // cugl::AudioEngine::get()->play(_player_energy_charge.name,
+  //                                _player_energy_charge.sound, false,
+  //                                _player_energy_charge.volume, true);
 }
 
 void SoundController::stopPlayerEnergyCharge() {
