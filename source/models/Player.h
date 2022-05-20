@@ -495,8 +495,10 @@ class Player : public cugl::physics2::CapsuleObstacle {
   /**
    * Sets the scene graph node representing the floating block icon.
    * @param node The scene graph node representing the block icon.
+   * @param center Whether to center the block icon above the name.
    */
-  void setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon);
+  void setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon,
+                    bool center);
 
   /**
    * Returns the scene graph node representing the floating block icon.

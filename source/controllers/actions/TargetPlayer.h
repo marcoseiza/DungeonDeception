@@ -20,6 +20,9 @@ class TargetPlayer : public Action {
   /* Reference to button node for animation. */
   std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
 
+  /** Target player tooltip. */
+  std::shared_ptr<cugl::scene2::SceneNode> _tooltip;
+
   /** The animation buffer for the charge animation. */
   int _anim_buffer;
   /** Wether to start the corruption cooldown. */
@@ -58,6 +61,18 @@ class TargetPlayer : public Action {
 
   /** The counter for the block cooldown. */
   int _target_cooldown_counter;
+
+  // The screen is divided into two zones: Left, Right
+  // These are all shown in the diagram below.
+  //
+  //   |-----------------|
+  //   |        |        |
+  //   | L      |      R |
+  //   |        |        |
+  //   |-----------------|
+
+  /* Bounds of the right side of screen, for processing input. */
+  cugl::Rect _right_screen_bounds;
 
  public:
   /**
@@ -168,6 +183,12 @@ class TargetPlayer : public Action {
    * @param value The activation state.
    */
   void setActive(bool value);
+
+#ifdef CU_TOUCH_SCREEN
+  void touchBegan(const cugl::TouchEvent &event, bool focus);
+#else
+  void mouseBegan(const cugl::MouseEvent &event, Uint8 clicks, bool focus);
+#endif  // CU_TOUCH_SCREEN
 
   TargetPlayer();
   ~TargetPlayer() {}

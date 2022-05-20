@@ -265,7 +265,7 @@ void PlayerController::processBasicPlayerInfo(int player_id,
   auto block_icon = _assets->get<cugl::Texture>("blocked-player");
   auto block_icon_node =
       cugl::scene2::PolygonNode::allocWithTexture(block_icon);
-  player->setBlockIcon(block_icon_node);
+  player->setBlockIcon(block_icon_node, !_player->isBetrayer());
   block_icon_node->setVisible(false);
 
   if (_player->isBetrayer()) {

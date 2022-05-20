@@ -457,11 +457,21 @@ void GameScene::update(float timestep) {
     if (target_player->isActivatingTargetAction()) {
       sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
                              target_player->getTarget());
+      if (target_player->getTarget() != -1) {
+        _player_controller->getPlayer(target_player->getTarget())
+            ->getBlockIcon()
+            ->setVisible(true);
+      }
     }
 
     if (target_player->isCooldownFinished()) {
       sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
                              target_player->getPrevTarget());
+      if (target_player->getPrevTarget() != -1) {
+        _player_controller->getPlayer(target_player->getPrevTarget())
+            ->getBlockIcon()
+            ->setVisible(false);
+      }
     }
   }
 

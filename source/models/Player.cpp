@@ -24,7 +24,7 @@
 
 #define ENERGY_BAR_UPDATE_SIZE 0.03f
 
-#define FLASH_BLOCK_ICON_LENGTH 10
+#define FLASH_BLOCK_ICON_LENGTH 30
 
 #pragma mark Init
 
@@ -144,15 +144,19 @@ void Player::setCorruptedEnergyBar(
   }
 }
 
-void Player::setBlockIcon(
-    const std::shared_ptr<cugl::scene2::SceneNode>& icon) {
+void Player::setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon,
+                          bool center) {
   _block_icon = icon;
   _player_node->addChild(_block_icon);
   _block_icon->setAnchor(cugl::Vec2::ANCHOR_CENTER);
 
   cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
-  pos.y *= 1.38f;
-  pos.x += 39;
+  if (center) {
+    pos.y *= 1.55f;
+  } else {
+    pos.y *= 1.38f;
+    pos.x += 39;
+  }
   _block_icon->setPosition(pos);
   _block_icon->setPriority(std::numeric_limits<float>::max());
 }
