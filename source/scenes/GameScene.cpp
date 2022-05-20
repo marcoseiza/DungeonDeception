@@ -561,8 +561,10 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
-  auto room_ids_with_players = getRoomIdsWithPlayers();
-  for (auto room_id : room_ids_with_players) {
+//  auto room_ids_with_players = getRoomIdsWithPlayers();
+  auto room_id_player_count_map = getRoomPlayerCounts();
+  for (auto it : room_id_player_count_map) {
+    auto room_id = it.first;
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
 
@@ -581,11 +583,15 @@ void GameScene::update(float timestep) {
           // Give all players in the same room some energy if an enemy dies.
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
+            int player_count = room_id_player_count_map[room_id];
+            float multiplier = 1.0f;
+            multiplier = player_count;
+            
             if (player->getRoomId() == room_id) {
               if (player->isBetrayer()) {
-                player->setEnergy(player->getEnergy() + 2);
+                player->setEnergy(player->getEnergy() + 2 * multiplier);
               } else {
-                player->setEnergy(player->getEnergy() + 5);
+                player->setEnergy(player->getEnergy() + 5 * multiplier);
               }
             }
           }
