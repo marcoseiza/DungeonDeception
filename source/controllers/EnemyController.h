@@ -107,11 +107,12 @@ class EnemyController {
   /** Update the enemy. */
   void update(bool is_host, float timestep, std::shared_ptr<EnemyModel> enemy,
               std::vector<std::shared_ptr<Player>> players, int room_id);
-  
+
   virtual void clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Update the enemy (client side). */
-  void updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy, int room_id);
+  void updateIfClient(float timestep, std::shared_ptr<EnemyModel> enemy,
+                      int room_id);
 
   /** Change the enemy state. */
   virtual void changeStateIfApplicable(std::shared_ptr<EnemyModel> enemy,
@@ -129,6 +130,9 @@ class EnemyController {
 
   /** Animate the enemy. */
   virtual void animate(std::shared_ptr<EnemyModel> enemy) {}
+
+  /** Animate the enemy death animation. */
+  virtual void animateDeath(std::shared_ptr<EnemyModel> enemy) {}
 
 #pragma mark Movement
  protected:
@@ -157,7 +161,7 @@ class EnemyController {
   /** Stunned.
    */
   virtual void stunned(std::shared_ptr<EnemyModel> enemy);
-  
+
   /** Move back to original position. */
   void moveBackToOriginalSpot(std::shared_ptr<EnemyModel> enemy);
 };
