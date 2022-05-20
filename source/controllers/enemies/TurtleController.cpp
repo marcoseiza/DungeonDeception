@@ -5,7 +5,7 @@
 #define ATTACK_RANGE 200
 #define TANK_RANGE 60
 
-#define ATTACK_FRAME_POS 25
+#define ATTACK_FRAME_POS 35
 #define ATTACK_COOLDOWN 60
 
 #define TURTLE_OPENED 16
@@ -39,7 +39,7 @@ bool TurtleController::init(
 void TurtleController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy) {
   if (enemy->didAttack()) {
     // Begin attack cooldown.
-    enemy->setAttackCooldown(ATTACK_FRAME_POS);
+    enemy->setAttackCooldown(ATTACK_FRAME_POS-1);
     enemy->setAttack(false);
   } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
     // Whether the enemy is attacking
@@ -119,18 +119,14 @@ void TurtleController::tank(std::shared_ptr<EnemyModel> enemy, const cugl::Vec2 
 void TurtleController::changeStateIfApplicable(
     std::shared_ptr<EnemyModel> enemy, float distance) {
   if (distance <= TANK_RANGE) {
-    if (enemy->getCurrentState() != EnemyModel::State::TANKING) {
+    if (enemy->getCurrentState() != EnemyModel::State::ATTACKING || enemy->getAttackCooldown() > ATTACK_FRAME_POS) {
       enemy->setCurrentState(EnemyModel::State::TANKING);
     }
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   } else if (distance <= ATTACK_RANGE) {
-    if (enemy->getCurrentState() != EnemyModel::State::ATTACKING) {
-      enemy->setCurrentState(EnemyModel::State::ATTACKING);
-    }
+    enemy->setCurrentState(EnemyModel::State::ATTACKING);
   } else {
-    if (enemy->getCurrentState() != EnemyModel::State::IDLE) {
-      enemy->setCurrentState(EnemyModel::State::IDLE);
-    }
+    enemy->setCurrentState(EnemyModel::State::IDLE);
     enemy->setAttackCooldown(ATTACK_COOLDOWN);
   }
 }
@@ -190,7 +186,7 @@ void TurtleController::animate(std::shared_ptr<EnemyModel> enemy) {
             node->setFrame(ATTACK_RIGHT);
           }
         } else if (enemy->getAttackCooldown() < ATTACK_FRAME_POS) {
-          if (fc >= 1 && enemy->_goal_frame != node->getFrame()) {
+          if (fc >= 2 && enemy->_goal_frame != node->getFrame()) {
             if (node->getFrame() == ATTACK_RIGHT &&
                 enemy->_goal_frame >= ATTACK_HALF) {
               node->setFrame(ATTACK_UP_LIM - 1);
