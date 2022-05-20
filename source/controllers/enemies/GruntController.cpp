@@ -229,7 +229,7 @@ void GruntController::animateDeath(std::shared_ptr<EnemyModel> enemy) {
       node->setFrame(DEATH_RIGHT_LOW_LIM);
     }
   } else {
-    if (enemy->_frame_count >= 2) {
+    if (enemy->_frame_count >= 4) {
       enemy->_frame_count = 0;
       int next_frame = node->getFrame() + 1;
       if (enemy->getFacingLeft()) {
