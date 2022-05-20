@@ -239,6 +239,13 @@ void HostLobbyScene::processData(const std::vector<uint8_t>& data) {
     _serializer.writeJson(info);
     _network->send(_serializer.serialize());
     _serializer.reset();
+  } else if (code == CLIENT_REMOVE_PLAYER_NAME) {
+    cugl::NetworkDeserializer::Message msg = _deserializer.read();
+    auto info = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+    int id = info->getInt("id");
+    if (_player_id_to_name.find(id) != _player_id_to_name.end()) {
+      _player_id_to_name.erase(id);
+    }
   }
 };
 
