@@ -493,7 +493,7 @@ void GameScene::update(float timestep) {
       for (auto it :
            _player_controller->getMyPlayer()->getBetrayersBlockedPlayers()) {
         auto blocked_icon_node = _block_x_nodes[it.first];
-        if (time_held_down >= 1) {
+        if (InputController::get<Corrupt>()->pressCorrupt()) {
           // display the x on the blocked players.
           auto player = _player_controller->getPlayer(it.first);
           auto v = player->getPlayerNode()->getPosition();
