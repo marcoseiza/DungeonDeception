@@ -113,10 +113,10 @@ void Player::setEnergyBar(
   cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
   pos.y *= 1.38f;
   _energy_bar->setPosition(pos);
-  _energy_bar->setPriority(std::numeric_limits<float>::max());
+  _energy_bar->setPriority(std::numeric_limits<float>::max() - 2);
 
   for (auto child : _energy_bar->getChildren()) {
-    child->setPriority(std::numeric_limits<float>::max());
+    child->setPriority(std::numeric_limits<float>::max() - 2);
   }
 }
 
@@ -129,10 +129,10 @@ void Player::setCorruptedEnergyBar(
   cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
   pos.y *= 1.38f;
   _corrupted_energy_bar->setPosition(pos);
-  _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max());
+  _corrupted_energy_bar->setPriority(std::numeric_limits<float>::max() - 2);
 
   for (auto child : _corrupted_energy_bar->getChildren()) {
-    child->setPriority(std::numeric_limits<float>::max());
+    child->setPriority(std::numeric_limits<float>::max() - 2);
   }
 }
 
@@ -168,8 +168,8 @@ void Player::setBlockPlayerOnBetrayer(int runner_id) {
 void Player::updateBlockedPlayers() {
   for (auto it = _blocked_players.begin(); it != _blocked_players.end();) {
     int player_id = it->first;
-    int cd = it->second;
-    _blocked_players[player_id] = cd--;
+    int cd = it->second - 1;
+    _blocked_players[player_id] = cd;
     if (_blocked_players[player_id] <= 0) {
       it = _blocked_players.erase(it);
     } else {

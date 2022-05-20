@@ -63,6 +63,16 @@ bool GameScene::init(
   target_icon_node->setVisible(false);
   _world_node->addChild(target_icon_node);
 
+  for (int i = 0; i < _block_x_nodes.size(); i++) {
+    std::shared_ptr<cugl::Texture> blocked_texture =
+        _assets->get<cugl::Texture>("blocked-player");
+    auto blocked_icon_node =
+        cugl::scene2::SpriteNode::alloc(blocked_texture, 1, 1);
+    blocked_icon_node->setVisible(false);
+    _world_node->addChild(blocked_icon_node);
+    _block_x_nodes[i] = blocked_icon_node;
+  }
+
   _debug_node = cugl::scene2::SceneNode::alloc();
   _debug_node->setContentSize(dim);
 
@@ -480,8 +490,25 @@ void GameScene::update(float timestep) {
         }
       }
 
-      if (time_held_down >= 1) {
-        // display the blocked players.
+      for (auto it :
+           _player_controller->getMyPlayer()->getBetrayersBlockedPlayers()) {
+        auto blocked_icon_node = _block_x_nodes[it.first];
+        if (time_held_down >= 1) {
+          // display the x on the blocked players.
+          auto player = _player_controller->getPlayer(it.first);
+          auto v = player->getPlayerNode()->getPosition();
+          v.y += 27;
+          blocked_icon_node->setPosition(v);
+          blocked_icon_node->setPriority(std::numeric_limits<float>::max());
+          blocked_icon_node->setVisible(true);
+        } else {
+          blocked_icon_node->setVisible(false);
+        }
+
+        // If done, set visibility to be false also.
+        if (it.second <= 1) {
+          blocked_icon_node->setVisible(false);
+        }
       }
     }
   }

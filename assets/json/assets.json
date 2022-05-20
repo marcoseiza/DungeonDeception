@@ -49,6 +49,13 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "blocked-player": {
+      "file": "textures/blockx.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "target-player": {
       "file": "textures/target-player.png",
       "minfilter": "nearest",

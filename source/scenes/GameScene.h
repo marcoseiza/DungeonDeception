@@ -109,6 +109,9 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
+  
+  /** List of blocked X's. 6 for maximum number of runners .*/
+  std::array<std::shared_ptr<cugl::scene2::SceneNode>, 6> _block_x_nodes;
 
   /** The display name of my player. */
   std::string _display_name;
