@@ -1,41 +1,18 @@
 {
   "comments": "This is the root node for the world scene for room room-2.",
   "type": "Node",
-  "format": {
-    "type": "Anchored"
-  },
-  "layout": {
-    "x_anchor": "left",
-    "y_anchor": "bottom"
-  },
+  "format": {"type": "Anchored"},
+  "layout": {"x_anchor": "left", "y_anchor": "bottom"},
   "children": {
     "tiles": {
       "type": "Node",
-      "format": {
-        "type": "Grid",
-        "width": 15,
-        "height": 15
-      },
-      "data": {
-        "anchor": [
-          0,
-          0
-        ],
-        "size": [
-          720,
-          720
-        ]
-      },
-      "layout": {
-        "x_anchor": "bottom",
-        "y_anchor": "left"
-      },
+      "format": {"type": "Grid", "width": 15, "height": 15},
+      "data": {"anchor": [0, 0], "size": [720, 720]},
+      "layout": {"x_anchor": "bottom", "y_anchor": "left"},
       "children": {
         "tile-(3-14)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 14,
@@ -45,20 +22,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-26",
-                "variables": {
-                  "priority": 0
-                }
-              }
+              "data": {"key": "tile-26", "variables": {"priority": 0}}
             }
           }
         },
         "tile-(4-14)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 14,
@@ -68,20 +38,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-27",
-                "variables": {
-                  "priority": 0
-                }
-              }
+              "data": {"key": "tile-27", "variables": {"priority": 0}}
             }
           }
         },
         "tile-(5-14)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 14,
@@ -91,20 +54,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-28",
-                "variables": {
-                  "priority": 0
-                }
-              }
+              "data": {"key": "tile-28", "variables": {"priority": 0}}
             }
           }
         },
         "tile-(7-14)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 14,
@@ -139,9 +95,7 @@
         },
         "tile-(9-14)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 14,
@@ -151,20 +105,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-41",
-                "variables": {
-                  "priority": 0
-                }
-              }
+              "data": {"key": "tile-41", "variables": {"priority": 0}}
             }
           }
         },
         "tile-(2-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 13,
@@ -174,20 +121,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-26",
-                "variables": {
-                  "priority": 1
-                }
-              }
+              "data": {"key": "tile-26", "variables": {"priority": 1}}
             }
           }
         },
         "tile-(3-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 13,
@@ -197,20 +137,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-28",
-                "variables": {
-                  "priority": 1
-                }
-              }
+              "data": {"key": "tile-28", "variables": {"priority": 1}}
             }
           }
         },
         "tile-(4-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 13,
@@ -220,18 +153,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 13,
@@ -241,18 +169,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 13,
@@ -262,18 +185,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 13,
@@ -283,18 +201,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 13,
@@ -304,18 +217,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 13,
@@ -325,20 +233,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-29",
-                "variables": {
-                  "priority": 1
-                }
-              }
+              "data": {"key": "tile-29", "variables": {"priority": 1}}
             }
           }
         },
         "tile-(10-13)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 13,
@@ -348,20 +249,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-30",
-                "variables": {
-                  "priority": 1
-                }
-              }
+              "data": {"key": "tile-30", "variables": {"priority": 1}}
             }
           }
         },
         "tile-(1-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 12,
@@ -371,20 +265,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-26",
-                "variables": {
-                  "priority": 2
-                }
-              }
+              "data": {"key": "tile-26", "variables": {"priority": 2}}
             }
           }
         },
         "tile-(2-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 12,
@@ -394,20 +281,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-28",
-                "variables": {
-                  "priority": 2
-                }
-              }
+              "data": {"key": "tile-28", "variables": {"priority": 2}}
             }
           }
         },
         "tile-(3-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 12,
@@ -417,18 +297,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 12,
@@ -438,18 +313,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 12,
@@ -459,18 +329,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 12,
@@ -480,18 +345,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 12,
@@ -501,18 +361,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 12,
@@ -522,18 +377,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 12,
@@ -543,18 +393,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 12,
@@ -564,20 +409,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-29",
-                "variables": {
-                  "priority": 2
-                }
-              }
+              "data": {"key": "tile-29", "variables": {"priority": 2}}
             }
           }
         },
         "tile-(11-12)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 12,
@@ -587,20 +425,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-30",
-                "variables": {
-                  "priority": 2
-                }
-              }
+              "data": {"key": "tile-30", "variables": {"priority": 2}}
             }
           }
         },
         "tile-(0-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 0,
             "y_index": 11,
@@ -610,20 +441,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-26",
-                "variables": {
-                  "priority": 3
-                }
-              }
+              "data": {"key": "tile-26", "variables": {"priority": 3}}
             }
           }
         },
         "tile-(1-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 11,
@@ -633,20 +457,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-28",
-                "variables": {
-                  "priority": 3
-                }
-              }
+              "data": {"key": "tile-28", "variables": {"priority": 3}}
             }
           }
         },
         "tile-(2-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 11,
@@ -656,18 +473,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 11,
@@ -677,18 +489,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 11,
@@ -698,18 +505,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 11,
@@ -719,18 +521,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 11,
@@ -740,18 +537,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 11,
@@ -761,18 +553,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 11,
@@ -782,18 +569,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 11,
@@ -803,18 +585,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 11,
@@ -824,18 +601,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-81", "variables": {"priority": 3}}
             }
           }
         },
         "tile-(11-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 11,
@@ -845,20 +617,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-29",
-                "variables": {
-                  "priority": 3
-                }
-              }
+              "data": {"key": "tile-29", "variables": {"priority": 3}}
             }
           }
         },
         "tile-(12-11)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 11,
@@ -868,20 +633,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-30",
-                "variables": {
-                  "priority": 3
-                }
-              }
+              "data": {"key": "tile-30", "variables": {"priority": 3}}
             }
           }
         },
         "tile-(0-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 0,
             "y_index": 10,
@@ -891,20 +649,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-40",
-                "variables": {
-                  "priority": 4
-                }
-              }
+              "data": {"key": "tile-40", "variables": {"priority": 4}}
             }
           }
         },
         "tile-(1-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 10,
@@ -914,18 +665,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(2-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 10,
@@ -935,18 +681,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 10,
@@ -956,18 +697,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 10,
@@ -977,18 +713,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 10,
@@ -998,18 +729,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 10,
@@ -1019,18 +745,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 10,
@@ -1040,18 +761,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 10,
@@ -1061,18 +777,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 10,
@@ -1082,18 +793,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 10,
@@ -1103,18 +809,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 10,
@@ -1124,18 +825,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 10,
@@ -1145,20 +841,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-29",
-                "variables": {
-                  "priority": 4
-                }
-              }
+              "data": {"key": "tile-29", "variables": {"priority": 4}}
             }
           }
         },
         "tile-(13-10)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 10,
@@ -1168,20 +857,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-30",
-                "variables": {
-                  "priority": 4
-                }
-              }
+              "data": {"key": "tile-30", "variables": {"priority": 4}}
             }
           }
         },
         "tile-(0-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 0,
             "y_index": 9,
@@ -1191,20 +873,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-28",
-                "variables": {
-                  "priority": 5
-                }
-              }
+              "data": {"key": "tile-28", "variables": {"priority": 5}}
             }
           }
         },
         "tile-(1-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 9,
@@ -1214,18 +889,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(2-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 9,
@@ -1235,18 +905,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 9,
@@ -1256,18 +921,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 9,
@@ -1277,18 +937,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 9,
@@ -1298,18 +953,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 9,
@@ -1319,18 +969,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 9,
@@ -1340,18 +985,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 9,
@@ -1361,18 +1001,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 9,
@@ -1382,18 +1017,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 9,
@@ -1403,18 +1033,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 9,
@@ -1424,18 +1049,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 9,
@@ -1445,18 +1065,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 9,
@@ -1466,20 +1081,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-29",
-                "variables": {
-                  "priority": 5
-                }
-              }
+              "data": {"key": "tile-29", "variables": {"priority": 5}}
             }
           }
         },
         "tile-(14-9)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 14,
             "y_index": 9,
@@ -1489,20 +1097,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-27",
-                "variables": {
-                  "priority": 5
-                }
-              }
+              "data": {"key": "tile-27", "variables": {"priority": 5}}
             }
           }
         },
         "tile-(1-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 8,
@@ -1512,18 +1113,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(2-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 8,
@@ -1533,18 +1129,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 8,
@@ -1554,18 +1145,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 8,
@@ -1575,18 +1161,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 8,
@@ -1596,18 +1177,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 8,
@@ -1617,18 +1193,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 8,
@@ -1638,18 +1209,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 8,
@@ -1659,18 +1225,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 8,
@@ -1680,18 +1241,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 8,
@@ -1701,18 +1257,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 8,
@@ -1722,18 +1273,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 8,
@@ -1743,18 +1289,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-8)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 8,
@@ -1764,18 +1305,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(0-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 0,
             "y_index": 7,
@@ -1809,9 +1345,7 @@
         },
         "tile-(1-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 7,
@@ -1821,18 +1355,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(2-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 7,
@@ -1842,18 +1371,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 7,
@@ -1863,18 +1387,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 7,
@@ -1884,18 +1403,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 7,
@@ -1905,18 +1419,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 7,
@@ -1926,18 +1435,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 7,
@@ -1947,18 +1451,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 7,
@@ -1968,18 +1467,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 7,
@@ -1989,18 +1483,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 7,
@@ -2010,18 +1499,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 7,
@@ -2031,18 +1515,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 7,
@@ -2052,18 +1531,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 7,
@@ -2073,18 +1547,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(14-7)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 14,
             "y_index": 7,
@@ -2118,9 +1587,7 @@
         },
         "tile-(1-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 6,
@@ -2130,18 +1597,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(2-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 6,
@@ -2151,18 +1613,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 6,
@@ -2172,18 +1629,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 6,
@@ -2193,18 +1645,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 6,
@@ -2214,18 +1661,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 6,
@@ -2235,18 +1677,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 6,
@@ -2256,18 +1693,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 6,
@@ -2277,18 +1709,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 6,
@@ -2298,18 +1725,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 6,
@@ -2319,18 +1741,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 6,
@@ -2340,18 +1757,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 6,
@@ -2361,18 +1773,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-6)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 6,
@@ -2382,18 +1789,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(0-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 0,
             "y_index": 5,
@@ -2403,20 +1805,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-52",
-                "variables": {
-                  "priority": 9
-                }
-              }
+              "data": {"key": "tile-52", "variables": {"priority": 9}}
             }
           }
         },
         "tile-(1-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 5,
@@ -2426,20 +1821,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-53",
-                "variables": {
-                  "priority": 9
-                }
-              }
+              "data": {"key": "tile-53", "variables": {"priority": 9}}
             }
           }
         },
         "tile-(2-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 5,
@@ -2449,18 +1837,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(3-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 5,
@@ -2470,18 +1853,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 5,
@@ -2491,18 +1869,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 5,
@@ -2512,18 +1885,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 5,
@@ -2533,18 +1901,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 5,
@@ -2554,18 +1917,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 5,
@@ -2575,18 +1933,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 5,
@@ -2596,18 +1949,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 5,
@@ -2617,18 +1965,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 5,
@@ -2638,18 +1981,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 5,
@@ -2659,18 +1997,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 5,
@@ -2680,18 +2013,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(14-5)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 14,
             "y_index": 5,
@@ -2701,20 +2029,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-54",
-                "variables": {
-                  "priority": 9
-                }
-              }
+              "data": {"key": "tile-54", "variables": {"priority": 9}}
             }
           }
         },
         "tile-(1-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 1,
             "y_index": 4,
@@ -2724,20 +2045,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-51",
-                "variables": {
-                  "priority": 10
-                }
-              }
+              "data": {"key": "tile-51", "variables": {"priority": 10}}
             }
           }
         },
         "tile-(2-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 4,
@@ -2747,20 +2061,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-53",
-                "variables": {
-                  "priority": 10
-                }
-              }
+              "data": {"key": "tile-53", "variables": {"priority": 10}}
             }
           }
         },
         "tile-(3-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 4,
@@ -2770,18 +2077,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(4-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 4,
@@ -2791,18 +2093,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 4,
@@ -2812,18 +2109,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 4,
@@ -2833,18 +2125,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 4,
@@ -2854,18 +2141,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 4,
@@ -2875,18 +2157,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 4,
@@ -2896,18 +2173,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 4,
@@ -2917,18 +2189,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 4,
@@ -2938,18 +2205,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 4,
@@ -2959,18 +2221,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 4,
@@ -2980,18 +2237,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(14-4)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 14,
             "y_index": 4,
@@ -3001,20 +2253,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-41",
-                "variables": {
-                  "priority": 10
-                }
-              }
+              "data": {"key": "tile-41", "variables": {"priority": 10}}
             }
           }
         },
         "tile-(2-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 2,
             "y_index": 3,
@@ -3024,20 +2269,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-51",
-                "variables": {
-                  "priority": 11
-                }
-              }
+              "data": {"key": "tile-51", "variables": {"priority": 11}}
             }
           }
         },
         "tile-(3-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 3,
@@ -3047,20 +2285,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-53",
-                "variables": {
-                  "priority": 11
-                }
-              }
+              "data": {"key": "tile-53", "variables": {"priority": 11}}
             }
           }
         },
         "tile-(4-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 3,
@@ -3070,18 +2301,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(5-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 3,
@@ -3091,18 +2317,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 3,
@@ -3112,18 +2333,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 3,
@@ -3133,18 +2349,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 3,
@@ -3154,18 +2365,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 3,
@@ -3175,18 +2381,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 3,
@@ -3196,18 +2397,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 3,
@@ -3217,18 +2413,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 3,
@@ -3238,18 +2429,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(13-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 3,
@@ -3259,20 +2445,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-54",
-                "variables": {
-                  "priority": 11
-                }
-              }
+              "data": {"key": "tile-54", "variables": {"priority": 11}}
             }
           }
         },
         "tile-(14-3)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 14,
             "y_index": 3,
@@ -3282,20 +2461,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-55",
-                "variables": {
-                  "priority": 11
-                }
-              }
+              "data": {"key": "tile-55", "variables": {"priority": 11}}
             }
           }
         },
         "tile-(3-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 3,
             "y_index": 2,
@@ -3305,20 +2477,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-51",
-                "variables": {
-                  "priority": 12
-                }
-              }
+              "data": {"key": "tile-51", "variables": {"priority": 12}}
             }
           }
         },
         "tile-(4-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 2,
@@ -3328,20 +2493,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-53",
-                "variables": {
-                  "priority": 12
-                }
-              }
+              "data": {"key": "tile-53", "variables": {"priority": 12}}
             }
           }
         },
         "tile-(5-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 2,
@@ -3351,18 +2509,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(6-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 2,
@@ -3372,18 +2525,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 2,
@@ -3393,18 +2541,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 2,
@@ -3414,18 +2557,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 2,
@@ -3435,18 +2573,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 2,
@@ -3456,18 +2589,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 2,
@@ -3477,18 +2605,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(12-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 2,
@@ -3498,20 +2621,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-54",
-                "variables": {
-                  "priority": 12
-                }
-              }
+              "data": {"key": "tile-54", "variables": {"priority": 12}}
             }
           }
         },
         "tile-(13-2)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 13,
             "y_index": 2,
@@ -3521,20 +2637,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-55",
-                "variables": {
-                  "priority": 12
-                }
-              }
+              "data": {"key": "tile-55", "variables": {"priority": 12}}
             }
           }
         },
         "tile-(4-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 4,
             "y_index": 1,
@@ -3544,20 +2653,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-51",
-                "variables": {
-                  "priority": 13
-                }
-              }
+              "data": {"key": "tile-51", "variables": {"priority": 13}}
             }
           }
         },
         "tile-(5-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 1,
@@ -3567,20 +2669,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-53",
-                "variables": {
-                  "priority": 13
-                }
-              }
+              "data": {"key": "tile-53", "variables": {"priority": 13}}
             }
           }
         },
         "tile-(6-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 6,
             "y_index": 1,
@@ -3590,18 +2685,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(7-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 1,
@@ -3611,18 +2701,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(8-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 8,
             "y_index": 1,
@@ -3632,18 +2717,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(9-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 1,
@@ -3653,18 +2733,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(10-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 1,
@@ -3674,18 +2749,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-1",
-                "variables": {}
-              }
+              "data": {"key": "tile-1", "variables": {}}
             }
           }
         },
         "tile-(11-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 1,
@@ -3695,20 +2765,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-54",
-                "variables": {
-                  "priority": 13
-                }
-              }
+              "data": {"key": "tile-54", "variables": {"priority": 13}}
             }
           }
         },
         "tile-(12-1)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 12,
             "y_index": 1,
@@ -3718,20 +2781,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-55",
-                "variables": {
-                  "priority": 13
-                }
-              }
+              "data": {"key": "tile-55", "variables": {"priority": 13}}
             }
           }
         },
         "tile-(5-0)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 5,
             "y_index": 0,
@@ -3741,20 +2797,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-40",
-                "variables": {
-                  "priority": 14
-                }
-              }
+              "data": {"key": "tile-40", "variables": {"priority": 14}}
             }
           }
         },
         "tile-(7-0)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 7,
             "y_index": 0,
@@ -3789,9 +2838,7 @@
         },
         "tile-(9-0)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 9,
             "y_index": 0,
@@ -3801,20 +2848,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-54",
-                "variables": {
-                  "priority": 14
-                }
-              }
+              "data": {"key": "tile-54", "variables": {"priority": 14}}
             }
           }
         },
         "tile-(10-0)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 10,
             "y_index": 0,
@@ -3824,20 +2864,13 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-52",
-                "variables": {
-                  "priority": 14
-                }
-              }
+              "data": {"key": "tile-52", "variables": {"priority": 14}}
             }
           }
         },
         "tile-(11-0)": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
+          "format": {"type": "Anchored"},
           "layout": {
             "x_index": 11,
             "y_index": 0,
@@ -3847,12 +2880,7 @@
           "children": {
             "tile": {
               "type": "Widget",
-              "data": {
-                "key": "tile-55",
-                "variables": {
-                  "priority": 14
-                }
-              }
+              "data": {"key": "tile-55", "variables": {"priority": 14}}
             }
           }
         }
@@ -3860,37 +2888,62 @@
     },
     "decorations": {
       "type": "Node",
-      "format": {
-        "type": "Grid",
-        "width": 15,
-        "height": 15
-      },
-      "data": {
-        "anchor": [
-          0,
-          0
-        ],
-        "size": [
-          720,
-          720
-        ]
-      },
-      "layout": {
-        "x_anchor": "bottom",
-        "y_anchor": "left"
-      },
+      "format": {"type": "Grid", "width": 15, "height": 15},
+      "data": {"anchor": [0, 0], "size": [720, 720]},
+      "layout": {"x_anchor": "bottom", "y_anchor": "left"},
       "children": {
-        "decoration-(7.340370008680556-13.515185546875)-0": {
+        "decoration-(7-13.75)-0": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 13,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-14",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7.5-13.75)-1": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 13,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-15",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-13.25)-2": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 13,
@@ -3904,24 +2957,65 @@
                 "key": "tile-16",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.3403700086805559,
-                  "y_offset_frac": 0.5151855468749993
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
                 }
               }
             }
           }
         },
-        "decoration-(7.295925564236111-12.613703748914931)-1": {
+        "decoration-(7.5-13.25)-3": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 13,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-17",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(3.3255547417534723-12.335277811686197)-4": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 3,
+            "y_index": 12,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-78",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.3255547417534723,
+                  "y_offset_frac": 0.33527781168619697
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-12.75)-5": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 12,
@@ -3935,24 +3029,113 @@
                 "key": "tile-22",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.2959255642361107,
-                  "y_offset_frac": 0.6137037489149311
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
                 }
               }
             }
           }
         },
-        "decoration-(4.058148871527778-11.578888617621528)-2": {
+        "decoration-(7.5-12.75)-6": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 12,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-23",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-12.25)-7": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 12,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-24",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7.5-12.25)-8": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 12,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-25",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(2.081110297309028-10.788611178927951)-9": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 2,
+            "y_index": 10,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-76",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.08111029730902786,
+                  "y_offset_frac": 0.7886111789279511
+                }
+              }
+            }
+          }
+        },
+        "decoration-(4.058148871527778-11.578888617621528)-10": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 4,
             "y_index": 11,
@@ -3973,17 +3156,10 @@
             }
           }
         },
-        "decoration-(5.004074435763889-11.289999728732639)-3": {
+        "decoration-(5.004074435763889-11.289999728732639)-11": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 5,
             "y_index": 11,
@@ -4004,17 +3180,58 @@
             }
           }
         },
-        "decoration-(4.4581488715277775-10.832963053385416)-4": {
+        "decoration-(7.569999186197917-11.681944444444444)-12": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 11,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-16",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5699991861979168,
+                  "y_offset_frac": 0.6819444444444436
+                }
+              }
+            }
+          }
+        },
+        "decoration-(1.4144436306423611-10.433055623372397)-13": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 1,
+            "y_index": 10,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-77",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.4144436306423611,
+                  "y_offset_frac": 0.4330556233723968
+                }
+              }
+            }
+          }
+        },
+        "decoration-(4.4581488715277775-10.832963053385416)-14": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 4,
             "y_index": 10,
@@ -4035,17 +3252,10 @@
             }
           }
         },
-        "decoration-(10.4892578125-10.477407497829862)-5": {
+        "decoration-(10.4892578125-10.477407497829862)-15": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 10,
             "y_index": 10,
@@ -4066,17 +3276,10 @@
             }
           }
         },
-        "decoration-(11.146297200520833-10.45518527560764)-6": {
+        "decoration-(11.146297200520833-10.45518527560764)-16": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 11,
             "y_index": 10,
@@ -4097,17 +3300,10 @@
             }
           }
         },
-        "decoration-(10.578146701388889-9.798148600260417)-7": {
+        "decoration-(10.578146701388889-9.798148600260417)-17": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 10,
             "y_index": 9,
@@ -4128,17 +3324,10 @@
             }
           }
         },
-        "decoration-(11.12407497829861-9.553704155815971)-8": {
+        "decoration-(11.12407497829861-9.553704155815971)-18": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 11,
             "y_index": 9,
@@ -4159,17 +3348,10 @@
             }
           }
         },
-        "decoration-(12.025556098090277-9.375926378038194)-9": {
+        "decoration-(12.025556098090277-9.375926378038194)-19": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 12,
             "y_index": 9,
@@ -4190,17 +3372,10 @@
             }
           }
         },
-        "decoration-(6.416666666666667-8.385555691189236)-10": {
+        "decoration-(6.416666666666667-8.385555691189236)-20": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 6,
             "y_index": 8,
@@ -4221,17 +3396,10 @@
             }
           }
         },
-        "decoration-(7.273703342013889-8.563333468967013)-11": {
+        "decoration-(7.273703342013889-8.563333468967013)-21": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 8,
@@ -4252,17 +3420,10 @@
             }
           }
         },
-        "decoration-(8.130740017361111-8.407777913411458)-12": {
+        "decoration-(8.130740017361111-8.407777913411458)-22": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 8,
             "y_index": 8,
@@ -4283,17 +3444,10 @@
             }
           }
         },
-        "decoration-(1.2648152669270833-7.550740559895833)-13": {
+        "decoration-(1-7.75)-23": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 1,
             "y_index": 7,
@@ -4304,29 +3458,70 @@
             "decoration": {
               "type": "Widget",
               "data": {
-                "key": "tile-14",
+                "key": "tile-22",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.26481526692708335,
-                  "y_offset_frac": 0.550740559895833
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
                 }
               }
             }
           }
         },
-        "decoration-(2.277407497829861-7.572962782118055)-14": {
+        "decoration-(1.5-7.75)-24": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
-            "x_index": 2,
+            "x_index": 1,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-23",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(1-7.25)-25": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 1,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-24",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(1.5-7.25)-26": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 1,
             "y_index": 7,
             "x_anchor": "left",
             "y_anchor": "bottom"
@@ -4338,24 +3533,137 @@
                 "key": "tile-25",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.27740749782986107,
-                  "y_offset_frac": 0.5729627821180552
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
                 }
               }
             }
           }
         },
-        "decoration-(6.061111111111111-7.506296115451389)-15": {
+        "decoration-(2-7.75)-27": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 2,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-18",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(2.5-7.75)-28": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 2,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-19",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(2-7.25)-29": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 2,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-20",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(2.5-7.25)-30": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 2,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-21",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(3.10333251953125-7.726388888888889)-31": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 3,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-22",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.10333251953125,
+                  "y_offset_frac": 0.7263888888888888
+                }
+              }
+            }
+          }
+        },
+        "decoration-(6.061111111111111-7.506296115451389)-32": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 6,
             "y_index": 7,
@@ -4376,17 +3684,10 @@
             }
           }
         },
-        "decoration-(8.530740017361111-7.506296115451389)-16": {
+        "decoration-(8.530740017361111-7.506296115451389)-33": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 8,
             "y_index": 7,
@@ -4407,17 +3708,10 @@
             }
           }
         },
-        "decoration-(9.365554470486112-7.706296115451389)-17": {
+        "decoration-(9.365554470486112-7.706296115451389)-34": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 9,
             "y_index": 7,
@@ -4438,17 +3732,10 @@
             }
           }
         },
-        "decoration-(12.314444986979167-7.528518337673611)-18": {
+        "decoration-(12-7.75)-35": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 12,
             "y_index": 7,
@@ -4462,24 +3749,89 @@
                 "key": "tile-22",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.3144449869791668,
-                  "y_offset_frac": 0.5285183376736109
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
                 }
               }
             }
           }
         },
-        "decoration-(13.304814995659722-7.4618516710069445)-19": {
+        "decoration-(12.5-7.75)-36": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 12,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-23",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(12-7.25)-37": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 12,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-24",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(12.5-7.25)-38": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 12,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-25",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(13-7.75)-39": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 13,
             "y_index": 7,
@@ -4490,27 +3842,92 @@
             "decoration": {
               "type": "Widget",
               "data": {
-                "key": "tile-15",
+                "key": "tile-18",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.30481499565972214,
-                  "y_offset_frac": 0.46185167100694446
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
                 }
               }
             }
           }
         },
-        "decoration-(4.109259711371528-6.401481119791667)-20": {
+        "decoration-(13.5-7.75)-40": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 13,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-19",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(13-7.25)-41": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 13,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-20",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(13.5-7.25)-42": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 13,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-21",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(4.109259711371528-6.401481119791667)-43": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 4,
             "y_index": 6,
@@ -4531,17 +3948,10 @@
             }
           }
         },
-        "decoration-(6.35-6.671481662326389)-21": {
+        "decoration-(6.35-6.671481662326389)-44": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 6,
             "y_index": 6,
@@ -4562,17 +3972,10 @@
             }
           }
         },
-        "decoration-(7.273703342013889-6.427037217881944)-22": {
+        "decoration-(7.273703342013889-6.427037217881944)-45": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 6,
@@ -4593,17 +3996,10 @@
             }
           }
         },
-        "decoration-(8.175184461805555-6.627037217881945)-23": {
+        "decoration-(8.175184461805555-6.627037217881945)-46": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 8,
             "y_index": 6,
@@ -4624,17 +4020,34 @@
             }
           }
         },
-        "decoration-(2.255185275607639-5.525556098090277)-24": {
+        "decoration-(12.570000542534721-6.748611111111112)-47": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 12,
+            "y_index": 6,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-15",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5700005425347214,
+                  "y_offset_frac": 0.7486111111111118
+                }
+              }
+            }
+          }
+        },
+        "decoration-(2.255185275607639-5.525556098090277)-48": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 2,
             "y_index": 5,
@@ -4655,17 +4068,10 @@
             }
           }
         },
-        "decoration-(4.524815538194445-5.503333875868055)-25": {
+        "decoration-(4.524815538194445-5.503333875868055)-49": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 4,
             "y_index": 5,
@@ -4686,17 +4092,10 @@
             }
           }
         },
-        "decoration-(11.079630533854166-5.436667209201389)-26": {
+        "decoration-(11.079630533854166-5.436667209201389)-50": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 11,
             "y_index": 5,
@@ -4717,17 +4116,34 @@
             }
           }
         },
-        "decoration-(10.400368923611111-4.424073621961806)-27": {
+        "decoration-(4.214443630642361-3.8686109754774307)-51": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 4,
+            "y_index": 3,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-80",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.21444363064236072,
+                  "y_offset_frac": 0.8686109754774307
+                }
+              }
+            }
+          }
+        },
+        "decoration-(10.400368923611111-4.424073621961806)-52": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 10,
             "y_index": 4,
@@ -4748,17 +4164,10 @@
             }
           }
         },
-        "decoration-(11.235186089409723-4.512962510850695)-28": {
+        "decoration-(11.235186089409723-4.512962510850695)-53": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 11,
             "y_index": 4,
@@ -4779,17 +4188,10 @@
             }
           }
         },
-        "decoration-(5.315185546875-3.744814724392361)-29": {
+        "decoration-(5.315185546875-3.744814724392361)-54": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 5,
             "y_index": 3,
@@ -4810,17 +4212,58 @@
             }
           }
         },
-        "decoration-(12.292222764756945-3.7892591688368054)-30": {
+        "decoration-(7.614443630642361-3.304166666666667)-55": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 3,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-22",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.6144436306423611,
+                  "y_offset_frac": 0.30416666666666714
+                }
+              }
+            }
+          }
+        },
+        "decoration-(10.058888075086806-2.7886108398437504)-56": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 10,
+            "y_index": 2,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-76",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.05888807508680571,
+                  "y_offset_frac": 0.7886108398437504
+                }
+              }
+            }
+          }
+        },
+        "decoration-(12.292222764756945-3.7892591688368054)-57": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 12,
             "y_index": 3,
@@ -4841,17 +4284,10 @@
             }
           }
         },
-        "decoration-(7.997406684027778-2.160740831163194)-31": {
+        "decoration-(7-2.75)-58": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 2,
@@ -4862,27 +4298,116 @@
             "decoration": {
               "type": "Widget",
               "data": {
-                "key": "tile-10",
+                "key": "tile-14",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.9974066840277782,
-                  "y_offset_frac": 0.16074083116319393
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
                 }
               }
             }
           }
         },
-        "decoration-(7.273703342013889-1.5196289062500004)-32": {
+        "decoration-(7.5-2.75)-59": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 2,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
-          "data": {
-            "size": [
-              48,
-              48
-            ]
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-15",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-2.25)-60": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 2,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
           },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-16",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7.5-2.25)-61": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 2,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-17",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(8.036665852864584-2.259722222222223)-62": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 8,
+            "y_index": 2,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-22",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.03666585286458357,
+                  "y_offset_frac": 0.25972222222222285
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-1.75)-63": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 1,
@@ -4893,11 +4418,83 @@
             "decoration": {
               "type": "Widget",
               "data": {
-                "key": "tile-23",
+                "key": "tile-18",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.2737033420138886,
-                  "y_offset_frac": 0.5196289062500004
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7.5-1.75)-64": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 1,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-19",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.75
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7-1.25)-65": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 1,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-20",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0,
+                  "y_offset_frac": 0.25
+                }
+              }
+            }
+          }
+        },
+        "decoration-(7.5-1.25)-66": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 7,
+            "y_index": 1,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-21",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.5,
+                  "y_offset_frac": 0.25
                 }
               }
             }
@@ -4907,41 +4504,14 @@
     },
     "enemies": {
       "type": "Node",
-      "format": {
-        "type": "Grid",
-        "width": 15,
-        "height": 15
-      },
-      "data": {
-        "anchor": [
-          0,
-          0
-        ],
-        "size": [
-          720,
-          720
-        ]
-      },
-      "layout": {
-        "x_anchor": "bottom",
-        "y_anchor": "left"
-      },
+      "format": {"type": "Grid", "width": 15, "height": 15},
+      "data": {"anchor": [0, 0], "size": [720, 720]},
+      "layout": {"x_anchor": "bottom", "y_anchor": "left"},
       "children": {
         "enemy-(6.238888888888889-10.466666666666667)-0": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 6,
             "y_index": 10,
@@ -4951,16 +4521,7 @@
           "children": {
             "enemy": {
               "type": "Tank",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
@@ -4972,19 +4533,8 @@
         },
         "enemy-(4.347037760416667-8.530370415581597)-1": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 4,
             "y_index": 8,
@@ -4994,16 +4544,7 @@
           "children": {
             "enemy": {
               "type": "Tank",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
@@ -5015,19 +4556,8 @@
         },
         "enemy-(10.234073893229167-8.765926106770834)-2": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 10,
             "y_index": 8,
@@ -5037,16 +4567,7 @@
           "children": {
             "enemy": {
               "type": "Grunt",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
@@ -5058,19 +4579,8 @@
         },
         "enemy-(7.295925564236111-7.706296115451389)-3": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 7,
             "y_index": 7,
@@ -5080,16 +4590,7 @@
           "children": {
             "enemy": {
               "type": "Turtle",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
@@ -5101,19 +4602,8 @@
         },
         "enemy-(10.20036892361111-7.628888617621528)-4": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 10,
             "y_index": 7,
@@ -5123,16 +4613,7 @@
           "children": {
             "enemy": {
               "type": "Grunt",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
@@ -5144,19 +4625,8 @@
         },
         "enemy-(8.23444552951389-5.7659261067708325)-5": {
           "type": "Node",
-          "format": {
-            "type": "Anchored"
-          },
-          "data": {
-            "anchor": [
-              0,
-              0
-            ],
-            "size": [
-              48,
-              48
-            ]
-          },
+          "format": {"type": "Anchored"},
+          "data": {"anchor": [0, 0], "size": [48, 48]},
           "layout": {
             "x_index": 8,
             "y_index": 5,
@@ -5166,16 +4636,7 @@
           "children": {
             "enemy": {
               "type": "Shotgunner",
-              "data": {
-                "anchor": [
-                  0,
-                  0
-                ],
-                "size": [
-                  48,
-                  48
-                ]
-              },
+              "data": {"anchor": [0, 0], "size": [48, 48]},
               "layout": {
                 "x_anchor": "left",
                 "y_anchor": "bottom",
