@@ -709,11 +709,11 @@ void GameScene::sendNetworkInfoHost() {
   }
 
   {
-    cugl::Timestamp time;
-    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
-
-    if (millis > 5000) {
-      _time_of_last_player_other_info_update.mark();
+//    cugl::Timestamp time;
+//    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+//
+//    if (millis > 5000) {
+//      _time_of_last_player_other_info_update.mark();
       std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
       for (auto it : _player_controller->getPlayers()) {
         std::shared_ptr<Player> player = it.second;
@@ -729,7 +729,7 @@ void GameScene::sendNetworkInfoHost() {
 
       NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
                                      all_player_info);
-    }
+//    }
   }
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
