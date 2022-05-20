@@ -66,14 +66,14 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /** Enemy health. */
   int _health;
 
+  /** Ready to die. */
+  bool _ready_to_die;
+
   /** Enemy speed. */
   float _speed;
 
   /** The scene graph node for the enemy. */
   std::shared_ptr<cugl::scene2::SceneNode> _enemy_node;
-
-  /** The sprite node for the enemy death. */
-  std::shared_ptr<cugl::scene2::SpriteNode> _enemy_death_node;
 
   /** Represents the def for the hit area for the enemy. */
   b2FixtureDef _hitbox_sensor_def;
@@ -186,7 +186,8 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
         _hitbox_sensor_name(nullptr),
         _damage_sensor(nullptr),
         _damage_sensor_name(nullptr),
-        _wall_fixture(nullptr) {}
+        _wall_fixture(nullptr),
+        _ready_to_die(false) {}
 
   /**
    * Disposes the grunt.
@@ -287,6 +288,18 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
+
+  /**
+   * Sets that this enemy is ready to die
+   * @param val Wether the enemy is ready to die.
+   */
+  void setReadyToDie(bool val) { _ready_to_die = true; }
+
+  /**
+   * Returns wether the enemy is ready to die.
+   * @return wether the enemy is ready to die.
+   */
+  bool isReadyToDie() const { return _ready_to_die; }
   /**
    * Gets the current attack cooldown of the enemy.
    *
@@ -488,20 +501,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the node that has been set.
    */
   std::shared_ptr<cugl::scene2::SceneNode>& getNode();
-
-  /**
-   * Sets the scene graph node representing this enemy death.
-   * @param node  The scene graph node representing this enemy death.
-   */
-  void setDeathNode(const std::shared_ptr<cugl::Texture>& texture);
-
-  /**
-   * Gets the enemy death node node.
-   * @return the node that has been set.
-   */
-  std::shared_ptr<cugl::scene2::SpriteNode>& getDeathNode() {
-    return _enemy_death_node;
-  }
 
   /**
    * Sets the position of the room the enemy is in, for drawing purposes.

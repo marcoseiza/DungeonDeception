@@ -42,6 +42,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   CapsuleObstacle::init(pos_, _size);
 
+  _ready_to_die = false;
   _init_pos = pos;
   _enemy_node = nullptr;
   _health = 100;
@@ -202,53 +203,27 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
-    default: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
+    case TURTLE: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 16);
       auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
       node->setFrame(23);  // Initial closed frame
       break;
     }
+    default:
+      break;
   }
 
   // Add the ray cast weights to the debug node.
   for (std::shared_ptr<cugl::scene2::PolygonNode> poly : _polys) {
     debug_node->addChild(poly);
   }
-}
-
-/**
- * Sets the scene graph node representing this enemy death.
- * @param node  The scene graph node representing this enemy death.
- */
-void EnemyModel::setDeathNode(const std::shared_ptr<cugl::Texture>& texture) {
-  switch (_enemy_type) {
-    case SHOTGUNNER: {
-      _enemy_death_node = cugl::scene2::SpriteNode::alloc(texture, 1, 25);
-      break;
-    }
-    case TANK: {
-      _enemy_death_node = cugl::scene2::SpriteNode::alloc(texture, 1, 20);
-      break;
-    }
-    case GRUNT: {
-      _enemy_death_node = cugl::scene2::SpriteNode::alloc(texture, 1, 20);
-      break;
-    }
-    case TURTLE: {
-      _enemy_death_node = cugl::scene2::SpriteNode::alloc(texture, 1, 23);
-      break;
-    }
-    default:
-      break;
-  }
-  if (_enemy_death_node) _enemy_death_node->setVisible(false);
 }
 
 std::shared_ptr<cugl::scene2::SceneNode>& EnemyModel::getNode() {

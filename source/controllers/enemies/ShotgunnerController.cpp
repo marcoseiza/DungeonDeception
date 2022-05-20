@@ -13,6 +13,11 @@
 #define GUN_NODE_Y_OFFSET 0.59
 #define GUN_MOVE_FRAMES 15
 
+#define DEATH_RIGHT_LOW_LIM 40
+#define DEATH_RIGHT_UP_LIM 64
+#define DEATH_LEFT_LOW_LIM 70
+#define DEATH_LEFT_UP_LIM 94
+
 #define STATE_CHANGE_LIM 10
 
 #pragma mark Shotgunner Controller
@@ -152,10 +157,6 @@ void ShotgunnerController::performAction(std::shared_ptr<EnemyModel> enemy,
 }
 
 void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
-  if (enemy->getHealth() <= 0) {
-    animateDeath(enemy);
-    return;
-  }
   auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(
       enemy->getNode()->getChildByTag(0));
   auto gun_node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(
@@ -244,4 +245,35 @@ void ShotgunnerController::animate(std::shared_ptr<EnemyModel> enemy) {
 }
 
 /** Animate the enemy death animation. */
-void ShotgunnerController::animateDeath(std::shared_ptr<EnemyModel> enemy) {}
+void ShotgunnerController::animateDeath(std::shared_ptr<EnemyModel> enemy) {
+  auto node = std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(
+      enemy->getNode()->getChildByTag(0));
+  if (node->getFrame() < DEATH_RIGHT_LOW_LIM) {
+    float direc_angle =
+        abs((enemy->getAttackDir() - enemy->getPosition()).getAngle());
+    enemy->setFacingLeft(direc_angle > M_PI / 2);
+    if (enemy->getFacingLeft()) {
+      node->setFrame(DEATH_LEFT_LOW_LIM);
+    } else {
+      node->setFrame(DEATH_RIGHT_LOW_LIM);
+    }
+  } else {
+    if (enemy->_frame_count >= 2) {
+      enemy->_frame_count = 0;
+      int next_frame = node->getFrame() + 1;
+      if (enemy->getFacingLeft()) {
+        if (next_frame == DEATH_LEFT_UP_LIM) {
+          next_frame = DEATH_LEFT_UP_LIM - 1;
+          enemy->setReadyToDie(true);
+        }
+      } else {
+        if (next_frame == DEATH_RIGHT_UP_LIM) {
+          next_frame = DEATH_RIGHT_UP_LIM - 1;
+          enemy->setReadyToDie(true);
+        }
+      }
+      node->setFrame(next_frame);
+    }
+    enemy->_frame_count++;
+  }
+}

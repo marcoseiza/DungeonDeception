@@ -210,34 +210,6 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "grunt-death": {
-      "file": "textures/grunt-death.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "turtle-death": {
-      "file": "textures/turtle-death.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "tank-death": {
-      "file": "textures/tank-death.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "shotgunner-death": {
-      "file": "textures/shotgunner-death.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
     "projectile-red-large": {
       "file": "textures/projectile-red-large.png",
       "minfilter": "nearest",

@@ -563,7 +563,7 @@ void GameScene::update(float timestep) {
     for (auto it = enemies.begin(); it != enemies.end(); it++) {
       auto enemy = *it;
 
-      if (enemy->getHealth() <= 0) {
+      if (enemy->isReadyToDie()) {
         _dead_enemy_cache.push_back(enemy->getEnemyId());
         enemy->deleteAllProjectiles(_world, _world_node);
         enemy->deactivatePhysics(*_world->getWorld());
