@@ -68,6 +68,9 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   _damage_sensor_def.filter.categoryBits = CATEGORY_ENEMY_DAMAGE;
   _damage_sensor_def.filter.maskBits = MASK_ENEMY_DAMAGE;
+  
+  _wall_fixture_def.filter.categoryBits = CATEGORY_ENEMY;
+  _wall_fixture_def.filter.maskBits = MASK_ENEMY_WALL;
 
   if (_enemy_type == TURTLE) {
     setBodyType(b2BodyType::b2_staticBody);
@@ -136,10 +139,10 @@ void EnemyModel::setType(std::string type) {
     _speed = 0.7;
   } else if (type == "shotgunner") {
     _enemy_type = SHOTGUNNER;
-    _speed = 0.6;
+    _speed = 0.65;
   } else if (type == "tank") {
     _enemy_type = TANK;
-    _speed = 0.6;
+    _speed = 0.75;
   } else if (type == "turtle") {
     _enemy_type = TURTLE;
     _speed = 0;
@@ -170,7 +173,7 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 1, 1);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
       break;
     }
     case GRUNT: {
@@ -252,6 +255,28 @@ void EnemyModel::createFixtures() {
     _damage_sensor_def.shape = &sensorShape;
     _damage_sensor = _body->CreateFixture(&_damage_sensor_def);
   }
+  
+  if (_wall_fixture == nullptr) {
+    _wall_fixture_def.density = 0.0f;
+    _wall_fixture_def.isSensor = false;
+
+    // Dimensions
+    b2Vec2 corners[4];
+    corners[0].x = -CapsuleObstacle::getWidth() / 2.0f;
+    corners[0].y = CapsuleObstacle::getHeight() / 2.0f;
+    corners[1].x = -CapsuleObstacle::getWidth() / 2.0f;
+    corners[1].y = -CapsuleObstacle::getHeight() / 2.0f;
+    corners[2].x = CapsuleObstacle::getWidth() / 2.0f;
+    corners[2].y = -CapsuleObstacle::getHeight() / 2.0f;
+    corners[3].x = CapsuleObstacle::getWidth() / 2.0f;
+    corners[3].y = CapsuleObstacle::getHeight() / 2.0f;
+
+    b2PolygonShape sensorShape;
+    sensorShape.Set(corners, 4);
+
+    _wall_fixture_def.shape = &sensorShape;
+    _wall_fixture = _body->CreateFixture(&_wall_fixture_def);
+  }
 }
 
 void EnemyModel::releaseFixtures() {
@@ -267,30 +292,22 @@ void EnemyModel::releaseFixtures() {
     _body->DestroyFixture(_damage_sensor);
     _damage_sensor = nullptr;
   }
+  
+  if (_wall_fixture != nullptr) {
+    _body->DestroyFixture(_wall_fixture);
+    _wall_fixture = nullptr;
+  }
 }
 
 void EnemyModel::setAttackingFilter() {
-  b2Filter filter_data = getFilterData();
-  filter_data.maskBits = MASK_ENEMY_ATTACKING;
-  if (_body != nullptr) {
-    for (b2Fixture* f = _body->GetFixtureList(); f; f = f->GetNext()) {
-      if (f != _damage_sensor && f != _hitbox_sensor) {
-        f->SetFilterData(filter_data);
-      }
-    }
-  }
+  setSensor(true);
+  _wall_fixture->SetSensor(false);
 }
 
 void EnemyModel::resetSensors() {
-  b2Filter filter_data = getFilterData();
-  filter_data.maskBits = MASK_ENEMY;
-  if (_body != nullptr) {
-    for (b2Fixture* f = _body->GetFixtureList(); f; f = f->GetNext()) {
-      if (f != _damage_sensor && f != _hitbox_sensor) {
-        f->SetFilterData(filter_data);
-      }
-    }
-  }
+  setSensor(false);
+  _damage_sensor->SetSensor(true);
+  _hitbox_sensor->SetSensor(true);
 }
 
 void EnemyModel::update(float delta) {

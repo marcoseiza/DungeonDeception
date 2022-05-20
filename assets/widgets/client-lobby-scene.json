@@ -11,11 +11,11 @@
           "type": "Float",
           "orientation": "vertical",
           "x_alignment": "center",
-          "y_alignment": "middle"
+          "y_alignment": "top"
         },
         "data": {
-          "anchor": [ 0.5, 0.0 ],
-          "size": [ 1000, 1100 ]
+          "anchor": [0.5, 1.0],
+          "size": [1000, 1100]
         },
         "children": {
           "title": {
@@ -25,7 +25,7 @@
               "variables": {
                 "text": "LOBBY"
               },
-              "anchor": [ 0.5, 1.0 ]
+              "anchor": [0.5, 1.0]
             },
             "layout": {
               "priority": 1,
@@ -42,8 +42,8 @@
               "y_alignment": "middle"
             },
             "data": {
-              "anchor": [ 0.5, 0.5 ],
-              "size": [ 600, 50 ]
+              "anchor": [0.5, 0.5],
+              "size": [600, 50]
             },
             "children": {
               "label": {
@@ -51,15 +51,15 @@
                 "data": {
                   "key": "labelbox",
                   "variables": {
-                    "size": [ 235, 90 ],
+                    "size": [235, 90],
                     "text": "NAME:",
                     "halign": "center",
-                    "background": [ 239, 235, 227, 179 ]
+                    "background": [239, 235, 227, 179]
                   }
                 },
                 "layout": {
                   "priority": 1,
-                  "padding": [ 0, 0, 35, 0 ]
+                  "padding": [0, 0, 35, 0]
                 }
               },
               "field": {
@@ -67,11 +67,14 @@
                 "data": {
                   "key": "textfield",
                   "variables": {
-                    "size": [ 235, 90 ],
-                    "text": "runner_id",
+                    "size": [235, 90],
+                    "text": "",
                     "halign": "center",
                     "foreground": "#ffffff",
-                    "background": [ 70, 70, 70, 179 ]
+                    "background": [70, 70, 70, 179],
+                    "cursorcolor": [255, 255, 255, 255],
+                    "placeholder": "enter name",
+                    "placeholder-color": [180, 180, 180, 255]
                   }
                 },
                 "layout": {
@@ -81,21 +84,61 @@
             },
             "layout": {
               "priority": 2,
-              "padding": [ 0, 25, 0, 55 ]
+              "padding": [0, 25, 0, 55]
+            }
+          },
+          "menu-status": {
+            "type": "Node",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "size": [465, 60],
+              "anchor": [0.5, 0.5]
+            },
+            "children": {
+              "already-in-use": {
+                "type": "Widget",
+                "data": {
+                  "key": "menu-status-tooltip",
+                  "variables": {
+                    "text": "That name is already in use",
+                    "icon": "warning",
+                    "size": [480, 60]
+                  }
+                }
+              },
+              "successfully-set": {
+                "type": "Widget",
+                "data": {
+                  "key": "menu-status-tooltip",
+                  "variables": {
+                    "text": "Name successfully set",
+                    "icon": "checkmark",
+                    "size": [400, 60]
+                  }
+                }
+              }
+            },
+            "layout": {
+              "priority": 3,
+              "padding": [0, 0, 0, 25]
             }
           }
         },
         "layout": {
           "x_anchor": "center",
-          "y_anchor": "bottom"
+          "y_anchor": "top",
+          "y_offset": -48,
+          "absolute": true
         }
       },
       "back": {
         "type": "Button",
         "data": {
           "upnode": "up",
-          "anchor": [ 0.0, 0.0 ],
-          "size": [ 60, 60 ]
+          "anchor": [0.0, 0.0],
+          "size": [60, 60]
         },
         "children": {
           "up": {
@@ -118,26 +161,31 @@
       "id": {
         "type": "Label",
         "data": {
-          "size": [ 300, 70 ],
-          "text": "GAME ID: ",
-          "halign": "center",
+          "size": [240, 110],
+          "text": "GAME ID:",
+          "halign": "left",
           "font": "pixelmix",
-          "valign": "middle",
-          "foreground": "#ffffff"
+          "valign": "top",
+          "foreground": "#ffffff",
+          "background": [50, 50, 50, 100],
+          "padding": [25, 0, 0, 20]
         },
         "layout": {
           "priority": 1,
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 150,
-          "y_offset": 80
+          "x_offset": 160,
+          "y_offset": 40
         }
       },
       "game": {
         "type": "Label",
+        "format": {
+          "type": "Anchored"
+        },
         "data": {
-          "size": [ 300, 70 ],
+          "size": [320, 70],
           "text": "",
           "halign": "center",
           "font": "pixelmix",
@@ -149,19 +197,122 @@
           "x_anchor": "left",
           "y_anchor": "bottom",
           "absolute": true,
-          "x_offset": 145,
+          "x_offset": 95,
           "y_offset": 40
+        },
+        "children": {
+          "copy": {
+            "type": "Button",
+            "format": {
+              "type": "Anchored"
+            },
+            "data": {
+              "upnode": "up",
+              "anchor": [1.0, 0.5],
+              "size": [70, 70],
+              "play-click-sound": true,
+              "play-click-sound-on-down": true
+            },
+            "layout": {
+              "x_anchor": "right",
+              "y_anchor": "middle",
+              "x_offset": -15,
+              "y_offset": 20,
+              "absolute": true
+            },
+            "children": {
+              "up": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "layout": {
+                  "x_anchor": "fill",
+                  "y_anchor": "fill"
+                },
+                "children": {
+                  "image": {
+                    "type": "Image",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "texture": "copy",
+                      "scale": 3,
+                      "anchor": [0.5, 0.5]
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "middle",
+                      "y_offset": 5,
+                      "absolute": true
+                    }
+                  },
+                  "tooltip": {
+                    "type": "Label",
+                    "data": {
+                      "anchor": [0.5, 0.0],
+                      "text": "COPY",
+                      "font": "pixelmix_extra_small",
+                      "halign": "center",
+                      "valign": "bottom",
+                      "dropshadow": true,
+                      "foreground": "#ffffff"
+                    },
+                    "layout": {
+                      "x_anchor": "center",
+                      "y_anchor": "bottom",
+                      "absolute": true
+                    }
+                  }
+                }
+              },
+              "tooltip-wrapper": {
+                "type": "Node",
+                "format": {
+                  "type": "Anchored"
+                },
+                "data": {
+                  "size": [105, 30],
+                  "anchor": [0.5, 1.0]
+                },
+                "children": {
+                  "copied": {
+                    "type": "Widget",
+                    "data": {
+                      "key": "menu-status-tooltip",
+                      "variables": {
+                        "text": "Copied!",
+                        "font": "pixelmix_small_tooltip",
+                        "icon": "",
+                        "icon-visible": false,
+                        "icon-padding": [0, 0, 0, 0],
+                        "size": [105, 30]
+                      }
+                    }
+                  }
+                },
+                "layout": {
+                  "x_anchor": "center",
+                  "y_anchor": "bottom",
+                  "y_offset": -10,
+                  "absolute": true
+                }
+              }
+            }
+          }
         }
       },
       "countdown": {
         "type": "Label",
         "data": {
-          "size": [ 170, 70 ],
+          "size": [170, 70],
           "text": "WAITING",
           "halign": "center",
           "font": "pixelmix",
           "valign": "middle",
-          "foreground": "#ffffff"
+          "foreground": "#ffffff",
+          "background": [50, 50, 50, 100]
         },
         "layout": {
           "priority": 2,
@@ -173,16 +324,14 @@
         }
       },
       "players": {
-        "type": "Node",
+        "type": "Polygon",
         "format": {
-          "type": "Float",
-          "orientation": "horizontal",
-          "x_alignment": "center",
-          "y_alignment": "middle"
+          "type": "Anchored"
         },
         "data": {
-          "anchor": [ 0.5, 0.5 ],
-          "size": [ 300, 70 ]
+          "anchor": [0.5, 0.5],
+          "size": [120, 70],
+          "color": [50, 50, 50, 100]
         },
         "children": {
           "icon": {
@@ -191,30 +340,35 @@
               "type": "Anchored"
             },
             "data": {
-              "texture": "player-cropped",
-              "anchor": [ 0.5, 0.5 ],
-              "scale": 1.5
+              "texture": "player-head-1",
+              "anchor": [0, 0.5],
+              "scale": 1.5,
+              "has-parent-color": false
             },
             "layout": {
               "x_anchor": "left",
-              "y_anchor": "top",
-              "priority": 1
+              "y_anchor": "middle",
+              "x_offset": 10,
+              "absolute": true
             }
           },
           "field": {
             "type": "Label",
             "data": {
               "font": "pixelmix",
-              "size": [ 40, 70 ],
+              "size": [50, 70],
+              "anchor": [1.0, 0.5],
               "text": ": 1",
               "halign": "center",
               "valign": "middle",
-              "foreground": "#ffffff"
+              "foreground": "#ffffff",
+              "has-parent-color": false
             },
             "layout": {
-              "priority": 2,
-              "x_anchor": "fill",
-              "y_anchor": "fill"
+              "x_anchor": "right",
+              "y_anchor": "middle",
+              "x_offset": -10,
+              "absolute": true
             }
           }
         },

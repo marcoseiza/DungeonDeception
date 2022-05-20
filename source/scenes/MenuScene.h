@@ -19,6 +19,8 @@ class MenuScene : public cugl::Scene2 {
     HOST,
     /** User wants to join a game */
     JOIN,
+    /** User wants to see how to play */
+    HTP,
   };
 
  protected:
@@ -28,6 +30,8 @@ class MenuScene : public cugl::Scene2 {
   std::shared_ptr<cugl::scene2::Button> _hostbutton;
   /** The menu button for joining a game */
   std::shared_ptr<cugl::scene2::Button> _joinbutton;
+  /** The menu button for how to play */
+  std::shared_ptr<cugl::scene2::Button> _htpbutton;
   /** Reference to the cloud layer scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _cloud_layer;
   /** The x position of the cloud. */

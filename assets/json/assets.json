@@ -70,8 +70,113 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "player": {
-      "file": "textures/player.png",
+    "player-1": {
+      "file": "textures/player/player-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-2": {
+      "file": "textures/player/player-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-3": {
+      "file": "textures/player/player-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-4": {
+      "file": "textures/player/player-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-5": {
+      "file": "textures/player/player-5.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-6": {
+      "file": "textures/player/player-6.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-7": {
+      "file": "textures/player/player-7.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-8": {
+      "file": "textures/player/player-8.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-1": {
+      "file": "textures/player/player-head-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-2": {
+      "file": "textures/player/player-head-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-3": {
+      "file": "textures/player/player-head-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-4": {
+      "file": "textures/player/player-head-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-5": {
+      "file": "textures/player/player-head-5.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-6": {
+      "file": "textures/player/player-head-6.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-7": {
+      "file": "textures/player/player-head-7.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "player-head-8": {
+      "file": "textures/player/player-head-8.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -156,6 +261,13 @@
     },
     "left": {
       "file": "textures/left_arrow.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "right": {
+      "file": "textures/right_arrow.png",
       "minfilter": "nearest",
       "magfilter": "nearest",
       "wrapS": "clamp",
@@ -294,13 +406,6 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
-    "player-cropped": {
-      "file": "textures/player-cropped.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
     "settings": {
       "file": "textures/settings.png",
       "minfilter": "nearest",
@@ -328,7 +433,64 @@
       "magfilter": "nearest",
       "wrapS": "clamp",
       "wrapT": "clamp"
+    },
+    "runner-info": {
+      "file": "textures/how-to-play-1.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "runner-ui-info": {
+      "file": "textures/how-to-play-2.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-info": {
+      "file": "textures/how-to-play-3.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "betrayer-ui-info": {
+      "file": "textures/how-to-play-4.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "copy": {
+      "file": "textures/ui/copy.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "warning": {
+      "file": "textures/ui/warning.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "erase": {
+      "file": "textures/ui/erase.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "checkmark": {
+      "file": "textures/ui/checkmark.png",
+      "minfilter": "nearest",
+      "magfilter": "nearest",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
     }
+
   },
   "jsons": {
     "server": "json/server.json"
@@ -350,6 +512,7 @@
     "textfield": "widgets/textfield.json",
     "labelbox": "widgets/labelbox.json",
     "menu": "widgets/menu.json",
+    "how-to-play": "widgets/how-to-play.json",
     "client": "widgets/client.json",
     "host": "widgets/host.json",
     "client-lobby-scene": "widgets/client-lobby-scene.json",
@@ -357,7 +520,8 @@
     "menutitle": "widgets/menutitle.json",
     "settings": "widgets/settings.json",
     "keypad": "widgets/keypad.json",
-    "keypad-button": "widgets/keypad-button.json"
+    "keypad-button": "widgets/keypad-button.json",
+    "menu-status-tooltip": "widgets/menu-status-tooltip.json"
   },
   "scene2s": {
     "background": {
@@ -368,6 +532,13 @@
       }
     },
     "background-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "background-menu",
+        "variables": {}
+      }
+    },
+    "background-htp": {
       "type": "Widget",
       "data": {
         "key": "background-menu",
@@ -410,6 +581,13 @@
       }
     },
     "clouds-menu": {
+      "type": "Widget",
+      "data": {
+        "key": "clouds-menu",
+        "variables": {}
+      }
+    },
+    "clouds-htp": {
       "type": "Widget",
       "data": {
         "key": "clouds-menu",
@@ -462,6 +640,13 @@
       "type": "Widget",
       "data": {
         "key": "ui-scene",
+        "variables": {}
+      }
+    },
+    "how-to-play": {
+      "type": "Widget",
+      "data": {
+        "key": "how-to-play",
         "variables": {}
       }
     },
@@ -528,13 +713,13 @@
           "data": {
             "texture": "logo_title",
             "anchor": [ 0.5, 0.5 ],
-            "scale": 1.2
+            "scale": 0.6
           },
           "layout": {
             "priority": 1,
             "x_alignment": "center",
             "y_alignment": "top",
-            "padding": [ 0, 0, 0, 50 ]
+            "padding": [0, 0, 0, 50]
           }
         },
         "play": {
@@ -546,8 +731,8 @@
             "y_alignment": "middle"
           },
           "data": {
-            "anchor": [ 0.5, 0.5 ],
-            "size": [ 600, 80 ]
+            "anchor": [0.5, 0.5],
+            "size": [600, 80]
           },
           "children": {
             "host": {
@@ -555,14 +740,14 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 260, 80 ],
+                  "size": [260, 80],
                   "text": "HOST",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 25, 0 ]
+                "padding": [0, 0, 25, 0]
               }
             },
             "join": {
@@ -570,20 +755,20 @@
               "data": {
                 "key": "textbutton",
                 "variables": {
-                  "size": [ 260, 80 ],
+                  "size": [260, 80],
                   "text": "JOIN",
                   "color": "#efebe3"
                 }
               },
               "layout": {
                 "priority": 1,
-                "padding": [ 0, 0, 0, 0 ]
+                "padding": [0, 0, 0, 0]
               }
             }
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 50, 0, 40 ]
+            "padding": [0, 50, 0, 40]
           }
         },
         "instructions": {
@@ -591,7 +776,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 260, 60 ],
+              "size": [260, 60],
               "text": "HOW TO PLAY",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -599,7 +784,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 30, 0, 0 ]
+            "padding": [0, 30, 0, 0]
           }
         },
         "settings": {
@@ -607,7 +792,7 @@
           "data": {
             "key": "textbutton",
             "variables": {
-              "size": [ 220, 60 ],
+              "size": [220, 60],
               "text": "SETTINGS",
               "font": "pixelmix_small",
               "color": "#efebe3"
@@ -615,7 +800,7 @@
           },
           "layout": {
             "priority": 1,
-            "padding": [ 0, 115, 0, 0 ]
+            "padding": [0, 115, 0, 0]
           }
         }
       }
@@ -629,7 +814,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0, 1.0 ],
+            "anchor": [0, 1.0],
             "background": "health-bar",
             "foreground": "health-fill"
           },
@@ -647,7 +832,7 @@
           },
           "data": {
             "texture": "health-outline",
-            "anchor": [ 0, 1.0 ]
+            "anchor": [0, 1.0]
           },
           "layout": {
             "x_anchor": "left",
@@ -667,7 +852,7 @@
         "bar": {
           "type": "Progress",
           "data": {
-            "anchor": [ 0.0, 1.0 ],
+            "anchor": [0.0, 1.0],
             "background": "energy-bar",
             "foreground": "energy-fill"
           },
@@ -685,7 +870,7 @@
           },
           "data": {
             "texture": "energy-outline",
-            "anchor": [ 0.0, 1.0 ]
+            "anchor": [0.0, 1.0]
           },
           "layout": {
             "x_anchor": "left",
@@ -713,6 +898,10 @@
     "pixelmix_medium": {
       "file": "fonts/pixelmix.ttf",
       "size": 20
+    },
+    "pixelmix_small_tooltip": {
+      "file": "fonts/pixelmix.ttf",
+      "size": 18
     },
     "pixelmix_small": {
       "file": "fonts/pixelmix.ttf",

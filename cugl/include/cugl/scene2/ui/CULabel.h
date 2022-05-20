@@ -609,7 +609,7 @@ public:
      *
      * @return the text for this label.
      */
-    const std::string& getText() const;
+    virtual const std::string& getText() const;
     
     /**
      * Sets the text for this label.

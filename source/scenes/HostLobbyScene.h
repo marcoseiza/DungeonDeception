@@ -12,12 +12,23 @@
  */
 class HostLobbyScene : public PeerLobbyScene {
  protected:
-  /** The serializer used to serialize complex data to send through the network.
-   */
-  cugl::NetworkSerializer _serializer;
-
   /** The button used the start the game */
   std::shared_ptr<cugl::scene2::Button> _startgame;
+
+  /** Tooltip for when all names have been submitted. */
+  std::shared_ptr<cugl::scene2::SceneNode> _names_success;
+  /** Tooltip for when not all names have been submitted. */
+  std::shared_ptr<cugl::scene2::SceneNode> _names_waiting;
+  /** Tooltip for when name is already in use. */
+  std::shared_ptr<cugl::scene2::SceneNode> _names_in_use;
+  /** Tooltip for when name is set. */
+  std::shared_ptr<cugl::scene2::SceneNode> _names_set;
+
+  /** A map from the player id to the name. */
+  std::unordered_map<int, std::string> _player_id_to_name;
+
+  /** The number of players in the game. */
+  int _num_of_players;
 
  public:
 #pragma mark -
@@ -87,6 +98,28 @@ class HostLobbyScene : public PeerLobbyScene {
   virtual void processData(const std::vector<uint8_t>& data) override;
 
   /**
+   * Send submitted player name over the network.
+   * @param name The name to send.
+   */
+  void sendPlayerName(const std::string& name) override;
+
+  /**
+   * Process the received player name
+   *
+   * Returns:
+   * HOST_ACCEPT_PLAYER_NAME
+   * HOST_DENY_PLAYER_NAME
+   * HOST_REMOVE_PLAYER_NAME
+   * HOST_NAME_NO_OP
+   *
+   * @param player_id The player id.
+   * @param name The name received.
+   * @return The code for accept, deny, or remove.
+   */
+  HostResponse processReceivedPlayerName(const int player_id,
+                                         const std::string& name);
+
+  /**
    * Starts the game.
    */
   void startGame();
@@ -98,6 +131,14 @@ class HostLobbyScene : public PeerLobbyScene {
    * Assignment algorithm assumes that the number of betrayers is [1, 2].
    */
   void determineAndSendRoles();
+
+  /**
+   * Determine the colors of all the players before the game starts.
+   * Afterwards, send the color to the clients.
+   *
+   * Assignment algorithm assumes that the number of player is [1, 8].
+   */
+  void determineAndSendColors();
 };
 
 #endif /* SCENES_HOST_LOBBY_SCENE_H_ */

@@ -168,6 +168,18 @@ protected:
     /** A timer to safely implement key hold-downs */
     size_t _keyCount;
 
+    /** The placeholder text for this text field. */
+    std::string _placeholder;
+    /** As getText returns a string by reference, we must store a variable to 
+     * return when the placeholder is currently active. */
+    const std::string _placeholder_return_text;
+    /** If the placeholder is currenlty in use. */
+    bool _place_holder_is_active;
+    /** Placeholder color. */
+    Color4 _placeholder_color;
+    /** The previous foreground color, used for placeholders. */
+    Color4 _foreground_prev;
+
 public:
 #pragma mark -
 #pragma mark Constructors
@@ -609,6 +621,24 @@ public:
      * @param resize    Whether to resize the label to fit the new text.
      */
     virtual void setText(const std::string& text, bool resize=false) override;
+
+    /**
+     * Returns the text for this label.
+     *
+     * The string will be in either ASCII or UTF8 format. No other string
+     * encodings are supported.  As all ASCII strings are also UTF8, you can
+     * this effectively means that the text must be UTF8.
+     *
+     * If the font is missing glyphs in this string, the characters in the text 
+     * may be different than those displayed. Furthermore, if this label has no
+     * font, then the text will not display at all.
+     *
+     * @return the text for this label.
+     */
+    virtual const std::string& getText() const override {
+        if (!_place_holder_is_active) return Label::getText();
+        return _placeholder_return_text;
+    }
     
     /**
      * Activates this text field to enable editing.
@@ -690,6 +720,23 @@ public:
      * @return true if this text field has focus.
      */
     bool hasFocus() const { return _focused; }
+
+    /**
+     * Sets the placeholder text for this label.
+     *
+     * The string must be in either ASCII or UTF8 format. No other string
+     * encodings are supported.  As all ASCII strings are also UTF8, you can
+     * this effectively means that the text must be UTF8.
+     *
+     * If the font is missing glyphs in this string, the characters in the text
+     * may be different than those displayed. Furthermore, if this label has no
+     * font, then the text will not display at all.
+     *
+     * @param text      The placeholder text for this label.
+     */
+    virtual void setPlaceholder(const std::string& text) {
+        _placeholder = text;
+    }
     
 #pragma mark -
 #pragma mark Cursor Managment
@@ -973,7 +1020,15 @@ protected:
      */
     void invokeListeners(bool exit);
 
-    
+    /**
+     * Replaces the current text with the placeholder text.
+     */
+    void placePlaceholder();
+
+    /**
+     * Replaces the placeholder text with a blank slate.
+     */
+    void clearPlaceholder();
 
 };
 	}

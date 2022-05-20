@@ -3,7 +3,10 @@
 #include <cugl/cugl.h>
 
 #include <iostream>
+#include <regex>
 #include <sstream>
+
+#include "../models/tiles/TileHelper.h"
 
 #pragma mark -
 #pragma mark Level Layout
@@ -46,6 +49,21 @@ bool ClientMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _gameid = std::dynamic_pointer_cast<cugl::scene2::Label>(
       _assets->get<cugl::scene2::SceneNode>(
           "client_center_content_info_game_field_text"));
+  _clipboard = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>(
+          "client_center_content_info_game_paste"));
+  _paste_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client_center_content_info_game_paste_tooltip-wrapper_pasted");
+  _cannot_paste_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client_center_content_info_game_paste_tooltip-wrapper_cannot-paste");
+  _paste_tooltip->setVisible(false);
+
+  _join_success_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client_center_content_info_menu-status_success");
+  _join_error_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client_center_content_info_menu-status_error");
+  _no_wifi_tooltip = _assets->get<cugl::scene2::SceneNode>(
+      "client_center_content_info_menu-status_no-wifi");
 
   for (int i = 0; i <= 9; i++) {
     std::string key = "client_center_content_keys_" + to_string(i);
@@ -56,9 +74,27 @@ bool ClientMenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   }
 
   _x_button = std::dynamic_pointer_cast<cugl::scene2::Button>(
-      _assets->get<cugl::scene2::SceneNode>("client_center_content_keys_x"));
+      _assets->get<cugl::scene2::SceneNode>(
+          "client_center_content_keys_x_button"));
 
   _status = Status::IDLE;
+
+  _paste_tooltip_lifetime = 0;
+  _clipboard->addListener([this](const std::string& name, bool down) {
+    if (down && SDL_HasClipboardText()) {
+      const char* clip = SDL_GetClipboardText();
+      std::string text(clip);
+      const std::regex rgx("\\d{5}");
+      if (std::regex_match(text, rgx)) {
+        _gameid->setText(text);
+        _paste_tooltip->setVisible(true);
+        _paste_tooltip_lifetime = 0;
+      } else {
+        _cannot_paste_tooltip->setVisible(true);
+        _paste_tooltip_lifetime = 0;
+      }
+    }
+  });
 
   _backout->addListener([this](const std::string& name, bool down) {
     if (down) {
@@ -129,9 +165,19 @@ void ClientMenuScene::setActive(bool value) {
     Scene2::setActive(value);
     if (value) {
       _cloud_layer->setPositionX(_cloud_x_pos);
+      _move_to_lobby = false;
       _status = IDLE;
       _backout->activate();
       _x_button->activate();
+      _clipboard->activate();
+      _join_success_tooltip->setVisible(false);
+      _join_error_tooltip->setVisible(false);
+      _no_wifi_tooltip->setVisible(false);
+      _gameid->setText("");
+
+      _paste_tooltip->setVisible(false);
+      _paste_tooltip_lifetime = 0;
+
       for (int i = 0; i < _keypad_buttons.size(); i++) {
         std::shared_ptr<cugl::scene2::Button> button = _keypad_buttons[i];
         button->activate();
@@ -141,9 +187,17 @@ void ClientMenuScene::setActive(bool value) {
       configureStartButton();
       // Don't reset the room id
     } else {
+      _move_to_lobby = false;
       _startgame->deactivate();
       _backout->deactivate();
       _x_button->deactivate();
+      _clipboard->deactivate();
+      _join_success_tooltip->setVisible(false);
+      _join_error_tooltip->setVisible(false);
+      _no_wifi_tooltip->setVisible(false);
+      _startgame->setContentSize(300, 90);
+      _startgame->getParent()->doLayout();
+
       for (int i = 0; i < _keypad_buttons.size(); i++) {
         std::shared_ptr<cugl::scene2::Button> button = _keypad_buttons[i];
         button->deactivate();
@@ -153,6 +207,7 @@ void ClientMenuScene::setActive(bool value) {
       _startgame->setDown(false);
       _backout->setDown(false);
       _x_button->setDown(false);
+      _clipboard->setDown(false);
 
       for (int i = 0; i < _keypad_buttons.size(); i++) {
         std::shared_ptr<cugl::scene2::Button> button = _keypad_buttons[i];
@@ -185,12 +240,29 @@ void ClientMenuScene::update(float timestep) {
     _cloud_x_pos = CLOUD_WRAP;
   }
   _cloud_layer->setPositionX(_cloud_x_pos);
+
+  if (_paste_tooltip->isVisible() || _cannot_paste_tooltip->isVisible()) {
+    _paste_tooltip_lifetime += timestep;
+    if (_paste_tooltip_lifetime >= 1.0f /* seconds */) {
+      _paste_tooltip->setVisible(false);
+      _cannot_paste_tooltip->setVisible(false);
+    }
+  }
 }
 
-void ClientMenuScene::processData(const std::vector<uint8_t>& data){};
+void ClientMenuScene::processData(const std::vector<uint8_t>& data) {
+  _deserializer.receive(data);
+  Sint32 code = std::get<Sint32>(_deserializer.read());
+  if (code == HOST_SEND_THAT_LOBBY_IS_OPEN) _move_to_lobby = true;
+};
 
 bool ClientMenuScene::connect(const std::string room) {
   _network = cugl::NetworkConnection::alloc(_config, room);
+
+  _join_success_tooltip->setVisible(false);
+  _join_error_tooltip->setVisible(false);
+  _no_wifi_tooltip->setVisible(false);
+
   return checkConnection();
 }
 
@@ -201,12 +273,14 @@ bool ClientMenuScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::Connected:
       _status = WAIT;
+      _join_success_tooltip->setVisible(true);
       break;
     case cugl::NetworkConnection::NetStatus::Reconnecting:
       _status = JOIN;
       break;
     case cugl::NetworkConnection::NetStatus::RoomNotFound:
       disconnect();
+      _join_error_tooltip->setVisible(true);
       _status = IDLE;
       break;
     case cugl::NetworkConnection::NetStatus::ApiMismatch:
@@ -215,6 +289,12 @@ bool ClientMenuScene::checkConnection() {
       break;
     case cugl::NetworkConnection::NetStatus::GenericError:
       disconnect();
+      _join_error_tooltip->setVisible(true);
+      _status = IDLE;
+      break;
+    case cugl::NetworkConnection::NetStatus::NoInternetError:
+      disconnect();
+      _no_wifi_tooltip->setVisible(true);
       _status = IDLE;
       break;
     case cugl::NetworkConnection::NetStatus::Disconnected:
@@ -231,8 +311,13 @@ void ClientMenuScene::configureStartButton() {
     updateText(_startgame, "JOIN LOBBY");
   } else if (_status == Status::JOIN) {
     _startgame->deactivate();
+    _startgame->setDown(false);
     updateText(_startgame, "...");
   } else if (_status == Status::WAIT) {
-    updateText(_startgame, "WAIT");
+    _startgame->deactivate();
+    _startgame->setDown(false);
+    updateText(_startgame, "WAITING ON HOST");
+    _startgame->setContentWidth(360);
+    _startgame->getParent()->doLayout();
   }
 }

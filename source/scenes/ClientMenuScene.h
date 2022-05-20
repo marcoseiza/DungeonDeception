@@ -19,6 +19,23 @@ class ClientMenuScene : public PeerScene {
   /** The x button on the keypad. */
   std::shared_ptr<cugl::scene2::Button> _x_button;
 
+  /** A reference to the game found tooltip. */
+  std::shared_ptr<cugl::scene2::SceneNode> _join_success_tooltip;
+  /** A reference to the game not found or full tooltip. */
+  std::shared_ptr<cugl::scene2::SceneNode> _join_error_tooltip;
+  /** A reference to the no wifi tooltip. */
+  std::shared_ptr<cugl::scene2::SceneNode> _no_wifi_tooltip;
+
+  /** A tooltip for when the player pastes the game id. */
+  std::shared_ptr<cugl::scene2::SceneNode> _paste_tooltip;
+  /** A tooltip for when the player was unsuccessful in pasting. */
+  std::shared_ptr<cugl::scene2::SceneNode> _cannot_paste_tooltip;
+  /** The lifetime of this tooltip. */
+  float _paste_tooltip_lifetime;
+
+  /** Wether client should move to lobby. */
+  bool _move_to_lobby;
+
  public:
 #pragma mark -
 #pragma mark Constructors
@@ -59,6 +76,11 @@ class ClientMenuScene : public PeerScene {
    * @param timestep  The amount of time (in seconds) since the last frame
    */
   virtual void update(float timestep) override;
+
+  /**
+   * @return Wether this client should move to lobby scene.
+   */
+  bool shouldMoveToLobby() { return _move_to_lobby; }
 
  private:
   /**

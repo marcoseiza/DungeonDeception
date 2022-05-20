@@ -38,6 +38,8 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       _assets->get<cugl::scene2::SceneNode>("menu_play_host"));
   _joinbutton = std::dynamic_pointer_cast<cugl::scene2::Button>(
       _assets->get<cugl::scene2::SceneNode>("menu_play_join"));
+  _htpbutton = std::dynamic_pointer_cast<cugl::scene2::Button>(
+      _assets->get<cugl::scene2::SceneNode>("menu_instructions"));
 
   // handle background and cloud layers
   auto background_layer =
@@ -57,6 +59,9 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _joinbutton->addListener([this](const std::string& name, bool down) {
     if (down) _choice = Choice::JOIN;
   });
+  _htpbutton->addListener([this](const std::string& name, bool down) {
+    if (down) _choice = Choice::HTP;
+  });
 
   addChild(background_layer);
   addChild(_cloud_layer);
@@ -65,6 +70,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _choice = NONE;
   _hostbutton->activate();
   _joinbutton->activate();
+  _htpbutton->activate();
 
   return true;
 }
@@ -84,11 +90,13 @@ void MenuScene::dispose() {
   removeAllChildren();
   _hostbutton->deactivate();
   _joinbutton->deactivate();
+  _htpbutton->deactivate();
   _cloud_layer->dispose();
   _cloud_layer = nullptr;
   // If any were pressed, reset them.
   _hostbutton->setDown(false);
   _joinbutton->setDown(false);
+  _htpbutton->setDown(false);
 }
 
 /**
@@ -108,12 +116,15 @@ void MenuScene::setActive(bool value) {
       _hostbutton->activate();
       _joinbutton->activate();
       _cloud_layer->setPositionX(_cloud_x_pos);
+      _htpbutton->activate();
     } else {
       _hostbutton->deactivate();
       _joinbutton->deactivate();
+      _htpbutton->deactivate();
       // If any were pressed, reset them
       _hostbutton->setDown(false);
       _joinbutton->setDown(false);
+      _htpbutton->setDown(false);
     }
   }
 }

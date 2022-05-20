@@ -14,8 +14,8 @@
           "y_alignment": "middle"
         },
         "data": {
-          "anchor": [ 0.5, 0.0 ],
-          "size": [ 1000, 930 ]
+          "anchor": [0.5, 0.0],
+          "size": [1000, 930]
         },
         "children": {
           "title": {
@@ -25,12 +25,12 @@
               "variables": {
                 "text": "JOIN GAME"
               },
-              "anchor": [ 0.5, 1.0 ]
+              "anchor": [0.5, 1.0]
             },
             "layout": {
               "x_anchor": "center",
               "y_anchor": "top",
-              "padding": [ 0, 25, 0, 225 ]
+              "padding": [0, 25, 0, 225]
             }
           },
           "content": {
@@ -42,15 +42,15 @@
               "y_alignment": "bottom"
             },
             "data": {
-              "anchor": [ 0.5, 0.0 ],
-              "size": [ 1000, 500 ]
+              "anchor": [0.5, 0.0],
+              "size": [1000, 500]
             },
             "children": {
               "keys": {
                 "type": "Widget",
                 "data": {
                   "key": "keypad",
-                  "size": [ 500, 500 ]
+                  "size": [500, 500]
                 },
                 "layout": {
                   "priority": 1
@@ -62,24 +62,21 @@
                   "type": "Float",
                   "orientation": "vertical",
                   "x_alignment": "center",
-                  "y_alignment": "middle"
+                  "y_alignment": "top"
                 },
                 "data": {
-                  "anchor": [ 0.5, 0.0 ],
-                  "size": [ 500, 500 ]
+                  "anchor": [0.5, 0.0],
+                  "size": [500, 440]
                 },
                 "children": {
                   "game": {
                     "type": "Node",
                     "format": {
-                      "type": "Float",
-                      "orientation": "horizontal",
-                      "x_alignment": "center",
-                      "y_alignment": "bottom"
+                      "type": "Anchored"
                     },
                     "data": {
-                      "anchor": [ 0.5, 0.5 ],
-                      "size": [ 550, 100 ]
+                      "anchor": [0.5, 0.5],
+                      "size": [465, 100]
                     },
                     "children": {
                       "label": {
@@ -87,15 +84,16 @@
                         "data": {
                           "key": "labelbox",
                           "variables": {
-                            "size": [ 220, 90 ],
+                            "anchor": [0, 0.5],
+                            "size": [220, 90],
                             "text": "GAME ID:",
                             "halign": "center",
-                            "background": [ 239, 235, 227, 179 ]
+                            "background": [239, 235, 227, 179]
                           }
                         },
                         "layout": {
-                          "priority": 1,
-                          "padding": [ 0, 0, 25, 0 ]
+                          "x_anchor": "left",
+                          "y_anchor": "middle"
                         }
                       },
                       "field": {
@@ -103,21 +101,134 @@
                         "data": {
                           "key": "labelbox",
                           "variables": {
-                            "size": [ 220, 90 ],
+                            "size": [220, 90],
+                            "anchor": [1.0, 0.5],
                             "text": "",
-                            "halign": "center",
+                            "padding": [40, 20, 20, 20],
                             "foreground": "#ffffff",
-                            "background": [ 70, 70, 70, 179 ]
+                            "background": [70, 70, 70, 179]
                           }
                         },
                         "layout": {
-                          "priority": 2
+                          "x_anchor": "right",
+                          "y_anchor": "middle"
+                        }
+                      },
+                      "paste": {
+                        "type": "Button",
+                        "format": {
+                          "type": "Anchored"
+                        },
+                        "data": {
+                          "upnode": "up",
+                          "anchor": [1.0, 0.5],
+                          "size": [70, 70],
+                          "play-click-sound": true,
+                          "play-click-sound-on-down": true
+                        },
+                        "layout": {
+                          "x_anchor": "right",
+                          "y_anchor": "middle"
+                        },
+                        "children": {
+                          "up": {
+                            "type": "Node",
+                            "format": {
+                              "type": "Anchored"
+                            },
+                            "layout": {
+                              "x_anchor": "fill",
+                              "y_anchor": "fill"
+                            },
+                            "children": {
+                              "image": {
+                                "type": "Image",
+                                "format": {
+                                  "type": "Anchored"
+                                },
+                                "data": {
+                                  "texture": "copy",
+                                  "scale": 3,
+                                  "anchor": [0.5, 0.5]
+                                },
+                                "layout": {
+                                  "x_anchor": "center",
+                                  "y_anchor": "middle",
+                                  "y_offset": 5,
+                                  "absolute": true
+                                }
+                              },
+                              "tooltip": {
+                                "type": "Label",
+                                "data": {
+                                  "anchor": [0.5, 0.0],
+                                  "text": "PASTE",
+                                  "font": "pixelmix_extra_small",
+                                  "halign": "center",
+                                  "valign": "bottom",
+                                  "dropshadow": true,
+                                  "foreground": "#ffffff"
+                                },
+                                "layout": {
+                                  "x_anchor": "center",
+                                  "y_anchor": "bottom",
+                                  "absolute": true
+                                }
+                              }
+                            }
+                          },
+                          "tooltip-wrapper": {
+                            "type": "Node",
+                            "format": {
+                              "type": "Anchored"
+                            },
+                            "data": {
+                              "size": [105, 30],
+                              "anchor": [0.5, 1.0]
+                            },
+                            "children": {
+                              "pasted": {
+                                "type": "Widget",
+                                "data": {
+                                  "key": "menu-status-tooltip",
+                                  "variables": {
+                                    "text": "Pasted!",
+                                    "font": "pixelmix_small_tooltip",
+                                    "icon": "",
+                                    "icon-visible": false,
+                                    "icon-padding": [0, 0, 0, 0],
+                                    "size": [105, 30]
+                                  }
+                                }
+                              },
+                              "cannot-paste": {
+                                "type": "Widget",
+                                "data": {
+                                  "key": "menu-status-tooltip",
+                                  "variables": {
+                                    "text": "Cannot paste :(",
+                                    "font": "pixelmix_small_tooltip",
+                                    "icon": "",
+                                    "icon-visible": false,
+                                    "icon-padding": [0, 0, 0, 0],
+                                    "size": [220, 30]
+                                  }
+                                }
+                              }
+                            },
+                            "layout": {
+                              "x_anchor": "center",
+                              "y_anchor": "bottom",
+                              "y_offset": -20,
+                              "absolute": true
+                            }
+                          }
                         }
                       }
                     },
                     "layout": {
                       "priority": 1,
-                      "padding": [ 50, 0, 0, 0 ]
+                      "padding": [50, 0, 0, 0]
                     }
                   },
                   "start": {
@@ -125,23 +236,71 @@
                     "data": {
                       "key": "textbutton",
                       "variables": {
-                        "size": [ 300, 90 ],
+                        "size": [300, 90],
                         "text": "JOIN LOBBY",
                         "font": "pixelmix",
                         "color": "#efebe3"
                       }
                     },
                     "layout": {
+                      "priority": 2,
+                      "padding": [50, 0, 0, 50]
+                    }
+                  },
+                  "menu-status": {
+                    "type": "Node",
+                    "format": {
+                      "type": "Anchored"
+                    },
+                    "data": {
+                      "size": [465, 60],
+                      "anchor": [0.5, 0.5]
+                    },
+                    "children": {
+                      "success": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "menu-status-tooltip",
+                          "variables": {
+                            "text": "Game found",
+                            "icon": "checkmark",
+                            "size": [300, 60]
+                          }
+                        }
+                      },
+                      "error": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "menu-status-tooltip",
+                          "variables": {
+                            "text": "Game not found or is full",
+                            "icon": "warning",
+                            "size": [465, 60]
+                          }
+                        }
+                      },
+                      "no-wifi": {
+                        "type": "Widget",
+                        "data": {
+                          "key": "menu-status-tooltip",
+                          "variables": {
+                            "text": "Please check internet connection",
+                            "icon": "warning",
+                            "size": [530, 60]
+                          }
+                        }
+                      }
+                    },
+                    "layout": {
                       "priority": 3,
-                      "padding": [ 50, 25, 0, 50 ]
+                      "padding": [50, 0, 0, 25]
                     }
                   }
-
                 },
                 "layout": {
                   "x_anchor": "center",
                   "y_anchor": "bottom",
-                  "padding": [ 0, 70, 0, 0 ]
+                  "padding": [0, 0, 0, 0]
                 }
               }
             },
@@ -154,15 +313,15 @@
         "layout": {
           "x_anchor": "center",
           "y_anchor": "bottom",
-          "padding": [ 0, 50, 0, 0 ]
+          "padding": [0, 50, 0, 0]
         }
       },
       "back": {
         "type": "Button",
         "data": {
           "upnode": "up",
-          "anchor": [ 0.0, 0.0 ],
-          "size": [ 60, 60 ]
+          "anchor": [0.0, 0.0],
+          "size": [60, 60]
         },
         "children": {
           "up": {

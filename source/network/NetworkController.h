@@ -47,6 +47,8 @@ class NetworkController {
 
   bool _is_host;
 
+  std::function<void(void)> _disconnect_listener;
+
  public:
   /**
    * @return Singelton instance of NetworkController
@@ -90,7 +92,7 @@ class NetworkController {
    * controller. Since the network controller is a smart pointer, it is only
    * fully disconnected when ALL scenes have been disconnected.
    */
-  void disconnect() { _network = nullptr; }
+  void disconnect();
 
   /**
    * Checks that the network connection is still active.
@@ -118,6 +120,20 @@ class NetworkController {
    * @return If the listener was successfully removed.
    */
   bool removeListener(Uint32 key);
+
+  /**
+   * Add a listener to when the network controller disconnects.
+   *
+   * @param listener The listener to add.
+   */
+  void setDisconnectListener(std::function<void(void)> listener) {
+    _disconnect_listener = listener;
+  }
+
+  /**
+   * Remove the disconnect listener to when the network controller disconnects.
+   */
+  void clearDisconnectListener() { _disconnect_listener = nullptr; }
 
   /**
    * Sends a byte array to all other players.

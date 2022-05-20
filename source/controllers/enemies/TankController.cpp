@@ -8,6 +8,8 @@
 #define ATTACK_COOLDOWN 120
 #define MOVE_BACK_COOLDOWN 60
 #define WANDER_COOLDOWN 500
+#define MAX_ATTACK_FRAME 69
+#define MIN_ATTACK_FRAME 30
 
 #define STATE_CHANGE_LIM 10
 
@@ -30,9 +32,9 @@ void TankController::clientUpdateAttackPlayer(std::shared_ptr<EnemyModel> enemy)
     // Begin holding.
     enemy->setAttackCooldown(STOP_ATTACK_FRAMES);
     enemy->setAttack(false);
-  } else if (enemy->getAttackCooldown() >= 0 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
+  } else if (enemy->getAttackCooldown() >= -5 && enemy->getAttackCooldown() != ATTACK_COOLDOWN - 1) {
     // Whether the enemy is attacking
-    if (enemy->getAttackCooldown() == 0) {
+    if (enemy->getAttackCooldown() == -5) {
       // Attack done.
       enemy->resetSensors();
       enemy->setAttackCooldown(ATTACK_COOLDOWN);
@@ -55,7 +57,7 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     enemy->resetSensors();
   } else if (enemy->getAttackCooldown() < ATTACK_FRAMES) {
     // Currently attacking player.
-    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getPosition();
+    cugl::Vec2 dir = enemy->getAttackDir() - enemy->getAttackInitPos();
     dir.normalize();
     dir.scale(3.5);
     enemy->move(dir.x, dir.y);
@@ -70,13 +72,14 @@ void TankController::attackPlayer(std::shared_ptr<EnemyModel> enemy,
     // Determine attack position.
     enemy->setAttack(true);
     enemy->setAttackDir(p);
+    enemy->setAttackInitPos(enemy->getPosition());
   } else {
     // Circle the player.
     enemy->setAttackDir(p);
     cugl::Vec2 diff = cugl::Vec2(enemy->getVX(), enemy->getVY());
     diff.normalize();
     diff.add(_direction);
-    diff.scale(0.6 * enemy->getSpeed());
+    diff.scale(0.7 * enemy->getSpeed());
     enemy->move(diff.x, diff.y);
   }
 }
@@ -149,4 +152,74 @@ void TankController::performAction(std::shared_ptr<EnemyModel> enemy,
   }
 }
 
-void TankController::animate(std::shared_ptr<EnemyModel> enemy) {}
+void TankController::animate(std::shared_ptr<EnemyModel> enemy) {
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+  int fc = enemy->_frame_count;
+  if (enemy->getAttackCooldown() <= ATTACK_FRAMES) {
+    // Play the next animation frame for the dash attack.
+    if (fc >= 4) {
+      if (node->getFrame() + 1 < MAX_ATTACK_FRAME && node->getFrame() + 1 > MIN_ATTACK_FRAME) {
+        enemy->_frame_count = 0;
+        node->setFrame(node->getFrame() + 1);
+      } else {
+        animateChase(enemy);
+      }
+    }
+    enemy->_frame_count++;
+  } else if (enemy->getAttackCooldown() <= STOP_ATTACK_FRAMES) {
+    // Hold in the first wind up attack frame depending on direction.
+    float frame_angle = (enemy->getAttackDir() - enemy->getPosition()).getAngle();
+    if (frame_angle <= -M_PI / 2) {
+      node->setFrame(60);  // Bottom left
+    } else if (frame_angle <= 0) {
+      node->setFrame(40);  // Bottom right
+    } else if (frame_angle <= M_PI / 2) {
+      node->setFrame(30);  // Top right
+    } else {
+      node->setFrame(50);  // Top left
+    }
+    enemy->_frame_count = 0;
+  } else {
+    // Moving animation in all other cases.
+    float length = (enemy->getAttackDir() - enemy->getPosition()).length();
+    if (length <= MIN_DISTANCE) {
+      // Face left or right, depending on direction of player from grunt.
+      float direc_angle = abs((enemy->getAttackDir() - enemy->getPosition()).getAngle());
+      enemy->setFacingLeft(direc_angle > M_PI / 2);
+      animateChase(enemy);
+    } else {
+      // Idle
+      node->setFrame(0);
+      enemy->_frame_count = 0;
+    }
+  }
+}
+
+void TankController::animateChase(std::shared_ptr<EnemyModel> enemy) {
+  auto node =
+      std::dynamic_pointer_cast<cugl::scene2::SpriteNode>(enemy->getNode());
+
+  int run_high_lim = 19;
+  int run_low_lim = 10;
+  if (enemy->getFacingLeft()) {
+    run_high_lim = 29;
+    run_low_lim = 20;
+  }
+
+  if (enemy->_frame_count == 0) {
+    node->setFrame(run_low_lim);
+  }
+
+  // Play the next animation frame.
+  if (enemy->_frame_count >= 4) {
+    enemy->_frame_count = 0;
+    if (node->getFrame() >= run_high_lim || node->getFrame() < run_low_lim) {
+      node->setFrame(run_low_lim);
+    } else {
+      node->setFrame(node->getFrame() + 1);
+    }
+  }
+  enemy->_frame_count++;
+}
+
