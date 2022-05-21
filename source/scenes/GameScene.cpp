@@ -405,6 +405,7 @@ void GameScene::update(float timestep) {
   _terminal_controller->update(timestep);
   _level_controller->update(timestep);
   _sound_controller->update(timestep);
+  _particle_controller->update(timestep);
 
   _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
   _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
