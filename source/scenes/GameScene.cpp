@@ -82,10 +82,6 @@ bool GameScene::init(
   _world->onBeginContact = [this](b2Contact* contact) {
     this->beginContact(contact);
   };
-  _world->beforeSolve = [this](b2Contact* contact,
-                               const b2Manifold* oldManifold) {
-    this->beforeSolve(contact, oldManifold);
-  };
 
   _grunt_controller =
       GruntController::alloc(_assets, _world, _world_node, _debug_node);
@@ -633,13 +629,6 @@ void GameScene::update(float timestep) {
       auto enemy = *it;
 
       if (enemy->isReadyToDie()) {
-        _dead_enemy_cache.push_back(enemy->getEnemyId());
-        enemy->deleteAllProjectiles(_world, _world_node);
-        enemy->deactivatePhysics(*_world->getWorld());
-        room->getNode()->removeChild(enemy->getNode());
-        _world->removeObstacle(enemy.get());
-        enemies.erase(it--);
-
         // Send particles if there's things to send.
         if (_player_controller->getMyPlayer()->getEnergy() < 100) {
           cugl::Vec2 end_pos = _energy_bar->getWorldPosition();
@@ -1184,12 +1173,10 @@ void GameScene::beginContact(b2Contact* contact) {
       fx2_name == "player_projectile_sensor") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     dynamic_cast<Player*>(ob2)->takeDamage();
-    CULog("hi");
   } else if (ob2->getName() == "projectile" &&
              fx1_name == "player_projectile_sensor") {
     dynamic_cast<Player*>(ob1)->takeDamage();
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-    CULog("hi");
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
@@ -1261,15 +1248,15 @@ void GameScene::beginContact(b2Contact* contact) {
       if (player->getEnergy() > 0) {
         int num = 10 * player->getEnergy() / 100.0f + 1;
         if (player->isBetrayer()) {
-          _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
         } else {
-          _particle_controller->emit(_deposit_particle_regular, num, 0.03f);
+          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
         }
       }
 
       if (player->getCorruptedEnergy() > 0) {
         int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
-        _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
       }
     }
 
@@ -1281,6 +1268,9 @@ void GameScene::beginContact(b2Contact* contact) {
         _level_controller->getLevelModel()->getCurrentRoom();
 
     cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
+    start_pos.x +=
+        _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
+    start_pos = _world_node->worldToNodeCoords(start_pos);
 
     Terminal* terminal =
         static_cast<Terminal*>((void*)ob2->getUserDataPointer());
@@ -1295,15 +1285,15 @@ void GameScene::beginContact(b2Contact* contact) {
       if (player->getEnergy() > 0) {
         int num = 10 * player->getEnergy() / 100.0f + 1;
         if (player->isBetrayer()) {
-          _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
         } else {
-          _particle_controller->emit(_deposit_particle_regular, num, 0.03f);
+          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
         }
       }
 
       if (player->getCorruptedEnergy() > 0) {
         int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
-        _particle_controller->emit(_deposit_particle_corrupted, num, 0.03f);
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
       }
     }
 

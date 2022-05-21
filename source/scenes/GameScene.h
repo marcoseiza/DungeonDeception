@@ -292,14 +292,6 @@ class GameScene : public cugl::Scene2 {
   void beginContact(b2Contact* contact);
 
   /**
-   * Handles any modifications necessary before collision resolution.
-   *
-   * @param  contact  The two bodies that collided.
-   * @param  contact  The collision manifold before contact.
-   */
-  void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
-
-  /**
    * The method called to update the camera in terms of the player position.
    *
    * @param timestep The amount of time (in seconds) since the last frame.
