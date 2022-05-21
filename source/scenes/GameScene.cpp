@@ -1199,7 +1199,6 @@ void GameScene::beginContact(b2Contact* contact) {
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
-    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
     // Show hit on client-side without potentially causing de-sync with host
     // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
@@ -1207,7 +1206,6 @@ void GameScene::beginContact(b2Contact* contact) {
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), 30);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
-    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     // Show hit on client-side without potentially causing de-sync with host
     // (0 dmg)
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
