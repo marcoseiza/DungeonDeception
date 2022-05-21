@@ -29,6 +29,7 @@ class SoundController : public Controller {
         : name(name), sound(sound) {
       volume = sound->getVolume();
     }
+    ~SFX() { sound = nullptr; }
   };
 
   //

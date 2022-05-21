@@ -297,11 +297,8 @@ void GameScene::populate(cugl::Size dim) {
   for (std::shared_ptr<Terminal> terminal :
        TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
-    _world->addObstacle(terminal->initSensor());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
-    terminal->getSensor()->setDebugColor(cugl::Color4::BLACK);
-    terminal->getSensor()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
 
@@ -1194,22 +1191,18 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->changeRoom(fx2_name);
   }
 
-  if (fx1_name == "terminal_range" &&
+  if (fx1_name == "terminal-sensor" &&
       ob2 == _player_controller->getMyPlayer().get()) {
-    if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
+    std::shared_ptr<RoomModel> room =
+        _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->depositEnergy(room->getKey());
-    }
-  } else if (fx2_name == "terminal_range" &&
+    _terminal_controller->depositEnergy(room->getKey());
+  } else if (fx2_name == "terminal-sensor" &&
              ob1 == _player_controller->getMyPlayer().get()) {
-    if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
+    std::shared_ptr<RoomModel> room =
+        _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->depositEnergy(room->getKey());
-    }
+    _terminal_controller->depositEnergy(room->getKey());
   }
 }
 
