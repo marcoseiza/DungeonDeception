@@ -659,9 +659,13 @@ void GameScene::update(float timestep) {
             std::shared_ptr<Player> player = jt.second;
 //            int player_count = room_id_player_count_map[room_id];
             
-            if (player->getRoomId() == room_id) {
+            if (player->getRoomId() != room_id) continue;
+            if (player->isBetrayer()) {
+              // Give betrayer less energy than regular players.
+              player->setEnergy(player->getEnergy() + 3);
+            } else {
               // Give all players in the same room some energy if an enemy dies.
-              player->setEnergy(player->getEnergy() + 5);
+              player->setEnergy(player->getEnergy() + 7);
             }
           }
         }
@@ -897,6 +901,16 @@ void GameScene::sendNetworkInfoClient() {
     // Send individual player information.
     NetworkController::get()->sendOnlyToHost(NC_CLIENT_PLAYER_BASIC_INFO, info);
   }
+  
+  if (_player_controller->getMyPlayer()->getHealth() <= 0
+      && !_player_controller->getMyPlayer()->getDead()) {
+    auto info = cugl::PlayerIdInfo::alloc();
+
+    info->player_id = _player_controller->getMyPlayer()->getPlayerId();
+
+    // Send individual player information.
+    NetworkController::get()->sendOnlyToHost(NC_CLIENT_DEATH_INFO, info);
+  }
 }
 
 void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id,
@@ -1041,8 +1055,14 @@ void GameScene::processData(
       if (enemy != nullptr) {
         auto player = _player_controller->getPlayer(info->player_id);
         enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
-        player->setEnergy(player->getEnergy() + 0.8f);
       }
+    } break;
+      
+    case NC_CLIENT_DEATH_INFO: {
+      auto info = std::dynamic_pointer_cast<cugl::PlayerIdInfo>(
+          std::get<std::shared_ptr<cugl::Serializable>>(msg));
+      auto player = _player_controller->getPlayer(info->player_id);
+      player->setEnergy(player->getEnergy() * 0.5f);
     } break;
 
     case NC_BETRAYAL_TARGET_INFO: {
@@ -1073,7 +1093,7 @@ void GameScene::processData(
         int player_id = corrupt_data->getInt("corrupt_player_id");
         auto corrupt_player = _player_controller->getPlayer(player_id);
 
-        corrupt_player->turnEnergyCorrupted(20);
+        corrupt_player->turnEnergyCorrupted(40);
       }
     }
   }
