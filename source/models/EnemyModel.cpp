@@ -197,6 +197,7 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
           cugl::scene2::OrderedNode::Order::ASCEND);
       auto enemy_node = cugl::scene2::SpriteNode::alloc(texture, 9, 10);
       enemy_node->setTag(0);
+      enemy_node->setFrame(0);
       enemy_node->setPriority(0);
       enemy_node->setPosition(0, 0);
       _enemy_node->addChild(enemy_node);
@@ -211,17 +212,22 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
+      auto sprite = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
+      sprite->setFrame(0);
+      _enemy_node = sprite;
+
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
+      auto sprite = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
+      sprite->setFrame(0);
+      _enemy_node = sprite;
       break;
     }
     case TURTLE: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 16);
-      auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
-      node->setFrame(23);  // Initial closed frame
+      auto sprite = cugl::scene2::SpriteNode::alloc(texture, 7, 16);
+      sprite->setFrame(23);  // Initial closed frame
+      _enemy_node = sprite;
       break;
     }
     default:
