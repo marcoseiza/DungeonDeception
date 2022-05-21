@@ -11,7 +11,7 @@
 #define WIDTH_TURTLE 40.0f
 #define HEIGHT_TURTLE 35.0f
 
-#define DAMAGE_COUNT 10
+#define DAMAGE_COUNT 15
 
 #define HEIGHT_SHRINK 0.3f
 
@@ -53,6 +53,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
   _stunned_timer = 0;
   _goal_frame = 0;
   _move_back_timer = 0;
+  _damage_count = 0;
 
   _attack_cooldown = 0;
 
@@ -89,6 +90,13 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 void EnemyModel::takeDamage(float amount) {
   reduceHealth(amount);
   if (_health > 0) _enemy_node->setColor(cugl::Color4::RED);
+  _damage_count = DAMAGE_COUNT;
+}
+
+void EnemyModel::takeDamageWithKnockback(const cugl::Vec2 p, float amount) {
+  reduceHealth(amount);
+  knockback(p);
+  _enemy_node->setColor(cugl::Color4::RED);
   _damage_count = DAMAGE_COUNT;
 }
 
@@ -357,7 +365,7 @@ void EnemyModel::update(float delta) {
 
   if (_isKnockbacked) {
     _stunned_timer++;
-    if (_stunned_timer >= 10) {
+    if (_stunned_timer >= 15) {
       _isKnockbacked = false;
       _stunned_timer = 0;
     }
@@ -379,29 +387,11 @@ void EnemyModel::move(float forwardX, float forwardY) {
     setVX(80 * forwardX);
     setVY(80 * forwardY);
   }
-
-  if (forwardX == 0) {
-    setVX(0);
-  } else {
-    //    setFacingLeft(forwardX < 0 && std::abs(forwardX) > 0.02);
-  }
-
-  if (forwardY == 0) setVY(0);
 }
 
-void EnemyModel::knockback(int moveDir) {
-  _isKnockbacked = true;
-  if (moveDir == 0) {
-    _knockback_dir.x = -1;
-    _knockback_dir.y = 0;
-  } else if (moveDir == 1) {
-    _knockback_dir.x = 0;
-    _knockback_dir.y = -1;
-  } else if (moveDir == 2) {
-    _knockback_dir.x = 1;
-    _knockback_dir.y = 0;
-  } else {
-    _knockback_dir.x = 0;
-    _knockback_dir.y = 1;
+void EnemyModel::knockback(const cugl::Vec2 p) {
+  if (_stunned_timer == 0) {
+    _isKnockbacked = true;
+    _knockback_dir = getPosition() - p;
   }
 }

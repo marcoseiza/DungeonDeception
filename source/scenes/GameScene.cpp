@@ -822,13 +822,11 @@ void GameScene::sendNetworkInfoClient() {
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, int dir,
-                                        float amount) {
+void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, float amount) {
   auto info = cugl::EnemyHitInfo::alloc();
   info->enemy_id = enemy_id;
   info->player_id = player_id;
   info->amount = amount;
-  info->direction = dir;
 
   NetworkController::get()->sendOnlyToHostOrProcess(NC_CLIENT_ENEMY_HIT_INFO,
                                                     info);
@@ -963,10 +961,10 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-        enemy->takeDamage(info->amount);
-        if (info->direction != -1) enemy->knockback(info->direction);
+//        enemy->takeDamage(info->amount);
 
         auto player = _player_controller->getPlayer(info->player_id);
+        enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
         player->setEnergy(player->getEnergy() + 0.8f);
       }
     } break;
@@ -1054,7 +1052,6 @@ void GameScene::beginContact(b2Contact* contact) {
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getSword()->getMoveDir(),
                             damage);
   } else if (fx2_name == "enemy_hitbox" &&
              ob1 == _player_controller->getSword().get()) {
@@ -1068,7 +1065,6 @@ void GameScene::beginContact(b2Contact* contact) {
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getSword()->getMoveDir(),
                             damage);
   }
 
@@ -1081,7 +1077,7 @@ void GameScene::beginContact(b2Contact* contact) {
       _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
           ->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                              dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), -1,
+                              dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                               5.0f);
     }
   } else if (fx2_name == "enemy_hitbox" &&
@@ -1093,7 +1089,7 @@ void GameScene::beginContact(b2Contact* contact) {
       _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
           ->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                              dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), -1,
+                              dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                               5.0f);
     }
   }
@@ -1112,12 +1108,10 @@ void GameScene::beginContact(b2Contact* contact) {
       fx2_name == "player_projectile_sensor") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     dynamic_cast<Player*>(ob2)->takeDamage();
-    CULog("hi");
   } else if (ob2->getName() == "projectile" &&
              fx1_name == "player_projectile_sensor") {
     dynamic_cast<Player*>(ob1)->takeDamage();
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-    CULog("hi");
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
@@ -1127,9 +1121,7 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getMoveDir(),
-                            20);
+                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), 30);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     // Show hit on client-side without potentially causing de-sync with host
@@ -1137,9 +1129,7 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getMoveDir(),
-                            20);
+                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), 30);
   }
 
   if (ob1->getName() == "projectile" &&
@@ -1147,14 +1137,6 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
   } else if (ob2->getName() == "projectile" &&
              ob1 == _player_controller->getSword().get()) {
-    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-  }
-
-  if ((ob1->getName() == "projectile" || ob1->getName() == "slash") &&
-      ob2->getName() == "Wall") {
-    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-  } else if ((ob2->getName() == "projectile" || ob1->getName() == "slash") &&
-             ob1->getName() == "Wall") {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
   }
 
