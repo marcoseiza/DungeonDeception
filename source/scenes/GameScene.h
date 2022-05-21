@@ -6,6 +6,7 @@
 #include "../controllers/Controller.h"
 #include "../controllers/InputController.h"
 #include "../controllers/LevelController.h"
+#include "../controllers/ParticleController.h"
 #include "../controllers/PlayerController.h"
 #include "../controllers/SoundController.h"
 #include "../controllers/TerminalController.h"
@@ -45,6 +46,11 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the physics root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _world_node;
 
+  /** Reference to the particle root in world of the scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _particle_world;
+  /** Reference to the particle root in screen of the scene graph. */
+  std::shared_ptr<cugl::scene2::SceneNode> _particle_screen;
+
   /** Reference to the debug root of the scene graph. */
   std::shared_ptr<cugl::scene2::SceneNode> _debug_node;
 
@@ -69,6 +75,9 @@ class GameScene : public cugl::Scene2 {
   std::shared_ptr<TankController> _tank_controller;
   /** The turtle controller for the game. */
   std::shared_ptr<TurtleController> _turtle_controller;
+
+  /** A reference to the particle controller. */
+  std::shared_ptr<ParticleController> _particle_controller;
 
   /** The level controller for the game*/
   std::shared_ptr<LevelController> _level_controller;
@@ -109,7 +118,7 @@ class GameScene : public cugl::Scene2 {
 
   /** The number of terminals corrupted in the world. */
   int _num_terminals_corrupted;
-  
+
   /** List of blocked X's. 6 for maximum number of runners .*/
   std::array<std::shared_ptr<cugl::scene2::SceneNode>, 6> _block_x_nodes;
 
@@ -125,6 +134,11 @@ class GameScene : public cugl::Scene2 {
   cugl::Timestamp _time_of_last_player_other_info_update;
   /** If the has sent play basic_info to all clients. */
   bool _has_sent_player_basic_info;
+
+  /** Energy particle for when enemies die. */
+  ParticleProps _energy_particle;
+  /** Energy particle for when player deposits energy. */
+  ParticleProps _deposit_particle_regular, _deposit_particle_corrupted;
 
  public:
   GameScene() : cugl::Scene2() {}
@@ -276,14 +290,6 @@ class GameScene : public cugl::Scene2 {
    * @param  contact  The two bodies that collided.
    */
   void beginContact(b2Contact* contact);
-
-  /**
-   * Handles any modifications necessary before collision resolution.
-   *
-   * @param  contact  The two bodies that collided.
-   * @param  contact  The collision manifold before contact.
-   */
-  void beforeSolve(b2Contact* contact, const b2Manifold* oldManifold);
 
   /**
    * The method called to update the camera in terms of the player position.

@@ -1,9 +1,12 @@
 #include "GameApp.h"
 
+#include "controllers/Random.h"
 #include "loaders/CustomScene2Loader.h"
 #include "models/level_gen/DefaultRooms.h"
 
 void GameApp::onStartup() {
+  Random::Init();
+
   _assets = cugl::AssetManager::alloc();
   _batch = cugl::SpriteBatch::alloc();
   auto cam = cugl::OrthographicCamera::alloc(getDisplaySize());

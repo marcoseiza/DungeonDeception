@@ -22,7 +22,7 @@
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
-#define ENERGY_BAR_UPDATE_SIZE 0.03f
+#define ENERGY_BAR_UPDATE_SIZE 0.02f
 
 #define ENERGY_SLASH_SPEED 400
 #define ENERGY_SLASH_LIFE 60
@@ -259,27 +259,23 @@ void Player::update(float delta) {
 
   // Animate the energy bars.
   if (_energy_bar != nullptr && _corrupted_energy_bar != nullptr) {
-    float target_energy_amt = (_energy - _corrupted_energy) / 100.0f;
-    float target_corrupt_energy_amt = _energy / 100.0f;
-    if (_energy_bar->getProgress() < target_energy_amt) {
-      (_energy_bar->setProgress(
-          std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                   target_energy_amt)));
-    } else if (_energy_bar->getProgress() > target_energy_amt) {
-      (_energy_bar->setProgress(
-          std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                   target_energy_amt)));
+    float target_energy = (_energy - _corrupted_energy) / 100.0f;
+    float target_corrupt_energy = _energy / 100.0f;
+
+    if (_energy_bar->getProgress() < target_energy) {
+      float df = _energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+      _energy_bar->setProgress(std::min(df, target_energy));
+    } else if (_energy_bar->getProgress() > target_energy) {
+      float df = _energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+      _energy_bar->setProgress(std::max(df, target_energy));
     }
 
-    if (_corrupted_energy_bar->getProgress() < target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::min(
-          _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-          target_corrupt_energy_amt)));
-    } else if (_corrupted_energy_bar->getProgress() >
-               target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::max(
-          _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-          target_corrupt_energy_amt)));
+    if (_corrupted_energy_bar->getProgress() < target_corrupt_energy) {
+      float df = _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+      _corrupted_energy_bar->setProgress(std::min(df, target_corrupt_energy));
+    } else if (_corrupted_energy_bar->getProgress() > target_corrupt_energy) {
+      float df = _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+      _corrupted_energy_bar->setProgress(std::max(df, target_corrupt_energy));
     }
   }
 

@@ -83,6 +83,21 @@ void LevelController::update(float timestep) {
     }
   }
 
+  {
+    for (const ParticleController::Particle &particle :
+         _particle_controller->getParticles()) {
+      if (particle.props.isOrder()) {
+        std::shared_ptr<RoomModel> room =
+            _level_model->getRoom(particle.props.getRoomId());
+
+        float rel_particle_y =
+            particle.node->getPositionY() - room->getNode()->getPosition().y;
+        float row = rel_particle_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
+        particle.node->setPriority(room->getGridSize().height - row);
+      }
+    }
+  }
+
   for (auto it : _level_model->getRooms()) {
     std::shared_ptr<RoomModel> room = it.second;
     auto num_players = room->getMapNode()->getChildByName("num_of_players");
