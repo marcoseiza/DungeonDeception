@@ -342,7 +342,7 @@
             "data": {
               "texture": "player-head-1",
               "anchor": [0, 0.5],
-              "scale": 1.5,
+              "scale": 2.0,
               "has-parent-color": false
             },
             "layout": {

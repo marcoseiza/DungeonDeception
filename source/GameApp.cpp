@@ -264,7 +264,8 @@ void GameApp::updateHostLobbyScene(float timestep) {
       break;
     case ClientLobbyScene::Status::START:
       _hostlobby.setActive(false, nullptr);
-      _level_loading.init(_assets, _hostlobby.getSeed());
+      _level_loading.init(_assets, _hostlobby.getSeed(),
+                          _hostgame.getConnection()->getNumPlayers());
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership
       _level_loading.setConnection(_hostgame.getConnection());
@@ -288,7 +289,8 @@ void GameApp::updateClientLobbyScene(float timestep) {
       break;
     case ClientLobbyScene::Status::START:
       _joinlobby.setActive(false, nullptr);
-      _level_loading.init(_assets, _joinlobby.getSeed());
+      _level_loading.init(_assets, _joinlobby.getSeed(),
+                          _joingame.getConnection()->getNumPlayers());
       _scene = State::LEVEL_LOADING;
       // Transfer connection ownership
       _level_loading.setConnection(_joingame.getConnection());
