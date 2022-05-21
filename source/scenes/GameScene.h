@@ -87,9 +87,6 @@ class GameScene : public cugl::Scene2 {
   /** Reference to the settings scene for exiting game. */
   std::shared_ptr<SettingsScene> _settings_scene;
 
-  /** The controllers for the game. */
-  std::vector<std::shared_ptr<Controller>> _controllers;
-
   /** A reference to the scene2 map for rendering. */
   std::shared_ptr<cugl::scene2::SceneNode> _map;
 

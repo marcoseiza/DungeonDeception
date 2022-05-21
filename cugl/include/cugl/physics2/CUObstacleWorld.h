@@ -112,6 +112,9 @@ protected:
     bool _filters;
     /** Whether or not to activate the destruction listener */
     bool _destroy;
+
+    /** Whether this world is initialized. */
+    bool _initialized;
     
     
 #pragma mark -

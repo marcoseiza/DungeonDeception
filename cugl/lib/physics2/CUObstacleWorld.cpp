@@ -162,6 +162,7 @@ public:
  * The Box2d world will not be created until the appropriate init is called.
  */
 ObstacleWorld::ObstacleWorld() :
+_initialized(false),
 _world(nullptr),
 _collide(false),
 _filters(false),
@@ -185,6 +186,7 @@ _destroy(false) {
  * Dispose of all resources allocated to this controller.
  */
 void ObstacleWorld::dispose() {
+    if (!_initialized) return;
     clear();
     if (_world != nullptr) {
         delete _world;
@@ -197,6 +199,7 @@ void ObstacleWorld::dispose() {
     shouldCollide  = nullptr;
     destroyFixture = nullptr;
     destroyJoint   = nullptr;
+    _initialized   = false;
 }
 
 /**
@@ -230,6 +233,8 @@ bool ObstacleWorld::init(const Rect bounds) {
  * @return  true if the controller is initialized properly, false otherwise.
  */
 bool ObstacleWorld::init(const Rect bounds, const Vec2 gravity) {
+    if (_initialized) return false;
+    _initialized = true;
     CUAssertLog(!_world,"Attempt to reinitialize and active world");
     _bounds = bounds;
     _world = new b2World(b2Vec2(gravity.x,gravity.y));

@@ -6,6 +6,7 @@
 #include "../models/Player.h"
 #include "../models/tiles/TerminalSensor.h"
 #include "../network/NetworkController.h"
+#include "../scenes/terminal_scenes/DepositEnergyScene.h"
 #include "Controller.h"
 #include "InputController.h"
 #include "LevelController.h"
@@ -66,6 +67,7 @@ class TerminalController : public Controller {
   void dispose() override {
     _scene = nullptr;
     _active = false;
+    _deposit_energy_scene = nullptr;
   }
 
   /**
@@ -84,7 +86,7 @@ class TerminalController : public Controller {
     _scene->setVisible(true);
     InputController::get()->pause();
   }
-  
+
   /**
    * Deposits the energy into the terminal with a given id.
    *

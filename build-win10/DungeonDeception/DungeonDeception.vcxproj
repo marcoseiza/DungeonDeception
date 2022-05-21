@@ -229,6 +229,8 @@
     <ClInclude Include="..\..\source\scenes\HostLobbyScene.h" />
     <ClInclude Include="..\..\source\scenes\PeerScene.h" />
     <ClInclude Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.h" />
+    <ClInclude Include="..\..\source\controllers\ParticleController.h" />
+    <ClInclude Include="..\..\source\controllers\Random.h" />
     <ClInclude Include="..\..\source\controllers\InputController.h" />
     <ClInclude Include="..\..\source\network\NetworkController.h" />
     <ClInclude Include="..\..\source\network\CustomNetworkSerializer.h" />
@@ -290,6 +292,8 @@
     <ClCompile Include="..\..\source\scenes\HostMenuScene.cpp" />
     <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp" />
     <ClCompile Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.cpp" />
+    <ClCompile Include="..\..\source\controllers\ParticleController.cpp" />
+    <ClCompile Include="..\..\source\controllers\Random.cpp" />
     <ClCompile Include="..\..\source\controllers\InputController.cpp" />
     <ClCompile Include="..\..\source\network\NetworkController.cpp" />
     <ClCompile Include="..\..\source\network\CustomNetworkSerializer.cpp" />
