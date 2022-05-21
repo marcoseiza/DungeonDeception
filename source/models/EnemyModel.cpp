@@ -11,8 +11,7 @@
 #define WIDTH_TURTLE 40.0f
 #define HEIGHT_TURTLE 35.0f
 
-// Just above the sword cooldown, so no "double hitting" happens
-#define DAMAGE_COUNT 30
+#define DAMAGE_COUNT 15
 
 #define HEIGHT_SHRINK 0.3f
 
@@ -88,20 +87,16 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 }
 
 void EnemyModel::takeDamage(float amount) {
-  if (_damage_count <= 0) {
   reduceHealth(amount);
   _enemy_node->setColor(cugl::Color4::RED);
-//  _damage_count = DAMAGE_COUNT;
-  }
+  _damage_count = DAMAGE_COUNT;
 }
 
 void EnemyModel::takeDamageWithKnockback(const cugl::Vec2 p, float amount) {
-  if (_damage_count <= 0) {
-    reduceHealth(amount);
-    knockback(p);
-    _enemy_node->setColor(cugl::Color4::RED);
-    _damage_count = DAMAGE_COUNT;
-  }
+  reduceHealth(amount);
+  knockback(p);
+  _enemy_node->setColor(cugl::Color4::RED);
+  _damage_count = DAMAGE_COUNT;
 }
 
 bool EnemyModel::isHit() const { return _damage_count == DAMAGE_COUNT - 1; }
@@ -392,6 +387,8 @@ void EnemyModel::move(float forwardX, float forwardY) {
 }
 
 void EnemyModel::knockback(const cugl::Vec2 p) {
-  _isKnockbacked = true;
-  _knockback_dir = getPosition() - p;
+  if (_stunned_timer == 0) {
+    _isKnockbacked = true;
+    _knockback_dir = getPosition() - p;
+  }
 }
