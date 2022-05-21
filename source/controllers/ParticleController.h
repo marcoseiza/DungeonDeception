@@ -57,6 +57,7 @@ class ParticleProps {
         _scale_start(1.0f),
         _scale_end(1.0f),
         _life_time(1.0f),
+        _wait_time(0),
         _angular_speed(1.0f),
         _clockwise(true),
         _path_variation(1.0f),
