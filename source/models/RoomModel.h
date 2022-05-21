@@ -62,8 +62,8 @@ class RoomModel {
       : _num_players_required(-1),
         _key(-1),
         _type(RoomType::STANDARD),
-        _energy_to_activate(200),
-        _corrupted_energy_to_activate(200),
+        _energy_to_activate(100),
+        _corrupted_energy_to_activate(100),
         _energy(0),
         _corrupted_energy(0) {}
   /** Destroy this RoomModel and all it's internal data. */
