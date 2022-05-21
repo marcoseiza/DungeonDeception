@@ -12,7 +12,7 @@
 #define DEATH_START_FRAME 90
 #define FINAL_DEATH_FRAME 114
 #define ATTACK_FRAMES 25
-#define HEALTH 100
+#define HEALTH 50
 
 #define WIDTH 24.0f
 #define HEIGHT 48.0f

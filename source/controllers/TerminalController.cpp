@@ -14,8 +14,6 @@ bool TerminalController::init(
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
 
-  _deposit_energy_scene = DepositEnergyScene::alloc(_assets);
-
   NetworkController::get()->addListener(
       [=](const Sint32 &code,
           const cugl::CustomNetworkDeserializer::CustomMessage &msg) {
@@ -27,17 +25,6 @@ bool TerminalController::init(
 
 void TerminalController::update(float timestep) {
   if (!_active) return;
-
-  if (!_deposit_energy_scene->isActive()) {
-    _deposit_energy_scene->start(_terminal_room_id);
-  } else {
-    _deposit_energy_scene->update();
-  }
-
-  if (_deposit_energy_scene->isDone() || _deposit_energy_scene->didExit()) {
-    _deposit_energy_scene->dispose();
-    done();
-  }
 }
 
 void TerminalController::processNetworkData(
@@ -62,6 +49,7 @@ void TerminalController::processNetworkData(
       auto player = _player_controller->getPlayer(info->player_id);
       int cor_energy = player->getCorruptedEnergy();
       int energy = player->getEnergy() - cor_energy;
+      // Remove for now: betrayers deposit regular energy too!
       // A betrayer's energy is corrupted energy.
       if (player->isBetrayer()) cor_energy = player->getEnergy();
 

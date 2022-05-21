@@ -228,6 +228,20 @@ class GameScene : public cugl::Scene2 {
     }
     return room_ids_with_players;
   }
+  
+  /**
+   * Returns an unordered map of all the room ids with players to player counts.
+   */
+  std::unordered_map<int, int> getRoomPlayerCounts() {
+    std::unordered_map<int, int> rooms_with_players;
+    for (std::shared_ptr<Player> player : _player_controller->getPlayerList()) {
+      int room_id = player->getRoomId();
+      if (room_id != -1) {
+        rooms_with_players[room_id]++;
+      }
+    }
+    return rooms_with_players;
+  }
 
   /**
    * Returns an unordered set of all the room ids players are in, and adjacent

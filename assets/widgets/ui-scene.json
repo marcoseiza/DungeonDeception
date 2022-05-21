@@ -116,6 +116,24 @@
           "y_offset": -0.15
         }
       },
+      "players-in-room": {
+        "type": "Label",
+        "data": {
+          "anchor": [0, 0],
+          "font": "pixelmix_extra_extra_small",
+          "text": "x1",
+          "padding": [20, 20, 20, 20],
+          "halign": "left",
+          "valign": "top"
+        },
+        "layout": {
+          "priority": 1,
+          "x_anchor": "left",
+          "y_anchor": "top",
+          "x_offset": 0.3,
+          "y_offset": -0.2452
+        }
+      },
       "activated": {
         "type": "Image",
         "format": {

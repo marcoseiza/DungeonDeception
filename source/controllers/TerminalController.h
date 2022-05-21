@@ -18,8 +18,6 @@ class TerminalController : public Controller {
 
   /** A reference to the terminal voting scene. */
   std::shared_ptr<cugl::scene2::SceneNode> _scene;
-  /** A reference to the deposit energy scene. */
-  std::shared_ptr<DepositEnergyScene> _deposit_energy_scene;
 
   /** A reference to the game assets. */
   std::shared_ptr<cugl::AssetManager> _assets;
@@ -69,7 +67,6 @@ class TerminalController : public Controller {
   void dispose() override {
     _scene = nullptr;
     _active = false;
-    _deposit_energy_scene = nullptr;
   }
 
   /**
@@ -82,7 +79,6 @@ class TerminalController : public Controller {
     if (_active) return;
 
     // If the voting room has already started.
-    _deposit_energy_scene->setDone(false);
     _active = true;
     _terminal_room_id = terminal_room_id;
     _terminal_sensor = sensor;
@@ -137,7 +133,6 @@ class TerminalController : public Controller {
   void setPlayerController(
       const std::shared_ptr<PlayerController>& player_controller) {
     _player_controller = player_controller;
-    _deposit_energy_scene->setPlayerController(_player_controller);
   }
 
   /**
@@ -147,7 +142,6 @@ class TerminalController : public Controller {
   void setLevelController(
       const std::shared_ptr<LevelController>& level_controller) {
     _level_controller = level_controller;
-    _deposit_energy_scene->setLevelController(level_controller);
   }
 
   /** @return The number of terminals activated. */

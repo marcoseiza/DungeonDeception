@@ -375,7 +375,7 @@ void GameScene::update(float timestep) {
   }
 
   _health_bar->setProgress(_player_controller->getMyPlayer()->getHealth() /
-                           100.0f);
+                           50.0f);
 
   // Animate energy update.
   float target_energy_amt =
@@ -602,6 +602,21 @@ void GameScene::update(float timestep) {
       cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
   corrupted_text->setForeground(cugl::Color4::BLACK);
+  
+  auto player_count_text = ui_layer->getChildByName<cugl::scene2::Label>("players-in-room");
+  int other_players_in_room_count = 0;
+  for (auto it : _player_controller->getPlayers()) {
+    std::shared_ptr<Player> player = it.second;
+    if (player->getRoomId() == _player_controller->getMyPlayer()->getRoomId()) {
+      other_players_in_room_count++;
+    }
+  }
+  
+  std::stringstream player_count_msg;
+  player_count_msg << "x" << other_players_in_room_count;
+  
+  player_count_text->setText(player_count_msg.str());
+  player_count_text->setForeground(cugl::Color4::BLACK);
 
   auto role_text = ui_layer->getChildByName<cugl::scene2::Label>("role");
   std::string role_msg = "";
@@ -617,8 +632,10 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
-  auto room_ids_with_players = getRoomIdsWithPlayers();
-  for (auto room_id : room_ids_with_players) {
+//  auto room_ids_with_players = getRoomIdsWithPlayers();
+  auto room_id_player_count_map = getRoomPlayerCounts();
+  for (auto it : room_id_player_count_map) {
+    auto room_id = it.first;
     auto room = _level_controller->getLevelModel()->getRoom(room_id);
     std::vector<std::shared_ptr<EnemyModel>>& enemies = room->getEnemies();
 
@@ -640,6 +657,8 @@ void GameScene::update(float timestep) {
         if (NetworkController::get()->isHost()) {
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
+//            int player_count = room_id_player_count_map[room_id];
+            
             if (player->getRoomId() == room_id) {
               // Give all players in the same room some energy if an enemy dies.
               player->setEnergy(player->getEnergy() + 5);
@@ -763,11 +782,11 @@ void GameScene::sendNetworkInfoHost() {
   }
 
   {
-    cugl::Timestamp time;
-    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
-
-    if (millis > 5000) {
-      _time_of_last_player_other_info_update.mark();
+//    cugl::Timestamp time;
+//    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
+//
+//    if (millis > 5000) {
+//      _time_of_last_player_other_info_update.mark();
       std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
       for (auto it : _player_controller->getPlayers()) {
         std::shared_ptr<Player> player = it.second;
@@ -783,7 +802,7 @@ void GameScene::sendNetworkInfoHost() {
 
       NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
                                      all_player_info);
-    }
+//    }
   }
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
@@ -1020,8 +1039,6 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-        //        enemy->takeDamage(info->amount);
-
         auto player = _player_controller->getPlayer(info->player_id);
         enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
         player->setEnergy(player->getEnergy() + 0.8f);
