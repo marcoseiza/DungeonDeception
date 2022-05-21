@@ -39,9 +39,6 @@
     <ClInclude Include="..\..\source\scenes\PeerScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\controllers\ParticleController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -255,9 +252,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\scenes\HostLobbyScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\scenes\terminal_scenes\DepositEnergyScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\controllers\Random.cpp">
