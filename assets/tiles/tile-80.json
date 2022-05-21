@@ -5,11 +5,14 @@
     "y_offset_frac": ["layout", "y_offset"]
   },
   "contents": {
-    "type": "BasicTile",
+    "type": "Wall",
     "data": {
       "texture": "tile-rock-3",
       "anchor": [0, 0],
-      "priority": 0
+      "priority": 0,
+      "decoration-order": true,
+      "decoration-offset": 20.0,
+      "obstacle": [16, 19, 59, 19, 58, 35, 16, 35]
     },
     "layout": {
       "x_anchor": "left",

@@ -9,7 +9,9 @@
     "data": {
       "texture": "tile-rock-2",
       "anchor": [0, 0],
-      "priority": 0
+      "priority": 0,
+      "decoration-order": true,
+      "decoration-offset": 11.0
     },
     "layout": {
       "x_anchor": "left",

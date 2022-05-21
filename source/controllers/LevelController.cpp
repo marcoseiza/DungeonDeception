@@ -78,7 +78,7 @@ void LevelController::update(float timestep) {
                                    current->getNode()->getPosition().y;
           row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) - 2;
           projectile->getNode()->setPriority(current->getGridSize().height -
-                                               row);
+                                             row);
         }
       }
     }
@@ -297,6 +297,17 @@ void LevelController::populate() {
     room_model->setEnemies(enemies);
 
     _world_node->addChild(room_node);
+
+    // Order the decoration tiles that need ordering.
+    for (auto tile : TileHelper::getTile<BasicTile>(room_node)) {
+      if (tile->getDecorationOrder()) {
+        float rel_tile_y =
+            tile->getWorldPosition().y - room_node->getPosition().y;
+        rel_tile_y += tile->getDecorationOffset();
+        float row = rel_tile_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
+        tile->setPriority(room_model->getGridSize().height - row);
+      }
+    }
   }
 }
 
