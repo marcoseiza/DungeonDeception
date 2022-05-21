@@ -423,6 +423,7 @@ void GameScene::update(float timestep) {
   switch (_settings_scene->getChoice()) {
     case SettingsScene::Choice::LEAVE:
       _state = LEAVE;
+      _settings_scene->setActive(false);
       if (NetworkController::get()->isHost()) {
         NetworkController::get()->send(NC_HOST_END_GAME);
       } else {

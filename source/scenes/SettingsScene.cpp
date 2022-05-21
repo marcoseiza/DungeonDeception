@@ -25,7 +25,7 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _leave_button = TileHelper::getChildByNameRecursively<cugl::scene2::Button>(
       wrapper, {"leave-button-wrapper", "leave-button", "button"});
   _leave_button->setVisible(true);
-  _leave_button->activate();
+  _leave_button->deactivate();
 
   _leave_button->addListener([=](const std::string& name, bool down) {
     this->leaveButtonListener(name, down);
@@ -37,13 +37,13 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     if (down) return;
     this->_choice = RESUME;
   });
-  _resume_button->activate();
+  _resume_button->deactivate();
 
   _leave_button_yes =
       TileHelper::getChildByNameRecursively<cugl::scene2::Button>(
           wrapper, {"leave-button-wrapper", "leave-button-yes", "button"});
   _leave_button_yes->setVisible(false);
-  _leave_button_yes->activate();
+  _leave_button_yes->deactivate();
 
   _leave_button_yes->addListener([=](const std::string& name, bool down) {
     if (down) return;
@@ -54,7 +54,7 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
       TileHelper::getChildByNameRecursively<cugl::scene2::Button>(
           wrapper, {"leave-button-wrapper", "leave-button-no", "button"});
   _leave_button_no->setVisible(false);
-  _leave_button_no->activate();
+  _leave_button_no->deactivate();
 
   _leave_button_no->addListener([=](const std::string& name, bool down) {
     if (down) return;
@@ -81,6 +81,7 @@ bool SettingsScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _leave_button_label->setText("LEAVE GAME", true);
   }
 
+  setActive(false);
   return true;
 }
 
@@ -109,10 +110,12 @@ void SettingsScene::setActive(bool active) {
   }
 
   if (_active) {
+    _resume_button->activate();
     _leave_button->activate();
     _leave_button_no->deactivate();
     _leave_button_yes->deactivate();
   } else {
+    _resume_button->deactivate();
     _leave_button->deactivate();
     _leave_button_no->deactivate();
     _leave_button_yes->deactivate();

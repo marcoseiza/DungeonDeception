@@ -628,9 +628,9 @@ void Button::setDown(bool down, bool propagate) {
 
     if (_play_click_sound && _play_click_sound_on_down == down) {
         if (_click_sound != nullptr) {
-            cugl::AudioEngine::get()->play("button-click", _click_sound);
+            cugl::AudioEngine::get()->play("button-click", _click_sound, false, 1.0f, true);
         } else if (DEFAULT_CLICK_SOUND != nullptr) {
-            cugl::AudioEngine::get()->play("button-click", DEFAULT_CLICK_SOUND);
+            cugl::AudioEngine::get()->play("button-click", DEFAULT_CLICK_SOUND, false, 1.0f, true);
         }
     }
 }
