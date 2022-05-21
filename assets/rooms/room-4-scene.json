@@ -4028,7 +4028,7 @@
             }
           }
         },
-        "decoration-(12.789583841959635-6.108593622843424)-22": {
+        "decoration-(12.477083841959635-6.041927337646484)-22": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4045,8 +4045,8 @@
                 "key": "tile-80",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.7895838419596348,
-                  "y_offset_frac": 0.10859362284342389
+                  "x_offset_frac": 0.4770838419596348,
+                  "y_offset_frac": 0.041927337646484375
                 }
               }
             }
@@ -4364,31 +4364,7 @@
             }
           }
         },
-        "decoration-(2.7895825703938804-0.9523442586263027)-36": {
-          "type": "Node",
-          "format": {"type": "Anchored"},
-          "data": {"size": [48, 48]},
-          "layout": {
-            "x_index": 2,
-            "y_index": 0,
-            "x_anchor": "left",
-            "y_anchor": "bottom"
-          },
-          "children": {
-            "decoration": {
-              "type": "Widget",
-              "data": {
-                "key": "tile-76",
-                "variables": {
-                  "priority": -0.95,
-                  "x_offset_frac": 0.7895825703938804,
-                  "y_offset_frac": 0.9523442586263027
-                }
-              }
-            }
-          }
-        },
-        "decoration-(4.07083257039388-0.9523442586263027)-37": {
+        "decoration-(4.07083257039388-0.9523442586263027)-36": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4412,7 +4388,7 @@
             }
           }
         },
-        "decoration-(10.267035590277779-1.51629638671875)-38": {
+        "decoration-(10.267035590277779-1.51629638671875)-37": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4436,7 +4412,7 @@
             }
           }
         },
-        "decoration-(11-1.75)-39": {
+        "decoration-(11-1.75)-38": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4460,7 +4436,7 @@
             }
           }
         },
-        "decoration-(11.5-1.75)-40": {
+        "decoration-(11.5-1.75)-39": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4484,7 +4460,7 @@
             }
           }
         },
-        "decoration-(11-1.25)-41": {
+        "decoration-(11-1.25)-40": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4508,7 +4484,7 @@
             }
           }
         },
-        "decoration-(11.5-1.25)-42": {
+        "decoration-(11.5-1.25)-41": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -4532,7 +4508,7 @@
             }
           }
         },
-        "decoration-(12.303333875868056-1.4997219509548607)-43": {
+        "decoration-(12.303333875868056-1.4997219509548607)-42": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},

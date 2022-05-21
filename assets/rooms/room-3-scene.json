@@ -2796,13 +2796,13 @@
             }
           }
         },
-        "decoration-(7.602082570393881-9.062760353088379)-28": {
+        "decoration-(7.47708257039388-8.821093877156574)-28": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
-            "y_index": 9,
+            "y_index": 8,
             "x_anchor": "left",
             "y_anchor": "bottom"
           },
@@ -2813,8 +2813,8 @@
                 "key": "tile-80",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.6020825703938808,
-                  "y_offset_frac": 0.0627603530883789
+                  "x_offset_frac": 0.4770825703938799,
+                  "y_offset_frac": 0.8210938771565743
                 }
               }
             }
@@ -2868,31 +2868,7 @@
             }
           }
         },
-        "decoration-(9.365554470486112-7.706296115451389)-31": {
-          "type": "Node",
-          "format": {"type": "Anchored"},
-          "data": {"size": [48, 48]},
-          "layout": {
-            "x_index": 9,
-            "y_index": 7,
-            "x_anchor": "left",
-            "y_anchor": "bottom"
-          },
-          "children": {
-            "decoration": {
-              "type": "Widget",
-              "data": {
-                "key": "tile-8",
-                "variables": {
-                  "priority": -0.95,
-                  "x_offset_frac": 0.3655544704861118,
-                  "y_offset_frac": 0.7062961154513889
-                }
-              }
-            }
-          }
-        },
-        "decoration-(4.956249237060547-6.039843877156576)-32": {
+        "decoration-(4.956249237060547-6.039843877156576)-31": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
@@ -2911,6 +2887,30 @@
                   "priority": -0.95,
                   "x_offset_frac": 0.9562492370605469,
                   "y_offset_frac": 0.03984387715657611
+                }
+              }
+            }
+          }
+        },
+        "decoration-(9.365554470486112-7.706296115451389)-32": {
+          "type": "Node",
+          "format": {"type": "Anchored"},
+          "data": {"size": [48, 48]},
+          "layout": {
+            "x_index": 9,
+            "y_index": 7,
+            "x_anchor": "left",
+            "y_anchor": "bottom"
+          },
+          "children": {
+            "decoration": {
+              "type": "Widget",
+              "data": {
+                "key": "tile-8",
+                "variables": {
+                  "priority": -0.95,
+                  "x_offset_frac": 0.3655544704861118,
+                  "y_offset_frac": 0.7062961154513889
                 }
               }
             }

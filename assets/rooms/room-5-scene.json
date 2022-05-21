@@ -2460,13 +2460,13 @@
       "data": {"anchor": [0, 0], "size": [720, 720]},
       "layout": {"x_anchor": "bottom", "y_anchor": "left"},
       "children": {
-        "decoration-(4.560415903727214-13.119010408719381)-0": {
+        "decoration-(4.622915903727214-12.823177019755045)-0": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
           "layout": {
             "x_index": 4,
-            "y_index": 13,
+            "y_index": 12,
             "x_anchor": "left",
             "y_anchor": "bottom"
           },
@@ -2477,8 +2477,8 @@
                 "key": "tile-76",
                 "variables": {
                   "priority": -0.95,
-                  "x_offset_frac": 0.5604159037272138,
-                  "y_offset_frac": 0.11901040871938129
+                  "x_offset_frac": 0.6229159037272138,
+                  "y_offset_frac": 0.823177019755045
                 }
               }
             }
@@ -2508,13 +2508,13 @@
             }
           }
         },
-        "decoration-(7.706249237060547-13.166927019755045)-2": {
+        "decoration-(7.706249237060547-12.833593686421713)-2": {
           "type": "Node",
           "format": {"type": "Anchored"},
           "data": {"size": [48, 48]},
           "layout": {
             "x_index": 7,
-            "y_index": 13,
+            "y_index": 12,
             "x_anchor": "left",
             "y_anchor": "bottom"
           },
@@ -2526,7 +2526,7 @@
                 "variables": {
                   "priority": -0.95,
                   "x_offset_frac": 0.7062492370605469,
-                  "y_offset_frac": 0.16692701975504498
+                  "y_offset_frac": 0.8335936864217128
                 }
               }
             }
