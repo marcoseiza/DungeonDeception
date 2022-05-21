@@ -78,7 +78,7 @@ void LevelController::update(float timestep) {
                                    current->getNode()->getPosition().y;
           row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) - 2;
           projectile->getNode()->setPriority(current->getGridSize().height -
-                                               row);
+                                             row);
         }
       }
     }
@@ -446,6 +446,12 @@ void LevelController::setupMap(bool is_betrayer) {
   map_bkg->setAnchor(cugl::Vec2::ANCHOR_CENTER);
   map_bkg->setPosition(cugl::Vec2::ZERO);
   map_bkg->setPriority(-1);
+
+  // Clamp map to max_height so that it's always visible.
+  float max_height = 200;
+  if (map_bkg->getHeight() > max_height) {
+    _map->setScale(_map->getScale() * max_height / map_bkg->getHeight());
+  }
 
   _map->swapChild(_map->getChildByName("background"), map_bkg);
 

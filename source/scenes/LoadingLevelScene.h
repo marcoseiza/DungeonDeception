@@ -65,9 +65,11 @@ class LoadingLevelScene : public cugl::Scene2 {
    *
    * @param assets    The (loaded) assets for this loading mode
    * @param seed        The seed to be used in the map generation
+   * @param num_players The number of players in the game.
    * @return true if the controller is initialized properly, false otherwise.
    */
-  bool init(const std::shared_ptr<cugl::AssetManager>& assets, Uint64 seed);
+  bool init(const std::shared_ptr<cugl::AssetManager>& assets, Uint64 seed,
+            int num_players);
 
   /**
    * The method called to update the level loading mode.
