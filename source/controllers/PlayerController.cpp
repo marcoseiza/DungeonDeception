@@ -82,8 +82,6 @@ void PlayerController::update(float timestep) {
       _sound_controller->playPlayerFootstep(
           SoundController::FootstepType::GRASS);
     }
-
-    if (it.second->isHit()) _sound_controller->playPlayerHit();
   }
 
   if (InputController::get<Attack>()->chargeStart()) {
@@ -92,6 +90,7 @@ void PlayerController::update(float timestep) {
     _sound_controller->stopPlayerEnergyCharge();
   }
 
+  if (_player->isHit()) _sound_controller->playPlayerHit();
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }

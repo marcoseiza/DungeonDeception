@@ -1101,23 +1101,29 @@ void GameScene::beginContact(b2Contact* contact) {
   if (fx1_name == "enemy_damage" &&
       ob2 == _player_controller->getMyPlayer().get() &&
       dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
-    dynamic_cast<Player*>(ob2)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob2) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
   } else if (fx2_name == "enemy_damage" &&
              ob1 == _player_controller->getMyPlayer().get() &&
              dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
-    dynamic_cast<Player*>(ob1)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob1) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
   }
 
   if (ob1->getName() == "projectile" &&
       fx2_name == "player_projectile_sensor") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-    dynamic_cast<Player*>(ob2)->takeDamage();
-    CULog("hi");
+    if (_player_controller->getMyPlayer().get() == ob2) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
   } else if (ob2->getName() == "projectile" &&
              fx1_name == "player_projectile_sensor") {
-    dynamic_cast<Player*>(ob1)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob1) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-    CULog("hi");
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
