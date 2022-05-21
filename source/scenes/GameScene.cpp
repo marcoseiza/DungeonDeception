@@ -662,10 +662,10 @@ void GameScene::update(float timestep) {
             if (player->getRoomId() != room_id) continue;
             if (player->isBetrayer()) {
               // Give betrayer less energy than regular players.
-              player->setEnergy(player->getEnergy() + 2);
+              player->setEnergy(player->getEnergy() + 3);
             } else {
               // Give all players in the same room some energy if an enemy dies.
-              player->setEnergy(player->getEnergy() + 4);
+              player->setEnergy(player->getEnergy() + 7);
             }
           }
         }
