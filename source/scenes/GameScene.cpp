@@ -602,8 +602,9 @@ void GameScene::update(float timestep) {
       cugl::strtool::format(std::to_string(_num_terminals_corrupted));
   corrupted_text->setText(corrupted_msg);
   corrupted_text->setForeground(cugl::Color4::BLACK);
-  
-  auto player_count_text = ui_layer->getChildByName<cugl::scene2::Label>("players-in-room");
+
+  auto player_count_text =
+      ui_layer->getChildByName<cugl::scene2::Label>("players-in-room");
   int other_players_in_room_count = 0;
   for (auto it : _player_controller->getPlayers()) {
     std::shared_ptr<Player> player = it.second;
@@ -611,10 +612,10 @@ void GameScene::update(float timestep) {
       other_players_in_room_count++;
     }
   }
-  
+
   std::stringstream player_count_msg;
   player_count_msg << "x" << other_players_in_room_count;
-  
+
   player_count_text->setText(player_count_msg.str());
   player_count_text->setForeground(cugl::Color4::BLACK);
 
@@ -632,7 +633,7 @@ void GameScene::update(float timestep) {
   // POST-UPDATE
   // Check for disposal
 
-//  auto room_ids_with_players = getRoomIdsWithPlayers();
+  //  auto room_ids_with_players = getRoomIdsWithPlayers();
   auto room_id_player_count_map = getRoomPlayerCounts();
   for (auto it : room_id_player_count_map) {
     auto room_id = it.first;
@@ -657,8 +658,6 @@ void GameScene::update(float timestep) {
         if (NetworkController::get()->isHost()) {
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
-//            int player_count = room_id_player_count_map[room_id];
-            
             if (player->getRoomId() != room_id) continue;
             if (player->isBetrayer()) {
               // Give betrayer less energy than regular players.
@@ -786,27 +785,28 @@ void GameScene::sendNetworkInfoHost() {
   }
 
   {
-//    cugl::Timestamp time;
-//    Uint64 millis = time.ellapsedMillis(_time_of_last_player_other_info_update);
-//
-//    if (millis > 5000) {
-//      _time_of_last_player_other_info_update.mark();
-      std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
-      for (auto it : _player_controller->getPlayers()) {
-        std::shared_ptr<Player> player = it.second;
+    //    cugl::Timestamp time;
+    //    Uint64 millis =
+    //    time.ellapsedMillis(_time_of_last_player_other_info_update);
+    //
+    //    if (millis > 5000) {
+    //      _time_of_last_player_other_info_update.mark();
+    std::vector<std::shared_ptr<cugl::Serializable>> all_player_info;
+    for (auto it : _player_controller->getPlayers()) {
+      std::shared_ptr<Player> player = it.second;
 
-        auto info = cugl::PlayerOtherInfo::alloc();
+      auto info = cugl::PlayerOtherInfo::alloc();
 
-        info->player_id = player->getPlayerId();
-        info->energy = player->getEnergy();
-        info->corruption = player->getCorruptedEnergy();
+      info->player_id = player->getPlayerId();
+      info->energy = player->getEnergy();
+      info->corruption = player->getCorruptedEnergy();
 
-        all_player_info.push_back(info);
-      }
+      all_player_info.push_back(info);
+    }
 
-      NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
-                                     all_player_info);
-//    }
+    NetworkController::get()->send(NC_HOST_ALL_PLAYER_OTHER_INFO,
+                                   all_player_info);
+    //    }
   }
 
   auto room_ids_with_players = getRoomIdsWithPlayers();
@@ -1250,11 +1250,8 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->changeRoom(fx2_name);
   }
 
-  if (fx1_name == "terminal-sensor" &&
+  if (fx1_name == "terminal-sensor" && ob1 != nullptr &&
       ob2 == _player_controller->getMyPlayer().get()) {
-    std::shared_ptr<RoomModel> room =
-        _level_controller->getLevelModel()->getCurrentRoom();
-
     cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
     start_pos.x +=
         _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
@@ -1262,36 +1259,38 @@ void GameScene::beginContact(b2Contact* contact) {
 
     Terminal* terminal =
         static_cast<Terminal*>((void*)ob1->getUserDataPointer());
-    cugl::Vec2 end_pos = ob1->getPosition() + terminal->getContentSize() / 2;
+    if (terminal != nullptr) {
+      cugl::Vec2 end_pos = ob1->getPosition() + terminal->getContentSize() / 2;
 
-    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
-    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+      _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+      _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
 
-    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+      std::shared_ptr<Player> player = _player_controller->getMyPlayer();
 
-    if (!terminal->isFilled()) {
-      if (player->getEnergy() > 0) {
-        int num = 10 * player->getEnergy() / 100.0f + 1;
-        if (player->isBetrayer()) {
-          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
-        } else {
-          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+      if (!terminal->isFilled() && player != nullptr) {
+        if (player->getEnergy() > 0) {
+          int num = 10 * player->getEnergy() / 100.0f + 1;
+          if (player->isBetrayer()) {
+            _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+          } else {
+            _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+          }
         }
-      }
 
-      if (player->getCorruptedEnergy() > 0) {
-        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
-        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        if (player->getCorruptedEnergy() > 0) {
+          int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        }
       }
     }
 
-    _terminal_controller->depositEnergy(room->getKey());
-
-  } else if (fx2_name == "terminal-sensor" &&
-             ob1 == _player_controller->getMyPlayer().get()) {
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
+    if (room != nullptr && _terminal_controller != nullptr)
+      _terminal_controller->depositEnergy(room->getKey());
 
+  } else if (fx2_name == "terminal-sensor" && ob2 != nullptr &&
+             ob1 == _player_controller->getMyPlayer().get()) {
     cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
     start_pos.x +=
         _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
@@ -1299,30 +1298,35 @@ void GameScene::beginContact(b2Contact* contact) {
 
     Terminal* terminal =
         static_cast<Terminal*>((void*)ob2->getUserDataPointer());
-    cugl::Vec2 end_pos = ob2->getPosition() + terminal->getContentSize() / 2;
+    if (terminal != nullptr) {
+      cugl::Vec2 end_pos = ob2->getPosition() + terminal->getContentSize() / 2;
 
-    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
-    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+      _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+      _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
 
-    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+      std::shared_ptr<Player> player = _player_controller->getMyPlayer();
 
-    if (!terminal->isFilled()) {
-      if (player->getEnergy() > 0) {
-        int num = 10 * player->getEnergy() / 100.0f + 1;
-        if (player->isBetrayer()) {
-          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
-        } else {
-          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+      if (!terminal->isFilled() && player != nullptr) {
+        if (player->getEnergy() > 0) {
+          int num = 10 * player->getEnergy() / 100.0f + 1;
+          if (player->isBetrayer()) {
+            _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+          } else {
+            _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+          }
         }
-      }
 
-      if (player->getCorruptedEnergy() > 0) {
-        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
-        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        if (player->getCorruptedEnergy() > 0) {
+          int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        }
       }
     }
 
-    _terminal_controller->depositEnergy(room->getKey());
+    std::shared_ptr<RoomModel> room =
+        _level_controller->getLevelModel()->getCurrentRoom();
+    if (room != nullptr && _terminal_controller != nullptr)
+      _terminal_controller->depositEnergy(room->getKey());
   }
 }
 
