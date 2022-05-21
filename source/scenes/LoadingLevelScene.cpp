@@ -9,11 +9,11 @@
 bool LoadingLevelScene::init(
     const std::shared_ptr<cugl::AssetManager>& assets) {
   std::random_device my_random_device;
-  return init(assets, (Uint64)my_random_device());
+  return init(assets, (Uint64)my_random_device(), 5);
 }
 
 bool LoadingLevelScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
-                             Uint64 seed) {
+                             Uint64 seed, int num_players) {
   if (_active) return false;
   _active = true;
 
@@ -41,6 +41,7 @@ bool LoadingLevelScene::init(const std::shared_ptr<cugl::AssetManager>& assets,
   map_rooms->addChild(edges);
   map_rooms->addChild(rooms);
 
+  _config.setNumRooms(25 + 6 * (std::max(num_players, 3) - 3));
   _level_generator = std::make_shared<level_gen::LevelGenerator>();
   _level_generator->init(_config, map_rooms, seed);
 

@@ -458,6 +458,12 @@ void LevelController::setupMap(bool is_betrayer) {
   map_bkg->setPosition(cugl::Vec2::ZERO);
   map_bkg->setPriority(-1);
 
+  // Clamp map to max_height so that it's always visible.
+  float max_height = 200;
+  if (map_bkg->getHeight() > max_height) {
+    _map->setScale(_map->getScale() * max_height / map_bkg->getHeight());
+  }
+
   _map->swapChild(_map->getChildByName("background"), map_bkg);
 
   auto asterisk_description = cugl::scene2::Label::allocWithText(
