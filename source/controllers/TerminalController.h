@@ -67,7 +67,6 @@ class TerminalController : public Controller {
   void dispose() override {
     _scene = nullptr;
     _active = false;
-    _deposit_energy_scene = nullptr;
   }
 
   /**
