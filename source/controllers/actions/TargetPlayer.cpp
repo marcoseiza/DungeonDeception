@@ -134,6 +134,8 @@ bool TargetPlayer::update() {
 }
 
 bool TargetPlayer::dispose() {
+  auto parent = _button->getParent();
+  if (parent) parent->removeChild(_button);
   _button = nullptr;
 
 #ifdef CU_TOUCH_SCREEN
