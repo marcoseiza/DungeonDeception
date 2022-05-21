@@ -8,6 +8,15 @@
  * that do not require any special attributes like physics.
  */
 class BasicTile : public cugl::scene2::PolygonNode {
+ protected:
+  /** A value used by decoration tiles to define wether they should be ordered
+   * like regular tiles. */
+  bool _decoration_order;
+
+  /** A value used by decoration tiles to define the priority offset of the
+   * texture due to whitespace surrounding the decoration. */
+  float _decoration_offset;
+
  public:
   /**
    * Creates an empty scene graph node with the degenerate texture.
@@ -15,7 +24,9 @@ class BasicTile : public cugl::scene2::PolygonNode {
    * This constructor should never be called directly, as this is an abstract
    * class.
    */
-  BasicTile() { _classname = "BasicTile"; }
+  BasicTile() : _decoration_order(false), _decoration_offset(0) {
+    _classname = "BasicTile";
+  }
 
   /**
    * Deletes this node, releasing all resources.
@@ -116,6 +127,17 @@ class BasicTile : public cugl::scene2::PolygonNode {
   void setContentSize(const cugl::Size size) override {
     return TexturedNode::setContentSize(size);
   }
+
+  /** @return Wether this decoration tile needs to be ordered like a regular
+   * tile. */
+  bool getDecorationOrder() { return _decoration_order; }
+
+  /**
+   * A value used by decoration tiles to define the priority offset of the
+   * texture due to whitespace surrounding the decoration
+   * @return The offset used for ordering.
+   * */
+  float getDecorationOffset() { return _decoration_offset; }
 
   /** This macro disables the copy constructor (not allowed on scene graphs) */
   CU_DISALLOW_COPY_AND_ASSIGN(BasicTile);
