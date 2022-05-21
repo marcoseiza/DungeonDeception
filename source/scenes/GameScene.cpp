@@ -609,15 +609,10 @@ void GameScene::update(float timestep) {
           // Give all players in the same room some energy if an enemy dies.
           for (auto jt : _player_controller->getPlayers()) {
             std::shared_ptr<Player> player = jt.second;
-            int player_count = room_id_player_count_map[room_id];
-            float betrayer_multiplier = player_count == 1 ? 3.0f : 1.0f;
+//            int player_count = room_id_player_count_map[room_id];
             
             if (player->getRoomId() == room_id) {
-              if (player->isBetrayer()) {
-                player->setEnergy(player->getEnergy() + 5 * betrayer_multiplier);
-              } else {
-                player->setEnergy(player->getEnergy() + 5);
-              }
+              player->setEnergy(player->getEnergy() + 5);
             }
           }
         }
