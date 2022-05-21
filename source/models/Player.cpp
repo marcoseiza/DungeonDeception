@@ -24,6 +24,9 @@
 
 #define ENERGY_BAR_UPDATE_SIZE 0.02f
 
+#define ENERGY_SLASH_SPEED 400
+#define ENERGY_SLASH_LIFE 60
+
 #define FLASH_BLOCK_ICON_LENGTH 30
 
 #pragma mark Init
@@ -369,7 +372,8 @@ void Player::updateDirection(const cugl::Vec2& diff) {
 
 void Player::makeSlash(cugl::Vec2 attackDir, cugl::Vec2 swordPos) {
   // Make the sword slash projectile
-  auto slash = Projectile::alloc(swordPos, attackDir);
+  auto slash = Projectile::alloc(swordPos, attackDir, ENERGY_SLASH_SPEED,
+                                 ENERGY_SLASH_LIFE);
   _slashes.emplace(slash);
   slash->setPosition(swordPos);
 

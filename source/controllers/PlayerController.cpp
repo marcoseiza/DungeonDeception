@@ -97,8 +97,6 @@ void PlayerController::update(float timestep) {
       _grass_particle.setRoomId(it.second->getRoomId());
       _particle_controller->emit(_grass_particle, 4);
     }
-
-    if (it.second->isHit()) _sound_controller->playPlayerHit();
   }
 
   if (InputController::get<Attack>()->chargeStart()) {
@@ -107,6 +105,7 @@ void PlayerController::update(float timestep) {
     _sound_controller->stopPlayerEnergyCharge();
   }
 
+  if (_player->isHit()) _sound_controller->playPlayerHit();
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
@@ -436,7 +435,8 @@ void PlayerController::updateSlashes(float timestep) {
     (*it)->decrementFrame(1);
     (*it)->getNode()->setPosition((*it)->getPosition());
     if ((*it)->getFrames() % SLASH_FRAMES == 0) {
-      (*it)->getNode()->setFrame((*it)->getNode()->getFrame() + 1);
+      (*it)->getNode()->setFrame(((*it)->getNode()->getFrame() + 1) %
+                                 (*it)->getNode()->getSize());
     }
     ++it;
   }
