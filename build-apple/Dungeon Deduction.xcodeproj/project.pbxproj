@@ -115,6 +115,12 @@
 		D56DCD2F27CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
 		D56DCD3027CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
 		D56DCD3127CDAD7A002E8363 /* Room.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D56DCD2A27CDAD7A002E8363 /* Room.cpp */; };
+		D577E48C2831AA0F00F0E250 /* ParticleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E48B2831AA0F00F0E250 /* ParticleController.cpp */; };
+		D577E48D2831AA0F00F0E250 /* ParticleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E48B2831AA0F00F0E250 /* ParticleController.cpp */; };
+		D577E48E2831AA0F00F0E250 /* ParticleController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E48B2831AA0F00F0E250 /* ParticleController.cpp */; };
+		D577E4AC2832AE0E00F0E250 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E4AB2832AE0E00F0E250 /* Random.cpp */; };
+		D577E4AD2832AE0E00F0E250 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E4AB2832AE0E00F0E250 /* Random.cpp */; };
+		D577E4AE2832AE0E00F0E250 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D577E4AB2832AE0E00F0E250 /* Random.cpp */; };
 		D579718727CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
 		D579718827CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
 		D579718927CFF851008FCC5E /* BasicTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D579718227CFF851008FCC5E /* BasicTile.cpp */; };
@@ -342,6 +348,10 @@
 		D56B743A27CA9DCE00710CC6 /* LevelGeneratorConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelGeneratorConfig.h; sourceTree = "<group>"; };
 		D56DCD2927CDAD7A002E8363 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		D56DCD2A27CDAD7A002E8363 /* Room.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Room.cpp; sourceTree = "<group>"; };
+		D577E4872831AA0F00F0E250 /* ParticleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleController.h; sourceTree = "<group>"; };
+		D577E48B2831AA0F00F0E250 /* ParticleController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleController.cpp; sourceTree = "<group>"; };
+		D577E4A72832AD0C00F0E250 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
+		D577E4AB2832AE0E00F0E250 /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Random.cpp; sourceTree = "<group>"; };
 		D579718227CFF851008FCC5E /* BasicTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BasicTile.cpp; sourceTree = "<group>"; };
 		D579718627CFF851008FCC5E /* BasicTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicTile.h; sourceTree = "<group>"; };
 		D57971EE27D026E4008FCC5E /* CustomScene2Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomScene2Loader.cpp; sourceTree = "<group>"; };
@@ -591,6 +601,10 @@
 		D52E672C27BF305900F8E2B8 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D577E4AB2832AE0E00F0E250 /* Random.cpp */,
+				D577E4A72832AD0C00F0E250 /* Random.h */,
+				D577E48B2831AA0F00F0E250 /* ParticleController.cpp */,
+				D577E4872831AA0F00F0E250 /* ParticleController.h */,
 				D53FDE24281C5D13007723CB /* TrailManager.cpp */,
 				D53FDE28281C5D13007723CB /* TrailManager.h */,
 				D57B34AF280F7076002DEBBA /* CollisionFiltering.h */,
@@ -1048,6 +1062,7 @@
 				EB9CDA3925D0EAB100EE1A09 /* main.cpp in Sources */,
 				D56B743D27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9627E184760085A52E /* EnemyModel.cpp in Sources */,
+				D577E48E2831AA0F00F0E250 /* ParticleController.cpp in Sources */,
 				CAB1A84E27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF227DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6E027DEFA350071DD06 /* RoomModel.cpp in Sources */,
@@ -1061,6 +1076,7 @@
 				D5556B80282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF527DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673927BF305A00F8E2B8 /* GameScene.cpp in Sources */,
+				D577E4AE2832AE0E00F0E250 /* Random.cpp in Sources */,
 				D57B34D8280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
 				D58B972B27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22B27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
@@ -1107,6 +1123,7 @@
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
 				D56B743C27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9527E184760085A52E /* EnemyModel.cpp in Sources */,
+				D577E48D2831AA0F00F0E250 /* ParticleController.cpp in Sources */,
 				CAB1A84D27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF127DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6DF27DEFA350071DD06 /* RoomModel.cpp in Sources */,
@@ -1120,6 +1137,7 @@
 				D5556B7F282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF427DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673827BF305A00F8E2B8 /* GameScene.cpp in Sources */,
+				D577E4AD2832AE0E00F0E250 /* Random.cpp in Sources */,
 				D57B34D7280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
 				D58B972A27DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22A27DB41B400CA2BA9 /* Hungarian.cpp in Sources */,
@@ -1166,6 +1184,7 @@
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				D56B743B27CA9DCE00710CC6 /* LevelGeneratorConfig.cpp in Sources */,
 				57D18F9427E184760085A52E /* EnemyModel.cpp in Sources */,
+				D577E48C2831AA0F00F0E250 /* ParticleController.cpp in Sources */,
 				CAB1A84C27F23CD3000B9F20 /* Dash.cpp in Sources */,
 				CAAF4CF027DCA79600024986 /* ClientMenuScene.cpp in Sources */,
 				D5F3D6B527DD6E3B0071DD06 /* RoomModel.cpp in Sources */,
@@ -1179,6 +1198,7 @@
 				D5556B7E282951780033ADBF /* SettingsScene.cpp in Sources */,
 				CAAF4CF327DCA79600024986 /* HostMenuScene.cpp in Sources */,
 				D52E673727BF305A00F8E2B8 /* GameScene.cpp in Sources */,
+				D577E4AC2832AE0E00F0E250 /* Random.cpp in Sources */,
 				D57B34D6280FBEC5002DEBBA /* ClientLobbyScene.cpp in Sources */,
 				D58B972927DD31DE0071D1FC /* Door.cpp in Sources */,
 				D568D22927DB41B400CA2BA9 /* Hungarian.cpp in Sources */,

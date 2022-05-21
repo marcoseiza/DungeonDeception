@@ -170,6 +170,11 @@ class Player : public cugl::physics2::CapsuleObstacle {
    * @return if player has been hit.
    */
   bool isHit() const;
+  
+  /**
+   * Resets the sensors after dying.
+   */
+  void resetSensors() { setSensor(false); _projectile_sensor->SetSensor(true); }
 
   /**
    * Returns the current state of the player.

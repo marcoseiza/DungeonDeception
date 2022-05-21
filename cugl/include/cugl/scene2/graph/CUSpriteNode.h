@@ -67,15 +67,15 @@ namespace cugl {
  * This is a scene graph node to support simple sprite sheet animation
  *
  * The API for this class is very similar to {@link PolygonNode}, except that it
- * treats the texture as a sprite sheet.  This means that you must specify the 
- * rows and columns in the sprite sheet so that it can break up the images for 
+ * treats the texture as a sprite sheet.  This means that you must specify the
+ * rows and columns in the sprite sheet so that it can break up the images for
  * you.
  *
- * The basic constructors always set this object equal to a rectangle the same 
- * size as a single frame in the sprite sheet.  However, you could conceivably 
+ * The basic constructors always set this object equal to a rectangle the same
+ * size as a single frame in the sprite sheet.  However, you could conceivably
  * animate the sprite sheet over polygons, simpy by changing the shape via
- * {@link setPolygon}.  This can have undesirable effects if the polygon 
- * coordinate extend beyond a single animation frame. The basic renderer does 
+ * {@link setPolygon}.  This can have undesirable effects if the polygon
+ * coordinate extend beyond a single animation frame. The basic renderer does
  * not allow us to wrap a single frame of a texture atlas.
  *
  * For example, suppose you have a sprite sheet where each frame has a given
@@ -143,8 +143,8 @@ public:
      * filmstrip.  The value size must be less than or equal to rows*cols, or
      * this constructor will raise an error.
      *
-     * The size of the node is equal to the size of a single frame in the 
-     * filmstrip. To resize the node, scale it up or down.  Do NOT change the 
+     * The size of the node is equal to the size of a single frame in the
+     * filmstrip. To resize the node, scale it up or down.  Do NOT change the
      * polygon, as that will interfere with the animation.
      *
      * @param texture   The texture image to use
@@ -295,9 +295,19 @@ public:
      */
     void setFrame(int frame);
 
+#pragma mark Internal Helpers
+private:
+    /**
+     * Updates the texture coordinates for this polygon
+     *
+     * The texture coordinates are computed assuming that the polygon is
+     * defined in image space, with the origin in the bottom left corner
+     * of the texture.
+     */
+    virtual void updateTextureCoords() override;
+    
     /** This macro disables the copy constructor (not allowed on scene graphs) */
     CU_DISALLOW_COPY_AND_ASSIGN(SpriteNode);
-
 };
     }
 }

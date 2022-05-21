@@ -9,6 +9,8 @@
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
 #define ATTACK_SETUP_LIM_GAP 7
+#define DEATH_START_FRAME 90
+#define FINAL_DEATH_FRAME 114
 #define ATTACK_FRAMES 25
 #define HEALTH 50
 
@@ -22,7 +24,7 @@
 
 #define MIN_DIFF_FOR_DIR_CHANGE 0.5f
 
-#define ENERGY_BAR_UPDATE_SIZE 0.03f
+#define ENERGY_BAR_UPDATE_SIZE 0.02f
 
 #define ENERGY_SLASH_SPEED 400
 #define ENERGY_SLASH_LIFE 60
@@ -182,8 +184,9 @@ bool Player::isHit() const { return _hurt_frames == HURT_FRAMES; }
 
 void Player::dies() {
   _isDead = true;
-  _player_node->setColor(cugl::Color4::RED);
   _hurt_frames = DEAD_FRAMES;
+  _player_node->setColor(cugl::Color4::WHITE);
+  setSensor(true);
 }
 
 void Player::setCorrupted() {
@@ -259,27 +262,23 @@ void Player::update(float delta) {
 
   // Animate the energy bars.
   if (_energy_bar != nullptr && _corrupted_energy_bar != nullptr) {
-    float target_energy_amt = (_energy - _corrupted_energy) / 100.0f;
-    float target_corrupt_energy_amt = _energy / 100.0f;
-    if (_energy_bar->getProgress() < target_energy_amt) {
-      (_energy_bar->setProgress(
-          std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                   target_energy_amt)));
-    } else if (_energy_bar->getProgress() > target_energy_amt) {
-      (_energy_bar->setProgress(
-          std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                   target_energy_amt)));
+    float target_energy = (_energy - _corrupted_energy) / 100.0f;
+    float target_corrupt_energy = _energy / 100.0f;
+
+    if (_energy_bar->getProgress() < target_energy) {
+      float df = _energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+      _energy_bar->setProgress(std::min(df, target_energy));
+    } else if (_energy_bar->getProgress() > target_energy) {
+      float df = _energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+      _energy_bar->setProgress(std::max(df, target_energy));
     }
 
-    if (_corrupted_energy_bar->getProgress() < target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::min(
-          _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-          target_corrupt_energy_amt)));
-    } else if (_corrupted_energy_bar->getProgress() >
-               target_corrupt_energy_amt) {
-      (_corrupted_energy_bar->setProgress(std::max(
-          _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-          target_corrupt_energy_amt)));
+    if (_corrupted_energy_bar->getProgress() < target_corrupt_energy) {
+      float df = _corrupted_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+      _corrupted_energy_bar->setProgress(std::min(df, target_corrupt_energy));
+    } else if (_corrupted_energy_bar->getProgress() > target_corrupt_energy) {
+      float df = _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+      _corrupted_energy_bar->setProgress(std::max(df, target_corrupt_energy));
     }
   }
 
@@ -295,45 +294,63 @@ void Player::update(float delta) {
 }
 
 void Player::animate() {
-  switch (_current_state) {
-    case DASHING:
-    case MOVING: {
-      if (_frame_count == 0) {
-        _player_node->setFrame(getRunLowLim());
-      }
+  if (!_isDead) {
+    switch (_current_state) {
+      case DASHING:
+      case MOVING: {
+        if (_frame_count == 0) {
+          _player_node->setFrame(getRunLowLim());
+        }
 
-      // Play the next animation frame.
+        // Play the next animation frame.
+        if (_frame_count >= 5) {
+          _frame_count = 0;
+          if (_player_node->getFrame() >= getRunHighLim()) {
+            _player_node->setFrame(getRunLowLim());
+          } else {
+            _player_node->setFrame(_player_node->getFrame() + 1);
+          }
+        }
+        _frame_count++;
+        break;
+      }
+      case IDLE: {
+        _player_node->setFrame(_mv_direc);
+        _frame_count = 0;
+        break;
+      }
+      case ATTACKING: {
+        int attack_high_lim = getAttackHighLim();
+        int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
+
+        // Play the next animation frame.
+        if (_frame_count >= 3) {
+          _frame_count = 0;
+          if (_player_node->getFrame() >= attack_high_lim) {
+            _player_node->setFrame(attack_low_lim);
+          } else {
+            _player_node->setFrame(_player_node->getFrame() + 1);
+          }
+        }
+        _frame_count++;
+        break;
+      }
+    }
+  } else {
+    if (_mv_direc == IDLE_LEFT) {
+      _player_node->flipHorizontal(true);
+    }
+    // Death just began, set to initial frame.
+    if (_player_node->getFrame() < DEATH_START_FRAME) {
+      _player_node->setFrame(DEATH_START_FRAME);
+    }
+    
+    if (_player_node->getFrame() != FINAL_DEATH_FRAME) {
       if (_frame_count >= 5) {
         _frame_count = 0;
-        if (_player_node->getFrame() >= getRunHighLim()) {
-          _player_node->setFrame(getRunLowLim());
-        } else {
-          _player_node->setFrame(_player_node->getFrame() + 1);
-        }
+        _player_node->setFrame(_player_node->getFrame() + 1);
       }
       _frame_count++;
-      break;
-    }
-    case IDLE: {
-      _player_node->setFrame(_mv_direc);
-      _frame_count = 0;
-      break;
-    }
-    case ATTACKING: {
-      int attack_high_lim = getAttackHighLim();
-      int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
-
-      // Play the next animation frame.
-      if (_frame_count >= 3) {
-        _frame_count = 0;
-        if (_player_node->getFrame() >= attack_high_lim) {
-          _player_node->setFrame(attack_low_lim);
-        } else {
-          _player_node->setFrame(_player_node->getFrame() + 1);
-        }
-      }
-      _frame_count++;
-      break;
     }
   }
 }

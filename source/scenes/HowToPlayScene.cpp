@@ -34,6 +34,9 @@ bool HowToPlayScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
   _scene->setContentSize(dimen);
   _scene->doLayout();  // Repositions the HUD
 
+  auto slide1 = _scene->getChildByName<cugl::scene2::SceneNode>("slide1");
+  slide1->setVisible(false);
+
   auto slide2 = _scene->getChildByName<cugl::scene2::SceneNode>("slide2");
   slide2->setVisible(false);
 
@@ -95,6 +98,7 @@ void HowToPlayScene::update(float timestep) {
       break;
   }
 
+  auto slide0 = _scene->getChildByName<cugl::scene2::SceneNode>("slide0");
   auto slide1 = _scene->getChildByName<cugl::scene2::SceneNode>("slide1");
   auto slide2 = _scene->getChildByName<cugl::scene2::SceneNode>("slide2");
   auto slide3 = _scene->getChildByName<cugl::scene2::SceneNode>("slide3");
@@ -102,7 +106,8 @@ void HowToPlayScene::update(float timestep) {
 
   switch (_current_slide) {
     case 0:
-      slide1->setVisible(true);
+      slide0->setVisible(true);
+      slide1->setVisible(false);
       slide2->setVisible(false);
       slide3->setVisible(false);
       slide4->setVisible(false);
@@ -112,8 +117,9 @@ void HowToPlayScene::update(float timestep) {
       _right->activate();
       break;
     case 1:
-      slide2->setVisible(true);
-      slide1->setVisible(false);
+      slide1->setVisible(true);
+      slide0->setVisible(false);
+      slide2->setVisible(false);
       slide3->setVisible(false);
       slide4->setVisible(false);
       _left->setVisible(true);
@@ -122,7 +128,19 @@ void HowToPlayScene::update(float timestep) {
       _right->activate();
       break;
     case 2:
+      slide2->setVisible(true);
+      slide0->setVisible(false);
+      slide1->setVisible(false);
+      slide3->setVisible(false);
+      slide4->setVisible(false);
+      _left->setVisible(true);
+      _left->activate();
+      _right->setVisible(true);
+      _right->activate();
+      break;
+    case 3:
       slide3->setVisible(true);
+      slide0->setVisible(false);
       slide1->setVisible(false);
       slide2->setVisible(false);
       slide4->setVisible(false);
@@ -131,8 +149,9 @@ void HowToPlayScene::update(float timestep) {
       _right->setVisible(true);
       _right->activate();
       break;
-    case 3:
+    case 4:
       slide4->setVisible(true);
+      slide0->setVisible(false);
       slide1->setVisible(false);
       slide2->setVisible(false);
       slide3->setVisible(false);
@@ -142,7 +161,8 @@ void HowToPlayScene::update(float timestep) {
       _right->deactivate();
       break;
     default:
-      slide1->setVisible(true);
+      slide0->setVisible(true);
+      slide1->setVisible(false);
       slide2->setVisible(false);
       slide3->setVisible(false);
       slide4->setVisible(false);

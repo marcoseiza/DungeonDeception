@@ -28,6 +28,8 @@ class Terminal : public Wall {
   /** A terminal radius texture when the terminal is corrupted. */
   std::shared_ptr<cugl::Texture> _corr;
 
+  bool _filled;
+
  public:
   /**
    * Creates an empty scene graph node with the degenerate texture.
@@ -35,7 +37,10 @@ class Terminal : public Wall {
    * This constructor should never be called directly, as this is an abstract
    * class.
    */
-  Terminal() : Wall() { _classname = "Terminal"; }
+  Terminal() : Wall() {
+    _classname = "Terminal";
+    _filled = false;
+  }
 
   /**
    * Deletes this node, releasing all resources.
@@ -110,22 +115,34 @@ class Terminal : public Wall {
    * Set the terminal to the activated state.
    */
   void setActivated() {
-    if (_actv != nullptr) setTexture(_actv);
+    if (_actv != nullptr) {
+      setTexture(_actv);
+      _filled = true;
+    }
   }
 
   /**
    * Set the terminal to the corrupted state.
    */
   void setCorrupted() {
-    if (_corr != nullptr) setTexture(_corr);
+    if (_corr != nullptr) {
+      setTexture(_corr);
+      _filled = true;
+    }
   }
 
   /**
    * Set the terminal to the neutral state.
    */
   void setRegular() {
-    if (_reg != nullptr) setTexture(_reg);
+    if (_reg != nullptr) {
+      setTexture(_reg);
+      _filled = false;
+    }
   }
+
+  /** @return Wether the terminal has been completely filled. */
+  bool isFilled() { return _filled; }
 };
 
 #endif  // MODELS_TILES_TERMINAL_H_#pragma once
