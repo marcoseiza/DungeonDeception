@@ -187,7 +187,53 @@ void SpriteNode::setFrame(int frame) {
     _frame = frame;
     float x = (frame % _cols)*_bounds.size.width;
     float y = _texture->getSize().height - (1+frame/_cols)*_bounds.size.height;
-    shiftTexture(x-_bounds.origin.x, y-_bounds.origin.y);
+    float dx = x-_bounds.origin.x;
+    float dy = y-_bounds.origin.y;
     _bounds.origin.set(x,y);
+    shiftTexture(dx, dy);
 }
 
+/**
+ * Updates the texture coordinates for this polygon
+ *
+ * The texture coordinates are computed assuming that the polygon is
+ * defined in image space, with the origin in the bottom left corner
+ * of the texture.
+ */
+void SpriteNode::updateTextureCoords() {
+    if (!_rendered) {
+        return;
+    }
+    
+    Size tsize = _texture->getSize();
+    Vec2 off = _bounds.origin;
+    for(auto it = _mesh.vertices.begin(); it != _mesh.vertices.end(); ++it) {
+        float s = (it->position.x+off.x)/tsize.width;
+        float t = 1-(it->position.y+off.y)/tsize.height;
+
+        if (_flipHorizontal) {
+            float x0 = off.x/tsize.width;
+            float x1 = (off.x+_bounds.size.width)/tsize.width;
+            s = x1-(s-x0);
+        }
+        if (_flipVertical)   {
+            float y0 = off.y/tsize.height;
+            float y1 = (off.y+_bounds.size.height)/tsize.height;
+            t = y1-(t-y0);
+        }
+
+        it->texcoord.x = s*_texture->getMaxS()+(1-s)*_texture->getMinS();
+        it->texcoord.y = t*_texture->getMaxT()+(1-t)*_texture->getMinT();
+    
+        if (_gradient) {
+            // We have decided to do this on the content size, not the polygon
+            s = (it->position.x)/_contentSize.width;
+            t = (it->position.y)/_contentSize.height;
+
+            if (_flipHorizontal) { s = 1-s; }
+            if (_flipVertical)   { t = 1-t; }
+            it->gradcoord.x = s;
+            it->gradcoord.y = t;
+        }
+    }
+}

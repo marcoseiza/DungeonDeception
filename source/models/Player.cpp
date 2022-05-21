@@ -9,6 +9,8 @@
 #define RUN_LIM_GAP 9
 #define ATTACK_LIM_GAP 8
 #define ATTACK_SETUP_LIM_GAP 7
+#define DEATH_START_FRAME 90
+#define FINAL_DEATH_FRAME 114
 #define ATTACK_FRAMES 25
 #define HEALTH 100
 
@@ -182,8 +184,9 @@ bool Player::isHit() const { return _hurt_frames == HURT_FRAMES; }
 
 void Player::dies() {
   _isDead = true;
-  _player_node->setColor(cugl::Color4::RED);
   _hurt_frames = DEAD_FRAMES;
+  _player_node->setColor(cugl::Color4::WHITE);
+  setSensor(true);
 }
 
 void Player::setCorrupted() {
@@ -291,45 +294,63 @@ void Player::update(float delta) {
 }
 
 void Player::animate() {
-  switch (_current_state) {
-    case DASHING:
-    case MOVING: {
-      if (_frame_count == 0) {
-        _player_node->setFrame(getRunLowLim());
-      }
+  if (!_isDead) {
+    switch (_current_state) {
+      case DASHING:
+      case MOVING: {
+        if (_frame_count == 0) {
+          _player_node->setFrame(getRunLowLim());
+        }
 
-      // Play the next animation frame.
+        // Play the next animation frame.
+        if (_frame_count >= 5) {
+          _frame_count = 0;
+          if (_player_node->getFrame() >= getRunHighLim()) {
+            _player_node->setFrame(getRunLowLim());
+          } else {
+            _player_node->setFrame(_player_node->getFrame() + 1);
+          }
+        }
+        _frame_count++;
+        break;
+      }
+      case IDLE: {
+        _player_node->setFrame(_mv_direc);
+        _frame_count = 0;
+        break;
+      }
+      case ATTACKING: {
+        int attack_high_lim = getAttackHighLim();
+        int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
+
+        // Play the next animation frame.
+        if (_frame_count >= 3) {
+          _frame_count = 0;
+          if (_player_node->getFrame() >= attack_high_lim) {
+            _player_node->setFrame(attack_low_lim);
+          } else {
+            _player_node->setFrame(_player_node->getFrame() + 1);
+          }
+        }
+        _frame_count++;
+        break;
+      }
+    }
+  } else {
+    if (_mv_direc == IDLE_LEFT) {
+      _player_node->flipHorizontal(true);
+    }
+    // Death just began, set to initial frame.
+    if (_player_node->getFrame() < DEATH_START_FRAME) {
+      _player_node->setFrame(DEATH_START_FRAME);
+    }
+    
+    if (_player_node->getFrame() != FINAL_DEATH_FRAME) {
       if (_frame_count >= 5) {
         _frame_count = 0;
-        if (_player_node->getFrame() >= getRunHighLim()) {
-          _player_node->setFrame(getRunLowLim());
-        } else {
-          _player_node->setFrame(_player_node->getFrame() + 1);
-        }
+        _player_node->setFrame(_player_node->getFrame() + 1);
       }
       _frame_count++;
-      break;
-    }
-    case IDLE: {
-      _player_node->setFrame(_mv_direc);
-      _frame_count = 0;
-      break;
-    }
-    case ATTACKING: {
-      int attack_high_lim = getAttackHighLim();
-      int attack_low_lim = attack_high_lim - ATTACK_LIM_GAP;
-
-      // Play the next animation frame.
-      if (_frame_count >= 3) {
-        _frame_count = 0;
-        if (_player_node->getFrame() >= attack_high_lim) {
-          _player_node->setFrame(attack_low_lim);
-        } else {
-          _player_node->setFrame(_player_node->getFrame() + 1);
-        }
-      }
-      _frame_count++;
-      break;
     }
   }
 }
