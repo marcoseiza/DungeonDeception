@@ -111,6 +111,8 @@ void PlayerController::update(float timestep) {
   if (_player->getDead() && _player->_hurt_frames <= 0) {
     _player->setHealth(HEALTH);
     _player->setDead(false);
+    _player->getPlayerNode()->flipHorizontal(false);
+    _player->resetSensors();
     _player->setRespawning(true);
   }
 
@@ -126,7 +128,7 @@ std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
   auto new_player = Player::alloc(cugl::Vec2::ZERO, "Johnathan");
   new_player->setPlayerId(player_id);
 
-  auto player_node = cugl::scene2::SpriteNode::alloc(player, 15, 10);
+  auto player_node = cugl::scene2::SpriteNode::alloc(player, 12, 10);
   new_player->setPlayerNode(player_node);
   _world_node->addChild(player_node);
   _world->addObstacle(new_player);
