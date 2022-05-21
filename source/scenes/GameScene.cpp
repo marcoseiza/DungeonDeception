@@ -167,14 +167,10 @@ bool GameScene::init(
   _energy_bar = std::dynamic_pointer_cast<cugl::scene2::ProgressBar>(
       assets->get<cugl::scene2::SceneNode>("energy_bar"));
 
-  auto block_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("block-player");
-  block_player_button->setVisible(!is_betrayer);
-
-  auto infect_player_button =
-      ui_layer->getChildByName<cugl::scene2::Button>("infect-player");
-  infect_player_button->setVisible(is_betrayer);
-
+  assets->get<cugl::scene2::SceneNode>("ui-scene_block-player")
+      ->setVisible(!is_betrayer);
+  assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player")
+      ->setVisible(is_betrayer);
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
   win_layer->doLayout();
@@ -231,8 +227,7 @@ bool GameScene::init(
   _tank_controller->setSoundController(_sound_controller);
   _turtle_controller->setSoundController(_sound_controller);
 
-  InputController::get()->init(_assets, cugl::Scene2::getBounds());
-  InputController::get<TargetPlayer>()->setActive(is_betrayer);
+  InputController::get()->init(_assets, cugl::Scene2::getBounds(), is_betrayer);
 
   InputController::get()->pause();
 
@@ -302,11 +297,8 @@ void GameScene::populate(cugl::Size dim) {
   for (std::shared_ptr<Terminal> terminal :
        TileHelper::getTile<Terminal>(_world_node)) {
     _world->addObstacle(terminal->initBox2d());
-    _world->addObstacle(terminal->initSensor());
     terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
     terminal->getObstacle()->setDebugScene(_debug_node);
-    terminal->getSensor()->setDebugColor(cugl::Color4::BLACK);
-    terminal->getSensor()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
 
@@ -460,28 +452,53 @@ void GameScene::update(float timestep) {
     }
 
     if (target_player->isActivatingTargetAction()) {
-      sendBetrayalTargetInfo(target_player->getTarget());
+      sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                             target_player->getTarget());
+      if (target_player->getTarget() != -1) {
+        _player_controller->getPlayer(target_player->getTarget())
+            ->getBlockIcon()
+            ->setVisible(true);
+      }
+    }
+
+    if (target_player->isCooldownFinished()) {
+      sendBetrayalTargetInfo(_player_controller->getMyPlayer()->getPlayerId(),
+                             target_player->getPrevTarget());
+      if (target_player->getPrevTarget() != -1) {
+        _player_controller->getPlayer(target_player->getPrevTarget())
+            ->getBlockIcon()
+            ->setVisible(false);
+      }
     }
   }
 
   // Betrayer corrupt ability.
-  if (_player_controller->getMyPlayer()->isBetrayer() &&
-      _player_controller->getMyPlayer()->canCorrupt()) {
-    int time_held_down = InputController::get<Corrupt>()->timeHeldDown();
+  if (_player_controller->getMyPlayer()->isBetrayer()) {
     if (!_player_controller->getMyPlayer()->getDead()) {
-      if (time_held_down >= 2000) {
-        // 2000 milliseconds to hold down the corrupt button
-        // Send to the host to corrupt half a bar of luminance from everyone
-        // in the room.
+      auto blocked_ps = _player_controller->getMyPlayer()->getBlockedPlayers();
+      if (InputController::get<Corrupt>()->pressCorrupt()) {
         for (auto p : _player_controller->getPlayerList()) {
-          if (p->getRoomId() ==
-                  _player_controller->getMyPlayer()->getRoomId() &&
-              !p->isBetrayer()) {
+          bool same_room =
+              p->getRoomId() == _player_controller->getMyPlayer()->getRoomId();
+          bool can_infect =
+              blocked_ps.find(p->getPlayerId()) == blocked_ps.end();
+
+          if (same_room && can_infect && !p->isBetrayer()) {
             sendBetrayalCorruptInfo(p->getPlayerId());
             _player_controller->getMyPlayer()->setCorrupted();
+          } else if (!can_infect) {
+            p->flashBlockIcon();
           }
         }
-        InputController::get<Corrupt>()->resetTimeDown();
+      }
+
+      // Show all the block icons of the players that have blocked my player.
+      for (auto it : _player_controller->getPlayers()) {
+        if (it.first != _player_controller->getMyPlayer()->getPlayerId()) {
+          bool has_blocked = blocked_ps.find(it.first) != blocked_ps.end();
+          auto icon = it.second->getBlockIcon();
+          if (icon) icon->setVisible(has_blocked);
+        }
       }
     }
   }
@@ -563,7 +580,7 @@ void GameScene::update(float timestep) {
     for (auto it = enemies.begin(); it != enemies.end(); it++) {
       auto enemy = *it;
 
-      if (enemy->getHealth() <= 0) {
+      if (enemy->isReadyToDie()) {
         _dead_enemy_cache.push_back(enemy->getEnemyId());
         enemy->deleteAllProjectiles(_world, _world_node);
         enemy->deactivatePhysics(*_world->getWorld());
@@ -815,8 +832,12 @@ void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, float amoun
                                                     info);
 }
 
-void GameScene::sendBetrayalTargetInfo(int target_player_id) {
+void GameScene::sendBetrayalTargetInfo(int runner_id, int target_player_id) {
   auto betrayal_info = cugl::JsonValue::allocObject();
+
+  auto action_player_info = cugl::JsonValue::alloc((long)(runner_id));
+  betrayal_info->appendChild(action_player_info);
+  action_player_info->setKey("runner_id");
 
   auto target_player_info = cugl::JsonValue::alloc((long)(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -830,8 +851,12 @@ void GameScene::sendBetrayalTargetInfo(int target_player_id) {
  * This simply passes on the disable message on from the host to clients for
  * now. In the future the host can do server-side logic
  */
-void GameScene::sendDisablePlayerInfo(int target_player_id) {
+void GameScene::sendDisablePlayerInfo(int runner_id, int target_player_id) {
   auto betrayal_info = cugl::JsonValue::allocObject();
+
+  auto action_player_info = cugl::JsonValue::alloc((long)(runner_id));
+  betrayal_info->appendChild(action_player_info);
+  action_player_info->setKey("runner_id");
 
   auto target_player_info = cugl::JsonValue::alloc((long)(target_player_id));
   betrayal_info->appendChild(target_player_info);
@@ -947,19 +972,22 @@ void GameScene::processData(
     case NC_BETRAYAL_TARGET_INFO: {
       if (NetworkController::get()->isHost()) {
         auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
+        int runner_id = target_data->getInt("runner_id");
         int player_id = target_data->getInt("target_player_id");
-        sendDisablePlayerInfo(player_id);
+        sendDisablePlayerInfo(runner_id, player_id);
       }
     } break;
 
     case NC_SEND_DISABLE_PLAYER_INFO: {
       auto target_data = std::get<std::shared_ptr<cugl::JsonValue>>(msg);
 
+      int runner_id = target_data->getInt("runner_id");
       int player_id = target_data->getInt("target_player_id");
 
       if (player_id == _player_controller->getMyPlayer()->getPlayerId()) {
         // Blocks the player from corrupting for 1 minute.
-        _player_controller->blockCorrupt();
+        _player_controller->getMyPlayer()->toggleBlockPlayerOnBetrayer(
+            runner_id);
       }
     } break;
 
@@ -969,7 +997,7 @@ void GameScene::processData(
         int player_id = corrupt_data->getInt("corrupt_player_id");
         auto corrupt_player = _player_controller->getPlayer(player_id);
 
-        corrupt_player->turnEnergyCorrupted(10);
+        corrupt_player->turnEnergyCorrupted(20);
       }
     }
   }
@@ -1120,22 +1148,18 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->changeRoom(fx2_name);
   }
 
-  if (fx1_name == "terminal_range" &&
+  if (fx1_name == "terminal-sensor" &&
       ob2 == _player_controller->getMyPlayer().get()) {
-    if (!dynamic_cast<TerminalSensor*>(ob1)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
+    std::shared_ptr<RoomModel> room =
+        _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->depositEnergy(room->getKey());
-    }
-  } else if (fx2_name == "terminal_range" &&
+    _terminal_controller->depositEnergy(room->getKey());
+  } else if (fx2_name == "terminal-sensor" &&
              ob1 == _player_controller->getMyPlayer().get()) {
-    if (!dynamic_cast<TerminalSensor*>(ob2)->isActivated()) {
-      std::shared_ptr<RoomModel> room =
-          _level_controller->getLevelModel()->getCurrentRoom();
+    std::shared_ptr<RoomModel> room =
+        _level_controller->getLevelModel()->getCurrentRoom();
 
-      _terminal_controller->depositEnergy(room->getKey());
-    }
+    _terminal_controller->depositEnergy(room->getKey());
   }
 }
 

@@ -102,12 +102,6 @@ void PlayerController::update(float timestep) {
   }
   _player->_corrupt_count--;
 
-  if (_player->_blocked_corrupt_count == 0) {
-    _player->setCanCorrupt(true);
-    InputController::get<Corrupt>()->setActive(true);
-  }
-  _player->_blocked_corrupt_count--;
-
   // CHECK IF RAN OUT OF HEALTH
   if (_player->getHealth() <= 0 && !_player->getDead()) {
     _player->dies();
@@ -122,13 +116,6 @@ void PlayerController::update(float timestep) {
 
   // Animate the player
   _player->animate();
-}
-
-void PlayerController::blockCorrupt() {
-  if (_player->isBetrayer()) {
-    _player->setCanCorrupt(false);
-    InputController::get<Corrupt>()->setActive(false);
-  }
 }
 
 std::shared_ptr<Player> PlayerController::makePlayer(int player_id) {
@@ -274,6 +261,12 @@ void PlayerController::processBasicPlayerInfo(int player_id,
   auto corrupted_bar =
       cugl::scene2::ProgressBar::alloc(energy_fill, energy_bar);
   corrupted_bar->setForegroundColor(cugl::Color4("#df7126"));
+
+  auto block_icon = _assets->get<cugl::Texture>("blocked-player");
+  auto block_icon_node =
+      cugl::scene2::PolygonNode::allocWithTexture(block_icon);
+  player->setBlockIcon(block_icon_node, !_player->isBetrayer());
+  block_icon_node->setVisible(false);
 
   if (_player->isBetrayer()) {
     // It's important that these be placed in this specific order.

@@ -15,8 +15,22 @@
  */
 class TargetPlayer : public Action {
  protected:
-  /* Reference to map button for registering listeners to press event. */
+  /* Reference to button for registering listeners to press event. */
   std::shared_ptr<cugl::scene2::Button> _button;
+  /* Reference to button node for animation. */
+  std::shared_ptr<cugl::scene2::SpriteNode> _button_node;
+
+  /** Target player tooltip. */
+  std::shared_ptr<cugl::scene2::SceneNode> _tooltip;
+
+  /** The animation buffer for the charge animation. */
+  int _anim_buffer;
+  /** Whether to start the corruption cooldown. */
+  bool _start_cooldown;
+  /** Whether the cooldown timer has just finished. */
+  bool _cooldown_finished;
+  /** Time since the start of the cooldown. */
+  cugl::Timestamp _time_cooldown_start;
 
   /* Button was previously down on the last tick. */
   bool _prev_down;
@@ -33,6 +47,8 @@ class TargetPlayer : public Action {
 
   /* The player being targeted. -1 if no target. */
   int _target_player_id;
+  /* The player that was targeted. -1 if no target. */
+  int _prev_target_player_id;
 
   /* Whether the betrayer action is being activated */
   bool _is_activating_action;
@@ -45,6 +61,18 @@ class TargetPlayer : public Action {
 
   /** The counter for the block cooldown. */
   int _target_cooldown_counter;
+
+  // The screen is divided into two zones: Left, Right
+  // These are all shown in the diagram below.
+  //
+  //   |-----------------|
+  //   |        |        |
+  //   | L      |      R |
+  //   |        |        |
+  //   |-----------------|
+
+  /* Bounds of the right side of screen, for processing input. */
+  cugl::Rect _right_screen_bounds;
 
  public:
   /**
@@ -75,6 +103,7 @@ class TargetPlayer : public Action {
     _butt_down = false;
     _target_player_counter = 0;
     _target_player_id = -1;
+    _prev_target_player_id = -1;
     _dirty_players.clear();
   }
 
@@ -120,6 +149,13 @@ class TargetPlayer : public Action {
    */
   bool isActivatingTargetAction() { return _is_activating_action; }
 
+  /** @return Whether the cooldown timer has just finished. */
+  bool isCooldownFinished() {
+    bool tmp = _cooldown_finished;
+    _cooldown_finished = false;
+    return tmp;
+  }
+
   /**
    * Sets the target of the betrayer action to a specific player.
    * @param player_id The player to target.
@@ -136,6 +172,12 @@ class TargetPlayer : public Action {
   int getTarget() { return _target_player_id; }
 
   /**
+   * Returns the previous target player id of the betrayer action.
+   * @return The previous target player id of the betrayer action
+   */
+  int getPrevTarget() { return _prev_target_player_id; }
+
+  /**
    * Toggles the activation of the map button. When deactivated, the button
    * cannot be pressed.
    * @param value The activation state.
@@ -143,11 +185,9 @@ class TargetPlayer : public Action {
   void setActive(bool value);
 
 #ifdef CU_TOUCH_SCREEN
-
-  /** Touch listener for when the player moves their finger. */
-  void touchMoved(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
-                  bool focus);
-
+  void touchBegan(const cugl::TouchEvent &event, bool focus);
+#else
+  void mouseBegan(const cugl::MouseEvent &event, Uint8 clicks, bool focus);
 #endif  // CU_TOUCH_SCREEN
 
   TargetPlayer();

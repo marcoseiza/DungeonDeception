@@ -27,6 +27,8 @@
 #define ENERGY_SLASH_SPEED 400
 #define ENERGY_SLASH_LIFE 60
 
+#define FLASH_BLOCK_ICON_LENGTH 30
+
 #pragma mark Init
 
 bool Player::init(const cugl::Vec2 pos, const std::string& name) {
@@ -57,7 +59,7 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _is_respawning = false;
   _mv_direc = IDLE_LEFT;
   _room_id = -1;
-  _can_corrupt = true;
+  _flash_block_icon_counter = -1;
 
   setDensity(0.01f);
   setFriction(0.0f);
@@ -103,7 +105,7 @@ void Player::setNameNode(const std::shared_ptr<cugl::Font>& name_font,
   _name_node->setText(_display_name, true);
 
   cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
-  pos.y *= 1.48f;
+  pos.y *= 1.33;
   _name_node->setPosition(pos);
   _name_node->setPriority(std::numeric_limits<float>::max());
 }
@@ -118,6 +120,11 @@ void Player::setEnergyBar(
   pos.y *= 1.38f;
   _energy_bar->setPosition(pos);
   _energy_bar->setPriority(std::numeric_limits<float>::max());
+
+  // Push the name up to make room.
+  cugl::Vec2 name_pos = _player_node->getContentSize() / 2.0f;
+  name_pos.y *= 1.48;
+  _name_node->setPosition(name_pos);
 
   for (auto child : _energy_bar->getChildren()) {
     child->setPriority(std::numeric_limits<float>::max());
@@ -140,6 +147,29 @@ void Player::setCorruptedEnergyBar(
   }
 }
 
+void Player::setBlockIcon(const std::shared_ptr<cugl::scene2::SceneNode>& icon,
+                          bool center) {
+  _block_icon = icon;
+  _player_node->addChild(_block_icon);
+  _block_icon->setAnchor(cugl::Vec2::ANCHOR_CENTER);
+
+  cugl::Vec2 pos = _player_node->getContentSize() / 2.0f;
+  if (center) {
+    pos.y *= 1.55f;
+  } else {
+    pos.y *= 1.38f;
+    pos.x += 39;
+  }
+  _block_icon->setPosition(pos);
+  _block_icon->setPriority(std::numeric_limits<float>::max());
+}
+
+void Player::flashBlockIcon() {
+  _block_icon->setColor(cugl::Color4::RED);
+  _block_icon->setScale(_block_icon->getScale() * 1.2f);
+  _flash_block_icon_counter = FLASH_BLOCK_ICON_LENGTH;
+}
+
 void Player::takeDamage() {
   if (_hurt_frames <= 0) {
     reduceHealth(5);
@@ -157,16 +187,18 @@ void Player::dies() {
 }
 
 void Player::setCorrupted() {
-  if (_is_betrayer && _can_corrupt) {
+  if (_is_betrayer) {
     _corrupt_count = 10;
     _player_node->setColor(cugl::Color4::ORANGE);
   }
 }
 
-void Player::setCanCorrupt(bool val) {
-  _can_corrupt = val;
-  if (!val) {
-    _blocked_corrupt_count = 3600;  // 1 minute
+void Player::toggleBlockPlayerOnBetrayer(int runner_id) {
+  if (!_is_betrayer) return;
+  if (_blocked_players.find(runner_id) == _blocked_players.end()) {
+    _blocked_players.insert(runner_id);  // 1 minute
+  } else {
+    _blocked_players.erase(runner_id);
   }
 }
 
@@ -248,6 +280,16 @@ void Player::update(float delta) {
       (_corrupted_energy_bar->setProgress(std::max(
           _corrupted_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
           target_corrupt_energy_amt)));
+    }
+  }
+
+  if (_flash_block_icon_counter > 0) {
+    _flash_block_icon_counter--;
+  } else if (_flash_block_icon_counter == 0) {
+    if (_block_icon) {
+      _flash_block_icon_counter = -1;
+      _block_icon->setColor(cugl::Color4::WHITE);
+      _block_icon->setScale(_block_icon->getScale() * 5.f / 6.f);
     }
   }
 }

@@ -575,6 +575,8 @@ void LevelController::instantiateEnemies(
 
     std::string enemy_type = enemy_node->getType();
     auto enemy_texture = _assets->get<cugl::Texture>(enemy_type);
+    auto enemy_death_texture =
+        _assets->get<cugl::Texture>(enemy_type + "-death");
     auto enemy = EnemyModel::alloc(enemy_node->getWorldPosition(),
                                    enemy_node->getName(), enemy_type);
 

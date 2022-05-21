@@ -42,6 +42,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
   CapsuleObstacle::init(pos_, _size);
 
+  _ready_to_die = false;
   _init_pos = pos;
   _enemy_node = nullptr;
   _health = 100;
@@ -88,7 +89,7 @@ bool EnemyModel::init(const cugl::Vec2 pos, string name, string type) {
 
 void EnemyModel::takeDamage(float amount) {
   reduceHealth(amount);
-  _enemy_node->setColor(cugl::Color4::RED);
+  if (_health > 0) _enemy_node->setColor(cugl::Color4::RED);
   _damage_count = DAMAGE_COUNT;
 }
 
@@ -210,19 +211,21 @@ void EnemyModel::setNode(const std::shared_ptr<cugl::Texture>& texture,
       break;
     }
     case TANK: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
     case GRUNT: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 10);
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 11, 10);
       break;
     }
-    default: {
-      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 3, 16);
+    case TURTLE: {
+      _enemy_node = cugl::scene2::SpriteNode::alloc(texture, 7, 16);
       auto node = dynamic_cast<cugl::scene2::SpriteNode*>(_enemy_node.get());
       node->setFrame(23);  // Initial closed frame
       break;
     }
+    default:
+      break;
   }
 
   // Add the ray cast weights to the debug node.
