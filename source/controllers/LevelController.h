@@ -42,7 +42,8 @@ class LevelController : public Controller {
  public:
   /** Construct a new Level Controller */
   LevelController()
-      : _next_enemy_id(0),
+      : Controller(),
+        _next_enemy_id(0),
         _assets(nullptr),
         _world_node(nullptr),
         _debug_node(nullptr),

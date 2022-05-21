@@ -73,18 +73,22 @@ class DepositEnergyScene {
 
   /** Dispose of this DepositEnergyScene. */
   void dispose() {
+    if (!_active) return;
     _active = false;
     _exit = false;
     _done = false;
 
-    _deposit_butt->setVisible(true);
-    _deposit_butt->clearListeners();
-    _deposit_butt->deactivate();
+    if (_deposit_butt) {
+      _deposit_butt->setVisible(true);
+      _deposit_butt->clearListeners();
+      _deposit_butt->deactivate();
+    }
 
-    _done_butt->setVisible(true);
-    _done_butt->clearListeners();
-    _done_butt->deactivate();
-
+    if (_done_butt) {
+      _done_butt->setVisible(true);
+      _done_butt->clearListeners();
+      _done_butt->deactivate();
+    }
     _node->setVisible(false);
   }
 
