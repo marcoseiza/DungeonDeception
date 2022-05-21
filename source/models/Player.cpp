@@ -12,6 +12,7 @@
 #define DEATH_START_FRAME 90
 #define FINAL_DEATH_FRAME 114
 #define ATTACK_FRAMES 25
+#define ENERGY 0
 #define HEALTH 50
 
 #define WIDTH 24.0f
@@ -51,7 +52,7 @@ bool Player::init(const cugl::Vec2 pos, const std::string& name) {
   _player_node = nullptr;
   _current_state = IDLE;
   _health = HEALTH;
-  _energy = 40;
+  _energy = ENERGY;
   _corrupted_energy = 0;
   _frame_count = 0;
   _attack_frame_count = ATTACK_FRAMES;

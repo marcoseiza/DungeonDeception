@@ -659,9 +659,12 @@ void GameScene::update(float timestep) {
             std::shared_ptr<Player> player = jt.second;
 //            int player_count = room_id_player_count_map[room_id];
             
-            if (player->getRoomId() == room_id) {
+            if (player->isBetrayer()) {
+              // Give betrayer less energy than regular players.
+              player->setEnergy(player->getEnergy() + 2);
+            } else {
               // Give all players in the same room some energy if an enemy dies.
-              player->setEnergy(player->getEnergy() + 5);
+              player->setEnergy(player->getEnergy() + 4);
             }
           }
         }
@@ -1041,7 +1044,6 @@ void GameScene::processData(
       if (enemy != nullptr) {
         auto player = _player_controller->getPlayer(info->player_id);
         enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
-        player->setEnergy(player->getEnergy() + 0.8f);
       }
     } break;
 
