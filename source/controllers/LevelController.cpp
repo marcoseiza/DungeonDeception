@@ -77,7 +77,7 @@ void LevelController::update(float timestep) {
           float rel_projectile_y = projectile->getBody()->GetPosition().y -
                                    current->getNode()->getPosition().y;
           row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) - 2;
-          player->getPlayerNode()->setPriority(current->getGridSize().height -
+          projectile->getNode()->setPriority(current->getGridSize().height -
                                                row);
         }
       }
