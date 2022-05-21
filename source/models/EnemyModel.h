@@ -288,7 +288,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return the current health.
    */
   int getHealth() const { return _health; }
-
+  
   /**
    * Sets that this enemy is ready to die
    * @param val Wether the enemy is ready to die.
@@ -300,12 +300,6 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @return wether the enemy is ready to die.
    */
   bool isReadyToDie() const { return _ready_to_die; }
-  /**
-   * Gets the current attack cooldown of the enemy.
-   *
-   * @return the current health.
-   */
-  int getAttackCooldown() const { return _attack_cooldown; }
 
   /**
    * Sets the current enemy's health.
@@ -313,6 +307,13 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    * @param value The current enemy health.
    */
   void setHealth(int value) { _health = value; }
+  
+  /**
+   * Gets the current attack cooldown of the enemy.
+   *
+   * @return the current health.
+   */
+  int getAttackCooldown() const { return _attack_cooldown; }
 
   /**
    * Sets the attack cooldown.
@@ -340,6 +341,12 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
    *
    */
   void takeDamage(float amount = 20);
+  
+  /**
+   * The enemy took damage.
+   *
+   */
+  void takeDamageWithKnockback(const cugl::Vec2 p, float amount = 20);
 
   /**
    * Returns the speed of the enemy.
@@ -521,7 +528,7 @@ class EnemyModel : public cugl::physics2::CapsuleObstacle {
   /**
    * Knocks back the enemy.
    */
-  void knockback(int moveDir);
+  void knockback(const cugl::Vec2 p);
 
   /**
    * Returns whether or not the enemy is knocked back.
