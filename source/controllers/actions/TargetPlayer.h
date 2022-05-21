@@ -39,9 +39,6 @@ class TargetPlayer : public Action {
   /* Scene2 button is pressed. */
   bool _butt_down;
 
-  /* The duration before the selected player is targeted. */
-  int _target_player_hang_frames;
-
   /* The counter for the target player duration. */
   int _target_player_counter;
 
