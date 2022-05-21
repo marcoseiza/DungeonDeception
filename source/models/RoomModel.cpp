@@ -61,7 +61,7 @@ void RoomModel::dispose() { _node = nullptr; }
 
 void RoomModel::setEnergy(int energy) {
   _energy = energy;
-  if (_reg_bar != nullptr) _reg_bar->setProgress(_energy / 100.0f);
+  if (_reg_bar != nullptr) _reg_bar->setProgress(_energy / 200.0f);
 
   if (_energy >= _energy_to_activate) {
     auto terminals = TileHelper::getTile<Terminal>(_node);
@@ -73,7 +73,7 @@ void RoomModel::setEnergy(int energy) {
 
 void RoomModel::setCorruptedEnergy(int energy) {
   _corrupted_energy = energy;
-  if (_cor_bar != nullptr) _cor_bar->setProgress(_corrupted_energy / 100.0f);
+  if (_cor_bar != nullptr) _cor_bar->setProgress(_corrupted_energy / 200.0f);
 
   if (_corrupted_energy >= _corrupted_energy_to_activate) {
     auto terminals = TileHelper::getTile<Terminal>(_node);
