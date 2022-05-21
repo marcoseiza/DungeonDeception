@@ -365,7 +365,7 @@ void EnemyModel::update(float delta) {
 
   if (_isKnockbacked) {
     _stunned_timer++;
-    if (_stunned_timer >= 15) {
+    if (_stunned_timer >= 10) {
       _isKnockbacked = false;
       _stunned_timer = 0;
     }
@@ -380,8 +380,8 @@ void EnemyModel::update(float delta) {
 
 void EnemyModel::move(float forwardX, float forwardY) {
   if (_isKnockbacked) {
-    setVX(200 * _knockback_dir.x);
-    setVY(200 * _knockback_dir.y);
+    setVX(10 * _knockback_dir.x);
+    setVY(10 * _knockback_dir.y);
 
   } else {
     setVX(80 * forwardX);
