@@ -4,13 +4,13 @@
 #define BLOCK_ACCEPT_START 25
 #define BLOCK_ACCEPT_LIMIT 46
 #define BLOCK_ANIM_LENGTH 60000 /* ms (i.e. one min cooldown) */
+#define BLOCK_ACCEPT_LENGTH 90  /* frames (1.5 sec) */
 
 TargetPlayer::TargetPlayer()
     : _curr_down(false),
       _prev_down(false),
       _button(nullptr),
       _is_activating_action(false),
-      _target_player_hang_frames(150),
       _target_player_counter(-1),
       _target_player_id(-1),
       _prev_target_player_id(-1),
@@ -117,7 +117,7 @@ bool TargetPlayer::update() {
       _button_node->setFrame(BLOCK_ACCEPT_START);
     }
 
-    if (_target_player_counter > _target_player_hang_frames) {
+    if (_target_player_counter > BLOCK_ACCEPT_LENGTH) {
       if (_target_player_id != -1) {
         _is_activating_action = true;
       } else {
@@ -125,7 +125,7 @@ bool TargetPlayer::update() {
         _target_player_id = -1;
       }
     } else if (_target_player_counter > 0) {
-      float frac = (float)_target_player_counter / _target_player_hang_frames;
+      float frac = (float)_target_player_counter / BLOCK_ACCEPT_LENGTH;
       float rel_frame = (BLOCK_ACCEPT_LIMIT - 1 - BLOCK_ACCEPT_START) * frac;
       _button_node->setFrame((int)rel_frame + BLOCK_ACCEPT_START);
     }
