@@ -82,10 +82,6 @@ bool GameScene::init(
   _world->onBeginContact = [this](b2Contact* contact) {
     this->beginContact(contact);
   };
-  _world->beforeSolve = [this](b2Contact* contact,
-                               const b2Manifold* oldManifold) {
-    this->beforeSolve(contact, oldManifold);
-  };
 
   _grunt_controller =
       GruntController::alloc(_assets, _world, _world_node, _debug_node);
@@ -171,6 +167,10 @@ bool GameScene::init(
       ->setVisible(!is_betrayer);
   assets->get<cugl::scene2::SceneNode>("ui-scene_infect-player")
       ->setVisible(is_betrayer);
+
+  _energy_bar->setForegroundColor(cugl::Color4("#9ec1de"));
+  if (is_betrayer) _energy_bar->setForegroundColor(cugl::Color4("#df7126"));
+
   auto win_layer = assets->get<cugl::scene2::SceneNode>("win-scene");
   win_layer->setContentSize(dim);
   win_layer->doLayout();
@@ -178,7 +178,6 @@ bool GameScene::init(
 
   _num_terminals_activated = 0;
   _num_terminals_corrupted = 0;
-
   auto corrupted_text =
       ui_layer->getChildByName<cugl::scene2::Label>("corrupted_num");
   std::string corrupted_msg =
@@ -202,6 +201,25 @@ bool GameScene::init(
   }
   role_text->setText(role_msg);
 
+  _particle_world = cugl::scene2::SceneNode::alloc();
+  _particle_screen = cugl::scene2::SceneNode::alloc();
+  _particle_world->setContentSize(dim);
+  _particle_screen->setContentSize(dim);
+  _particle_screen->setName("particle_screen");
+  _particle_controller =
+      ParticleController::alloc(_particle_world, _particle_screen);
+  _player_controller->setParticleController(_particle_controller);
+  _level_controller->setParticleController(_particle_controller);
+
+  _sound_controller = SoundController::alloc(_assets);
+  _player_controller->setSoundController(_sound_controller);
+  _grunt_controller->setSoundController(_sound_controller);
+  _shotgunner_controller->setSoundController(_sound_controller);
+  _tank_controller->setSoundController(_sound_controller);
+  _turtle_controller->setSoundController(_sound_controller);
+
+  _controllers.push_back(_sound_controller->getHook());
+  _controllers.push_back(_particle_controller->getHook());
   _controllers.push_back(_player_controller->getHook());
   _controllers.push_back(_terminal_controller->getHook());
   _controllers.push_back(_level_controller->getHook());
@@ -209,27 +227,62 @@ bool GameScene::init(
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
+  _world_node->addChild(_particle_world);
   cugl::Scene2::addChild(_map);
   cugl::Scene2::addChild(health_layer);
   cugl::Scene2::addChild(energy_layer);
   cugl::Scene2::addChild(ui_layer);
   cugl::Scene2::addChild(terminal_deposit_layer);
   cugl::Scene2::addChild(_role_layer);
+  cugl::Scene2::addChild(_particle_screen);
   cugl::Scene2::addChild(_debug_node);
   cugl::Scene2::addChild(_settings_scene->getNode());
   _debug_node->setVisible(false);
 
-  _sound_controller = SoundController::alloc(_assets);
-  _controllers.push_back(_sound_controller);
-  _player_controller->setSoundController(_sound_controller);
-  _grunt_controller->setSoundController(_sound_controller);
-  _shotgunner_controller->setSoundController(_sound_controller);
-  _tank_controller->setSoundController(_sound_controller);
-  _turtle_controller->setSoundController(_sound_controller);
-
   InputController::get()->init(_assets, cugl::Scene2::getBounds(), is_betrayer);
 
   InputController::get()->pause();
+
+  _energy_particle = ParticleProps(ParticleProps::Type::PATH);
+  _energy_particle.setLifeTime(0.7f)
+      ->setScreenCoord(true)
+      ->setColorStart(cugl::Color4(148, 183, 212, 200))
+      ->setColorEnd(cugl::Color4(148, 183, 212, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineIn)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineOut)
+      ->setPathVariation(50.f)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(2.0f, 2.0f);
+
+  _deposit_particle_regular = ParticleProps(ParticleProps::Type::PATH);
+  _deposit_particle_regular.setLifeTime(0.7f)
+      ->setColorStart(cugl::Color4(148, 183, 212, 200))
+      ->setColorEnd(cugl::Color4(148, 183, 212, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineOut)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineIn)
+      ->setPathVariation(50.f)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(2.0f, 2.0f);
+  if (is_betrayer) {
+    _energy_particle.setColorStart(cugl::Color4(223, 113, 38, 200))
+        ->setColorEnd(cugl::Color4(223, 113, 38, 120));
+  }
+
+  _deposit_particle_corrupted = ParticleProps(ParticleProps::Type::PATH);
+  _deposit_particle_corrupted.setLifeTime(0.7f)
+      ->setColorStart(cugl::Color4(223, 113, 38, 200))
+      ->setColorEnd(cugl::Color4(223, 113, 38, 120))
+      ->setAngularSpeed(0.5f)
+      ->setEasingFunctionPosX(cugl::EasingFunction::sineOut)
+      ->setEasingFunctionPosY(cugl::EasingFunction::sineIn)
+      ->setPathVariation(50.f)
+      ->setSizeStart(5.0f)
+      ->setSizeEnd(5.0f)
+      ->setPositionVariation(2.0f, 2.0f);
 
   return true;
 }
@@ -296,9 +349,6 @@ void GameScene::populate(cugl::Size dim) {
   _num_terminals = 0;
   for (std::shared_ptr<Terminal> terminal :
        TileHelper::getTile<Terminal>(_world_node)) {
-    _world->addObstacle(terminal->initBox2d());
-    terminal->getObstacle()->setDebugColor(cugl::Color4::BLACK);
-    terminal->getObstacle()->setDebugScene(_debug_node);
     _num_terminals += 1;
   }
 
@@ -337,13 +387,11 @@ void GameScene::update(float timestep) {
   float target_energy_amt =
       _player_controller->getMyPlayer()->getEnergy() / 100.0f;
   if (_energy_bar->getProgress() < target_energy_amt) {
-    (_energy_bar->setProgress(
-        std::min(_energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE,
-                 target_energy_amt)));
+    float diff = _energy_bar->getProgress() + ENERGY_BAR_UPDATE_SIZE;
+    _energy_bar->setProgress(std::min(diff, target_energy_amt));
   } else if (_energy_bar->getProgress() > target_energy_amt) {
-    (_energy_bar->setProgress(
-        std::max(_energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE,
-                 target_energy_amt)));
+    float diff = _energy_bar->getProgress() - ENERGY_BAR_UPDATE_SIZE;
+    _energy_bar->setProgress(std::max(diff, target_energy_amt));
   }
 
   if (_player_controller->getMyPlayer()->getRespawning()) {
@@ -581,22 +629,35 @@ void GameScene::update(float timestep) {
       auto enemy = *it;
 
       if (enemy->isReadyToDie()) {
-        _dead_enemy_cache.push_back(enemy->getEnemyId());
+        // Send particles if there's things to send.
+        if (_player_controller->getMyPlayer()->getEnergy() < 100) {
+          cugl::Vec2 end_pos = _energy_bar->getWorldPosition();
+          end_pos.x += _energy_bar->getContentWidth() *
+                       _energy_bar->getProgress() * 1.2f;
+          _energy_particle.setPosStart(enemy->getNode()->getWorldPosition())
+              ->setPosEnd(end_pos);
+          _particle_controller->emit(_energy_particle, 5, 0.03f);
+        }
+
+        // Update player eneregies.
+        if (NetworkController::get()->isHost()) {
+          for (auto jt : _player_controller->getPlayers()) {
+            std::shared_ptr<Player> player = jt.second;
+            if (player->getRoomId() == room_id) {
+              // Give all players in the same room some energy if an enemy dies.
+              player->setEnergy(player->getEnergy() + 5);
+            }
+          }
+        }
+
+        if (NetworkController::get()->isHost()) {
+          _dead_enemy_cache.push_back(enemy->getEnemyId());
+        }
         enemy->deleteAllProjectiles(_world, _world_node);
         enemy->deactivatePhysics(*_world->getWorld());
         room->getNode()->removeChild(enemy->getNode());
         _world->removeObstacle(enemy.get());
         enemies.erase(it--);
-
-        if (NetworkController::get()->isHost()) {
-          // Give all players in the same room some energy if an enemy dies.
-          for (auto jt : _player_controller->getPlayers()) {
-            std::shared_ptr<Player> player = jt.second;
-            if (player->getRoomId() == room_id) {
-              player->setEnergy(player->getEnergy() + 5);
-            }
-          }
-        }
       } else {
         enemy->deleteProjectile(_world, _world_node);
       }
@@ -822,13 +883,11 @@ void GameScene::sendNetworkInfoClient() {
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, int dir,
-                                        float amount) {
+void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, float amount) {
   auto info = cugl::EnemyHitInfo::alloc();
   info->enemy_id = enemy_id;
   info->player_id = player_id;
   info->amount = amount;
-  info->direction = dir;
 
   NetworkController::get()->sendOnlyToHostOrProcess(NC_CLIENT_ENEMY_HIT_INFO,
                                                     info);
@@ -963,10 +1022,10 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-        enemy->takeDamage(info->amount);
-        if (info->direction != -1) enemy->knockback(info->direction);
+//        enemy->takeDamage(info->amount);
 
         auto player = _player_controller->getPlayer(info->player_id);
+        enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
         player->setEnergy(player->getEnergy() + 0.8f);
       }
     } break;
@@ -1054,7 +1113,6 @@ void GameScene::beginContact(b2Contact* contact) {
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getSword()->getMoveDir(),
                             damage);
   } else if (fx2_name == "enemy_hitbox" &&
              ob1 == _player_controller->getSword().get()) {
@@ -1068,7 +1126,6 @@ void GameScene::beginContact(b2Contact* contact) {
 
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
                             dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getSword()->getMoveDir(),
                             damage);
   }
 
@@ -1081,7 +1138,7 @@ void GameScene::beginContact(b2Contact* contact) {
       _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
           ->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                              dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), -1,
+                              dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
                               5.0f);
     }
   } else if (fx2_name == "enemy_hitbox" &&
@@ -1093,7 +1150,7 @@ void GameScene::beginContact(b2Contact* contact) {
       _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
           ->takeDamage(0);
       sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                              dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), -1,
+                              dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
                               5.0f);
     }
   }
@@ -1101,23 +1158,29 @@ void GameScene::beginContact(b2Contact* contact) {
   if (fx1_name == "enemy_damage" &&
       ob2 == _player_controller->getMyPlayer().get() &&
       dynamic_cast<EnemyModel*>(ob1)->getAttackCooldown() < 18) {
-    dynamic_cast<Player*>(ob2)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob2) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
   } else if (fx2_name == "enemy_damage" &&
              ob1 == _player_controller->getMyPlayer().get() &&
              dynamic_cast<EnemyModel*>(ob2)->getAttackCooldown() < 18) {
-    dynamic_cast<Player*>(ob1)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob1) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
   }
 
   if (ob1->getName() == "projectile" &&
       fx2_name == "player_projectile_sensor") {
+    if (_player_controller->getMyPlayer().get() == ob2) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-    dynamic_cast<Player*>(ob2)->takeDamage();
-    CULog("hi");
   } else if (ob2->getName() == "projectile" &&
              fx1_name == "player_projectile_sensor") {
-    dynamic_cast<Player*>(ob1)->takeDamage();
+    if (_player_controller->getMyPlayer().get() == ob1) {
+      _player_controller->getMyPlayer()->takeDamage();
+    }
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-    CULog("hi");
   }
 
   if (fx1_name == "enemy_hitbox" && ob2->getName() == "slash") {
@@ -1127,9 +1190,7 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob1)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getMoveDir(),
-                            20);
+                            dynamic_cast<EnemyModel*>(ob1)->getEnemyId(), 30);
   } else if (fx2_name == "enemy_hitbox" && ob1->getName() == "slash") {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
     // Show hit on client-side without potentially causing de-sync with host
@@ -1137,9 +1198,7 @@ void GameScene::beginContact(b2Contact* contact) {
     _level_controller->getEnemy(dynamic_cast<EnemyModel*>(ob2)->getEnemyId())
         ->takeDamage(0);
     sendEnemyHitNetworkInfo(_player_controller->getMyPlayer()->getPlayerId(),
-                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(),
-                            _player_controller->getMyPlayer()->getMoveDir(),
-                            20);
+                            dynamic_cast<EnemyModel*>(ob2)->getEnemyId(), 30);
   }
 
   if (ob1->getName() == "projectile" &&
@@ -1147,14 +1206,6 @@ void GameScene::beginContact(b2Contact* contact) {
     dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
   } else if (ob2->getName() == "projectile" &&
              ob1 == _player_controller->getSword().get()) {
-    dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
-  }
-
-  if ((ob1->getName() == "projectile" || ob1->getName() == "slash") &&
-      ob2->getName() == "Wall") {
-    dynamic_cast<Projectile*>(ob1)->setFrames(0);  // Destroy the projectile
-  } else if ((ob2->getName() == "projectile" || ob1->getName() == "slash") &&
-             ob1->getName() == "Wall") {
     dynamic_cast<Projectile*>(ob2)->setFrames(0);  // Destroy the projectile
   }
 
@@ -1171,17 +1222,75 @@ void GameScene::beginContact(b2Contact* contact) {
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
 
+    cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
+    start_pos.x +=
+        _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
+    start_pos = _world_node->worldToNodeCoords(start_pos);
+
+    Terminal* terminal =
+        static_cast<Terminal*>((void*)ob1->getUserDataPointer());
+    cugl::Vec2 end_pos = ob1->getPosition() + terminal->getContentSize() / 2;
+
+    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+
+    if (!terminal->isFilled()) {
+      if (player->getEnergy() > 0) {
+        int num = 10 * player->getEnergy() / 100.0f + 1;
+        if (player->isBetrayer()) {
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        } else {
+          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+        }
+      }
+
+      if (player->getCorruptedEnergy() > 0) {
+        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+      }
+    }
+
     _terminal_controller->depositEnergy(room->getKey());
+
   } else if (fx2_name == "terminal-sensor" &&
              ob1 == _player_controller->getMyPlayer().get()) {
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
 
+    cugl::Vec2 start_pos = _energy_bar->getWorldPosition();
+    start_pos.x +=
+        _energy_bar->getContentWidth() * _energy_bar->getProgress() * 1.2f;
+    start_pos = _world_node->worldToNodeCoords(start_pos);
+
+    Terminal* terminal =
+        static_cast<Terminal*>((void*)ob2->getUserDataPointer());
+    cugl::Vec2 end_pos = ob2->getPosition() + terminal->getContentSize() / 2;
+
+    _deposit_particle_regular.setPosStart(start_pos)->setPosEnd(end_pos);
+    _deposit_particle_corrupted.setPosStart(start_pos)->setPosEnd(end_pos);
+
+    std::shared_ptr<Player> player = _player_controller->getMyPlayer();
+
+    if (!terminal->isFilled()) {
+      if (player->getEnergy() > 0) {
+        int num = 10 * player->getEnergy() / 100.0f + 1;
+        if (player->isBetrayer()) {
+          _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+        } else {
+          _particle_controller->emit(_deposit_particle_regular, num, 0.02f);
+        }
+      }
+
+      if (player->getCorruptedEnergy() > 0) {
+        int num = 10 * player->getCorruptedEnergy() / 100.0f + 1;
+        _particle_controller->emit(_deposit_particle_corrupted, num, 0.02f);
+      }
+    }
+
     _terminal_controller->depositEnergy(room->getKey());
   }
-}
-
-void GameScene::beforeSolve(b2Contact* contact, const b2Manifold* oldManifold) {
 }
 
 void GameScene::render(const std::shared_ptr<cugl::SpriteBatch>& batch) {

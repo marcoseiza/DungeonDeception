@@ -7,6 +7,7 @@
 #include "../models/EnemyModel.h"
 #include "../models/LevelModel.h"
 #include "Controller.h"
+#include "ParticleController.h"
 #include "PlayerController.h"
 
 /**
@@ -34,6 +35,9 @@ class LevelController : public Controller {
   std::shared_ptr<RoomModel> _room_on_chopping_block;
   /** The id of the next enemy to add, increasing each time. */
   int _next_enemy_id;
+
+  /** A reference to the particle controller. */
+  std::shared_ptr<ParticleController> _particle_controller;
 
  public:
   /** Construct a new Level Controller */
@@ -134,6 +138,15 @@ class LevelController : public Controller {
    * @return The enemy found, or nullptr if it does not exist.
    */
   std::shared_ptr<EnemyModel> getEnemy(int enemy_id);
+
+  /**
+   * Set the particle controller for particles.
+   * @param controller The particle controller.
+   */
+  void setParticleController(
+      const std::shared_ptr<ParticleController> &controller) {
+    _particle_controller = controller;
+  }
 
  private:
   /**

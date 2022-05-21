@@ -3,6 +3,7 @@
 #include "../network/NetworkController.h"
 #include "../network/structs/PlayerStructs.h"
 #include "CollisionFiltering.h"
+#include "Random.h"
 #include "actions/Attack.h"
 #include "actions/Corrupt.h"
 #include "actions/Dash.h"
@@ -54,6 +55,15 @@ bool PlayerController::init(
   _sword->setDebugScene(_debug_node);
   _sword->setDebugColor(cugl::Color4f::BLACK);
 
+  _grass_particle.setSizeStart(5.0f)
+      ->setOrder(true)
+      ->setSizeEnd(3.0f)
+      ->setAngularSpeed(0.04f)
+      ->setColorStart(cugl::Color4(104, 110, 19, 120))
+      ->setColorEnd(cugl::Color4(124, 133, 23, 50))
+      ->setVelocityVariation(cugl::Vec2(10.f, 10.f))
+      ->setLifeTime(1.f);
+
   NetworkController::get()->addListener(
       [=](const Sint32& code,
           const cugl::CustomNetworkDeserializer::CustomMessage& msg) {
@@ -81,9 +91,12 @@ void PlayerController::update(float timestep) {
         it.second->isSteppingOnFloor()) {
       _sound_controller->playPlayerFootstep(
           SoundController::FootstepType::GRASS);
-    }
 
-    if (it.second->isHit()) _sound_controller->playPlayerHit();
+      _grass_particle.setPosition(it.second->getPosition());
+      _grass_particle.setVelocity(it.second->getLinearVelocity() * 0.08f);
+      _grass_particle.setRoomId(it.second->getRoomId());
+      _particle_controller->emit(_grass_particle, 4);
+    }
   }
 
   if (InputController::get<Attack>()->chargeStart()) {
@@ -92,6 +105,7 @@ void PlayerController::update(float timestep) {
     _sound_controller->stopPlayerEnergyCharge();
   }
 
+  if (_player->isHit()) _sound_controller->playPlayerHit();
   if (_player->_hurt_frames == 0) {
     _player->getPlayerNode()->setColor(cugl::Color4::WHITE);
   }
@@ -423,7 +437,8 @@ void PlayerController::updateSlashes(float timestep) {
     (*it)->decrementFrame(1);
     (*it)->getNode()->setPosition((*it)->getPosition());
     if ((*it)->getFrames() % SLASH_FRAMES == 0) {
-      (*it)->getNode()->setFrame((*it)->getNode()->getFrame() + 1);
+      (*it)->getNode()->setFrame(((*it)->getNode()->getFrame() + 1) %
+                                 (*it)->getNode()->getSize());
     }
     ++it;
   }

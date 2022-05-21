@@ -46,6 +46,13 @@ void LevelController::update(float timestep) {
           body->GetPosition().y - room->getNode()->getPosition().y;
       float row = rel_player_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
       player->getPlayerNode()->setPriority(room->getGridSize().height - row);
+
+      for (auto slash : player->getSlashes()) {
+        float rel_slash_y =
+            slash->getPosition().y - room->getNode()->getPosition().y;
+        float row = rel_slash_y / (TILE_SIZE.y * TILE_SCALE.y) - 2;
+        slash->getNode()->setPriority(room->getGridSize().height - row);
+      }
     }
   }
 
@@ -68,10 +75,25 @@ void LevelController::update(float timestep) {
           }
           float rel_projectile_y = projectile->getBody()->GetPosition().y -
                                    current->getNode()->getPosition().y;
-          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
+          row = rel_projectile_y / (TILE_SIZE.y * TILE_SCALE.y) - 2;
           player->getPlayerNode()->setPriority(current->getGridSize().height -
                                                row);
         }
+      }
+    }
+  }
+
+  {
+    for (const ParticleController::Particle &particle :
+         _particle_controller->getParticles()) {
+      if (particle.props.isOrder()) {
+        std::shared_ptr<RoomModel> room =
+            _level_model->getRoom(particle.props.getRoomId());
+
+        float rel_particle_y =
+            particle.node->getPositionY() - room->getNode()->getPosition().y;
+        float row = rel_particle_y / (TILE_SIZE.y * TILE_SCALE.y) + 1;
+        particle.node->setPriority(room->getGridSize().height - row);
       }
     }
   }
