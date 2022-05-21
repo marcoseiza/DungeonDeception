@@ -21,6 +21,7 @@ bool Corrupt::init(const std::shared_ptr<cugl::AssetManager> &assets,
   _button->getParent()->doLayout();
 
   _anim_buffer = 0;
+  _start_cooldown = false;
 
   _butt_down = false;
   _button->addListener(
@@ -66,6 +67,8 @@ bool Corrupt::update() {
 }
 
 bool Corrupt::dispose() {
+  auto parent = _button->getParent();
+  if (parent) parent->removeChild(_button);
   _button = nullptr;
 
   return true;
