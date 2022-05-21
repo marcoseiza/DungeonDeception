@@ -218,12 +218,6 @@ bool GameScene::init(
   _tank_controller->setSoundController(_sound_controller);
   _turtle_controller->setSoundController(_sound_controller);
 
-  _controllers.push_back(_sound_controller->getHook());
-  _controllers.push_back(_particle_controller->getHook());
-  _controllers.push_back(_player_controller->getHook());
-  _controllers.push_back(_terminal_controller->getHook());
-  _controllers.push_back(_level_controller->getHook());
-
   cugl::Scene2::addChild(background_layer);
   cugl::Scene2::addChild(_cloud_layer);
   cugl::Scene2::addChild(_world_node);
@@ -297,8 +291,6 @@ void GameScene::dispose() {
   _has_sent_player_basic_info = false;
   _sound_controller->stop();
   _dead_enemy_cache.clear();
-  _world->dispose();
-  _world = nullptr;
   _world_node->removeAllChildren();
   _debug_node->removeAllChildren();
   _role_layer->setVisible(true);
@@ -311,6 +303,8 @@ void GameScene::dispose() {
   _debug_node = nullptr;
   _role_layer = nullptr;
   _cloud_layer = nullptr;
+
+  _world = nullptr;
 
   _settings_scene = nullptr;
   _terminal_controller = nullptr;
@@ -407,9 +401,10 @@ void GameScene::update(float timestep) {
 
   InputController::get()->update();
 
-  for (std::shared_ptr<Controller> controller : _controllers) {
-    controller->update(timestep);
-  }
+  _player_controller->update(timestep);
+  _terminal_controller->update(timestep);
+  _level_controller->update(timestep);
+  _sound_controller->update(timestep);
 
   _num_terminals_activated = _terminal_controller->getNumTerminalsActivated();
   _num_terminals_corrupted = _terminal_controller->getNumTerminalsCorrupted();
@@ -883,7 +878,8 @@ void GameScene::sendNetworkInfoClient() {
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, float amount) {
+void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id,
+                                        float amount) {
   auto info = cugl::EnemyHitInfo::alloc();
   info->enemy_id = enemy_id;
   info->player_id = player_id;
@@ -1022,7 +1018,7 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-//        enemy->takeDamage(info->amount);
+        //        enemy->takeDamage(info->amount);
 
         auto player = _player_controller->getPlayer(info->player_id);
         enemy->takeDamageWithKnockback(player->getPosition(), info->amount);

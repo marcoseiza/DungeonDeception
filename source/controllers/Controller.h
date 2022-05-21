@@ -6,9 +6,12 @@
  * controller, as initializations are very personal.
  */
 class Controller : public std::enable_shared_from_this<Controller> {
+ protected:
+  bool _initialized;
+
  public:
   /** Construct a new controller. */
-  Controller() {}
+  Controller() : _initialized(false) {}
   /** Destroy the controller. */
   ~Controller() { dispose(); }
 

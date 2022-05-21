@@ -22,6 +22,7 @@ bool LevelController::init(
     const std::shared_ptr<cugl::scene2::SceneNode> &debug_node,
     const std::shared_ptr<level_gen::LevelGenerator> &level_gen,
     const std::shared_ptr<cugl::scene2::SceneNode> &map, bool is_betrayer) {
+  if (Controller::_initialized) return false;
   _assets = assets;
   _world_node = world_node;
   _debug_node = debug_node;
@@ -30,7 +31,7 @@ bool LevelController::init(
   _next_enemy_id = 0;
   populate();
   setupMap(is_betrayer);
-
+  Controller::_initialized = true;
   return true;
 }
 
@@ -156,8 +157,10 @@ std::shared_ptr<EnemyModel> LevelController::getEnemy(int enemy_id) {
 }
 
 void LevelController::dispose() {
+  if (!Controller::_initialized) return;
   _level_gen->dispose();
   _next_enemy_id = 0;
+  Controller::_initialized = false;
 }
 
 void LevelController::changeRoom(std::string &door_sensor_name) {
