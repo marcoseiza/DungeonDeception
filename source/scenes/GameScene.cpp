@@ -427,6 +427,7 @@ void GameScene::update(float timestep) {
   switch (_settings_scene->getChoice()) {
     case SettingsScene::Choice::LEAVE:
       _state = LEAVE;
+      _settings_scene->setActive(false);
       if (NetworkController::get()->isHost()) {
         NetworkController::get()->send(NC_HOST_END_GAME);
       } else {
@@ -883,7 +884,8 @@ void GameScene::sendNetworkInfoClient() {
   }
 }
 
-void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id, float amount) {
+void GameScene::sendEnemyHitNetworkInfo(int player_id, int enemy_id,
+                                        float amount) {
   auto info = cugl::EnemyHitInfo::alloc();
   info->enemy_id = enemy_id;
   info->player_id = player_id;
@@ -1022,7 +1024,7 @@ void GameScene::processData(
       auto enemy = _level_controller->getEnemy(info->enemy_id);
 
       if (enemy != nullptr) {
-//        enemy->takeDamage(info->amount);
+        //        enemy->takeDamage(info->amount);
 
         auto player = _player_controller->getPlayer(info->player_id);
         enemy->takeDamageWithKnockback(player->getPosition(), info->amount);
