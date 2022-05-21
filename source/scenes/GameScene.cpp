@@ -1268,7 +1268,8 @@ void GameScene::beginContact(b2Contact* contact) {
 
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
-    if (room != nullptr) _terminal_controller->depositEnergy(room->getKey());
+    if (room != nullptr && _terminal_controller != nullptr)
+      _terminal_controller->depositEnergy(room->getKey());
 
   } else if (fx2_name == "terminal-sensor" && ob2 != nullptr &&
              ob1 == _player_controller->getMyPlayer().get()) {
@@ -1306,7 +1307,8 @@ void GameScene::beginContact(b2Contact* contact) {
 
     std::shared_ptr<RoomModel> room =
         _level_controller->getLevelModel()->getCurrentRoom();
-    if (room != nullptr) _terminal_controller->depositEnergy(room->getKey());
+    if (room != nullptr && _terminal_controller != nullptr)
+      _terminal_controller->depositEnergy(room->getKey());
   }
 }
 
